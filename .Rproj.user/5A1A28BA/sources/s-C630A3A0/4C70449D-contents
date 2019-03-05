@@ -1,0 +1,21 @@
+Package: gosset
+Type: Package
+Title: Modelling metadata and experimental citizen science
+Version: 0.1.0
+Authors@R: c(person("Kaue", "de Sousa", 
+        email = "kaue.desousa@inn.no", role = c("aut", "cre"),
+        comment = c(ORCID = "0000-0002-7571-7845")),
+        person("Jacob", "van Etten", role = c("aut", "ctb"),
+        comment = c(ORCID = "0000-0001-7554-2558")))
+Maintainer: Kaue de Sousa <desousa.kaue@gmail.com>
+URL: https://github.com/kauedesousa/gosset
+BugReports: https://github.com/kauedesousa/gosset/issues
+Description: gosset provides an environment for modelling metadata and experimental citizen science data. 
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 2.10)
+Imports: gnm, PlackettLuce, psychotree, tidyverse, abind, doParallel, foreach, nasapower, partykit, psychotools, qvcalc, raster, reshape2
+Suggests: 
+Language: en-GB
+RoxygenNote: 6.1.1
