@@ -28,6 +28,7 @@ data("breadwheat", package = "gosset")
 
 # convert the tricot rankings from breadwheat data
 # into a object of class 'rankings'
+
 names(breadwheat)
 
 G <- to_rankings(breadwheat,
@@ -38,7 +39,10 @@ G <- to_rankings(breadwheat,
 
 
 # compute temperature indices for the first 45 days in the plots
-temp <- temperature(breadwheat_temp,
+
+data("breadwheat_modis", package = "gosset")
+
+temp <- temperature(breadwheat_modis,
                     day.one = breadwheat["planting_date"],
                     span = 45)
 

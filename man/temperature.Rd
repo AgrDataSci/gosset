@@ -37,16 +37,13 @@ A dataframe with selected indices. Options are:
 Compute temperature indices over a timespan
 }
 \examples{
-# Compute indices using temperature data from MODIS MYD11A1
-# (http://dx.doi.org/10.5067/MODIS/MYD11A2.006)
-# each row in breadwheat corresponds to the same rows in breadwheat_temp,
-# first layer is the day temperature and second layer is the night temperature
 
-data("breadwheat_temp", package = "gosset")
+# Compute indices using temperature data from MODIS MYD11A1
+data("breadwheat_modis", package = "gosset")
 data("breadwheat", package = "gosset")
 
 # compute all temperature indices for the first 30 days in the plots
-temperature(breadwheat_temp,
+temperature(breadwheat_modis,
             day.one = breadwheat["planting_date"],
             span = 30)
 

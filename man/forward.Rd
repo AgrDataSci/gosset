@@ -78,7 +78,10 @@ G <- to_rankings(breadwheat,
 # get some explanatory variables to include in the model
 # we will calculate the temperature indices
 # for the planting date to maturity (120 days)
-covars <- temperature(breadwheat_temp,
+
+data("breadwheat_modis", package = "gosset")
+
+covars <- temperature(breadwheat_modis,
                       day.one = breadwheat$planting_date,
                       span = 120)
 

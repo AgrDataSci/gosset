@@ -1,31 +1,24 @@
-#' Preferred bread wheat varieties in India
+#' Preferred bread wheat varieties
 #'
-#' This is a subset of data from crowdsourcing citizen-science trials of
-#' bread wheat (\emph{Triticum aestivum}) varieties in Vaishali, India over the 2014's Rabi.
-#' Farmers were asked to try three varieties of bread wheat randomly assigned
-#' from a total of 16 varieties and evaluate which one had the best and worst 
-#' overall performance. 
-#'   
-#' Environmental data "wheat_rain" and "wheat_temp" are also attached to this 
-#' dataset. These datasets contain the precipitation and temperature information 
-#' extracted from CHIRPS (citation) and MODIS (citation) for a timespan 
-#' of 198 days after the first experiment started. 
+#' Data from crowdsourcing citizen-science trials of bread wheat 
+#' (\emph{Triticum aestivum}) varieties in Vaishali, India over the 
+#' 2014's Rabi season. Farmers were asked to test three varieties 
+#' of bread wheat randomly assigned from a total of 16 varieties 
+#' and report which one had the best and worst overall performance. 
+#' 
 #' @format A data frame with 493 records and 8 variables:
 #' \describe{
 #'     \item{\code{variety_a}}{The name of variety A in the comparison.}
 #'     \item{\code{variety_b}}{The name of variety B in the comparison.}
 #'     \item{\code{variety_c}}{The name of variety C in the comparison.}
-#'     \item{\code{planting_date}}{The sowing date in which the experiment started.}
+#'     \item{\code{planting_date}}{The date which the experiment started.}
 #'     \item{\code{lon}}{The longitude in which the experiment was established.}
 #'     \item{\code{lat}}{The latitude in which the experiment was established.}
-#'     \item{\code{best}}{The variety the farmer ranked in first place ("A",
+#'     \item{\code{best}}{The variety the farmer ranked as best ("A",
 #'     "B" or "C").}
-#'     \item{\code{worst}}{The variety the farmer ranked in last place ("A",
+#'     \item{\code{worst}}{The variety the farmer ranked as worst ("A",
 #'     "B" or "C").}
 #' }
 #' @source The data were provided by Bioversity International, a CGIAR Research
-#' Centre \url{https://www.bioversityinternational.org}.
-#' 
+#' Centre, through the ClimMob platform \url{https://climmob.net}.
 "breadwheat"
-"breadwheat_rain"
-"breadwheat_temp"

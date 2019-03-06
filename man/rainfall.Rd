@@ -37,21 +37,20 @@ A dataframe with selected indices. Options are:
 Compute rainfall indices over a timespan
 }
 \examples{
+
 # Compute indices using precipitation data from CHIRPS
-# (http://chg.geog.ucsb.edu/data/chirps/)
-# each row in breadwheat corresponds to the same rows in breadwheat_rain
-data("breadwheat_rain", package = "gosset")
+data("breadwheat_chirps", package = "gosset")
 data("breadwheat", package = "gosset")
 
 # The rainfall indices for the first 50 days after sowing
-rainfall(breadwheat_rain, 
+rainfall(breadwheat_chirps, 
          day.one = breadwheat$planting_date, 
          span = 50)
 
 ########################################
 
 # Add the first 7 days before sowing (residual precipitation)
-rainfall(breadwheat_rain, 
+rainfall(breadwheat_chirps, 
          day.one = breadwheat$planting_date, 
          span = 50,
          days.before = 7)

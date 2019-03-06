@@ -22,16 +22,13 @@
 #' \item{SU}{summer days, number of days with maximum temperature > 30 (degree Celsius)}
 #' \item{TR}{tropical nights, number of nights with maximum temperature > 25 (degree Celsius) }
 #' @examples
-#' # Compute indices using temperature data from MODIS MYD11A1
-#' # (http://dx.doi.org/10.5067/MODIS/MYD11A2.006)
-#' # each row in breadwheat corresponds to the same rows in breadwheat_temp,
-#' # first layer is the day temperature and second layer is the night temperature
 #' 
-#' data("breadwheat_temp", package = "gosset")
+#' # Compute indices using temperature data from MODIS MYD11A1
+#' data("breadwheat_modis", package = "gosset")
 #' data("breadwheat", package = "gosset")
 #' 
 #' # compute all temperature indices for the first 30 days in the plots
-#' temperature(breadwheat_temp,
+#' temperature(breadwheat_modis,
 #'             day.one = breadwheat["planting_date"],
 #'             span = 30)
 #' 
@@ -61,16 +58,16 @@ temperature <- function(object, day.one = NULL, span = NULL,
   # get timespan for the day temperature
   if (dim(object)[2] == 2) {
     cat("fetching NASA POWER, this may take a little longer. \n")
-    day <- get_timespan(object, day.one, span, pars = "T2M_MAX", ...)
+    day <- .get_timespan(object, day.one, span, pars = "T2M_MAX", ...)
   } else {
-    day <- get_timespan(object[, , 1], day.one, span, ...)
+    day <- .get_timespan(object[, , 1], day.one, span, ...)
   }
   
   # get timespan for the night temperature
   if (dim(object)[2] == 2) {
-    night <- get_timespan(object, day.one, span, pars = "T2M_MIN", ...)
+    night <- .get_timespan(object, day.one, span, pars = "T2M_MIN", ...)
   } else {
-    night <- get_timespan(object[, , 2], day.one, span, ...)
+    night <- .get_timespan(object[, , 2], day.one, span, ...)
   }
   
   n <- nrow(day)
@@ -149,21 +146,20 @@ temperature <- function(object, day.one = NULL, span = NULL,
 #' \item{Rx5day}{maximum 5-day rainfall (mm) }
 #' \item{Rtotal}{total rainfall (mm) in wet days (R >= 1)}
 #' @examples
+#' 
 #' # Compute indices using precipitation data from CHIRPS
-#' # (http://chg.geog.ucsb.edu/data/chirps/)
-#' # each row in breadwheat corresponds to the same rows in breadwheat_rain
-#' data("breadwheat_rain", package = "gosset")
+#' data("breadwheat_chirps", package = "gosset")
 #' data("breadwheat", package = "gosset")
 #' 
 #' # The rainfall indices for the first 50 days after sowing
-#' rainfall(breadwheat_rain, 
+#' rainfall(breadwheat_chirps, 
 #'          day.one = breadwheat$planting_date, 
 #'          span = 50)
 #' 
 #' ########################################
 #' 
 #' # Add the first 7 days before sowing (residual precipitation)
-#' rainfall(breadwheat_rain, 
+#' rainfall(breadwheat_chirps, 
 #'          day.one = breadwheat$planting_date, 
 #'          span = 50,
 #'          days.before = 7)
@@ -192,9 +188,9 @@ rainfall <- function(object, day.one = NULL, span = NULL,
   if (dim(object)[2] == 2) {
     cat("fetching NASA POWER, this may take a little longer. \n")
     
-    r <- get_timespan(object, day.one, span, pars = "PRECTOT", ...)
+    r <- .get_timespan(object, day.one, span, pars = "PRECTOT", ...)
   } else {
-    r <- get_timespan(object, day.one, span, ...)
+    r <- .get_timespan(object, day.one, span, ...)
   }
 
   n <- nrow(r)
@@ -248,6 +244,71 @@ rainfall <- function(object, day.one = NULL, span = NULL,
 
   return(ind)
 }
+
+
+#' Evapotranspiration
+#' 
+#' Compute evapotranspiration using the Blaney-Criddle method
+#' 
+#' @inheritParams temperature
+#' @param lat the latitude (in Decimal degrees)
+#' @param Kc the crop factor for water requirement
+#' @param p optional, a numeric value (from 0 to 1) used if lat is not given,
+#' representing the mean daily percentage of annual daytime hours 
+#' for different latitudes
+#' @return The evapotranspiration in mm/day
+#' @examples
+#'  
+#' # Use temperature data from MODIS MYD11A1
+#' data("breadwheat_modis", package = "gosset")
+#' data("breadwheat", package = "gosset")
+#' 
+#' # the evapotranspiration in the first 100 days after planting
+#' ETo(breadwheat_modis, 
+#'     day.one = breadwheat$planting_date,
+#'     span = 100,
+#'     lat = breadwheat$lat)
+#' 
+#' @export
+ETo <- function(object, day.one = NULL, span = NULL, 
+                lat = NULL, Kc = 1, p = NULL){
+
+  # get p if lat is provided
+  if (!is.null(lat)) {
+    l <- round5(lat, 5)
+    m <- as.integer(format(day.one, "%m"))
+    p <- daylight[cbind(match(l , daylight[, 1]), match(m , names(daylight)))]
+  } 
+  
+  if (is.null(p)) {
+    p <- 0.27
+  }
+  
+  # get timespan for the day temperature
+  if (dim(object)[2] == 2) {
+    cat("fetching NASA POWER, this may take a little longer. \n")
+    day <- .get_timespan(object, day.one, span, pars = "T2M_MAX")
+  } else {
+    day <- .get_timespan(object[, , 1], day.one, span)
+  }
+
+  # get timespan for the night temperature
+  if (dim(object)[2] == 2) {
+    night <- .get_timespan(object, day.one, span, pars = "T2M_MIN")
+  } else {
+    night <- .get_timespan(object[, , 2], day.one, span)
+  }
+
+  # calculate Tmean
+  Tmean <- (rowMeans(day, na.rm = TRUE) +  rowMeans(night, na.rm = TRUE)) / 2
+
+  # evapotranspiration
+  eto <- p * (0.46 * Tmean + 8) * Kc
+
+  return(tibble::tibble(ETo = eto))
+
+}
+
 
 # compute Rx5day rainfall index
 .rx5day <- function(object)
@@ -318,10 +379,9 @@ rainfall <- function(object, day.one = NULL, span = NULL,
   return(f)
 }
 
-
 # Time series environmental data
 # 
-# Concatenate time series environmental data from a defined timespan
+# Concatenate time series environmental data
 # 
 # @param object a numeric vector of geographic coordinates (lonlat) or
 # a matrix with environmental data from other sources.
@@ -336,28 +396,26 @@ rainfall <- function(object, day.one = NULL, span = NULL,
 # @return a data frame of environmental data for the chosen period
 # @examples
 # 
-# # Concatenate environmental data from from CHIRPS (http://chg.geog.ucsb.edu/data/chirps/)
-# # each row in breadwheat corresponds to the same rows in breadwheat_rain
-# data("breadwheat_rain", package = "gosset")
+# # Concatenate environmental data from from CHIRPS
+# data("breadwheat_chirps", package = "gosset")
 # data("breadwheat", package = "gosset")
 # 
 # # Get the precipitation that occured in the first 30 days after the planting date
-# get_timespan(breadwheat_rain,
+# get_timespan(breadwheat_chirps,
 #              day.one = breadwheat$planting_date,
 #              span = 30)
 # 
 # ######################################
 # 
 # # Get data from NASA POWER
-#  
+# 
 # # select daily precipitation using the argument 'pars'
 # get_timespan(breadwheat[c("lon","lat")],
 #              day.one = breadwheat$planting_date,
-#              span = 30, 
+#              span = 30,
 #              pars = "PRECTOT")
-#' @export
-get_timespan <- function(object, day.one = NULL,
-                         span = NULL, days.before = NULL, ...)
+.get_timespan <- function(object, day.one = NULL,
+                          span = NULL, days.before = NULL, ...)
 {
   
   if (is.null(day.one)) {
@@ -575,78 +633,3 @@ get_timespan <- function(object, day.one = NULL,
 #   return(tibble::tibble(GDD=Y))
 # }
 
-# Evapotranspiration
-# 
-# Compute evapotranspiration using the Blaney-Criddle method
-# 
-# @param object a numeric vector of geographic coordinates (lonlat) or
-# an array with two dimensions containing the temperature data;
-# 1st dimension contains the day temperature and 2nd dimension the night temperature.
-# When lonlat is used, the function makes a call to
-# nasapower::get_power to fetch and combine enviromental information from NASA POWER API
-# \url{https://power.larc.nasa.gov/}.
-# @param start.date a vector of class 'Date' for the starting date to capture
-# the environmental information
-# @param ts  an integer or a vector for the duration of
-# the timespan to be captured.
-# @param lat the latitude (in Decimal degrees)
-# @param Kc the crop factor for watter requirement.
-# @param p otional, only used if lat is not given.
-# The mean daily percentage of annual daytime hours for different latitudes,
-# 0.27 by default (at the Equator).
-# @return The evapotranspiration in mm/day.
-# @examples
-# # Example 1
-# # Use temperature data extracted from MODIS MYD11A1
-# # (http://dx.doi.org/10.5067/MODIS/MYD11A2.006) for the wheat data
-# # each row in wheat corresponds to the same rows in temperature,
-# # first layer is the day temperature
-# # and second layer is the night temperature
-# data("temperature")
-# data("wheat")
-# 
-# # the evapotranspiration in the firts 30 days after sowing
-# ETo(temperature, start.date = wheat$planting_date, ts = 30,
-#     lat = wheat$lat)
-# 
-# @export
-# 
-# .ETo <- function(object, start.date = NULL, ts = NULL, lat = NULL,
-#                  Kc = 1, p = NULL){
-#   
-#   if (is.data.frame(start.date)) {
-#     start.date <- start.date[[1]]
-#   }
-#   
-#   # get p if lat is provided
-#   if (!is.null(lat)) {
-#     l <- round5(lat, 5)
-#     m <- as.integer(format(start.date, "%m"))
-#     p <- .daylight[cbind(match(l , .daylight[, 1]), match(m , names(.daylight)))]
-#   } else{
-#     p <- 0.27
-#   }
-#   
-#   # get timespan for the day temperature
-#   if (dim(object)[2] == 2) {
-#     day <- get_timespan(object, start.date, ts, pars = "T2M_MAX")
-#   } else {
-#     day <- get_timespan(object[, , 1], start.date, ts)
-#   }
-#   
-#   # get timespan for the night temperature
-#   if (dim(object)[2] == 2) {
-#     night <- get_timespan(object, start.date, ts, pars = "T2M_MIN")
-#   } else {
-#     night <- get_timespan(object[, , 2], start.date, ts)
-#   }
-#   
-#   # calculate Tmean
-#   Tmean <- (rowMeans(day, na.rm = TRUE) +  rowMeans(night, na.rm = TRUE)) / 2
-#   
-#   # evapotranspiration
-#   eto <- p * (0.46 * Tmean + 8) * Kc
-#   
-#   return(tibble::tibble(ETo = eto))
-#   
-# }
