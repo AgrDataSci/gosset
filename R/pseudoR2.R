@@ -42,7 +42,8 @@ pseudoR2 <- function(object, ...){
   UseMethod("pseudoR2")
   
 }
-
+# part of this code from 
+# https://github.com/atahk/pscl/blob/master/R/pseudoRSq.R
 #' @export
 pseudoR2.default <- function(object, newdata = NULL){
   
@@ -91,8 +92,10 @@ pseudoR2.default <- function(object, newdata = NULL){
   # Cragg and Uhler's pseudo R2
   cu_pr2 <- maxlike / maxlike_max
   
-  result <- dplyr::bind_cols(logLik = LL, logLikNull = LLNull,
-                             MaxLik = maxlike, CraggUhler = cu_pr2)
+  result <- dplyr::bind_cols(logLik = LL, 
+                             logLikNull = LLNull,
+                             MaxLik = maxlike, 
+                             CraggUhler = cu_pr2)
   
   return(result)
   
@@ -148,8 +151,10 @@ pseudoR2.pltree <- function(object, newdata = NULL){
   # Cragg and Uhler's pseudo R2
   cu_pr2 <- maxlike / maxlike_max
   
-  result <- dplyr::bind_cols(logLik = LL, logLikNull = LLNull,
-                             MaxLik = maxlike, CraggUhler = cu_pr2)
+  result <- dplyr::bind_cols(logLik = LL, 
+                             logLikNull = LLNull,
+                             MaxLik = maxlike, 
+                             CraggUhler = cu_pr2)
   
   return(result)
   
@@ -211,8 +216,10 @@ pseudoR2.bttree <- function(object, newdata = NULL){
   # Cragg and Uhler's pseudo R2
   cu_pr2 <- maxlike / maxlike_max
   
-  result <- dplyr::bind_cols(logLik = LL, logLikNull = LLNull,
-                             MaxLik = maxlike, CraggUhler = cu_pr2)
+  result <- dplyr::bind_cols(logLik = LL, 
+                             logLikNull = LLNull,
+                             MaxLik = maxlike, 
+                             CraggUhler = cu_pr2)
   
   return(result)
   
