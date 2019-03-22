@@ -21,7 +21,7 @@
 #' @export
 getProjectsCM <- function(key = NULL){
 
-  url <- "https://climmob.net/climmob3/api/readProjects?Apikey={}"
+  url <- "https://climmob.net/climmob3/api/readProjects?Apikey="
   
   data <- httr::GET(url = url, 
                     query = list(Apikey = key), 
@@ -37,5 +37,7 @@ getProjectsCM <- function(key = NULL){
   names(data) <- c("project_id","name","status","creation_date")
 
   data <- tibble::as_tibble(data)
+  
+  return(data)
 
 }
