@@ -61,7 +61,7 @@ getDataCM <- function(key = NULL, project = NULL, ...){
   
 }
 
-.extractFromjson <- function(data, fullnames = FALSE, pivot.wider = FALSE){
+.extractFromjson <- function(data, tidynames = TRUE, pivot.wider = FALSE){
   
   # currently the json file is structured with
   # data[[1]] 'specialfields', the assessment questions
@@ -177,11 +177,26 @@ getDataCM <- function(key = NULL, project = NULL, ...){
   }
   
   # check if ids from ODK names are required to be removed 
-  if (!fullnames){
+  if (tidynames){
+    
     trial$variable <- gsub("REG_", "", trial$variable)
+    
     for (i in seq_along(assess_id)) {
       trial$variable <- gsub(paste0(assess_id[i], "_"), "", trial$variable)
     }
+    
+    ovl <- which(grepl("perf_overallchar", trial$variable))
+    
+    trial[ovl, 2] <- sapply(trial[ovl, 2], function(x) {
+      x <- strsplit(x, split = "_")
+      x <- paste0("item_", LETTERS[as.integer(x[[1]][3])], "_vs_local")
+      x
+    })
+    
+    trial$variable <- gsub("char_", "", trial$variable)
+    
+    trial$variable <- gsub("stmt_", "pos", trial$variable)
+    
   }
 
   names(trial)[1] <- "id"
