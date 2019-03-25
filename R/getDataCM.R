@@ -43,14 +43,14 @@ getDataCM <- function(key = NULL, project = NULL, ...){
     cmdata <- dots[["data"]]
   }
   
+  
   # check if the given project has data
   # if not then return a warning message
   if (length(cmdata) < 7) {
+    pstring <- paste0("'",project,"'")
     return(
       cat(
-        "\nNo data found for project: '",
-        project,
-        "'\nPlease check https://climmob.net/climmob3/ for details. \n"
+        "\nProject", pstring, "was found but has no associated data. \n"
       )
     )
   }
@@ -139,6 +139,8 @@ getDataCM <- function(key = NULL, project = NULL, ...){
       
       lonlat[lonlat == "NA"] <- NA
       
+      lonlat <- lonlat[c(2,1)]
+      
       trial <- cbind(trial, lonlat)
       
     }
@@ -166,41 +168,20 @@ getDataCM <- function(key = NULL, project = NULL, ...){
                          value = "value", 
                          names(trial)[2:ncol(trial)])
   
-  trial$class <- "registration"
+  trial$moment <- "registration"
   
-  # add class, which moment the data was taken
+  # remove possible space in assess name
+  assess_name <- gsub(" ", "", assess_name)
+  
+  # add which moment the data was taken
   for (i in seq_along(assess_id)) {
-    trial$class <- ifelse(grepl(assess_id[i], trial$variable),
-                          assess_name[i],
-                          trial$class)
+    trial$moment <- ifelse(grepl(assess_id[i], trial$variable),
+                          tolower(assess_name[i]),
+                          trial$moment)
     
   }
   
-  # check if ids from ODK names are required to be removed 
-  if (tidynames){
-    
-    trial$variable <- gsub("REG_", "", trial$variable)
-    
-    for (i in seq_along(assess_id)) {
-      trial$variable <- gsub(paste0(assess_id[i], "_"), "", trial$variable)
-    }
-    
-    ovl <- which(grepl("perf_overallchar", trial$variable))
-    
-    trial[ovl, 2] <- sapply(trial[ovl, 2], function(x) {
-      x <- strsplit(x, split = "_")
-      x <- paste0("item_", LETTERS[as.integer(x[[1]][3])], "_vs_local")
-      x
-    })
-    
-    trial$variable <- gsub("char_", "", trial$variable)
-    
-    trial$variable <- gsub("stmt_", "pos", trial$variable)
-    
-  }
-
   names(trial)[1] <- "id"
-  
   
   # comparisons and package
   comps <- data[[6]]$comps
@@ -223,33 +204,71 @@ getDataCM <- function(key = NULL, project = NULL, ...){
                         value = "value", 
                         names(pack)[2:ncol(pack)])
   
-  pack$class <- "package"
+  pack$moment <- "package"
   
   names(pack)[1] <- "id"
   
-  output <- rbind(pack, trial)
+  trial <- rbind(pack, trial)
   
-  output <- tibble::as_tibble(output)
+  # check if ids from ODK names are required to be removed 
+  if (tidynames){
+    
+    trial$variable <- gsub("REG_", "", trial$variable)
+    
+    for (i in seq_along(assess_id)) {
+      trial$variable <- gsub(paste0(assess_id[i], "_"), "", trial$variable)
+    }
+    
+    ovl <- which(grepl("perf_overallchar", trial$variable))
+    
+    trial[ovl, 2] <- sapply(trial[ovl, 2], function(x) {
+      x <- strsplit(x, split = "_")
+      x <- paste0("item_", LETTERS[as.integer(x[[1]][3])], "_vs_local")
+      x
+    })
+    
+    trial$variable <- gsub("char_", "", trial$variable)
+    
+    trial$variable <- gsub("stmt_", "pos", trial$variable)
+    
+    trial$variable <- gsub("clm_", "survey_", trial$variable)
+    
+    trial$variable[trial$variable == "farmername"] <- "participant_name"
+    
+  }
+  
+  output <- tibble::as_tibble(trial)
   
   output <- output[c(1,4,2,3)]
   
-  # reorder rows 
-  output <- dplyr::arrange(output, id)
-  
-  # fix some variable names
-  output$variable[output$variable == "farmername"] <- "participant_name"
-  
+  # remove some ODK variables
   output <- output[!grepl("surveyid|originid|rowuuid|qst163", output[[3]]), ]
   
-  output$variable <- gsub("clm_", "survey_", output[[3]])
+  # reorder rows and make sure that packages and registration comes first
+  assess_name <- sort(tolower(assess_name))
+  output$moment <- factor(output$moment, levels = c("package",
+                                                    "registration",
+                                                    assess_name))
+  
+  output <- dplyr::arrange(output, moment)
+  
+  output <- dplyr::arrange(output, id)
   
   # if required, put the data in wide format
   if (pivot.wider) {
-    output$variable <- paste(output$class, output$variable, sep = "_")
+    output$variable <- paste(output$moment, output$variable, sep = "_")
+    
+    variable_levels <- unique(output$variable)
+    
+    id <- unique(output$id)
     
     output <- output[,-2]
     
     output <- tidyr::spread(output, variable, value)
+    
+    output <- dplyr::mutate(output, id = id)
+    
+    output <- output[c("id", variable_levels)]
   }
   
   return(output)
