@@ -34,11 +34,8 @@
 #' 
 #' # plot nodes
 #' plot_nodes(mod)
-#' @importFrom psychotools itempar
-#' @importFrom partykit nodeids
 #' @import qvcalc
 #' @export
-
 plot_nodes <- function(object, labels = NULL, ...){
 
   # Extract ids from terminal nodes

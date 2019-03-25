@@ -22,7 +22,8 @@
 #' \item{logLik}{Log-Likelihood}
 #' \item{MaxLik}{Maximum likelihood pseudo R-squared}
 #' \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
-#' Cross-validation estimates are predicted using the fitted models on the validation samples.
+#' \item{Agresti}{Agresti pseudo R-squared}
+#' Cross-validation estimates are computed using the fitted models on the validation samples.
 #' @seealso \code{\link[gnm]{gnm}}, \code{\link[PlackettLuce]{pltree}}, 
 #' \code{\link[psychotree]{bttree}}
 #' @examples
@@ -166,7 +167,7 @@ crossvalidation <- function(formula, data, k = NULL,
     pseudoR2(X, newdata = Y)[]
   }, X = mod, Y = test[]))
   
-  pR2 <- matrix(unlist(pR2), ncol = 4, nrow = k, 
+  pR2 <- matrix(unlist(pR2), ncol = 5, nrow = k, 
                 dimnames = list(1:k, dimnames(pR2)[[2]]))
   
   # no need to keep null logLik

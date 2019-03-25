@@ -10,6 +10,9 @@
 #' **## Not run:**
 #' 
 #' # This function will not work without your API key  
+#' library("gosset")
+#' library("jsonlite")
+#' library("httr")
 #' 
 #' my_key <- "my_api_key"
 #' my_project <- "my_climmob_project"
@@ -58,7 +61,7 @@ getDataCM <- function(key = NULL, project = NULL, ...){
   
 }
 
-.extractFromjson <- function(data, fullnames = FALSE){
+.extractFromjson <- function(data, fullnames = FALSE, pivot.wider = FALSE){
   
   # currently the json file is structured with
   # data[[1]] 'specialfields', the assessment questions
@@ -68,6 +71,17 @@ getDataCM <- function(key = NULL, project = NULL, ...){
   # data[[5]] 'assessments', the survey in trial data assessment
   # data[[6]] 'packages', the packages info
   # data[[7]] 'data', the trial data assessment
+  
+  # get the names of assessments questions
+  assess_q <- data[[1]]
+  
+  assess_q <- assess_q[,2]
+  
+  overallvslocal <- grepl("overallchar", assess_q)
+  
+  rank_q <- assess_q[!overallvslocal]
+  
+  overallvslocal <- assess_q[overallvslocal]
   
   # get variables names from assessments
   assess <- data[[5]]
@@ -130,15 +144,29 @@ getDataCM <- function(key = NULL, project = NULL, ...){
     }
   }
   
+  
+  # replace numbers in trial results by LETTERS
+  trial[, rank_q] <-
+    apply(trial[, rank_q], 2, function(x) {
+      LETTERS[as.integer(x)]
+    })
+  
+  # replace numbers in question about overall vs local 
+  if (length(overallvslocal) > 1) {
+    trial[, overallvslocal] <-
+      apply(trial[, overallvslocal], 2, function(x) {
+        ifelse(x == "1", "Better", 
+               ifelse(x == "2", "Worse", x))
+      })
+  }
+  
   # reshape it into a long format 
   trial <- tidyr::gather(trial, 
                          key = "variable",
                          value = "value", 
                          names(trial)[2:ncol(trial)])
   
-  trial$class <- "participant_registration"
-  
-  
+  trial$class <- "registration"
   
   # add class, which moment the data was taken
   for (i in seq_along(assess_id)) {
@@ -148,7 +176,7 @@ getDataCM <- function(key = NULL, project = NULL, ...){
     
   }
   
-  # if ids from ODK var names are removed 
+  # check if ids from ODK names are required to be removed 
   if (!fullnames){
     trial$variable <- gsub("REG_", "", trial$variable)
     for (i in seq_along(assess_id)) {
@@ -165,7 +193,7 @@ getDataCM <- function(key = NULL, project = NULL, ...){
   comps <- lapply(comps, function(x) {
     x <- unique(unlist(x$technologies))
     x <- x[-1]
-    names(x) <- paste0("item", 1:length(x))
+    names(x) <- paste0("item_", LETTERS[1:length(x)])
     x
   })
   
@@ -188,9 +216,26 @@ getDataCM <- function(key = NULL, project = NULL, ...){
   
   output <- tibble::as_tibble(output)
   
+  output <- output[c(1,4,2,3)]
+  
+  # reorder rows 
   output <- dplyr::arrange(output, id)
   
-  output <- output[c(1,4,2,3)]
+  # fix some variable names
+  output$variable[output$variable == "farmername"] <- "participant_name"
+  
+  output <- output[!grepl("surveyid|originid|rowuuid|qst163", output[[3]]), ]
+  
+  output$variable <- gsub("clm_", "survey_", output[[3]])
+  
+  # if required, put the data in wide format
+  if (pivot.wider) {
+    output$variable <- paste(output$class, output$variable, sep = "_")
+    
+    output <- output[,-2]
+    
+    output <- tidyr::spread(output, variable, value)
+  }
   
   return(output)
 }

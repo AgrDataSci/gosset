@@ -19,6 +19,9 @@ Fetch the list of ClimMob projects using your API key
 **## Not run:**
 
 # This function will not work without your API key
+library("gosset")
+library("jsonlite")
+library("httr")
 
 my_key <- "my_api_key"
 

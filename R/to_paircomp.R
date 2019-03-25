@@ -6,7 +6,6 @@
 #' The function do not take ties into account, then they are added as NA's
 #' @return an object of class "paircomp" which is a matrix of pairwise comparisons
 #' @seealso \code{\link[PlackettLuce]{rankings}} , \code{\link[psychotools]{paircomp}}
-#' @importFrom psychotools paircomp
 #' @examples 
 #' 
 #' library("psychotools")

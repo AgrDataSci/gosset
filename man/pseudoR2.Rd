@@ -17,6 +17,7 @@ A tidy object containing the pseudo R-squared coefficients:
 \item{logLikNull}{log-likelihood from the null model}
 \item{MaxLik}{maximum likelihood pseudo R-squared}
 \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
+\item{Agresti}{Agresti pseudo R-squared}
 }
 \description{
 Regression coefficient to evaluate goodness-of-fit in a given model

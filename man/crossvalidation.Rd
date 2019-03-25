@@ -35,7 +35,8 @@ The cross-validation goodness-of-fit estimates for the best model, which are:
 \item{logLik}{Log-Likelihood}
 \item{MaxLik}{Maximum likelihood pseudo R-squared}
 \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
-Cross-validation estimates are predicted using the fitted models on the validation samples.
+\item{Agresti}{Agresti pseudo R-squared}
+Cross-validation estimates are computed using the fitted models on the validation samples.
 }
 \description{
 Methods for measuring the performance of a predictive model on test data sets.

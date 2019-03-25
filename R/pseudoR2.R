@@ -9,6 +9,7 @@
 #' \item{logLikNull}{log-likelihood from the null model}
 #' \item{MaxLik}{maximum likelihood pseudo R-squared}
 #' \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
+#' \item{Agresti}{Agresti pseudo R-squared}
 #' @examples
 #' 
 #' data("airquality")
@@ -91,11 +92,14 @@ pseudoR2.default <- function(object, newdata = NULL){
   maxlike_max <- 1 - exp(LLNull * 2 / n)
   # Cragg and Uhler's pseudo R2
   cu_pr2 <- maxlike / maxlike_max
+  # Agresti pseudo R2
+  agr_pr2 <- 1 - (LL / LLNull)
   
   result <- dplyr::bind_cols(logLik = LL, 
                              logLikNull = LLNull,
                              MaxLik = maxlike, 
-                             CraggUhler = cu_pr2)
+                             CraggUhler = cu_pr2, 
+                             Agresti = agr_pr2)
   
   return(result)
   
@@ -150,11 +154,14 @@ pseudoR2.pltree <- function(object, newdata = NULL){
   maxlike_max <- 1 - exp(LLNull * 2 / n)
   # Cragg and Uhler's pseudo R2
   cu_pr2 <- maxlike / maxlike_max
+  # Agresti pseudo R2
+  agr_pr2 <- 1 - (LL / LLNull)
   
   result <- dplyr::bind_cols(logLik = LL, 
                              logLikNull = LLNull,
                              MaxLik = maxlike, 
-                             CraggUhler = cu_pr2)
+                             CraggUhler = cu_pr2, 
+                             Agresti = agr_pr2)
   
   return(result)
   
@@ -215,11 +222,14 @@ pseudoR2.bttree <- function(object, newdata = NULL){
   maxlike_max <- 1 - exp(LLNull * 2 / n)
   # Cragg and Uhler's pseudo R2
   cu_pr2 <- maxlike / maxlike_max
+  # Agresti pseudo R2
+  agr_pr2 <- 1 - (LL / LLNull)
   
   result <- dplyr::bind_cols(logLik = LL, 
                              logLikNull = LLNull,
                              MaxLik = maxlike, 
-                             CraggUhler = cu_pr2)
+                             CraggUhler = cu_pr2, 
+                             Agresti = agr_pr2)
   
   return(result)
   
