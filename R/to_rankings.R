@@ -6,8 +6,8 @@
 #' An id is required if long format.
 #' @param items a data frame or vector representing the item names
 #' @param rankings a data frame or vector representing the rankings
-#' @param type the type of data input. Options are 'tricot' and 'rank'
-#' @param ... further arguments passed to PlackettLuce::rankings
+#' @param type optional, the type of data input, 'rank' is set by default
+#' @param ... other arguments passed to methods
 #' @return a "rankings" object, which is a matrix of dense rankings 
 #' @seealso \code{\link[PlackettLuce]{rankings}}
 #' @examples
@@ -77,21 +77,21 @@
 #' 
 #' # comparison with local item is added as an additional rankings, then
 #' # each of the 3 varieties are compared separately with the local item,
-#' # it return a object four times larger (in rows) than the input data
+#' # it return a object 1 + n_c (number of comparisons) larger (in rows) than the input data
 #' # combining this with covariates from other dataset is easy since 
 #' # the function keeps an internal id
-#' to_rankings(beans,
+#' # argument 'add.rank' must be passed as a dataframe
+#' to_rankings(data = beans,
 #'             items = c(1:3),
 #'             rankings = c(4:5),
-#'             local = c(6:8),
 #'             type = "tricot",
+#'             add.rank = beans[c(6:8)],
 #'             grouped.rankings = TRUE)
 #' 
 #' @import tidyverse
-#' @importFrom reshape2 melt
 #' @export
-
-to_rankings <- function(data = NULL, items = NULL, rankings = NULL, type = NULL, ...) {
+to_rankings <- function(data = NULL, items = NULL,
+                        rankings = NULL, type = NULL, ...) {
   
   if (is.null(data)) {
     data <- cbind(items, rankings)
@@ -142,7 +142,10 @@ to_rankings <- function(data = NULL, items = NULL, rankings = NULL, type = NULL,
     # make sure that rankings are numeric
     data[rankings] <- lapply(data[rankings], as.numeric)
     
-    R <- .fromrank(id, items, r = data[rankings])
+    r <- .pivot_default(id, i = items, r = data[rankings])
+    
+    # make a PlackettLuce ranking
+    R <- PlackettLuce::as.rankings(r)
     
     if ("grouped.rankings" %in% names(dots)) {
       n <- nrow(R)
@@ -154,36 +157,62 @@ to_rankings <- function(data = NULL, items = NULL, rankings = NULL, type = NULL,
     
   if (type == "tricot") {
     
-    # check if comparison with a local item is required
-    if("local" %in% names(dots)){
-      local.rankings <- dots[["local"]]
-      local.rankings <- data[local.rankings]
-    } else {
-      local.rankings <- NULL
+    ncomp <- ncol(items)
+    
+    if (ncomp == 3) {
+      r <- .pivot_triadic(i = items, r = data[rankings])
     }
     
-    R <- .fromtricot(items, r = data[rankings], local.rankings)
+    if (ncomp >= 4) {
+      r <- .pivot_tetra(i = items, r = data[rankings])
+    }
     
+    # get names of all items
+    itemnames <- sort(unique(unlist(r)))
+    
+    # convert it into a PlackettLuce rank
+    R <- PlackettLuce::as.rankings(r, input = "ordering", labels = itemnames)
+    
+    # if pseudo-item were added, it is removed
+    if (any(grepl("pseudoitem", itemnames))) {
+      R <- R[, !grepl("pseudoitem", itemnames)]
+    }
+    
+    # check if comparison with a local item is required
+    local <- dots[["add.rank"]]
+    if (!is.null(local)) {
+      # add comparisons with local rankings
+      R <- .additional_rankings(i = items, R = R, add = local)
+    }
+ 
+    # this is used in ClimMob
+    if ("all.data" %in% names(dots)) {
+      R <- list(r, R)
+    } 
+    
+    # and into a grouped_rankings
     if ("grouped.rankings" %in% names(dots)) {
-      
-      if (!is.null(local.rankings)) {
-        R <- PlackettLuce::grouped_rankings(R, index = rep(seq_len(n), 4))
-      }else{
+      if (!is.null(local)) {
+        R <- PlackettLuce::grouped_rankings(R, index = rep(seq_len(n), (1 + ncomp) ))
+      }
+      if (is.null(local)) {
         R <- PlackettLuce::grouped_rankings(R, index = seq_len(n))
       }
     }
     
   }
-
+  
   return(R)
 
 }
 
 
-# organise rankings into a PlackettLuce ranking object
-.fromrank <- function(id, items, r){
-  # fix names in r data 
-  names(r) <- paste0("PosItem",1:ncol(r))
+# organise numbered rankings
+.pivot_default <- function(id, i, r){
+  
+  # fix names in r data
+  names(r) <- paste0("PosItem", 1:ncol(r))
+  
   # get the number of possible rankings
   nrank <- ncol(r)
   
@@ -192,9 +221,9 @@ to_rankings <- function(data = NULL, items = NULL, rankings = NULL, type = NULL,
     
     # if there is any NA in items
     # add a pseudo-item which will be removed later
-    if (sum(is.na(items)) > 0)  {
-      for (i in seq_len(nrank)) {
-        items[is.na(items[i]), i] <- paste0("pseudoitem",i)
+    if (sum(is.na(i)) > 0)  {
+      for (p in seq_len(nrank)) {
+        i[is.na(i[p]), p] <- paste0("pseudoitem", p)
       }
     }
     
@@ -204,7 +233,7 @@ to_rankings <- function(data = NULL, items = NULL, rankings = NULL, type = NULL,
     }
     
     # combine items with rankings
-    r <- cbind(id, items, r)
+    r <- cbind(id, i, r)
     
     # convert data into long format
     r <- cbind(reshape2::melt(r[c(paste0("Item", 1:nrank), "id")], 
@@ -218,14 +247,14 @@ to_rankings <- function(data = NULL, items = NULL, rankings = NULL, type = NULL,
     
     # if pseudo-item were added, it is removed now
     rmitem <- !r[["item"]] %in% paste0("pseudoitem", 1:nrank)
-    r <- r[rmitem,]
+    r <- r[rmitem, ]
     
   }
   
   # if is in long format then
   if (nrank == 1) {
     # combine vectors
-    r <- cbind(id, items, r)
+    r <- cbind(id, i, r)
     names(r) <- c("id","item","rank")
   }
   
@@ -233,7 +262,7 @@ to_rankings <- function(data = NULL, items = NULL, rankings = NULL, type = NULL,
   # then we group it by ids and convert it 
   # into integer ranks
   # the highest value is the best item
-  # negative values are allowed 
+  # negative values are permited
   # they are added in the last place
   if (any(is_decimal(r[["rank"]]))) {
     r <- num2rank(r)
@@ -252,115 +281,169 @@ to_rankings <- function(data = NULL, items = NULL, rankings = NULL, type = NULL,
   r <- r[ ,-match("id", names(r))]
   
   # dataframe into matrix
-  R <- as.matrix(r)
+  r <- as.matrix(r)
   
-  # make a PlackettLuce ranking
-  R <- PlackettLuce::as.rankings(R)
-  
-  return(R)
+  return(r)
   
 } 
 
-
-# organise tricot rankings into a PlackettLuce ranking object
-.fromtricot <- function(items, r, local.rankings){
+# this function deals with object in the triadic approach
+# in ClimMob when three items are tested by each participant
+# i, is a dataframe with items
+# r, is a dataframe with rankings 
+.pivot_triadic <- function(i, r) {
   
-  n <- nrow(items)
+  n <- nrow(i)
   
-  # fix names in r
-  # first column must always be the best and the 
-  # second the worst
+  # fix names in rankings
+  # first column must be the best item
+  # and the second the worst
   names(r) <- c("best", "worst")
-  
   # rankings can be LETTERS (A, B, C) or integer (1, 2, 3)
-  # convert it to factor and then to integer in case values are LETTERS
+  # convert it to factor and then to integer to prevent cases when they are LETTERS
   # keep as integer to allow us to impute the middle-ranked item
   # (a strict ranking is assumed here, so the sum of each row should always be 6)
-  r <- within(r,{ 
+  r <- within(r, {
     best = as.integer(as.factor(best))
     worst = as.integer(as.factor(worst))
     middle = 6 - best - worst
   })
   
   # if there is any NA in items and observations with only two items
-  # add a pseudo-item which will be removed later
-  if (sum(is.na(items)) > 0)  {
-    items[is.na(items)] <- "pseudoitem"
+  # add a stopper pseudo-item which will be removed later
+  if (sum(is.na(i)) > 0)  {
+    i[is.na(i)] <- "pseudoitem"
   }
   
   # combine items with rankings
-  r <- cbind(items, r)
+  r <- cbind(i, r)
   
-  # convert items in a matrix
-  items <- as.matrix(items)
+  # convert items into a matrix
+  i <- as.matrix(i)
   
-  # then convert the itemsIDs to the item names
-  r <- within(r,{
-    best = items[cbind(seq_len(n), best)]
-    worst = items[cbind(seq_len(n), worst)]
-    middle = items[cbind(seq_len(n), middle)]
+  # then replace rankings integers with their respective item names
+  r <- within(r, {
+    best = i[cbind(seq_len(n), best)]
+    worst = i[cbind(seq_len(n), worst)]
+    middle = i[cbind(seq_len(n), middle)]
   })
   
-  # get vector with item names
-  itemnames <- sort(unique(unlist(data.frame(items, stringsAsFactors = FALSE ))))
+  r <- r[, c("best", "middle", "worst")]
   
-  # convert the orderings of the items given to each observer to 
-  # sub-rankings of the full set of varieties:
-  R <- PlackettLuce::as.rankings(r[c("best","middle","worst")], 
-                                 input = "ordering", 
-                                 labels = itemnames)
+  return(r)
   
-  # if pseudo-item were added, it is removed
-  if ("pseudoitem" %in% itemnames) {
-    R <- R[,-match("pseudoitem", itemnames)]
-  }
+}
+
+# this function deals with object in the tetra approach
+# in ClimMob when four or more items are tested by each participant
+# i, is a dataframe with items
+# r, is a dataframe with rankings 
+.pivot_tetra <- function(i, r) {
   
-  # if comparison with local is required then use it
-  if (!is.null(local.rankings)) {
-    
-    # get local.rankings in a separeted object
-    lr <- local.rankings
-    names(lr) <- paste0("localVSitem", 1:3)
-    
-    #add lr to r
-    r <- cbind(r, lr)
-    
-    # treat the paired comparisons as additional rankings.
-    # first we can convert the orderings of the trial varieties to 
-    # sub-rankings of the full set of items including the local 
-    # as an additional item, so that we can add the paired comparisons 
-    # shortly the comparisons with the local item are stored 
-    # in another set of columns
-    
-    # add local to itemnames
-    itemnames <- c("Local", itemnames)
-    
-    paired <- list()
-    
-    for (id in 1:3) {
-      ordering <- matrix("Local", nrow = n, ncol = 2)
-      worse <- r[[paste0("localVSitem", id)]] == "Worse"
-      ## name of winner
-      ordering[!worse, 1] <- r[[paste0("Item", id)]][!worse]
-      ## name of loser
-      ordering[worse, 2] <- r[[paste0("Item", id)]][worse]
-      paired[[id]] <- ordering
+  ncomp <- ncol(i)
+  
+  # set names in items to mach with rankings
+  names(i) <- LETTERS[1:ncomp]
+  
+  # rankings can be LETTERS (A, B, C) or integer (1, 2, 3)
+  # convert it to factor and then to integer to prevent cases when they are LETTERS
+  r <- t(apply(r, 1, function(x) {
+    x <- as.factor(x)
+    x <- as.integer(x)
+    x
+  }))
+  
+  # if there is any NA in items and observations with only two items
+  # add a stopper pseudo-item which will be removed later
+  if (sum(is.na(i)) > 0)  {
+    for (p in seq_len(ncomp)) {
+      i[is.na(i[p]), p] <- paste0("pseudoitem",p)
     }
-    # again we convert these orderings to sub-rankings of the full set of items
-    # and combine them with the rankings of order three:
-    paired <- lapply(paired, function(x) {
-      x <- PlackettLuce::as.rankings(x, input = "ordering", labels = itemnames)
-    })
-    
-    R <- rbind(R, paired[[1]], paired[[2]], paired[[3]])
-    
   }
+  
+  # add 0 if there is any missing ranking in r
+  if (sum(is.na(r)) > 0)  {
+    r[is.na(r)] <- 0
+  }
+  
+  # combine items with rankings
+  r <- cbind(i, r)
+  
+  # items into a matrix
+  i <- as.matrix(i)
+  
+  # then replace rankings integers with their respective item names
+  r <- t(apply(r, 1, function(x) {
+    y <- as.integer(x[grepl("Pos", names(r))])
+    x <- x[y]
+  }))
+  
+  # set standar names in rankings data
+  dimnames(r)[[2]] <- paste0("Pos", 1:ncomp)
+  
+  return(r)
+  
+}
+
+# this function adds additional ranks, generally when a local item 
+# is tested against the tricot items
+# i, is a dataframe with items
+# R, is an object of class rankings from PlackettLuce
+# add, is a dataframe with additional rankings characters 
+## indication whether the tricot items performed "Better" or "Worse" 
+## compared to the local item
+.additional_rankings <- function(i, R, add){
+  
+  n <- nrow(add)
+  
+  ncomp <- ncol(i)
+  
+  # convert it into characters
+  add[1:ncol(add)] <- lapply(add[1:ncol(add)], as.character)
+  
+  add <- as.matrix(add)
+  
+  i <- as.matrix(i)
+  
+  # treat this comparisons as additional rankings.
+  # first we can convert the orderings of the items to 
+  # sub-rankings of the full set of items including the additional items 
+  # so that we can add the paired comparisons 
+  # the comparisons with the additional items are stored 
+  # in another set of columns
+  
+  # make sure that values in add are integers 
+  # where 1 means Better and 2 means Worse
+  add <- t(apply(add, 1, function(x) {
+    x <- as.factor(x)
+    x <- as.integer(x)
+    x
+  }))
+  
+  # add local to itemnames
+  itemnames <- dimnames(R)[[2]]
+  itemnames <- unique(c("Local", itemnames))
+  
+  paired <- list()
+  
+  for (id in 1:ncomp) {
+    ordering <- matrix("Local", nrow = n, ncol = 2)
+    worse <- add[, id] == 2
+    ## name of winner
+    ordering[!worse, 1] <- i[, id][!worse]
+    ## name of loser
+    ordering[worse, 2] <- i[, id][worse]
+    paired[[id]] <- ordering
+  }
+  
+  # we then convert these orderings to sub-rankings of the full set of items
+  # and combine them with the rankings
+  paired <- lapply(paired, function(x) {
+    x <- PlackettLuce::as.rankings(x, input = "ordering", labels = itemnames)
+  })
+  
+  R <- rbind(R, do.call("rbind", paired))  
   
   return(R)
   
 }
-
-
-
-
-

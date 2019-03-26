@@ -15,9 +15,9 @@ An id is required if long format.}
 
 \item{rankings}{a data frame or vector representing the rankings}
 
-\item{type}{the type of data input. Options are 'tricot' and 'rank'}
+\item{type}{optional, the type of data input, 'rank' is set by default}
 
-\item{...}{further arguments passed to PlackettLuce::rankings}
+\item{...}{other arguments passed to methods}
 }
 \value{
 a "rankings" object, which is a matrix of dense rankings
@@ -92,14 +92,15 @@ data("beans", package = "PlackettLuce")
 
 # comparison with local item is added as an additional rankings, then
 # each of the 3 varieties are compared separately with the local item,
-# it return a object four times larger (in rows) than the input data
+# it return a object 1 + n_c (number of comparisons) larger (in rows) than the input data
 # combining this with covariates from other dataset is easy since 
 # the function keeps an internal id
-to_rankings(beans,
+# argument 'add.rank' must be passed as a dataframe
+to_rankings(data = beans,
             items = c(1:3),
             rankings = c(4:5),
-            local = c(6:8),
             type = "tricot",
+            add.rank = beans[c(6:8)],
             grouped.rankings = TRUE)
 
 }
