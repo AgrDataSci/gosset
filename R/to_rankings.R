@@ -124,15 +124,24 @@ to_rankings <- function(data = NULL, items = NULL,
 
   # get the items in data
   items <- data[items]
-  names(items) <- paste0("Item", 1:ncol(items))
+  #names(items) <- paste0("Item", 1:ncol(items))
   
   # get extra arguments
   dots <- list(...)
+  # the ids (a vector) for objects of type "rank"
+  id <- dots[["rank"]] 
+  # the comparisons with an additional rankings, if required
+  add.rank <- dots[["add.rank"]] 
+  # if a grouped_rankings is required
+  grouped.rankings <- dots[["grouped.rankings"]]
+  grouped.rankings <- isTRUE(grouped.rankings)
+  # if all data is required
+  all.data <- dots[["all.data"]]
+  all.data <- isTRUE(all.data)
   
+  # deal with data of type "rank"
   if (type == "rank") {
     
-    # take or create an id
-    id <- dots[["id"]]
     if(is.null(id)){
       id <- tibble::tibble(id = rownames(data))
     }else{
@@ -144,62 +153,62 @@ to_rankings <- function(data = NULL, items = NULL,
     
     r <- .pivot_default(id, i = items, r = data[rankings])
     
-    # make a PlackettLuce ranking
+    # make a PlackettLuce rankings
     R <- PlackettLuce::as.rankings(r)
     
-    if ("grouped.rankings" %in% names(dots)) {
-      n <- nrow(R)
-      
-      R <- PlackettLuce::grouped_rankings(R, index = seq_len(n))
-    }
-    
-    } 
-    
+    # and a PlackettLuce grouped_rankings
+    n <- nrow(R)
+    G <- PlackettLuce::grouped_rankings(R, index = seq_len(n))
+  
+  }
+  
+  # deal with data of type "tricot"  
   if (type == "tricot") {
     
     ncomp <- ncol(items)
     
+    # with 3 comparisons
     if (ncomp == 3) {
       r <- .pivot_triadic(i = items, r = data[rankings])
     }
     
+    # with 4 or more comparisons
     if (ncomp >= 4) {
       r <- .pivot_tetra(i = items, r = data[rankings])
     }
     
     # get names of all items
-    itemnames <- sort(unique(unlist(r)))
+    itemnames <- sort(unique(as.vector(r)))
     
     # convert it into a PlackettLuce rank
     R <- PlackettLuce::as.rankings(r, input = "ordering", labels = itemnames)
     
     # if pseudo-item were added, it is removed
-    if (any(grepl("pseudoitem", itemnames))) {
-      R <- R[, !grepl("pseudoitem", itemnames)]
+    pseudo <- grepl("pseudoitem", itemnames) 
+    if (any(pseudo)) {
+      R <- R[, !pseudo]
     }
     
-    # check if comparison with a local item is required
-    local <- dots[["add.rank"]]
-    if (!is.null(local)) {
+    # check if additional rankings are required
+    if (!is.null(add.rank)) {
       # add comparisons with local rankings
-      R <- .additional_rankings(i = items, R = R, add = local)
+      R <- .additional_rankings(i = items, R = R, add = add.rank)
     }
- 
-    # this is used in ClimMob
-    if ("all.data" %in% names(dots)) {
-      R <- list(r, R)
-    } 
     
     # and into a grouped_rankings
-    if ("grouped.rankings" %in% names(dots)) {
-      if (!is.null(local)) {
-        R <- PlackettLuce::grouped_rankings(R, index = rep(seq_len(n), (1 + ncomp) ))
-      }
-      if (is.null(local)) {
-        R <- PlackettLuce::grouped_rankings(R, index = seq_len(n))
-      }
-    }
-    
+    gi <- rep(seq_len(n), (nrow(R) / n))
+    G <- PlackettLuce::grouped_rankings(R, index = gi)
+ 
+  }
+  
+  # check if all data is required
+  if (all.data) {
+    R <- list(PLranking = R, PLgrouped = G, myrank = r)
+  }
+  
+  # return a grouped_rankings if required
+  if (grouped.rankings) {
+    R <- G
   }
   
   return(R)
@@ -366,6 +375,9 @@ to_rankings <- function(data = NULL, items = NULL,
     r[is.na(r)] <- 0
   }
   
+  # set standar names in rankings data
+  dimnames(r)[[2]] <- paste0("Pos", 1:ncomp)
+  
   # combine items with rankings
   r <- cbind(i, r)
   
@@ -405,10 +417,11 @@ to_rankings <- function(data = NULL, items = NULL,
   
   i <- as.matrix(i)
   
-  # treat this comparisons as additional rankings.
-  # first we can convert the orderings of the items to 
+  # treat these comparisons as additional rankings.
+  # first we convert the orderings of the items to 
   # sub-rankings of the full set of items including the additional items 
-  # so that we can add the paired comparisons 
+  # so we add the paired comparisons
+  
   # the comparisons with the additional items are stored 
   # in another set of columns
   
@@ -426,14 +439,14 @@ to_rankings <- function(data = NULL, items = NULL,
   
   paired <- list()
   
-  for (id in 1:ncomp) {
+  for (p in seq_len(ncomp)) {
     ordering <- matrix("Local", nrow = n, ncol = 2)
-    worse <- add[, id] == 2
-    ## name of winner
-    ordering[!worse, 1] <- i[, id][!worse]
-    ## name of loser
-    ordering[worse, 2] <- i[, id][worse]
-    paired[[id]] <- ordering
+    worse <- add[, p] == 2
+    # name of winner
+    ordering[!worse, 1] <- i[, p][!worse]
+    # name of loser
+    ordering[worse, 2] <- i[, p][worse]
+    paired[[p]] <- ordering
   }
   
   # we then convert these orderings to sub-rankings of the full set of items
