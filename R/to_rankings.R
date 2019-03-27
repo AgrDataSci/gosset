@@ -124,7 +124,6 @@ to_rankings <- function(data = NULL, items = NULL,
 
   # get the items in data
   items <- data[items]
-  #names(items) <- paste0("Item", 1:ncol(items))
   
   # get extra arguments
   dots <- list(...)
@@ -244,15 +243,17 @@ to_rankings <- function(data = NULL, items = NULL,
     # combine items with rankings
     r <- cbind(id, i, r)
     
-    # convert data into long format
-    r <- cbind(reshape2::melt(r[c(paste0("Item", 1:nrank), "id")], 
-                              id.vars = "id"),
-               reshape2::melt(r[c(paste0("PosItem", 1:nrank), "id")], 
-                              id.vars = "id"))
+    # put rankings into a long format 
+    r <- tidyr::gather(r, 
+                       key = variable,
+                       value = value,
+                       names(r)[2:ncol(r)])
     
-    # select only id, items and rankings
-    r <- r[c(1,3,6)]
-    names(r) <- c("id","item","rank")
+    pr <- grepl("PosItem", r[[2]])
+    
+    r <- dplyr::bind_cols(id = r[pr,"id"],
+                          item = r[!pr,"value"],
+                          rank = as.numeric(r[pr,"value"]))
     
     # if pseudo-item were added, it is removed now
     rmitem <- !r[["item"]] %in% paste0("pseudoitem", 1:nrank)
@@ -308,14 +309,15 @@ to_rankings <- function(data = NULL, items = NULL,
   # first column must be the best item
   # and the second the worst
   names(r) <- c("best", "worst")
-  # rankings can be LETTERS (A, B, C) or integer (1, 2, 3)
-  # convert it to factor and then to integer to prevent cases when they are LETTERS
-  # keep as integer to allow us to impute the middle-ranked item
+  
+  # rankings should be LETTERS (A, B, C), 
+  # we must convert it into factor and then into integer 
+  # it allow us to impute the middle-ranked item
   # (a strict ranking is assumed here, so the sum of each row should always be 6)
   r <- within(r, {
-    best = as.integer(as.factor(best))
-    worst = as.integer(as.factor(worst))
-    middle = 6 - best - worst
+    best = as.integer(factor(best, levels = LETTERS[1:3]))
+    worst = as.integer(factor(worst, levels = LETTERS[1:3]))
+    middle = as.integer(6 - best - worst)
   })
   
   # if there is any NA in items and observations with only two items
@@ -339,6 +341,8 @@ to_rankings <- function(data = NULL, items = NULL,
   
   r <- r[, c("best", "middle", "worst")]
   
+  r <- as.matrix(r)
+  
   return(r)
   
 }
@@ -354,10 +358,10 @@ to_rankings <- function(data = NULL, items = NULL,
   # set names in items to mach with rankings
   names(i) <- LETTERS[1:ncomp]
   
-  # rankings can be LETTERS (A, B, C) or integer (1, 2, 3)
-  # convert it to factor and then to integer to prevent cases when they are LETTERS
+  # rankings should be LETTERS (A, B, C) 
+  # convert it to factor and then to integer 
   r <- t(apply(r, 1, function(x) {
-    x <- as.factor(x)
+    x <- factor(x, levels = LETTERS[1:ncomp])
     x <- as.integer(x)
     x
   }))
@@ -389,6 +393,8 @@ to_rankings <- function(data = NULL, items = NULL,
     y <- as.integer(x[grepl("Pos", names(r))])
     x <- x[y]
   }))
+  
+  r <- as.matrix(r)
   
   # set standar names in rankings data
   dimnames(r)[[2]] <- paste0("Pos", 1:ncomp)
