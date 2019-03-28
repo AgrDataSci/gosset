@@ -69,10 +69,10 @@ library("abind")
 
 data("breadwheat", package = "gosset")
 
-# data frame into a object of class 'rankings' from PlackettLuce
+# data frame into a object of class 'grouped_rankings' from PlackettLuce
 G <- to_rankings(breadwheat, 
-                 items = c(1:3), 
-                 rankings = c(7:8),
+                 items = c("variety_a","variety_b","variety_c"), 
+                 rankings = c("overall_best","overall_worst"),
                  type = "tricot",
                  grouped.rankings = TRUE)
 

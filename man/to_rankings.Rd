@@ -76,10 +76,10 @@ to_rankings(items = i,
 # breadwheat data, which is an object ordered in the 'tricot' format
 # each observer compares 3 varieties randomly distributed from a list of 16 
 data("breadwheat", package = "gosset")
-
+ 
 to_rankings(breadwheat,
             items = c("variety_a","variety_b","variety_c"),
-            rankings = c("best","worst"),
+            rankings = c("overall_best","overall_worst"),
             type = "tricot")
 
 ######################

@@ -15,7 +15,7 @@ License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 2.10)
-Imports: tidyverse, stats
-Suggests: abind, doParallel, foreach, gnm, ggplot2, httr, jsonlite, nasapower, partykit, PlackettLuce, psychotree, psychotools, qvcalc, raster
+Imports: tidyverse, stats, abind, doParallel, foreach, gnm, ggplot2, httr, jsonlite, nasapower, partykit, PlackettLuce, psychotree, psychotools, qvcalc, raster
+Suggests: 
 Language: en-GB
 RoxygenNote: 6.1.1
