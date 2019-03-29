@@ -1,4 +1,15 @@
-# check is number is a whole number (no decimals)
+#' Whole number
+#'
+#' Find integer values in a vector with decimals
+#'
+#' @param x vector with numbers of class "numeric" or "integer"
+#' @return a logical vector 
+#' @examples
+#' 
+#' x <- c(1, 2, 1.4, 3, 4.01)
+#' 
+#' is_wholenumber(x)
+#'
 #' @export
 is_wholenumber <- function(x){
   x <- as.vector(t(x))
@@ -6,7 +17,18 @@ is_wholenumber <- function(x){
   return(x)
 }
 
-# check is number is not whole number (has decimals)
+#' Decimal number
+#'
+#' Find a decimal number in a vector with integers
+#'
+#' @param x vector with numbers of class "numeric" or "integer"
+#' @return a logical vector 
+#' @examples
+#' 
+#' x <- c(1, 2, 1.4, 3, 4.01)
+#' 
+#' is_decimal(x)
+#' 
 #' @export
 is_decimal <- function(x){
   x <- as.vector(t(x))
@@ -14,11 +36,33 @@ is_decimal <- function(x){
   return(x)
 }
 
-# group and convert numeric values into integer ranks
+#' Numbers into rankings
+#'
+#' Group and convert numeric values into integer ranks
+#'
+#' @param x vector with numbers of class "numeric" or "integer"
+#' @return a vector with ranked values where highest values are placed first
+#' @examples
+#' 
+#' x <- c(1, 2, 1.4, 3, 4.01)
+#' 
+#' is_wholenumber(x)
+#' 
 # the highest positive value is the best scored item
 # negative values are included as least scored items
 #' @export
-num2rank <- function(object){
+num2rank <- function(object, ...){
+
+  # dots <- list(...)
+  #   
+  # id <- dots[["id"]]
+  # 
+  # if(is.null(id)) {
+  #   id <- rep(1, length(object))
+  # }
+  # 
+  # object$id <- id
+  
   object <- dplyr::mutate(dplyr::group_by(object , id),
                           rank = rank((rank -1)*-1, 
                                       na.last = "keep"))
@@ -27,7 +71,7 @@ num2rank <- function(object){
   
 }
 
-# Testing a grouped_rankings object
+# Test a grouped_rankings object
 #' @export
 is_grouped_rankings <- function(object) {
   
@@ -35,7 +79,7 @@ is_grouped_rankings <- function(object) {
   
 }
 
-# Testing a paircomp object
+# Test a paircomp object
 #' @export
 is_paircomp <- function(object) {
   

@@ -1,14 +1,14 @@
 Package: gosset
 Type: Package
 Title: Modelling metadata and experimental citizen science
-Version: 0.1.2
+Version: 0.1-0
 Authors@R: c(person("Kaue", "de Sousa", 
         email = "kaue.desousa@inn.no", role = c("aut", "cre"),
         comment = c(ORCID = "0000-0002-7571-7845")),
         person("Jacob", "van Etten", role = c("aut", "ctb"),
         comment = c(ORCID = "0000-0001-7554-2558")))
 Maintainer: Kaue de Sousa <kaue.desousa@inn.no>
-URL: https://github.com/kauedesousa/gosset
+URL: https://kauedesousa.github.io/gosset/
 BugReports: https://github.com/kauedesousa/gosset/issues
 Description: gosset provides an environment for modelling metadata and experimental citizen science data. 
 License: GPL-2
