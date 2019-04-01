@@ -7,7 +7,10 @@
 #'
 #' @param object an object of class modelparty
 #' @param ... further arguments passed to methods
-#' @return A dataframe with probabilities of winning for each item and its worst regret values
+#' @return A data frame with probabilities of winning
+#' \item{items}{the item names}
+#' \item{win_probs}{the probabilities of winning}
+#' \item{worst_regret}{the worst regret index}
 #' @examples
 #' 
 #' library("PlackettLuce")

@@ -7,14 +7,13 @@
 to_paircomp(object)
 }
 \arguments{
-\item{object}{a "rankings" or "grouped_rankings" object which is a matrix of dense rankings. 
-The function do not take ties into account, then they are added as NA's}
+\item{object}{an object of class "rankings" or "grouped_rankings" which is a matrix of dense rankings.}
 }
 \value{
 an object of class "paircomp" which is a matrix of pairwise comparisons
 }
 \description{
-Pairwise comparisons from a ranking object
+Pairwise comparisons from a ranking object. Ties are not taken into account, then they are added as NA's.
 }
 \examples{
 
@@ -41,13 +40,12 @@ data("breadwheat", package = "gosset")
 # convert the tricot rankings from breadwheat data
 # into a object of class 'rankings' from PlackettLuce
 R <- to_rankings(breadwheat,
-                 items = c(1:3),
-                 rankings = c(7:8),
+                 items = c("variety_a","variety_b","variety_c"),
+                 rankings = c("overall_best","overall_worst"),
                  type = "tricot")
 
 
 to_paircomp(R)
-
 }
 \seealso{
 \code{\link[PlackettLuce]{rankings}} , \code{\link[psychotools]{paircomp}}

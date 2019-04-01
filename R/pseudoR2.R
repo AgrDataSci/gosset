@@ -38,11 +38,13 @@
 #' pseudoR2(mod, newdata = test)
 #' 
 #' @export
+#' @export
 pseudoR2 <- function(object, ...){
   
   UseMethod("pseudoR2")
   
 }
+
 # part of this code from 
 # https://github.com/atahk/pscl/blob/master/R/pseudoRSq.R
 #' @export
@@ -71,7 +73,7 @@ pseudoR2.default <- function(object, newdata = NULL){
   if(!is.null(newdata)){
     # get the null logLik using the validation sample 
     LLNull <- deviance(mod_null, newdata = newdata) / -2
-
+    
     # get the logLik using the training model and
     # the validation set
     LL <- deviance(object, newdata = newdata) / -2
@@ -84,25 +86,9 @@ pseudoR2.default <- function(object, newdata = NULL){
     
   }
   
-  # minus two times the logLik
-  g2 <- ((LLNull - LL) * -2)
-  # maximum likelihood pseudo R2
-  maxlike <- 1 - exp(-g2 / n)
-  # maximised maxlike
-  maxlike_max <- 1 - exp(LLNull * 2 / n)
-  # Cragg and Uhler's pseudo R2
-  cu_pr2 <- maxlike / maxlike_max
-  # Agresti pseudo R2
-  agr_pr2 <- 1 - (LL / LLNull)
+  pR2 <- .getpseudoR2(LLNull, LL, n)
   
-  result <- dplyr::bind_cols(logLik = LL, 
-                             logLikNull = LLNull,
-                             MaxLik = maxlike, 
-                             CraggUhler = cu_pr2, 
-                             Agresti = agr_pr2)
-  
-  return(result)
-  
+  return(pR2)
 }
 
 #' @method pseudoR2 pltree
@@ -130,14 +116,14 @@ pseudoR2.pltree <- function(object, newdata = NULL){
   if (!is.null(newdata)) {
     # predicted logLik on newdata using object
     LL <- deviance(object, newdata = newdata) / -2
-  
+    
     # observed rankings on newdata
     R <- newdata[, Y]
     R <- R[1:length(R), , as.grouped_rankings = FALSE]
     
     # number of observations in newdata
     n <- nrow(newdata)
-  
+    
   }
   
   # zeros into NA
@@ -145,25 +131,10 @@ pseudoR2.pltree <- function(object, newdata = NULL){
   
   # logLik of a null model 
   LLNull <- .logLikNull(R)
-
-  # minus two times the logLik
-  g2 <- ((LLNull - LL) * -2)
-  # maximum likelihood pseudo R2
-  maxlike <- 1 - exp(-g2 / n)
-  # maximised maxlike
-  maxlike_max <- 1 - exp(LLNull * 2 / n)
-  # Cragg and Uhler's pseudo R2
-  cu_pr2 <- maxlike / maxlike_max
-  # Agresti pseudo R2
-  agr_pr2 <- 1 - (LL / LLNull)
   
-  result <- dplyr::bind_cols(logLik = LL, 
-                             logLikNull = LLNull,
-                             MaxLik = maxlike, 
-                             CraggUhler = cu_pr2, 
-                             Agresti = agr_pr2)
+  pR2 <- .getpseudoR2(LLNull, LL, n)
   
-  return(result)
+  return(pR2)
   
 }
 
@@ -214,6 +185,14 @@ pseudoR2.bttree <- function(object, newdata = NULL){
   # logLik of a null model 
   LLNull <- .logLikNull(R)
   
+  pR2 <- .getpseudoR2(LLNull, LL, n)
+  
+  return(pR2)
+  
+}
+
+# Compute pseudo R squared
+.getpseudoR2 <- function(LLNull, LL, n) {
   # minus two times the logLik
   g2 <- ((LLNull - LL) * -2)
   # maximum likelihood pseudo R2

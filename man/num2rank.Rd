@@ -4,21 +4,36 @@
 \alias{num2rank}
 \title{Numbers into rankings}
 \usage{
-num2rank(object, ...)
+num2rank(object, id = NULL, ...)
 }
 \arguments{
-\item{x}{vector with numbers of class "numeric" or "integer"}
+\item{object}{vector with numbers of class "numeric" or "integer"}
+
+\item{id}{optional, a vector with ids to group values}
 }
 \value{
-a vector with ranked values where highest values are placed first
+a data frame with ranked values where highest values are placed first
 }
 \description{
 Group and convert numeric values into integer ranks
 }
 \examples{
 
-x <- c(1, 2, 1.4, 3, 4.01)
+# passing a vector with decimals
+# the highest positive value is the best scored item
+# negative values are included as least scored items
 
-is_wholenumber(x)
+x <- c(1, 2, 1.4, 3, 4.01, -0.5)
+
+num2rank(x)
+
+# passing a vector with an id
+# ids are used to group values and 
+# return a rank for each group
+
+x <- c(1, 2, 1.4, 3, 4.01, -0.5)
+id <- c(rep(1, 3), rep(2, 3))
+
+num2rank(x, id = id)
 
 }

@@ -11,27 +11,27 @@
     \item{\code{variety_c}}{The name of variety C in the comparison.}
     \item{\code{district}}{The administrative region where the experiment was stablished.}
     \item{\code{village}}{The village within the administrative region where the experiment was stablished.}
-    \item{\code{participant}}{The participant name (ommited for protection and privacy).}
+    \item{\code{participant_name}}{The participant name (ommited for protection and privacy).}
     \item{\code{age}}{The participant age.}
     \item{\code{gender}}{The participant gender M = Male; F = Female.}
     \item{\code{planting_date}}{The date which the experiment started.}
     \item{\code{lon}}{The longitude in which the experiment was stablished.}
     \item{\code{lat}}{The latitude in which the experiment was stablished.}
-    \item{\code{germination_best}}{The variety ranked as best for Germination ("A",
+    \item{\code{earlygrowth_best}}{The variety ranked as best for early growth ("A",
     "B" or "C").}
-    \item{\code{germination_worst}}{The variety ranked as worst for Germination ("A",
+    \item{\code{earlygrowth_worst}}{The variety ranked as worst for early growth ("A",
     "B" or "C").}
-    \item{\code{grainquality_best}}{The variety ranked as best for Grain Quality ("A",
+    \item{\code{grainquality_best}}{The variety ranked as best for grain quality ("A",
     "B" or "C").}
-    \item{\code{grainquality_worst}}{The variety ranked as worst for Grain Quality ("A",
+    \item{\code{grainquality_worst}}{The variety ranked as worst for grain quality ("A",
     "B" or "C").}
-    \item{\code{yield_best}}{The variety ranked as best for Yield ("A",
+    \item{\code{yield_best}}{The variety ranked as best for yield ("A",
     "B" or "C").}
-    \item{\code{yield_worst}}{The variety ranked as worst for Yield ("A",
+    \item{\code{yield_worst}}{The variety ranked as worst for yield ("A",
     "B" or "C").}
-    \item{\code{overall_best}}{The variety ranked as best for Overall Perfomance ("A",
+    \item{\code{overall_best}}{The variety ranked as best for overall perfomance ("A",
     "B" or "C").}
-    \item{\code{overall_worst}}{The variety ranked as worst for Overall Perfomance ("A",
+    \item{\code{overall_worst}}{The variety ranked as worst for overall perfomance ("A",
     "B" or "C").}
 }}
 \source{

@@ -12,7 +12,10 @@ worst_regret(object, ...)
 \item{...}{further arguments passed to methods}
 }
 \value{
-A dataframe with probabilities of winning for each item and its worst regret values
+A data frame with probabilities of winning
+\item{items}{the item names}
+\item{win_probs}{the probabilities of winning}
+\item{worst_regret}{the worst regret index}
 }
 \description{
 Compute a worst regret index from recursive partitioning trees. Regret is an important

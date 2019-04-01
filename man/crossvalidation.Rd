@@ -71,8 +71,7 @@ folds <- as.integer(as.factor(beans$season))
 crossvalidation(G ~ maxTN, 
                 data = beans, 
                 k = k, 
-                folds = folds,
-                alpha = 0.01, 
+                folds = folds, 
                 minsize = 100)
 
 ########################################

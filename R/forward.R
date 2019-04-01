@@ -32,13 +32,13 @@
 #' 
 #' mod <- forward(Temp ~ .,
 #'                data = airquality,
-#'                k = 5,
+#'                k = 3,
 #'                select.by = "AIC",
 #'                family = poisson(link = "log"))
 #' 
+#' #######
 #' 
-#' ########################################
-#'  
+#' \dontrun{
 #' # breadwheat data
 #' library("PlackettLuce")
 #' library("doParallel")
@@ -46,7 +46,8 @@
 #' 
 #' data("breadwheat", package = "gosset")
 #' 
-#' # data frame into a object of class 'grouped_rankings' from PlackettLuce
+#' # get an object of class 'grouped_rankings' 
+#' # from PlackettLuce
 #' G <- to_rankings(breadwheat, 
 #'                  items = c("variety_a","variety_b","variety_c"), 
 #'                  rankings = c("overall_best","overall_worst"),
@@ -70,10 +71,12 @@
 #' mod <- forward(G ~ ., 
 #'                data = data, 
 #'                k = 3, 
-#'                ncores = 2,
+#'                ncores = 3,
 #'                minsize = 50, 
 #'                alpha = 0.01)
-#'                
+#'
+#' }
+#'             
 #' @import doParallel
 #' @import foreach
 #' @import abind
@@ -184,7 +187,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
       
       value_best <- modpar[index_best]
       
-      best <- is_lower(value_best, baseline)
+      best <- .is_lower(value_best, baseline)
     
     } else {
       
@@ -192,7 +195,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
       
       value_best <- modpar[index_best]
       
-      best <- is_greater(value_best, baseline)
+      best <- .is_greater(value_best, baseline)
     }
     
     # refresh baseline 
@@ -239,7 +242,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   }
   
   # Stop cluster connection
-  stopCluster(cluster)
+  parallel::stopCluster(cluster)
   
   # Run a cross-validation with this model and take the outputs
   fform <- as.formula(paste0(Y, " ~ ", paste(c(var_keep), collapse = " + ")))
@@ -279,6 +282,18 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   
   return(t(result))
   
+}
+
+
+# logical function for > greater 
+.is_greater <- function(x, y) {
+  x > y
+}
+
+
+# logical function for < lower
+.is_lower <- function(x, y) {
+  x < y
 }
 
 # # compute Akaike weights

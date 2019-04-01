@@ -10,12 +10,12 @@ Authors@R: c(person("Kaue", "de Sousa",
 Maintainer: Kaue de Sousa <kaue.desousa@inn.no>
 URL: https://kauedesousa.github.io/gosset/
 BugReports: https://github.com/kauedesousa/gosset/issues
-Description: gosset provides an environment for modelling metadata and experimental citizen science data. 
+Description: gosset provides an environment for modelling metadata and experimental citizen science data.
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 2.10)
-Imports: tidyverse, stats, abind, doParallel, foreach, gnm, ggplot2, httr, jsonlite, nasapower, partykit, PlackettLuce, psychotree, psychotools, qvcalc, raster
+Imports: abind, doParallel, foreach, gnm, ggplot2, httr, jsonlite, nasapower, partykit, PlackettLuce, psychotree, psychotools, qvcalc, raster, stats, tidyverse
 Suggests: 
 Language: en-GB
 RoxygenNote: 6.1.1

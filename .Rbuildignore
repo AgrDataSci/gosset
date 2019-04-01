@@ -1,2 +1,9 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^README.Rmd
+^docs$
+^pkgdown$
+^CONDUCT\.md$
+^README.Rmd
+^readme.bib
+

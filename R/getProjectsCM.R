@@ -4,9 +4,12 @@
 #'
 #' @param key a character for the ClimMob user API key
 #' @return A data frame with the ClimMob projects 
+#' \item{project_id}{the project unique id}
+#' \item{name}{the project name}
+#' \item{status}{the current status}
+#' \item{creation_date}{the project's creation date}
 #' @examples
-#' **## Not run:**
-#' 
+#' \dontrun{ 
 #' # This function will not work without your API key
 #' library("gosset")
 #' library("jsonlite")
@@ -15,8 +18,7 @@
 #' my_key <- "my_api_key"
 #' 
 #' getProjectsCM(key = my_key)
-#' 
-#' End(**Not run**)
+#' }
 #' 
 #' @import httr
 #' @import jsonlite

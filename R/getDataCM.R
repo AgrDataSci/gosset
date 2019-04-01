@@ -6,9 +6,12 @@
 #' @param ... additional arguments passed to methods
 #' @inheritParams getProjectsCM
 #' @return A data frame with the project data
+#' \item{id}{the participant's package id}
+#' \item{moment}{the data collection moment}
+#' \item{variable}{the variable name}
+#' \item{value}{the value for each variable}
 #' @examples
-#' **## Not run:**
-#' 
+#' \dontrun{
 #' # This function will not work without your API key  
 #' library("gosset")
 #' library("jsonlite")
@@ -18,13 +21,18 @@
 #' my_project <- "my_climmob_project"
 #' 
 #' data <- getDataCM(key = my_key, project = my_project)
-#' 
-#' End(**Not run**)
+#' }
 #' 
 #' @seealso \code{\link{getProjectsCM}}
 #' @export
 getDataCM <- function(key = NULL, project = NULL, ...){
-
+  
+  dots <- list(...)
+  
+  # if the raw .json is required
+  raw <- dots[["raw"]]
+  if (is.null(raw)) { raw <- FALSE }
+  
   if (!is.null(key)) {
     url <- "https://climmob.net/climmob3/api/readDataOfProject?Body={}&Apikey={}"
     
@@ -38,8 +46,8 @@ getDataCM <- function(key = NULL, project = NULL, ...){
     cmdata <- jsonlite::fromJSON(cmdata)
   }
   
+  # if a .json data is provided instead of a CliMob key
   if (is.null(key)) {
-    dots <- list(...)
     cmdata <- dots[["data"]]
   }
   
@@ -55,7 +63,9 @@ getDataCM <- function(key = NULL, project = NULL, ...){
     )
   }
   
-  cmdata <- .extractFromjson(cmdata, ...)
+  if (!raw) {
+    cmdata <- .extractFromjson(cmdata, ...)
+  }
   
   return(cmdata)
   
@@ -66,7 +76,7 @@ getDataCM <- function(key = NULL, project = NULL, ...){
   # currently the json file is structured with
   # data[[1]] 'specialfields', the assessment questions
   # data[[2]] 'project', the project details
-  # data[[3]] 'registry', the ODK fields, not important here
+  # data[[3]] 'registry', the questions during participant registration
   # data[[4]] 'importantfields', 
   # data[[5]] 'assessments', the survey in trial data assessment
   # data[[6]] 'packages', the packages info
@@ -83,6 +93,15 @@ getDataCM <- function(key = NULL, project = NULL, ...){
   
   overallvslocal <- assess_q[overallvslocal]
   
+  # get variables names from participant registration
+  regs <- data[[3]]
+  
+  regs_codes <- do.call("rbind", regs$lkptables$values)
+  
+  regs <- regs[[1]]
+  
+  regs_name <- paste0("REG_", regs[,1])
+  
   # get variables names from assessments
   assess <- data[[5]]
   assess <- do.call("rbind", assess$fields)
@@ -95,9 +114,9 @@ getDataCM <- function(key = NULL, project = NULL, ...){
   # trial data
   trial <- data[[7]]
   
-  looknames <- c("qst162", assess[,1])
+  looknames <- assess[,1]
   
-  looknames <- c(paste("REG", looknames, sep = "_"),
+  looknames <- c(regs_name,
                  paste(rep(assess_id, each = length(looknames)), 
                        looknames, sep = "_"))
   
@@ -162,7 +181,15 @@ getDataCM <- function(key = NULL, project = NULL, ...){
       })
   }
   
+  # replace any possible code in participant registration
+  # NOT SUPPORTED YET
+  
   # reshape it into a long format 
+  # put pack id as first colunm
+  packid <- grepl("REG_qst162", names(trial))
+  
+  trial <- cbind(trial[packid], trial[!packid])
+  
   trial <- tidyr::gather(trial, 
                          key = "variable",
                          value = "value", 
@@ -242,7 +269,7 @@ getDataCM <- function(key = NULL, project = NULL, ...){
   output <- output[c(1,4,2,3)]
   
   # remove some ODK variables
-  output <- output[!grepl("surveyid|originid|rowuuid|qst163", output[[3]]), ]
+  output <- output[!grepl("originid|rowuuid|qst163", output[[3]]), ]
   
   # reorder rows and make sure that packages and registration comes first
   assess_name <- sort(tolower(assess_name))
@@ -251,6 +278,8 @@ getDataCM <- function(key = NULL, project = NULL, ...){
                                                     assess_name))
   
   output <- dplyr::arrange(output, moment)
+  
+  output$id <- as.integer(output$id)
   
   output <- dplyr::arrange(output, id)
   

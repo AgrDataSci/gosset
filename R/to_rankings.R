@@ -128,7 +128,7 @@ to_rankings <- function(data = NULL, items = NULL,
   # get extra arguments
   dots <- list(...)
   # the ids (a vector) for objects of type "rank"
-  id <- dots[["rank"]] 
+  id <- dots[["id"]] 
   # the comparisons with an additional rankings, if required
   add.rank <- dots[["add.rank"]] 
   # if a grouped_rankings is required
@@ -168,6 +168,12 @@ to_rankings <- function(data = NULL, items = NULL,
     
     # with 3 comparisons
     if (ncomp == 3) {
+      rrank <- data[rankings]
+      
+      if (any(rrank[,1] == rrank[,2])) {
+        stop("to_rankings cannot handle ties in objects of type 'tricot'\n")
+      }
+      
       r <- .pivot_triadic(i = items, r = data[rankings])
     }
     
@@ -275,7 +281,11 @@ to_rankings <- function(data = NULL, items = NULL,
   # negative values are permited
   # they are added in the last place
   if (any(is_decimal(r[["rank"]]))) {
-    r <- num2rank(r)
+
+    r <- num2rank(r$rank, id = r$id, bindwith = r$item)
+    
+    names(r)[3] <- "item"
+    
   }
   
   # reshape data into wide format

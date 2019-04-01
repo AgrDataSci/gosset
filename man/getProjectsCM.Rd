@@ -10,14 +10,17 @@ getProjectsCM(key = NULL)
 \item{key}{a character for the ClimMob user API key}
 }
 \value{
-A data frame with the ClimMob projects
+A data frame with the ClimMob projects 
+\item{project_id}{the project unique id}
+\item{name}{the project name}
+\item{status}{the current status}
+\item{creation_date}{the project's creation date}
 }
 \description{
 Fetch the list of ClimMob projects using your API key
 }
 \examples{
-**## Not run:**
-
+\dontrun{ 
 # This function will not work without your API key
 library("gosset")
 library("jsonlite")
@@ -26,8 +29,7 @@ library("httr")
 my_key <- "my_api_key"
 
 getProjectsCM(key = my_key)
-
-End(**Not run**)
+}
 
 }
 \seealso{

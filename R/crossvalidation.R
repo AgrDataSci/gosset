@@ -56,8 +56,7 @@
 #' crossvalidation(G ~ maxTN, 
 #'                 data = beans, 
 #'                 k = k, 
-#'                 folds = folds,
-#'                 alpha = 0.01, 
+#'                 folds = folds, 
 #'                 minsize = 100)
 #' 
 #' ########################################
@@ -127,9 +126,9 @@ crossvalidation <- function(formula, data, k = NULL,
   # class of the response variable
   model <- "gnm"
   
-  if (is_grouped_rankings(Y)) {model <- "pltree"}
+  if (.is_grouped_rankings(Y)) {model <- "pltree"}
   
-  if (is_paircomp(Y)) {model <- "bttree"}
+  if (.is_paircomp(Y)) {model <- "bttree"}
   
   # split data into lists with training and test set
   train <- list()
@@ -178,7 +177,7 @@ crossvalidation <- function(formula, data, k = NULL,
   # estimators are then averaged weighted by 
   # number of predicted cases using selected mean method
   means <- apply(estimators, 2, function(x) {
-      mean_crossvalidation(x, folds, method = mean.method)
+      .mean_crossvalidation(x, folds, method = mean.method)
     })
   
   # means and estimates as tibble
@@ -215,8 +214,7 @@ print.crossvalidation <- function(x, ...) {
 }
 
 # Compute weighted means in cross-validation
-#' @export
-mean_crossvalidation <- function(object, folds = NULL, method = NULL){
+.mean_crossvalidation <- function(object, folds = NULL, method = NULL){
   
   if (is.null(method)) {method <- "foldsize"}
   
@@ -268,9 +266,26 @@ mean_crossvalidation <- function(object, folds = NULL, method = NULL){
 }
 
 
+# Test a grouped_rankings object
+.is_grouped_rankings <- function(object) {
+  
+  return(class(object) == "grouped_rankings")
+  
+}
 
+# Test a rankings object
+.is_rankings <- function(object) {
+  
+  return(class(object) == "rankings")
+  
+}
 
-
+# Test a paircomp object
+.is_paircomp <- function(object) {
+  
+  return(class(object) == "paircomp")
+  
+}
 
 
 

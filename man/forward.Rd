@@ -55,13 +55,13 @@ data("airquality")
 
 mod <- forward(Temp ~ .,
                data = airquality,
-               k = 5,
+               k = 3,
                select.by = "AIC",
                family = poisson(link = "log"))
 
+#######
 
-########################################
- 
+\dontrun{
 # breadwheat data
 library("PlackettLuce")
 library("doParallel")
@@ -69,7 +69,8 @@ library("abind")
 
 data("breadwheat", package = "gosset")
 
-# data frame into a object of class 'grouped_rankings' from PlackettLuce
+# get an object of class 'grouped_rankings' 
+# from PlackettLuce
 G <- to_rankings(breadwheat, 
                  items = c("variety_a","variety_b","variety_c"), 
                  rankings = c("overall_best","overall_worst"),
@@ -93,10 +94,12 @@ data <- cbind(G, covars, breadwheat[c("lon","lat")])
 mod <- forward(G ~ ., 
                data = data, 
                k = 3, 
-               ncores = 2,
+               ncores = 3,
                minsize = 50, 
                alpha = 0.01)
-               
+
+}
+            
 }
 \seealso{
 \code{\link{crossvalidation}}

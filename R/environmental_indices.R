@@ -44,8 +44,6 @@
 #'             day.one = breadwheat["planting_date"], 
 #'             span = 40)
 #' 
-#' @import nasapower
-#' @import raster
 #' @export
 temperature <- function(object, day.one = NULL, span = NULL,
                         index = NULL, ...)
@@ -275,7 +273,7 @@ ETo <- function(object, day.one = NULL, span = NULL,
 
   # get p if lat is provided
   if (!is.null(lat)) {
-    l <- round5(lat, 5)
+    l <- .round5(lat, 5)
     m <- as.integer(format(day.one, "%m"))
     p <- daylight[cbind(match(l , daylight[, 1]), match(m , names(daylight)))]
   } 
@@ -414,6 +412,8 @@ ETo <- function(object, day.one = NULL, span = NULL,
 #              day.one = breadwheat$planting_date,
 #              span = 30,
 #              pars = "PRECTOT")
+#' @import nasapower
+#' @importFrom raster rasterFromXYZ extract stack
 .get_timespan <- function(object, day.one = NULL,
                           span = NULL, days.before = NULL, ...)
 {
@@ -550,6 +550,14 @@ ETo <- function(object, day.one = NULL, span = NULL,
   return(Y)
   
 }
+
+# Round to the nearest base value
+.round5 <- function(x, base.value) {
+  
+  base.value * round( x / base.value )
+  
+}
+
 
 # Growing Degree Days
 #

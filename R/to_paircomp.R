@@ -1,9 +1,8 @@
 #' Pairwise comparison rankings
 #'
-#' Pairwise comparisons from a ranking object
+#' Pairwise comparisons from a ranking object. Ties are not taken into account, then they are added as NA's.
 #'
-#' @param object a "rankings" or "grouped_rankings" object which is a matrix of dense rankings. 
-#' The function do not take ties into account, then they are added as NA's
+#' @param object an object of class "rankings" or "grouped_rankings" which is a matrix of dense rankings. 
 #' @return an object of class "paircomp" which is a matrix of pairwise comparisons
 #' @seealso \code{\link[PlackettLuce]{rankings}} , \code{\link[psychotools]{paircomp}}
 #' @examples 
@@ -31,13 +30,12 @@
 #' # convert the tricot rankings from breadwheat data
 #' # into a object of class 'rankings' from PlackettLuce
 #' R <- to_rankings(breadwheat,
-#'                  items = c(1:3),
-#'                  rankings = c(7:8),
+#'                  items = c("variety_a","variety_b","variety_c"),
+#'                  rankings = c("overall_best","overall_worst"),
 #'                  type = "tricot")
 #' 
 #' 
 #' to_paircomp(R)
-#' 
 #' @export
 to_paircomp <- function(object){
   
@@ -49,10 +47,10 @@ to_paircomp <- function(object){
   
   # check wich kind of input is given and convert it into a 
   # matrix with rankings 
-  if (class(R) == "rankings") {
+  if (.is_rankings(R)) {
     R <- R[1:length(R), , as.rankings = FALSE]
   }
-  if (class(R) == "grouped_rankings") {
+  if (.is_grouped_rankings(R)) {
     R <- R[1:length(R), , as.grouped_rankings = FALSE]
   }
   
@@ -81,7 +79,7 @@ to_paircomp <- function(object){
     # if i is lower than j, add 1, this means that i beats j
     # if i is higher than j, add -1, this means that j beats i
     # if none of these options, add NA
-    p <- ifelse(p[, 1] < p[, 2], 1, ifelse(p[, 1] > p[, 2] ,-1, NA))
+    p <- ifelse(p[, 1] < p[, 2], 1, ifelse(p[, 1] > p[, 2] , -1, NA))
     
   })
   
@@ -94,7 +92,7 @@ to_paircomp <- function(object){
 # make pairwise comparisons of items
 .combn2 <- function(x, m)
 {
-  cc <- combn(rev(x), m)
+  cc <- utils::combn(rev(x), m)
   cc <- cc[c(2,1), ncol(cc):1]
   return(cc)    
 }

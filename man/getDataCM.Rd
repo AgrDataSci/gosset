@@ -15,13 +15,16 @@ getDataCM(key = NULL, project = NULL, ...)
 }
 \value{
 A data frame with the project data
+\item{id}{the participant's package id}
+\item{moment}{the data collection moment}
+\item{variable}{the variable name}
+\item{value}{the value for each variable}
 }
 \description{
 Fetch the trial data from a ClimMob project using your API key
 }
 \examples{
-**## Not run:**
-
+\dontrun{
 # This function will not work without your API key  
 library("gosset")
 library("jsonlite")
@@ -31,8 +34,7 @@ my_key <- "my_api_key"
 my_project <- "my_climmob_project"
 
 data <- getDataCM(key = my_key, project = my_project)
-
-End(**Not run**)
+}
 
 }
 \seealso{

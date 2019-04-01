@@ -40,70 +40,56 @@ is_decimal <- function(x){
 #'
 #' Group and convert numeric values into integer ranks
 #'
-#' @param x vector with numbers of class "numeric" or "integer"
-#' @return a vector with ranked values where highest values are placed first
+#' @param object vector with numbers of class "numeric" or "integer"
+#' @param id optional, a vector with ids to group values
+#' @return a data frame with ranked values where highest values are placed first
 #' @examples
 #' 
-#' x <- c(1, 2, 1.4, 3, 4.01)
+#' # passing a vector with decimals
+#' # the highest positive value is the best scored item
+#' # negative values are included as least scored items
 #' 
-#' is_wholenumber(x)
+#' x <- c(1, 2, 1.4, 3, 4.01, -0.5)
 #' 
-# the highest positive value is the best scored item
-# negative values are included as least scored items
+#' num2rank(x)
+#' 
+#' # passing a vector with an id
+#' # ids are used to group values and 
+#' # return a rank for each group
+#' 
+#' x <- c(1, 2, 1.4, 3, 4.01, -0.5)
+#' id <- c(rep(1, 3), rep(2, 3))
+#' 
+#' num2rank(x, id = id)
+#' 
 #' @export
-num2rank <- function(object, ...){
+num2rank <- function(object, id = NULL, ...){
+  
+  dots <- list(...)
+  
+  bindwith <- dots[["bindwith"]]
+  
+  isdf <- "data.frame" %in% class(object)
+  
+  if (!isdf) {
+    object <- as.data.frame(object)
+    names(object) <- "rank"
+  }
+  
+  if (!is.null(bindwith)) {
+    object <- cbind(object, bindwith)
+  }
+  
+  if(is.null(id)) {
+    id <- rep(1, nrow(object))
+  }
 
-  # dots <- list(...)
-  #   
-  # id <- dots[["id"]]
-  # 
-  # if(is.null(id)) {
-  #   id <- rep(1, length(object))
-  # }
-  # 
-  # object$id <- id
+  object <- cbind(id = id, object)
   
   object <- dplyr::mutate(dplyr::group_by(object , id),
-                          rank = rank((rank -1)*-1, 
+                          rank = rank((rank - 1) * -1,
                                       na.last = "keep"))
   
   return(object)
-  
-}
-
-# Test a grouped_rankings object
-#' @export
-is_grouped_rankings <- function(object) {
-  
-  return(class(object) == "grouped_rankings")
-  
-}
-
-# Test a paircomp object
-#' @export
-is_paircomp <- function(object) {
-  
-  return(class(object) == "paircomp")
-  
-}
-
-# logical function for > greater 
-#' @export
-is_greater <- function(x, y) {
-  x > y
-}
-
-
-# logical function for < lower
-#' @export
-is_lower <- function(x, y) {
-  x < y
-}
-
-# round to the nearest 5
-#' @export
-round5 <- function(x, base.value) {
-  
-  base.value * round( x / base.value )
   
 }
