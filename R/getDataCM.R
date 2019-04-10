@@ -95,9 +95,7 @@ getDataCM <- function(key = NULL, project = NULL, ...){
   
   # get variables names from participant registration
   regs <- data[[3]]
-  
-  regs_codes <- do.call("rbind", regs$lkptables$values)
-  
+  ##regs_codes <- do.call("rbind", regs$lkptables$values)
   regs <- regs[[1]]
   
   regs_name <- paste0("REG_", regs[,1])

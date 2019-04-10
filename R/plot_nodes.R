@@ -37,10 +37,10 @@
 #' @import qvcalc
 #' @export
 plot_nodes <- function(object, labels = NULL, ...){
-
+  
   # Extract ids from terminal nodes
   node_id <- partykit::nodeids(object, terminal = TRUE)
-
+  
   dots <- list(...)
   
   if ("font.size" %in% names(dots)) {
@@ -64,10 +64,10 @@ plot_nodes <- function(object, labels = NULL, ...){
   
   # get item parameters from model
   coeffs <- lapply(nodes, psychotools::itempar)
-
+  
   # get estimates from item parameters using qvcalc
   coeffs <- lapply(coeffs, qvcalc::qvcalc)
-
+  
   # extract dataframes with estimates
   coeffs <- lapply(coeffs, function(X){
     df <- X[]$qvframe }
@@ -89,7 +89,7 @@ plot_nodes <- function(object, labels = NULL, ...){
     X$bmin <- ifelse(X$bmin < 0, 0.001, X$bmin)
     return(X)
   })
-
+  
   # Add node information and number of observations
   for (i in seq_along(node_id)) {
     coeffs[[i]] <- within(coeffs[[i]], {
@@ -97,11 +97,11 @@ plot_nodes <- function(object, labels = NULL, ...){
       node <- node_id[i]}
     )
   }
-
+  
   # Get max and min values for the x axis in the plot
   xmax <- round(max(do.call(rbind, coeffs)$bmax, na.rm = TRUE) + 0.01, digits = 4)
   xmin <- round(min(do.call(rbind, coeffs)$bmin, na.rm = TRUE), digits = 4)
-
+  
   # Check font size for axis X and Y, and plot title
   if (is.null(font.size)) {
     s.title <- 13
@@ -110,52 +110,52 @@ plot_nodes <- function(object, labels = NULL, ...){
     s.title <- font.size[1]
     s.axis <- font.size[2]
   }
-
+  
   # Check labels for axis Y
   if (is.null(labels)) {
     labels <- coeffs[[1]]$items
   }
-
+  
   # Check dimensions of labels
   if (length(labels) != length(items)) {
     stop("wrong dimensions in labels \n")
   }
-
-
+  
+  
   # Plot winning probabilities
   plots <- lapply(coeffs, function(X){
-
-    p <- ggplot2::ggplot(X, aes(x = X$estimate, y = labels)) +
+    
+    p <- ggplot2::ggplot(X, ggplot2::aes(x = X$estimate, y = labels)) +
       ggplot2::geom_vline(xintercept = 1/length(X$items), 
-                 colour = "#E5E7E9", size = 0.8) +
+                          colour = "#E5E7E9", size = 0.8) +
       ggplot2::geom_point(pch = 21, size = 2, 
-                 fill = "black",colour = "black") +
-      ggplot2::geom_errorbarh(aes(xmin = X$bmin,
-                         xmax = X$bmax),
-                     colour="black", height = 0.2) +
+                          fill = "black",colour = "black") +
+      ggplot2::geom_errorbarh(ggplot2::aes(xmin = X$bmin,
+                                  xmax = X$bmax),
+                              colour="black", height = 0.2) +
       ggplot2::scale_x_continuous(limits = c(0, xmax)) +
       ggplot2::theme_bw() +
       ggplot2::labs(x = NULL, y = NULL ,
-           title = paste0("Node ", X$node[1], " (n= ", X$nobs[1], ")")) +
+                    title = paste0("Node ", X$node[1], " (n= ", X$nobs[1], ")")) +
       ggplot2::theme(plot.title = ggplot2::element_text(size = s.title),
-            axis.text.x = ggplot2::element_text(size = s.axis, angle = 0,
-                                       hjust = 0.5, vjust = 1, face = "plain",
-                                       colour = "black"),
-            axis.text.y = ggplot2::element_text(size = s.axis, angle = 0,
-                                       hjust = 1, vjust = 0.5, face = "plain",
-                                       colour = "black"),
-            plot.background = ggplot2::element_blank(),
-            panel.grid.major = ggplot2::element_blank(),
-            panel.grid.minor = ggplot2::element_blank(),
-            panel.border = ggplot2::element_rect(colour = "black", size = 1),
-            axis.ticks = ggplot2::element_line(colour = "black", size = 0.5),
-            axis.ticks.length=unit(0.3, "cm"))
-
+                     axis.text.x = ggplot2::element_text(size = s.axis, angle = 0,
+                                                         hjust = 0.5, vjust = 1, face = "plain",
+                                                         colour = "black"),
+                     axis.text.y = ggplot2::element_text(size = s.axis, angle = 0,
+                                                         hjust = 1, vjust = 0.5, face = "plain",
+                                                         colour = "black"),
+                     plot.background = ggplot2::element_blank(),
+                     panel.grid.major = ggplot2::element_blank(),
+                     panel.grid.minor = ggplot2::element_blank(),
+                     panel.border = ggplot2::element_rect(colour = "black", size = 1),
+                     axis.ticks = ggplot2::element_line(colour = "black", size = 0.5),
+                     axis.ticks.length = grid::unit(0.3, "cm"))
+    
     p
-
+    
   })
-
+  
   names(plots) <- paste0("node",node_id)
-
+  
   return(plots)
 }
