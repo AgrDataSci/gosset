@@ -38,7 +38,6 @@
 #' pseudoR2(mod, newdata = test)
 #' 
 #' @export
-#' @export
 pseudoR2 <- function(object, ...){
   
   UseMethod("pseudoR2")
