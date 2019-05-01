@@ -20,15 +20,14 @@
 #' df <- cbind(id = rep(1:10, each = 5),
 #'             items = rep(LETTERS[1:5], times = 10),
 #'             rankings = runif(50, 1, 3))
-#' df
-#' 
-#' # return a 'rankings' object
+#'             
+#' # return an object of class 'rankings'
 #' to_rankings(df,
 #'             items = 2,
 #'             rankings = 3,
 #'             id = 1)
 #' 
-#' # return a 'grouped_rankings' object
+#' # return an object of class 'grouped_rankings'
 #' to_rankings(df,
 #'             items = 2,
 #'             rankings = 3,
@@ -36,6 +35,7 @@
 #'             grouped.rankings = TRUE)
 #' 
 #' ##################################
+#' \dontrun{
 #' 
 #' # Rankings with 5 items randomly assigned
 #' 
@@ -50,11 +50,10 @@
 #'   r[s,] <- sample(1:5)
 #' }
 #' 
-#' cbind(i, r) 
-#' 
-#' 
 #' to_rankings(items = i,
 #'             rankings = r)
+#'
+#'}
 #' 
 #' ###################################
 #' 
@@ -88,7 +87,9 @@
 #'             add.rank = beans[c(6:8)],
 #'             grouped.rankings = TRUE)
 #' 
-#' @import tidyverse
+#' @import dplyr
+#' @import tibble
+#' @import tidyr
 #' @export
 to_rankings <- function(data = NULL, items = NULL,
                         rankings = NULL, type = NULL, ...) {

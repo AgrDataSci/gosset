@@ -24,7 +24,7 @@ possible outcome) is a criterion that takes a conservative approach to risk anal
 diversification strategies.
 }
 \examples{
-
+ 
 library("PlackettLuce")
 
 data("breadwheat", package = "gosset")
@@ -32,30 +32,18 @@ data("breadwheat", package = "gosset")
 # convert the tricot rankings from breadwheat data
 # into a object of class 'grouped_rankings'
 
-names(breadwheat)
-
-G <- to_rankings(breadwheat, 
-                 items = c("variety_a","variety_b","variety_c"), 
+G <- to_rankings(breadwheat,
+                 items = c("variety_a","variety_b","variety_c"),
                  rankings = c("overall_best","overall_worst"),
                  type = "tricot",
                  grouped.rankings = TRUE)
 
 
-# compute temperature indices for the first 45 days in the plots
-
-data("breadwheat_modis", package = "gosset")
-
-temp <- temperature(breadwheat_modis,
-                    day.one = breadwheat["planting_date"],
-                    span = 45)
-
-
 # combine grouped rankings with temperature indices
-mydata <- cbind(G, temp)
+mydata <- cbind(G, breadwheat[c("lon","lat")])
 
-# fit a pltree model using temperature data
+# fit a pltree model using geographic data
 mod <- pltree(G ~ ., data = mydata)
-
 
 worst_regret(mod)
 

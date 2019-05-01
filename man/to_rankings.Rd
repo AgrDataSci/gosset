@@ -35,15 +35,14 @@ set.seed(123)
 df <- cbind(id = rep(1:10, each = 5),
             items = rep(LETTERS[1:5], times = 10),
             rankings = runif(50, 1, 3))
-df
-
-# return a 'rankings' object
+            
+# return an object of class 'rankings'
 to_rankings(df,
             items = 2,
             rankings = 3,
             id = 1)
 
-# return a 'grouped_rankings' object
+# return an object of class 'grouped_rankings'
 to_rankings(df,
             items = 2,
             rankings = 3,
@@ -51,6 +50,7 @@ to_rankings(df,
             grouped.rankings = TRUE)
 
 ##################################
+\dontrun{
 
 # Rankings with 5 items randomly assigned
 
@@ -65,11 +65,10 @@ for(s in 1:10) {
   r[s,] <- sample(1:5)
 }
 
-cbind(i, r) 
-
-
 to_rankings(items = i,
             rankings = r)
+
+}
 
 ###################################
 

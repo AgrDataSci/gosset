@@ -40,6 +40,7 @@
 #' }
 #' 
 #' @import qvcalc
+#' @import ggplot2
 #' @export
 plot_nodes <- function(object, labels = NULL, ...){
   
