@@ -42,6 +42,7 @@ is_decimal <- function(x) {
 #'
 #' @param object vector with numbers of class "numeric" or "integer"
 #' @param id optional, a vector with ids to group values
+#' @param ... additional arguments passed to methods
 #' @return a data frame with ranked values where highest values are placed first
 #' @examples
 #' 

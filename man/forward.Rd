@@ -46,6 +46,7 @@ model and adds in variables one by one. In each step one variable is added
 when it makes a single best improvement to the model.
 }
 \examples{
+\dontrun{
 
 library("gnm")
 library("doParallel")
@@ -59,6 +60,7 @@ mod <- forward(Temp ~ .,
                select.by = "AIC",
                family = poisson(link = "log"))
 
+}
 }
 \seealso{
 \code{\link{crossvalidation}}

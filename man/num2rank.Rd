@@ -10,6 +10,8 @@ num2rank(object, id = NULL, ...)
 \item{object}{vector with numbers of class "numeric" or "integer"}
 
 \item{id}{optional, a vector with ids to group values}
+
+\item{...}{additional arguments passed to methods}
 }
 \value{
 a data frame with ranked values where highest values are placed first

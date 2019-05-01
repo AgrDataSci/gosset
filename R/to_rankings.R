@@ -251,15 +251,22 @@ to_rankings <- function(data = NULL, items = NULL,
     
     # put rankings into a long format 
     r <- tidyr::gather(r, 
-                       key = variable,
-                       value = value,
+                       key = "variable",
+                       value = "value",
                        names(r)[2:ncol(r)])
     
+    # this vector checks which rows are the ranks and which 
+    # are the item name
     pr <- grepl("PosItem", r[[2]])
     
-    r <- dplyr::bind_cols(id = r[pr,"id"],
-                          item = r[!pr,"value"],
-                          rank = as.numeric(r[pr,"value"]))
+    # create separate vectors and then merge it
+    id <- r[pr,"id"]
+    item <- r[!pr,"value"]
+    rank <- as.numeric(r[pr,"value"])
+    
+    r <- dplyr::bind_cols(id, item, rank)
+    
+    names(r) <- c("id","item","rank")
     
     # if pseudo-item were added, it is removed now
     rmitem <- !r[["item"]] %in% paste0("pseudoitem", 1:nrank)

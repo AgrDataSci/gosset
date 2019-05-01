@@ -22,6 +22,8 @@ intervals based on quasi-standard errors
 Make a ggplot2 chart from model-based recursive partitioning trees with quasi-variance
 }
 \examples{
+\dontrun{
+
 library("PlackettLuce")
 library("qvcalc")
 library("ggplot2")
@@ -46,6 +48,9 @@ mod <- pltree(G ~ ., data = mydata)
 
 # plot nodes
 plot_nodes(mod)
+
+}
+
 }
 \seealso{
 \code{\link[qvcalc]{qvcalc}}

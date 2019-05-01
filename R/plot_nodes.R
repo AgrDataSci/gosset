@@ -10,6 +10,8 @@
 #' intervals based on quasi-standard errors
 #' @seealso \code{\link[qvcalc]{qvcalc}}
 #' @examples
+#' \dontrun{
+#' 
 #' library("PlackettLuce")
 #' library("qvcalc")
 #' library("ggplot2")
@@ -34,6 +36,9 @@
 #' 
 #' # plot nodes
 #' plot_nodes(mod)
+#' 
+#' }
+#' 
 #' @import qvcalc
 #' @export
 plot_nodes <- function(object, labels = NULL, ...){

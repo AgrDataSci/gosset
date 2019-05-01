@@ -17,6 +17,7 @@ Pairwise comparisons from a ranking object. Ties are not taken into account, the
 }
 \examples{
 
+library("PlackettLuce")
 library("psychotools")
 
 # a simple matrix with 4 items
@@ -28,7 +29,7 @@ R <- matrix(c(1, 2, 0, 0,
               2, 1, 1, 0,
               1, 0, 3, 2), nrow = 6, byrow = TRUE)
 colnames(R) <- c("apple", "banana", "orange", "pear")
-R <- as.rankings(R)
+R <- PlackettLuce::as.rankings(R)
 
 to_paircomp(R)
 
@@ -46,6 +47,8 @@ R <- to_rankings(breadwheat,
 
 
 to_paircomp(R)
+
+
 }
 \seealso{
 \code{\link[PlackettLuce]{rankings}} , \code{\link[psychotools]{paircomp}}

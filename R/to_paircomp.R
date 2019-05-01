@@ -7,6 +7,7 @@
 #' @seealso \code{\link[PlackettLuce]{rankings}} , \code{\link[psychotools]{paircomp}}
 #' @examples 
 #' 
+#' library("PlackettLuce")
 #' library("psychotools")
 #' 
 #' # a simple matrix with 4 items
@@ -18,7 +19,7 @@
 #'               2, 1, 1, 0,
 #'               1, 0, 3, 2), nrow = 6, byrow = TRUE)
 #' colnames(R) <- c("apple", "banana", "orange", "pear")
-#' R <- as.rankings(R)
+#' R <- PlackettLuce::as.rankings(R)
 #' 
 #' to_paircomp(R)
 #' 
@@ -36,6 +37,8 @@
 #' 
 #' 
 #' to_paircomp(R)
+#' 
+#' 
 #' @export
 to_paircomp <- function(object){
   

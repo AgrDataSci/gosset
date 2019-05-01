@@ -23,6 +23,7 @@
 #' Cross-validation estimates are computed using the fitted models on the validation samples.
 #' @seealso \code{\link{crossvalidation}}
 #' @examples 
+#' \dontrun{
 #' 
 #' library("gnm")
 #' library("doParallel")
@@ -36,6 +37,7 @@
 #'                select.by = "AIC",
 #'                family = poisson(link = "log"))
 #' 
+#' }
 #' @import doParallel
 #' @import foreach
 #' @import abind
@@ -124,8 +126,10 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     
     args <- c(args, dots)
     
+    i <- 1:fs
+    
     # get predictions from nodes and put in matrix
-    models <- try(foreach::foreach(i = 1:fs,
+    models <- try(foreach::foreach(i = i,
                                    .combine = .comb,
                                    .packages = packages) %dopar% (.forward_dopar(as.formula(
                                      paste0(Y, " ~ ", paste(c(var_keep, exp_var[i]), collapse = " + "))

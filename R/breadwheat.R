@@ -20,9 +20,9 @@
 #'     \item{\code{planting_date}}{The date which the experiment started.}
 #'     \item{\code{lon}}{The longitude in which the experiment was stablished.}
 #'     \item{\code{lat}}{The latitude in which the experiment was stablished.}
-#'     \item{\code{earlygrowth_best}}{The variety ranked as best for early growth ("A",
+#'     \item{\code{germination_best}}{The variety ranked as best for germination ("A",
 #'     "B" or "C").}
-#'     \item{\code{earlygrowth_worst}}{The variety ranked as worst for early growth ("A",
+#'     \item{\code{germination_worst}}{The variety ranked as worst for germination ("A",
 #'     "B" or "C").}
 #'     \item{\code{grainquality_best}}{The variety ranked as best for grain quality ("A",
 #'     "B" or "C").}

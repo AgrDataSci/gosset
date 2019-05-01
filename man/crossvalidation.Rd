@@ -42,6 +42,7 @@ Cross-validation estimates are computed using the fitted models on the validatio
 Methods for measuring the performance of a predictive model on sets of test data.
 }
 \examples{
+\dontrun{
 
 # Generalized Linear Models
 
@@ -84,6 +85,8 @@ data("Topmodel2007", package = "psychotree")
 crossvalidation(preference ~ ., 
                 data = Topmodel2007,
                 k = 5)
+                
+}
                 
 }
 \seealso{

@@ -27,6 +27,7 @@
 #' @seealso \code{\link[gnm]{gnm}}, \code{\link[PlackettLuce]{pltree}}, 
 #' \code{\link[psychotree]{bttree}}
 #' @examples
+#' \dontrun{
 #' 
 #' # Generalized Linear Models
 #' 
@@ -69,6 +70,8 @@
 #' crossvalidation(preference ~ ., 
 #'                 data = Topmodel2007,
 #'                 k = 5)
+#'                 
+#' }
 #'                 
 #' @import partykit
 #' @import psychotools
@@ -162,7 +165,9 @@ crossvalidation <- function(formula, data, k = NULL,
     pseudoR2(X, newdata = Y)[]
   }, X = mod, Y = test[]))
   
-  pR2 <- matrix(unlist(pR2), ncol = 5, nrow = k, 
+  pR2 <- matrix(unlist(pR2), 
+                ncol = 5, 
+                nrow = k, 
                 dimnames = list(1:k, dimnames(pR2)[[2]]))
   
   # no need to keep null logLik
