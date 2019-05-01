@@ -1,0 +1,39 @@
+---
+title: "Introduction to gosset"
+package: gosset
+author:
+- name: Kauê de Sousa
+  affiliation: Department of Agricultural Sciences, Høgskolen i Innlandet, Norway
+output:
+  if (requireNamespace("BiocStyle", quietly = TRUE)) {
+    BiocStyle::html_document
+  } else if (requireNamespace("bookdown", quietly = TRUE)) {
+    bookdown::html_document2
+  } else html_document
+vignette: >
+  %\VignetteIndexEntry{Introduction to gosset}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# gosset
+
+## Overview
+
+The **gosset** package provides an environment for modelling metadata and experimental citizen science data. It has implementations of cross-validation and stepwise variable selection for glm, lm, Bradley-Terry and Plackett-Luce models. 
+
+
+
+
+
+
+
+
+

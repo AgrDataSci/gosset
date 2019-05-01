@@ -36,47 +36,6 @@
 #'                select.by = "AIC",
 #'                family = poisson(link = "log"))
 #' 
-#' #######
-#' 
-#' \dontrun{
-#' # breadwheat data
-#' library("PlackettLuce")
-#' library("doParallel")
-#' library("abind")
-#' 
-#' data("breadwheat", package = "gosset")
-#' 
-#' # get an object of class 'grouped_rankings' 
-#' # from PlackettLuce
-#' G <- to_rankings(breadwheat, 
-#'                  items = c("variety_a","variety_b","variety_c"), 
-#'                  rankings = c("overall_best","overall_worst"),
-#'                  type = "tricot",
-#'                  grouped.rankings = TRUE)
-#' 
-#' # get some explanatory variables to include in the model
-#' # we will calculate the temperature indices
-#' # for the planting date to maturity (120 days)
-#' 
-#' data("breadwheat_modis", package = "gosset")
-#' 
-#' covars <- temperature(breadwheat_modis,
-#'                       day.one = breadwheat$planting_date,
-#'                       span = 120)
-#' 
-#' # combine the grouped_rankings and the explanatory variables
-#' data <- cbind(G, covars, breadwheat[c("lon","lat")])
-#' 
-#' # run forward selection
-#' mod <- forward(G ~ ., 
-#'                data = data, 
-#'                k = 3, 
-#'                ncores = 3,
-#'                minsize = 50, 
-#'                alpha = 0.01)
-#'
-#' }
-#'             
 #' @import doParallel
 #' @import foreach
 #' @import abind

@@ -26,7 +26,7 @@ Options are: 'equal', an arithmetic mean;
 'stouffer' a weighted Z-test developed by Stouffer et al. (1949). 
 The two last methods are suggested for cross-validation with imbalaced folds}
 
-\item{...}{additional arguments passed to the selected fitting model}
+\item{...}{additional arguments passed to methods}
 }
 \value{
 The cross-validation goodness-of-fit estimates for the best model, which are:
@@ -39,7 +39,7 @@ The cross-validation goodness-of-fit estimates for the best model, which are:
 Cross-validation estimates are computed using the fitted models on the validation samples.
 }
 \description{
-Methods for measuring the performance of a predictive model on test data sets.
+Methods for measuring the performance of a predictive model on sets of test data.
 }
 \examples{
 
@@ -84,8 +84,7 @@ data("Topmodel2007", package = "psychotree")
 crossvalidation(preference ~ ., 
                 data = Topmodel2007,
                 k = 5)
-
-
+                
 }
 \seealso{
 \code{\link[gnm]{gnm}}, \code{\link[PlackettLuce]{pltree}}, 

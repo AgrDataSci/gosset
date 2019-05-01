@@ -16,6 +16,10 @@ Encoding: UTF-8
 LazyData: true
 Depends: R (>= 2.10)
 Imports: abind, doParallel, foreach, gnm, ggplot2, partykit, PlackettLuce, psychotree, psychotools, qvcalc, stats, tidyverse
-Suggests: ClimMobTools
+Suggests: 
+    ClimMobTools,
+    knitr,
+    rmarkdown
 Language: en-GB
 RoxygenNote: 6.1.1
+VignetteBuilder: knitr

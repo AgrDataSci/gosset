@@ -1,6 +1,6 @@
 #' Cross-validation 
 #'
-#' Methods for measuring the performance of a predictive model on test data sets. 
+#' Methods for measuring the performance of a predictive model on sets of test data. 
 #'
 #' @param formula an object of class "formula" (or one that can be coerced to that class):
 #' a symbolic description of the model to be fitted,
@@ -15,7 +15,7 @@
 #' 'foldsize', a weighted mean by the size in each fold; 
 #' 'stouffer' a weighted Z-test developed by Stouffer et al. (1949). 
 #' The two last methods are suggested for cross-validation with imbalaced folds
-#' @param ... additional arguments passed to the selected fitting model
+#' @param ... additional arguments passed to methods
 #' @return The cross-validation goodness-of-fit estimates for the best model, which are:
 #' \item{AIC}{Akaike Information Criterion}
 #' \item{deviance}{Model deviance}
@@ -69,17 +69,13 @@
 #' crossvalidation(preference ~ ., 
 #'                 data = Topmodel2007,
 #'                 k = 5)
-
-#############################
-#' 
-#' 
+#'                 
 #' @import partykit
 #' @import psychotools
 #' @import psychotree
 #' @import PlackettLuce
 #' @import gnm
 #' @export
-
 crossvalidation <- function(formula, data, k = NULL,
                             folds = NULL, mean.method = NULL, ...)
 {

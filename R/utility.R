@@ -11,9 +11,9 @@
 #' is_wholenumber(x)
 #'
 #' @export
-is_wholenumber <- function(x){
+is_wholenumber <- function(x) {
   x <- as.vector(t(x))
-  x <- x%%1==0
+  x <- x %% 1 == 0
   return(x)
 }
 
@@ -30,9 +30,9 @@ is_wholenumber <- function(x){
 #' is_decimal(x)
 #' 
 #' @export
-is_decimal <- function(x){
+is_decimal <- function(x) {
   x <- as.vector(t(x))
-  x <- !x%%1==0
+  x <- !x %% 1 == 0
   return(x)
 }
 

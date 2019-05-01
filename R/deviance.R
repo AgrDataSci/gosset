@@ -46,6 +46,8 @@ AIC.bttree <- function(object, newdata = NULL, ...) {
   # and df of original model fit
   -2 * sum(LL) + 2 * attr(logLik(object), "df")
 }
+
+
 # formula logLik model.frame model.response model.weights 
 # deviance from a Bradley-Terry model
 # code adapted from PlackettLuce repository
@@ -132,6 +134,7 @@ deviance.pltree <- function(object, newdata = NULL, ...) {
   # and the deviance 
   aic - (2 * df)
 }
+
 
 # compute AIC with a validation sample
 # code from https://freakonometrics.hypotheses.org/20158

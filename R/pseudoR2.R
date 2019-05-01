@@ -44,8 +44,6 @@ pseudoR2 <- function(object, ...){
   
 }
 
-# part of this code from 
-# https://github.com/atahk/pscl/blob/master/R/pseudoRSq.R
 #' @export
 pseudoR2.default <- function(object, newdata = NULL){
   
