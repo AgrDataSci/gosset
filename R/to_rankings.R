@@ -6,8 +6,7 @@
 #' An id is required if long format.
 #' @param items a data frame or vector representing the item names
 #' @param rankings a data frame or vector representing the rankings
-#' @param type optional, the type of data input, 'rank' is set by default
-#' @param ... other arguments passed to methods
+#' @param ... additional arguments passed to methods
 #' @return a "rankings" object, which is a matrix of dense rankings 
 #' @seealso \code{\link[PlackettLuce]{rankings}}
 #' @examples
@@ -22,20 +21,19 @@
 #'             rankings = runif(50, 1, 3))
 #'             
 #' # return an object of class 'rankings'
-#' to_rankings(df,
+#' R <- to_rankings(df,
 #'             items = 2,
 #'             rankings = 3,
 #'             id = 1)
 #' 
 #' # return an object of class 'grouped_rankings'
-#' to_rankings(df,
+#' R <- to_rankings(df,
 #'             items = 2,
 #'             rankings = 3,
 #'             id = 1,
 #'             grouped.rankings = TRUE)
 #' 
 #' ##################################
-#' \dontrun{
 #' 
 #' # Rankings with 5 items randomly assigned
 #' 
@@ -49,22 +47,20 @@
 #'   i[s,] <- sample(LETTERS[1:5])
 #'   r[s,] <- sample(1:5)
 #' }
-#' 
-#' to_rankings(items = i,
-#'             rankings = r)
+#'  
+#' R <- to_rankings(items = i,
+#'                  rankings = r)
 #'
-#'}
-#' 
 #' ###################################
 #' 
 #' # breadwheat data, which is an object ordered in the 'tricot' format
 #' # each observer compares 3 varieties randomly distributed from a list of 16 
 #' data("breadwheat", package = "gosset")
-#'  
-#' to_rankings(breadwheat,
-#'             items = c("variety_a","variety_b","variety_c"),
-#'             rankings = c("overall_best","overall_worst"),
-#'             type = "tricot")
+#'   
+#' R <- to_rankings(breadwheat,
+#'                  items = c("variety_a","variety_b","variety_c"),
+#'                  rankings = c("overall_best","overall_worst"),
+#'                  type = "tricot")
 #' 
 #' ######################
 #' 
@@ -80,19 +76,19 @@
 #' # combining this with covariates from other dataset is easy since 
 #' # the function keeps an internal id
 #' # argument 'add.rank' must be passed as a dataframe
-#' to_rankings(data = beans,
-#'             items = c(1:3),
-#'             rankings = c(4:5),
-#'             type = "tricot",
-#'             add.rank = beans[c(6:8)],
-#'             grouped.rankings = TRUE)
+#' R <- to_rankings(data = beans,
+#'                  items = c(1:3),
+#'                  rankings = c(4:5),
+#'                  type = "tricot",
+#'                  add.rank = beans[c(6:8)],
+#'                  grouped.rankings = TRUE)
 #' 
 #' @import dplyr
 #' @import tibble
 #' @import tidyr
 #' @export
 to_rankings <- function(data = NULL, items = NULL,
-                        rankings = NULL, type = NULL, ...) {
+                        rankings = NULL, ...) {
   
   if (is.null(data)) {
     data <- cbind(items, rankings)
@@ -112,14 +108,6 @@ to_rankings <- function(data = NULL, items = NULL,
     stop("argument 'rankings' is missing with no default \n")
   }
 
-  if (is.null(type)) {
-    type <- "rank"
-  }
-  
-  if (!type %in% c("tricot", "rank")) {
-    stop("type ", type, " is not a valid method. Options are 'rank' and 'tricot' \n")
-  }
-  
   # get nrow in object
   n <- nrow(data)
 
@@ -128,6 +116,10 @@ to_rankings <- function(data = NULL, items = NULL,
   
   # get extra arguments
   dots <- list(...)
+  
+  # the type of data 
+  type <- dots[["type"]]
+  if (is.null(type)) { type = "rank" }
   # the ids (a vector) for objects of type "rank"
   id <- dots[["id"]] 
   # the comparisons with an additional rankings, if required
@@ -265,7 +257,7 @@ to_rankings <- function(data = NULL, items = NULL,
     item <- r[!pr,"value"]
     rank <- as.numeric(r[pr,"value"])
     
-    r <- dplyr::bind_cols(id, item, rank)
+    r <- data.frame(id, item, rank, stringsAsFactors = FALSE)
     
     names(r) <- c("id","item","rank")
     
