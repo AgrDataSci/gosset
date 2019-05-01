@@ -4,6 +4,11 @@ output: github_document
 
 # gosset
 
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/kauedesousa/gosset?branch=master&svg=true)](https://ci.appveyor.com/project/kauedesousa/gosset)
+
+
+Package website: https://kauedesousa.github.io/gosset/
+
 ## Overview
 
 The **gosset** package provides an environment for modelling metadata and experimental citizen science data. It has implementations of cross-validation and stepwise variable selection for glm, lm, Bradley-Terry and Plackett-Luce models. 

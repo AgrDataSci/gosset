@@ -2,6 +2,10 @@
 gosset
 ======
 
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/kauedesousa/gosset?branch=master&svg=true)](https://ci.appveyor.com/project/kauedesousa/gosset)
+
+Package website: <https://kauedesousa.github.io/gosset/>
+
 Overview
 --------
 
