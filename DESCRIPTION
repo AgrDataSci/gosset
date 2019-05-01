@@ -17,7 +17,6 @@ LazyData: true
 Depends: R (>= 2.10)
 Imports: abind, doParallel, foreach, gnm, ggplot2, partykit, PlackettLuce, psychotree, psychotools, qvcalc, stats, tidyverse
 Suggests: 
-    ClimMobTools,
     knitr,
     rmarkdown
 Language: en-GB
