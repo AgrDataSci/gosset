@@ -21,6 +21,11 @@ The development version can be installed via
 
 **gosset** is under development. Use with caution.
 
+Going further
+-------------
+
+The full functionality of **gosset** is illustrated in the package vignette. The vignette can be found on the [package website](https://kauedesousa.github.io/gosset/) or from within R once the package has been installed.
+
 Code of Conduct
 ---------------
 

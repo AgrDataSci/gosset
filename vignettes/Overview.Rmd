@@ -23,14 +23,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-# gosset
-
 ## Overview
 
 The **gosset** package provides an environment for modelling metadata and experimental citizen science data. It has implementations of cross-validation and stepwise variable selection for glm, lm, Bradley-Terry and Plackett-Luce models. 
 
 
+## Usage
 
+**gosset** vignette is coming up...
 
 
 
