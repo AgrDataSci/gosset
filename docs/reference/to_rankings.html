@@ -152,8 +152,6 @@ An id is required if long format.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"PlackettLuce"</span>)
-
 <span class='co'># A matrix with 10 rankings of 5 items (A, B, C, D, E)</span>
 <span class='co'># with numeric values as "rank"</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>123</span>)
@@ -163,16 +161,24 @@ An id is required if long format.</p></td>
 
 <span class='co'># return an object of class 'rankings'</span>
 <span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'>to_rankings</span>(<span class='no'>df</span>,
-            <span class='kw'>items</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-            <span class='kw'>rankings</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-            <span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+                 <span class='kw'>rankings</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+                 <span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+
+<span class='co'># rankings can be computed in ascending order</span>
+<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'>to_rankings</span>(<span class='no'>df</span>,
+                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+                 <span class='kw'>rankings</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+                 <span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+                 <span class='kw'>ascending</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
 
 <span class='co'># return an object of class 'grouped_rankings'</span>
 <span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'>to_rankings</span>(<span class='no'>df</span>,
-            <span class='kw'>items</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-            <span class='kw'>rankings</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-            <span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-            <span class='kw'>grouped.rankings</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+                 <span class='kw'>rankings</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+                 <span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+                 <span class='kw'>grouped.rankings</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'>##################################</span>
 
