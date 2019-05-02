@@ -21,6 +21,7 @@
 #' pseudoR2(mod)
 #'  
 #' #################################
+#' \dontrun{
 #' 
 #' # Compute pseudo R-squared on a validation sample
 #' 
@@ -37,6 +38,7 @@
 #' 
 #' pseudoR2(mod, newdata = test)
 #' 
+#' }
 #' @export
 pseudoR2 <- function(object, ...){
   

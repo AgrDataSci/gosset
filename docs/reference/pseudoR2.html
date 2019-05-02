@@ -154,9 +154,9 @@
 <span class='fu'>pseudoR2</span>(<span class='no'>mod</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 5</span><span>
 #&gt;   logLik logLikNull MaxLik CraggUhler Agresti
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>  -</span><span style='color: #BB0000;'>59.1</span><span>      -</span><span style='color: #BB0000;'>89.3</span><span>  0.340      0.481   0.339</div><div class='input'>
-<span class='co'>#################################</span>
-
+#&gt; </span><span style='color: #555555;'>1</span><span>  -</span><span style='color: #BB0000;'>59.1</span><span>      -</span><span style='color: #BB0000;'>89.3</span><span>  0.340      0.481   0.339</div><div class='input'> 
+#################################
+</div></span><span class='co'># NOT RUN {</span>
 <span class='co'># Compute pseudo R-squared on a validation sample</span>
 
 <span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>airquality</span>)
@@ -170,8 +170,9 @@
            <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>train</span>,
            <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>poisson</a></span>())
 
-<span class='fu'>pseudoR2</span>(<span class='no'>mod</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='no'>test</span>)</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(data): object 'train' not found</span></div><div class='input'>
-</div></span></pre>
+<span class='fu'>pseudoR2</span>(<span class='no'>mod</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='no'>test</span>)
+
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

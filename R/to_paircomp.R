@@ -36,7 +36,7 @@
 #'                  type = "tricot")
 #' 
 #' 
-#' to_paircomp(R)
+#' PC <- to_paircomp(R)
 #' 
 #' 
 #' @export

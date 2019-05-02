@@ -33,6 +33,7 @@ mod <- glm(Temp ~ Wind + Solar.R,
 pseudoR2(mod)
  
 #################################
+\dontrun{
 
 # Compute pseudo R-squared on a validation sample
 
@@ -49,4 +50,5 @@ mod <- glm(Temp ~ Wind + Solar.R,
 
 pseudoR2(mod, newdata = test)
 
+}
 }
