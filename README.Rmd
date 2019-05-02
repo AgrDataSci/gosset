@@ -33,7 +33,13 @@ The development version can be installed via
 
 The full functionality of **gosset** is illustrated in the package vignette. The vignette can be found on the [package website](https://kauedesousa.github.io/gosset/) or from within R once the package has been installed.
 
+## Contribution
+
+You are welcome to contribute to this project. Please read our [contribution guide lines](CONTRIBUTING.md). 
 
 ## Code of Conduct
 
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+
+
+

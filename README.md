@@ -26,6 +26,11 @@ Going further
 
 The full functionality of **gosset** is illustrated in the package vignette. The vignette can be found on the [package website](https://kauedesousa.github.io/gosset/) or from within R once the package has been installed.
 
+Contribution
+------------
+
+You are welcome to contribute to this project. Please read our [contribution guide lines](CONTRIBUTING.md).
+
 Code of Conduct
 ---------------
 
