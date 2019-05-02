@@ -87,9 +87,16 @@ num2rank <- function(object, id = NULL, ...){
 
   object <- cbind(id = id, object)
   
-  object <- dplyr::mutate(dplyr::group_by(object , id),
+  object <- dplyr::mutate(dplyr::group_by(object, id),
                           rank = rank((rank - 1) * -1, na.last = "keep"))
+  
+  
+  object <- dplyr::as_tibble(object) 
   
   return(object)
   
 }
+
+
+
+

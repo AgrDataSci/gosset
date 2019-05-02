@@ -23,29 +23,35 @@ a "rankings" object, which is a matrix of dense rankings
 Create an object of class "rankings" from a dataframe or matrix
 }
 \examples{
-
-library("PlackettLuce")
-
+ 
 # A matrix with 10 rankings of 5 items (A, B, C, D, E)
 # with numeric values as "rank"
 set.seed(123)
 df <- cbind(id = rep(1:10, each = 5),
             items = rep(LETTERS[1:5], times = 10),
             rankings = runif(50, 1, 3))
-            
+
 # return an object of class 'rankings'
 R <- to_rankings(df,
-            items = 2,
-            rankings = 3,
-            id = 1)
+                 items = 2,
+                 rankings = 3,
+                 id = 1)
+
+# rankings can be computed in ascending order
+R <- to_rankings(df,
+                 items = 2,
+                 rankings = 3,
+                 id = 1, 
+                 ascending = TRUE)
+
 
 # return an object of class 'grouped_rankings'
 R <- to_rankings(df,
-            items = 2,
-            rankings = 3,
-            id = 1,
-            grouped.rankings = TRUE)
-
+                 items = 2,
+                 rankings = 3,
+                 id = 1,
+                 grouped.rankings = TRUE)
+ 
 ##################################
 
 # Rankings with 5 items randomly assigned

@@ -10,29 +10,35 @@
 #' @return a "rankings" object, which is a matrix of dense rankings 
 #' @seealso \code{\link[PlackettLuce]{rankings}}
 #' @examples
-#' 
-#' library("PlackettLuce")
-#' 
+#'  
 #' # A matrix with 10 rankings of 5 items (A, B, C, D, E)
 #' # with numeric values as "rank"
 #' set.seed(123)
 #' df <- cbind(id = rep(1:10, each = 5),
 #'             items = rep(LETTERS[1:5], times = 10),
 #'             rankings = runif(50, 1, 3))
-#'             
+#' 
 #' # return an object of class 'rankings'
 #' R <- to_rankings(df,
-#'             items = 2,
-#'             rankings = 3,
-#'             id = 1)
+#'                  items = 2,
+#'                  rankings = 3,
+#'                  id = 1)
+#' 
+#' # rankings can be computed in ascending order
+#' R <- to_rankings(df,
+#'                  items = 2,
+#'                  rankings = 3,
+#'                  id = 1, 
+#'                  ascending = TRUE)
+#' 
 #' 
 #' # return an object of class 'grouped_rankings'
 #' R <- to_rankings(df,
-#'             items = 2,
-#'             rankings = 3,
-#'             id = 1,
-#'             grouped.rankings = TRUE)
-#' 
+#'                  items = 2,
+#'                  rankings = 3,
+#'                  id = 1,
+#'                  grouped.rankings = TRUE)
+#'  
 #' ##################################
 #' 
 #' # Rankings with 5 items randomly assigned
@@ -130,6 +136,9 @@ to_rankings <- function(data = NULL, items = NULL,
   # if all data is required
   all.data <- dots[["all.data"]]
   all.data <- isTRUE(all.data)
+  # if the rank must be computed in ascending order
+  ascending <- dots[["ascending"]]
+  if (is.null(ascending)) {ascending <- FALSE}
   
   # deal with data of type "rank"
   if (type == "rank") {
@@ -143,7 +152,7 @@ to_rankings <- function(data = NULL, items = NULL,
     # make sure that rankings are numeric
     data[rankings] <- lapply(data[rankings], as.numeric)
     
-    r <- .pivot_default(id, i = items, r = data[rankings])
+    r <- .pivot_default(id, i = items, r = data[rankings], ascending)
     
     # make a PlackettLuce rankings
     R <- PlackettLuce::as.rankings(r)
@@ -215,7 +224,7 @@ to_rankings <- function(data = NULL, items = NULL,
 
 
 # organise numbered rankings
-.pivot_default <- function(id, i, r){
+.pivot_default <- function(id, i, r, ascending){
   
   # fix names in r data
   names(r) <- paste0("PosItem", 1:ncol(r))
@@ -287,6 +296,14 @@ to_rankings <- function(data = NULL, items = NULL,
     names(r)[3] <- "item"
     
   }
+  
+  # if the rankings are required to be ascending 
+  if (ascending) {
+    
+    r <- .asc_rank(r)
+  
+  }
+  
   
   # reshape data into wide format
   r <- tidyr::spread(r, item, rank)
@@ -476,3 +493,24 @@ to_rankings <- function(data = NULL, items = NULL,
   return(R)
   
 }
+
+
+# compute a ascending rank 
+.asc_rank <- num2rank <- function(object){
+  
+  object <- dplyr::mutate(object, 
+                          rank = rank * -1)
+  
+  object <- dplyr::mutate(dplyr::group_by(object, id),
+                          rank = rank(rank, na.last = "keep"))
+  
+  
+  object <- dplyr::as_tibble(object)
+  
+  return(object)
+  
+}
+
+
+
+
