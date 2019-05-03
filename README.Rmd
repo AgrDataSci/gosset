@@ -9,10 +9,10 @@ knitr::opts_chunk$set(fig.path = "man/figures/")
 
 # gosset
 
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/kauedesousa/gosset?branch=master&svg=true)](https://ci.appveyor.com/project/kauedesousa/gosset)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/agrobioinfoservices/gosset?branch=master&svg=true)](https://ci.appveyor.com/project/kauedesousa/gosset)
 
 
-Package website: https://kauedesousa.github.io/gosset/
+Package website: https://agrobioinfoservices.github.io/gosset/
 
 ## Overview
 
@@ -24,14 +24,14 @@ The **gosset** package provides an environment for modelling metadata and experi
 The development version can be installed via
 
     library("devtools")
-    devtools::install_github("kauedesousa/gosset", upgrade = "never")
+    devtools::install_github("agrobioinfoservices/gosset", upgrade = "never")
     
 **gosset** is under development. Use with caution.
 
 
 ## Going further
 
-The full functionality of **gosset** is illustrated in the package vignette. The vignette can be found on the [package website](https://kauedesousa.github.io/gosset/) or from within R once the package has been installed.
+The full functionality of **gosset** is illustrated in the package vignette. The vignette can be found on the [package website](https://agrobioinfoservices.github.io/gosset/) or from within R once the package has been installed.
 
 ## Contribution
 
