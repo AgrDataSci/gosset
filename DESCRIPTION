@@ -8,8 +8,8 @@ Authors@R: c(person("Kaue", "de Sousa",
         person("Jacob", "van Etten", role = c("aut", "ctb"),
         comment = c(ORCID = "0000-0001-7554-2558")))
 Maintainer: Kaue de Sousa <kaue.desousa@inn.no>
-URL: https://kauedesousa.github.io/gosset/
-BugReports: https://github.com/kauedesousa/gosset/issues
+URL: https://agrobioinfoservices.github.io/gosset/
+BugReports: https://github.com/agrobioinfoservices/gosset/issues
 Description: gosset provides an environment for modelling metadata and experimental citizen science data.
 License: GPL-3
 Encoding: UTF-8
