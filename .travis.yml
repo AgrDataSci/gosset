@@ -10,9 +10,6 @@ r:
 
 pandoc_version: 2.5
 
-after_success:
-  - Rscript -e 'covr::codecov()'
-
 r_check_args: "--as-cran --run-dontrun"
 
 deploy:
@@ -22,3 +19,9 @@ deploy:
   on:
     branch: master
     condition: "$TRAVIS_R_VERSION_STRING = release"
+    
+r_packages:
+  - covr
+
+after_success:
+  - Rscript -e 'library(covr); codecov()'
