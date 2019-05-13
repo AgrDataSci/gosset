@@ -2,7 +2,8 @@
 gosset
 ======
 
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/agrobioinfoservices/gosset?branch=master&svg=true)](https://ci.appveyor.com/project/kauedesousa/gosset)
+<!-- badges: start -->
+[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.r-project.org/Licenses/GPL-3) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/agrobioinfoservices/gosset?branch=master&svg=true)](https://ci.appveyor.com/project/kauedesousa/gosset) <!-- badges: end -->
 
 Package website: <https://agrobioinfoservices.github.io/gosset/>
 

@@ -2,15 +2,21 @@
 output: github_document
 ---
 
-```{r rmd-setup, include = FALSE}
-knitr::opts_chunk$set(fig.path = "man/figures/")
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  out.width = "100%"
+)
+options(width = 120)
 ```
-
 
 # gosset
 
+<!-- badges: start -->
+[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.r-project.org/Licenses/GPL-3)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/agrobioinfoservices/gosset?branch=master&svg=true)](https://ci.appveyor.com/project/kauedesousa/gosset)
-
+<!-- badges: end -->
 
 Package website: https://agrobioinfoservices.github.io/gosset/
 
