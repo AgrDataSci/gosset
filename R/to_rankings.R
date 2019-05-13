@@ -2,12 +2,12 @@
 #'
 #' Create an object of class "rankings" from a dataframe or matrix
 #'
-#' @param data a data frame with columns specified by items and rankings. Data can be in both wide and long format.
-#' An id is required if long format.
-#' @param items a data frame or vector representing the item names
-#' @param rankings a data frame or vector representing the rankings
+#' @param data a data frame with columns specified by items and input values to rank. Data can be in both wide and long format.
+#' An id is required if long format. 
+#' @param items a data frame or index of \code{data} specifying the column(s) containing the item names
+#' @param input a data frame or index of \code{data} specifying the column(s) containing the values to be ranked
 #' @param ... additional arguments passed to methods
-#' @return a "rankings" object, which is a matrix of dense rankings 
+#' @return a PlackettLuce "rankings" object, which is a matrix of dense rankings 
 #' @seealso \code{\link[PlackettLuce]{rankings}}
 #' @examples
 #'  
@@ -16,18 +16,18 @@
 #' set.seed(123)
 #' df <- cbind(id = rep(1:10, each = 5),
 #'             items = rep(LETTERS[1:5], times = 10),
-#'             rankings = runif(50, 1, 3))
+#'             input = runif(50, 1, 3))
 #' 
 #' # return an object of class 'rankings'
 #' R <- to_rankings(df,
 #'                  items = 2,
-#'                  rankings = 3,
+#'                  input = 3,
 #'                  id = 1)
 #' 
 #' # rankings can be computed in ascending order
 #' R <- to_rankings(df,
 #'                  items = 2,
-#'                  rankings = 3,
+#'                  input = 3,
 #'                  id = 1, 
 #'                  ascending = TRUE)
 #' 
@@ -35,7 +35,7 @@
 #' # return an object of class 'grouped_rankings'
 #' R <- to_rankings(df,
 #'                  items = 2,
-#'                  rankings = 3,
+#'                  input = 3,
 #'                  id = 1,
 #'                  grouped.rankings = TRUE)
 #'  
@@ -65,7 +65,7 @@
 #'   
 #' R <- to_rankings(breadwheat,
 #'                  items = c("variety_a","variety_b","variety_c"),
-#'                  rankings = c("overall_best","overall_worst"),
+#'                  input = c("overall_best","overall_worst"),
 #'                  type = "tricot")
 #' 
 #' ######################
@@ -84,22 +84,35 @@
 #' # argument 'add.rank' must be passed as a dataframe
 #' R <- to_rankings(data = beans,
 #'                  items = c(1:3),
-#'                  rankings = c(4:5),
+#'                  input = c(4:5),
 #'                  type = "tricot",
 #'                  add.rank = beans[c(6:8)],
 #'                  grouped.rankings = TRUE)
 #' 
-#' @import dplyr
+#' @importFrom dplyr arrange bind_cols group_by mutate  
 #' @import tibble
 #' @import tidyr
 #' @export
 to_rankings <- function(data = NULL, items = NULL,
-                        rankings = NULL, ...) {
+                        input = NULL, ...) {
+  
+  # get extra arguments
+  dots <- list(...)
+  
+  rankings <- dots[["rankings"]]
+  
+  if(!is.null(rankings)) {
+    warning("Argument 'rankings' is deprecated, use 'input' instead \n")
+    
+    input <- rankings
+    
+  }
+  
   
   if (is.null(data)) {
-    data <- cbind(items, rankings)
+    data <- cbind(items, input)
     items <- names(items)
-    rankings <- names(rankings)
+    input <- names(input)
   }
   
   if (!is.data.frame(data)){
@@ -110,8 +123,8 @@ to_rankings <- function(data = NULL, items = NULL,
     stop("argument 'items' is missing with no default \n")
   }
   
-  if (is.null(rankings)) {
-    stop("argument 'rankings' is missing with no default \n")
+  if (is.null(input)) {
+    stop("argument 'input' is missing with no default \n")
   }
 
   # get nrow in object
@@ -120,17 +133,14 @@ to_rankings <- function(data = NULL, items = NULL,
   # get the items in data
   items <- data[items]
   
-  # get extra arguments
-  dots <- list(...)
-  
   # the type of data 
   type <- dots[["type"]]
   if (is.null(type)) { type = "rank" }
   # the ids (a vector) for objects of type "rank"
   id <- dots[["id"]] 
-  # the comparisons with an additional rankings, if required
+  # the comparisons with an additional input, if required
   add.rank <- dots[["add.rank"]] 
-  # if a grouped_rankings is required
+  # if a grouped_input is required
   grouped.rankings <- dots[["grouped.rankings"]]
   grouped.rankings <- isTRUE(grouped.rankings)
   # if all data is required
@@ -149,10 +159,10 @@ to_rankings <- function(data = NULL, items = NULL,
       id <- data[id]
     }
     
-    # make sure that rankings are numeric
-    data[rankings] <- lapply(data[rankings], as.numeric)
+    # make sure that input are numeric
+    data[input] <- lapply(data[input], as.numeric)
     
-    r <- .pivot_default(id, i = items, r = data[rankings], ascending)
+    r <- .pivot_default(id, i = items, r = data[input], ascending)
     
     # make a PlackettLuce rankings
     R <- PlackettLuce::as.rankings(r)
@@ -170,18 +180,18 @@ to_rankings <- function(data = NULL, items = NULL,
     
     # with 3 comparisons
     if (ncomp == 3) {
-      rrank <- data[rankings]
+      rrank <- data[input]
       
       if (any(rrank[,1] == rrank[,2])) {
         stop("to_rankings cannot handle ties in objects of type 'tricot'\n")
       }
       
-      r <- .pivot_triadic(i = items, r = data[rankings])
+      r <- .pivot_triadic(i = items, r = data[input])
     }
     
     # with 4 or more comparisons
     if (ncomp >= 4) {
-      r <- .pivot_tetra(i = items, r = data[rankings])
+      r <- .pivot_tetra(i = items, r = data[input])
     }
     
     # get names of all items
@@ -505,7 +515,7 @@ to_rankings <- function(data = NULL, items = NULL,
                           rank = rank(rank, na.last = "keep"))
   
   
-  object <- dplyr::as_tibble(object)
+  object <- tibble::as_tibble(object)
   
   return(object)
   

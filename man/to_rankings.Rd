@@ -4,20 +4,20 @@
 \alias{to_rankings}
 \title{Plackett-Luce rankings}
 \usage{
-to_rankings(data = NULL, items = NULL, rankings = NULL, ...)
+to_rankings(data = NULL, items = NULL, input = NULL, ...)
 }
 \arguments{
-\item{data}{a data frame with columns specified by items and rankings. Data can be in both wide and long format.
+\item{data}{a data frame with columns specified by items and input values to rank. Data can be in both wide and long format.
 An id is required if long format.}
 
-\item{items}{a data frame or vector representing the item names}
+\item{items}{a data frame or index of \code{data} specifying the column(s) containing the item names}
 
-\item{rankings}{a data frame or vector representing the rankings}
+\item{input}{a data frame or index of \code{data} specifying the column(s) containing the values to be ranked}
 
 \item{...}{additional arguments passed to methods}
 }
 \value{
-a "rankings" object, which is a matrix of dense rankings
+a PlackettLuce "rankings" object, which is a matrix of dense rankings
 }
 \description{
 Create an object of class "rankings" from a dataframe or matrix
@@ -29,18 +29,18 @@ Create an object of class "rankings" from a dataframe or matrix
 set.seed(123)
 df <- cbind(id = rep(1:10, each = 5),
             items = rep(LETTERS[1:5], times = 10),
-            rankings = runif(50, 1, 3))
+            input = runif(50, 1, 3))
 
 # return an object of class 'rankings'
 R <- to_rankings(df,
                  items = 2,
-                 rankings = 3,
+                 input = 3,
                  id = 1)
 
 # rankings can be computed in ascending order
 R <- to_rankings(df,
                  items = 2,
-                 rankings = 3,
+                 input = 3,
                  id = 1, 
                  ascending = TRUE)
 
@@ -48,7 +48,7 @@ R <- to_rankings(df,
 # return an object of class 'grouped_rankings'
 R <- to_rankings(df,
                  items = 2,
-                 rankings = 3,
+                 input = 3,
                  id = 1,
                  grouped.rankings = TRUE)
  
@@ -78,7 +78,7 @@ data("breadwheat", package = "gosset")
   
 R <- to_rankings(breadwheat,
                  items = c("variety_a","variety_b","variety_c"),
-                 rankings = c("overall_best","overall_worst"),
+                 input = c("overall_best","overall_worst"),
                  type = "tricot")
 
 ######################
@@ -97,7 +97,7 @@ data("beans", package = "PlackettLuce")
 # argument 'add.rank' must be passed as a dataframe
 R <- to_rankings(data = beans,
                  items = c(1:3),
-                 rankings = c(4:5),
+                 input = c(4:5),
                  type = "tricot",
                  add.rank = beans[c(6:8)],
                  grouped.rankings = TRUE)

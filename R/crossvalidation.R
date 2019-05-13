@@ -182,9 +182,9 @@ crossvalidation <- function(formula, data, k = NULL,
     })
   
   # means and estimates as tibble
-  means <- dplyr::as_tibble(t(means))
+  means <- tibble::as_tibble(t(means))
 
-  estimators <- dplyr::as_tibble(estimators)
+  estimators <- tibble::as_tibble(estimators)
   
   # get predictions for these datasets
   preds <- mapply(function(X,Y) {

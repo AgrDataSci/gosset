@@ -105,7 +105,7 @@ kendallTau <- function(x, y){
   
   dimnames(result)[[2]] <- c("kendallTau", "N_effective")
   
-  result <- dplyr::as_tibble(result)
+  result <- tibble::as_tibble(result)
   
   return(result)
   

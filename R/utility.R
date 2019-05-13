@@ -91,7 +91,7 @@ num2rank <- function(object, id = NULL, ...){
                           rank = rank((rank - 1) * -1, na.last = "keep"))
   
   
-  object <- dplyr::as_tibble(object) 
+  object <- tibble::as_tibble(object) 
   
   return(object)
   
