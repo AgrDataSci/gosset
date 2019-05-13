@@ -24,7 +24,7 @@ possible outcome) is a criterion that takes a conservative approach to risk anal
 diversification strategies.
 }
 \examples{
- 
+
 library("PlackettLuce")
 
 data("breadwheat", package = "gosset")
@@ -34,7 +34,7 @@ data("breadwheat", package = "gosset")
 
 G <- to_rankings(breadwheat,
                  items = c("variety_a","variety_b","variety_c"),
-                 rankings = c("overall_best","overall_worst"),
+                 input = c("overall_best","overall_worst"),
                  type = "tricot",
                  grouped.rankings = TRUE)
 
@@ -46,5 +46,6 @@ mydata <- cbind(G, breadwheat[c("lon","lat")])
 mod <- pltree(G ~ ., data = mydata)
 
 worst_regret(mod)
+
 
 }

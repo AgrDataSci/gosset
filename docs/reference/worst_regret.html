@@ -158,9 +158,10 @@ diversification strategies.</p>
 
 <span class='no'>G</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='to_rankings.html'>to_rankings</a></span>(<span class='no'>breadwheat</span>,
                  <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"variety_a"</span>,<span class='st'>"variety_b"</span>,<span class='st'>"variety_c"</span>),
-                 <span class='kw'>rankings</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"overall_best"</span>,<span class='st'>"overall_worst"</span>),
+                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"overall_best"</span>,<span class='st'>"overall_worst"</span>),
                  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"tricot"</span>,
-                 <span class='kw'>grouped.rankings</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Argument 'rankings' is deprecated, use 'input' instead </span></div><div class='input'>
+                 <span class='kw'>grouped.rankings</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
 
 <span class='co'># combine grouped rankings with temperature indices</span>
 <span class='no'>mydata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>cbind</a></span>(<span class='no'>G</span>, <span class='no'>breadwheat</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"lon"</span>,<span class='st'>"lat"</span>)])
@@ -187,6 +188,7 @@ diversification strategies.</p>
 #&gt; </span><span style='color: #555555;'>14</span><span> PBW502       0.014</span><span style='text-decoration: underline;'>2</span><span>        0.355
 #&gt; </span><span style='color: #555555;'>15</span><span> WR544        0.012</span><span style='text-decoration: underline;'>2</span><span>        0.361
 #&gt; </span><span style='color: #555555;'>16</span><span> K0307        0.011</span><span style='text-decoration: underline;'>1</span><span>        0.363</div><div class='input'>
+
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
