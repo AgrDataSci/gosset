@@ -3,7 +3,7 @@ gosset
 ======
 
 <!-- badges: start -->
-[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.r-project.org/Licenses/GPL-3) [<img src="https://www.r-pkg.org/badges/version/gosset" alt="CRAN status" data-external="1" />](https://cran.r-project.org/package=gosset) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/agrobioinfoservices/gosset?branch=master&svg=true)](https://ci.appveyor.com/project/kauedesousa/gosset) [![Build Status](https://travis-ci.org/agrobioinfoservices/gosset.svg?branch=master)](https://travis-ci.org/agrobioinfoservices/gosset) [![codecov](https://codecov.io/gh/agrobioinfoservices/gosset/master.svg)](https://codecov.io/github/agrobioinfoservices/gosset?branch=master) <!-- badges: end -->
+[![CRAN status](https://www.r-pkg.org/badges/version/gosset)](https://cran.r-project.org/package=gosset) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/agrobioinfoservices/gosset?branch=master&svg=true)](https://ci.appveyor.com/project/kauedesousa/gosset) [![Build Status](https://travis-ci.org/agrobioinfoservices/gosset.svg?branch=master)](https://travis-ci.org/agrobioinfoservices/gosset) [![codecov](https://codecov.io/gh/agrobioinfoservices/gosset/master.svg)](https://codecov.io/github/agrobioinfoservices/gosset?branch=master) [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.r-project.org/Licenses/GPL-3) <!-- badges: end -->
 
 Package website: <https://agrobioinfoservices.github.io/gosset/>
 
