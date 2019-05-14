@@ -26,12 +26,12 @@ Regression coefficient to evaluate goodness-of-fit in a given model
 
 data("airquality")
 
-mod <- glm(Temp ~ Wind + Solar.R, 
-           data = airquality, 
+mod <- glm(Temp ~ Wind + Solar.R,
+           data = airquality,
            family = poisson())
 
 pseudoR2(mod)
- 
+
 #################################
 \dontrun{
 

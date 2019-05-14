@@ -1,27 +1,12 @@
+    
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
-sudo: false
-cache: packages
 language: r
-r:
-  - oldrel
-  - release
-  - devel
+r: bioc-devel
+cache:
+  packages: false
 
-pandoc_version: 2.5
-
-r_check_args: "--as-cran --run-dontrun"
-
-deploy:
-  provider: script
-  script: Rscript -e 'pkgdown::deploy_site_github()'
-  skip_cleanup: true
-  on:
-    branch: master
-    condition: "$TRAVIS_R_VERSION_STRING = release"
-    
-r_packages:
-  - covr
+sudo: false
 
 after_success:
-  - Rscript -e 'library(covr); codecov()'
+  - Rscript -e 'covr::codecov()'
