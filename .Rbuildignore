@@ -1,7 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README.Rmd
-^docs$
+^CONTRIBUTING\.md$
 ^pkgdown$
 ^CODE_OF_CONDUCT\.md$
 ^README.Rmd
@@ -9,4 +9,5 @@
 ^LICENSE
 ^\.travis\.yml$
 ^appveyor\.yml$
+^codecov\.yml$
 ^docs$

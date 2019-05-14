@@ -89,7 +89,7 @@
 #'                  add.rank = beans[c(6:8)],
 #'                  grouped.rankings = TRUE)
 #' 
-#' @importFrom dplyr arrange bind_cols group_by mutate  
+#' @importFrom dplyr arrange bind_cols bind_rows group_by mutate  
 #' @import tibble
 #' @import tidyr
 #' @export
@@ -508,14 +508,19 @@ to_rankings <- function(data = NULL, items = NULL,
 # compute a ascending rank 
 .asc_rank <- num2rank <- function(object){
   
-  object <- dplyr::mutate(object, 
-                          rank = rank * -1)
+  object <- split(object, object$id)
   
-  object <- dplyr::mutate(dplyr::group_by(object, id),
-                          rank = rank(rank, na.last = "keep"))
+  object <- lapply(object, function(x){
+    
+    x$rank <- x$rank * -1
+    
+    x$rank <- rank(x$rank, na.last = "keep")
+    
+    x
+    
+  })
   
-  
-  object <- tibble::as_tibble(object)
+  object <- dplyr::bind_rows(object)
   
   return(object)
   
