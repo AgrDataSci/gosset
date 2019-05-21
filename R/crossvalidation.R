@@ -14,7 +14,7 @@
 #' Options are: 'equal', an arithmetic mean; 
 #' 'foldsize', a weighted mean by the size in each fold; 
 #' 'stouffer' a weighted Z-test developed by Stouffer et al. (1949). 
-#' The two last methods are suggested for cross-validation with imbalaced folds
+#' The two last methods are suggested for cross-validation with imbalanced folds
 #' @param ... additional arguments passed to methods
 #' @return The cross-validation goodness-of-fit estimates for the best model, which are:
 #' \item{AIC}{Akaike Information Criterion}
@@ -178,7 +178,10 @@ crossvalidation <- function(formula, data, k = NULL,
   # estimators are then averaged weighted by 
   # number of predicted cases using selected mean method
   means <- apply(estimators, 2, function(x) {
-      .mean_crossvalidation(x, folds, method = mean.method)
+      .mean_crossvalidation(object = x, 
+                            folds = folds, 
+                            method = mean.method, 
+                            ...)
     })
   
   # means and estimates as tibble
@@ -215,23 +218,17 @@ print.crossvalidation <- function(x, ...) {
 }
 
 # Compute weighted means in cross-validation
-.mean_crossvalidation <- function(object, folds = NULL, method = NULL){
-  
-  if (is.null(method)) {method <- "foldsize"}
-  
+.mean_crossvalidation <- function(object, folds = NULL, 
+                                  method = NULL, akaike.weights = FALSE, 
+                                  ...){
   # take length of folds
   N <- length(folds)
   
-  if (method == "foldsize") {
-    # make a table of folds and take
-    # the number of observations per fold
-    foldsize <- as.vector(table(folds))
-    
-    # fold size mean is the product of multiplication of object values by 
-    # its number of observations then divided by the total number of observations
-    mean <- sum(object * foldsize, na.rm = TRUE) / sum(foldsize, na.rm = TRUE)
-  }
+  if (is.null(method)) {method <- "stouffer"}
   
+  if (akaike.weights) {method <- "stouffer"}
+  
+  # weight of imbalanced folds
   if (method == "stouffer") {
     # take the number of folds
     max_folds <- max(folds)
@@ -247,8 +244,12 @@ print.crossvalidation <- function(x, ...) {
     
     # then divide this vector by its sum
     wfold <- wfold / sum(wfold)
+    # wfold <- (max_folds * wfold) / sum(wfold)
     
-    wfold <- (max_folds * wfold) / sum(wfold)
+    if (akaike.weights) {
+      object <- akaike_weights(object)
+      object <- object[[3]]
+    }
     
     # then we multiply the input values by the
     # weight of each fold
@@ -256,6 +257,16 @@ print.crossvalidation <- function(x, ...) {
     
     # sum these values and that is the stouffer mean
     mean <- sum(stouffer)
+  }
+  
+  if (method == "foldsize") {
+    # make a table of folds and take
+    # the number of observations per fold
+    foldsize <- as.vector(table(folds))
+    
+    # fold size mean is the product of multiplication of object values by 
+    # its number of observations then divided by the total number of observations
+    mean <- sum(object * foldsize, na.rm = TRUE) / sum(foldsize, na.rm = TRUE)
   }
   
   if (method == "equal") {

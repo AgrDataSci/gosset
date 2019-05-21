@@ -24,7 +24,7 @@ containing the variables in the model.}
 Options are: 'equal', an arithmetic mean; 
 'foldsize', a weighted mean by the size in each fold; 
 'stouffer' a weighted Z-test developed by Stouffer et al. (1949). 
-The two last methods are suggested for cross-validation with imbalaced folds}
+The two last methods are suggested for cross-validation with imbalanced folds}
 
 \item{...}{additional arguments passed to methods}
 }

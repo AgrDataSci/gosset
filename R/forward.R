@@ -70,7 +70,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   }
   
   if (is.null(ncores)) {
-     ncores <- 1
+    ncores <- 1
   }
   
   # define initial parameters for forward selection
@@ -79,7 +79,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   if (select.by %in% c("AIC","deviance")) {
     baseline <-  1e+11
   } else {
-  # if other method, take 0 as baseline
+    # if other method, take 0 as baseline
     baseline <- 0
   }
   
@@ -133,9 +133,9 @@ forward <- function(formula, data, k = NULL, folds = NULL,
                                    .combine = .comb,
                                    .packages = packages) %dopar% (.forward_dopar(as.formula(
                                      paste0(Y, " ~ ", paste(c(var_keep, exp_var[i]), collapse = " + "))
-                                     ),
-                                     args)))
-   
+                                   ),
+                                   args)))
+    
     models <- t(models)
     
     # take the model with best parameter
@@ -151,7 +151,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
       value_best <- modpar[index_best]
       
       best <- .is_lower(value_best, baseline)
-    
+      
     } else {
       
       index_best <- which.max(modpar)
@@ -200,8 +200,8 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     # prevent while loop to broke when the model fits with all variables
     if(length(exp_var) == 0) {
       best <- FALSE
-      }
- 
+    }
+    
   }
   
   # Stop cluster connection
@@ -259,27 +259,3 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   x < y
 }
 
-# # compute Akaike weights
-# .akaike_weights <- function(object){
-# 
-#   # remove NA values
-#   object <- object[!is.na(object)]
-# 
-#   # take the delta(AIC) value
-#   delta_aic <- object - min(object, na.rm = TRUE)
-# 
-#   # and the relative log likelihood
-#   rel_LL <- exp(-0.5 * delta_aic)
-# 
-#   # sum all relative log likelihoods
-#   sum_LL <- sum(rel_LL, na.rm = TRUE)
-# 
-#   # get the Akaike weight 
-#   weights_aic <- rel_LL / sum_LL
-# 
-#   # combine values into a single vector
-#   result <- list(deltaAIC = delta_aic, rel_LL = rel_LL, weights = weights_aic)
-# 
-#   return(result)
-# 
-# }

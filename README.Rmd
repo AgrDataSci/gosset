@@ -44,7 +44,7 @@ The full functionality of **gosset** is illustrated in the package vignette. The
 
 ## Contribution
 
-You are welcome to contribute to this project. Please read our [contribution guide lines](CONTRIBUTING.md). 
+You are welcome to contribute to this project. Please read our [contribution guideline](CONTRIBUTING.md). 
 
 ## Code of Conduct
 

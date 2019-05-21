@@ -67,7 +67,7 @@ kendallTau <- function(x, y){
                    obr <- X[1:nc]
                    prr <- X[(nc + 1):(2 * nc)]
                    
-                   keep <- !is.na(obr)
+                   keep <- !is.na(obr) & !is.na(prr)
                    
                    obr <- obr[keep]
                    

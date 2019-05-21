@@ -12,7 +12,7 @@ pseudoR2(object, ...)
 \item{...}{additional arguments affecting the R-squared produced}
 }
 \value{
-A tidy object containing the pseudo R-squared coefficients:
+A data frame containing the pseudo R-squared coefficients:
 \item{logLik}{log-likelihood from the fitted model}
 \item{logLikNull}{log-likelihood from the null model}
 \item{MaxLik}{maximum likelihood pseudo R-squared}

@@ -4,7 +4,7 @@
 #'
 #' @param object a model object for which pseudo R-squared is desired
 #' @param ... additional arguments affecting the R-squared produced
-#' @return A tidy object containing the pseudo R-squared coefficients:
+#' @return A data frame containing the pseudo R-squared coefficients:
 #' \item{logLik}{log-likelihood from the fitted model}
 #' \item{logLikNull}{log-likelihood from the null model}
 #' \item{MaxLik}{maximum likelihood pseudo R-squared}
