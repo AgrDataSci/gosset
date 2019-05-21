@@ -5,7 +5,7 @@
 \title{Forward stepwise regression for model selection}
 \usage{
 forward(formula, data, k = NULL, folds = NULL, select.by = NULL,
-  ncores = NULL, packages = NULL, ...)
+  akaike.weights = FALSE, ncores = NULL, packages = NULL, ...)
 }
 \arguments{
 \item{formula}{a symbolic description of the model, if set as
@@ -21,6 +21,8 @@ containing the variables in the model.}
 
 \item{select.by}{a character for the goodness-of-fit statistical parameter to
 select the models. Set as 'deviance' by default.}
+
+\item{akaike.weights}{an optional logical object for averaging the goodness of fit coefficients with Akaike weights}
 
 \item{ncores}{a integer for the number of cores to be used in the parallel computing. 
 Set as 1 by default (no parallelisation)}

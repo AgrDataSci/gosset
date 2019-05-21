@@ -15,6 +15,7 @@
 #' 'foldsize', a weighted mean by the size in each fold; 
 #' 'stouffer' a weighted Z-test developed by Stouffer et al. (1949). 
 #' The two last methods are suggested for cross-validation with imbalanced folds
+#' @param akaike.weights an optional logical object for averaging the goodness of fit coefficients with Akaike weights
 #' @param ... additional arguments passed to methods
 #' @return The cross-validation goodness-of-fit estimates for the best model, which are:
 #' \item{AIC}{Akaike Information Criterion}
@@ -80,7 +81,8 @@
 #' @import gnm
 #' @export
 crossvalidation <- function(formula, data, k = NULL,
-                            folds = NULL, mean.method = NULL, ...)
+                            folds = NULL, mean.method = NULL,
+                            akaike.weights = FALSE, ...)
 {
   
   # get dots for extra arguments
@@ -181,7 +183,7 @@ crossvalidation <- function(formula, data, k = NULL,
       .mean_crossvalidation(object = x, 
                             folds = folds, 
                             method = mean.method, 
-                            ...)
+                            akaike.weights = akaike.weights)
     })
   
   # means and estimates as tibble

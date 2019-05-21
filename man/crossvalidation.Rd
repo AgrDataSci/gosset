@@ -5,7 +5,7 @@
 \title{Cross-validation}
 \usage{
 crossvalidation(formula, data, k = NULL, folds = NULL,
-  mean.method = NULL, ...)
+  mean.method = NULL, akaike.weights = FALSE, ...)
 }
 \arguments{
 \item{formula}{an object of class "formula" (or one that can be coerced to that class):
@@ -25,6 +25,8 @@ Options are: 'equal', an arithmetic mean;
 'foldsize', a weighted mean by the size in each fold; 
 'stouffer' a weighted Z-test developed by Stouffer et al. (1949). 
 The two last methods are suggested for cross-validation with imbalanced folds}
+
+\item{akaike.weights}{an optional logical object for averaging the goodness of fit coefficients with Akaike weights}
 
 \item{...}{additional arguments passed to methods}
 }

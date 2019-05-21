@@ -122,7 +122,7 @@ when it makes a single best improvement to the model.</p>
     </div>
 
     <pre class="usage"><span class='fu'>forward</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>folds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>select.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>packages</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>akaike.weights</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>packages</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,6 +150,10 @@ containing the variables in the model.</p></td>
       <th>select.by</th>
       <td><p>a character for the goodness-of-fit statistical parameter to
 select the models. Set as 'deviance' by default.</p></td>
+    </tr>
+    <tr>
+      <th>akaike.weights</th>
+      <td><p>an optional logical object for averaging the goodness of fit coefficients with Akaike weights</p></td>
     </tr>
     <tr>
       <th>ncores</th>

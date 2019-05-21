@@ -118,7 +118,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>crossvalidation</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>folds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>mean.method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>mean.method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>akaike.weights</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,6 +150,10 @@ Options are: 'equal', an arithmetic mean;
 'foldsize', a weighted mean by the size in each fold; 
 'stouffer' a weighted Z-test developed by Stouffer et al. (1949). 
 The two last methods are suggested for cross-validation with imbalanced folds</p></td>
+    </tr>
+    <tr>
+      <th>akaike.weights</th>
+      <td><p>an optional logical object for averaging the goodness of fit coefficients with Akaike weights</p></td>
     </tr>
     <tr>
       <th>...</th>

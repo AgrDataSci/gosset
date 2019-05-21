@@ -43,7 +43,8 @@
 #' @import abind
 #' @export
 forward <- function(formula, data, k = NULL, folds = NULL, 
-                    select.by = NULL, ncores = NULL, packages = NULL, ...) {
+                    select.by = NULL, akaike.weights = FALSE,
+                    ncores = NULL, packages = NULL, ...) {
   
   n <- nrow(data)
   
@@ -62,7 +63,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     select.by <- "deviance"
   }
   
-  opt.select <- c("AIC","deviance", "MaxLik", "CraggUhler")
+  opt.select <- c("AIC","deviance", "MaxLik", "CraggUhler", "Agresti")
   
   if(!select.by %in% opt.select) {
     stop("invalid method in select.by. Options are: ", 
@@ -73,10 +74,13 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     ncores <- 1
   }
   
+  # check if models must be selected by akaike.weights
+  aw <- akaike.weights
+
   # define initial parameters for forward selection
   # baseline 
   # if AIC or deviance, take a very high number
-  if (select.by %in% c("AIC","deviance")) {
+  if (select.by %in% c("AIC","deviance") & .is_false(aw)) {
     baseline <-  1e+11
   } else {
     # if other method, take 0 as baseline
@@ -122,7 +126,10 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     
     dots <- list(...)
     
-    args <- list(data = data, k = k, folds = folds)
+    args <- list(data = data, 
+                 k = k, 
+                 folds = folds, 
+                 akaike.weights = aw)
     
     args <- c(args, dots)
     
@@ -141,24 +148,38 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     # take the model with best parameter
     modpar <- models[, dimnames(models)[[2]] %in% select.by]
     
-    # if AIC or deviance are selected then the model 
-    # with lower value is the best 
-    # other methods take the higher value
-    if (select.by %in% c("AIC","deviance")) {
-      
-      index_best <- which.min(modpar)
-      
-      value_best <- modpar[index_best]
-      
-      best <- .is_lower(value_best, baseline)
-      
-    } else {
-      
+    # if TRUE
+    # then the highest value is taken 
+    if (.is_true(aw)) {
       index_best <- which.max(modpar)
       
       value_best <- modpar[index_best]
       
       best <- .is_greater(value_best, baseline)
+    }
+    
+    # if FALSE
+    # select accordingly to the chosen method
+    if (.is_false(aw)) {
+      # if AIC or deviance are selected then the model 
+      # with lower value is the best 
+      # other methods take the higher value
+      if (select.by %in% c("AIC","deviance")) {
+        
+        index_best <- which.min(modpar)
+        
+        value_best <- modpar[index_best]
+        
+        best <- .is_lower(value_best, baseline)
+        
+      } else {
+        
+        index_best <- which.max(modpar)
+        
+        value_best <- modpar[index_best]
+        
+        best <- .is_greater(value_best, baseline)
+      }
     }
     
     # refresh baseline 
@@ -190,7 +211,9 @@ forward <- function(formula, data, k = NULL, folds = NULL,
       # keep this model for the next run
       var_keep <- c(var_keep, best_model)
       
-      cat("   Best model found:", paste0(Y, " ~ ", paste(var_keep, collapse = " + ")) , "\n\n")
+      cat(" Best model found:", 
+          paste0(Y, " ~ ", paste(var_keep, collapse = " + ")), 
+          "\n\n")
       
     }
     
@@ -213,6 +236,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
                            data = data, 
                            k = k,
                            folds = folds,
+                           akaike.weights = FALSE,
                            ...)
   
   forwardraw <- list(selected_by = select.by,
@@ -257,5 +281,16 @@ forward <- function(formula, data, k = NULL, folds = NULL,
 # logical function for < lower
 .is_lower <- function(x, y) {
   x < y
+}
+
+# take code from isTRUE and keep here to
+# avoid problems with R versions
+.is_true <- function(x) {
+  is.logical(x) && length(x) == 1L && !is.na(x) && x
+}
+
+# same for isFALSE
+.is_false <- function(x) {
+  is.logical(x) && length(x) == 1L && !is.na(x) && !x
 }
 
