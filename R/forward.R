@@ -12,6 +12,7 @@
 #' Set as 1 by default (no parallelisation)
 #' @param packages an optional character vector of packages that the parallel tasks depend on, ignore
 #' if all required packages are loaded to .GlobalEnv 
+#' @param akaike.weights an optional logical object for averaging the goodness of fit coefficients with Akaike weights
 #' @inheritParams crossvalidation
 #' @return The cross-validation goodness-of-fit estimates for the best model, which are:
 #' \item{AIC}{Akaike Information Criterion}
@@ -63,7 +64,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     select.by <- "deviance"
   }
   
-  opt.select <- c("AIC","deviance", "MaxLik", "CraggUhler", "Agresti")
+  opt.select <- c("AIC","deviance","logLik","MaxLik","CraggUhler", "Agresti")
   
   if(!select.by %in% opt.select) {
     stop("invalid method in select.by. Options are: ", 
@@ -89,10 +90,13 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   
   # vector to keep best explanatory variables
   var_keep <- character()
+  
   # keep running if TRUE
   best <- TRUE
+  
   # number of runs
   counter <- 1
+  
   # the names of explanatory variables and response
   exp_var <- c("empty_model", all.vars(formula)[-1])
   
@@ -128,8 +132,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     
     args <- list(data = data, 
                  k = k, 
-                 folds = folds, 
-                 akaike.weights = aw)
+                 folds = folds)
     
     args <- c(args, dots)
     
@@ -143,24 +146,49 @@ forward <- function(formula, data, k = NULL, folds = NULL,
                                    ),
                                    args)))
     
-    models <- t(models)
+    dimnames(models) <- list(1:fs,
+                             paste0("bin",1:k), 
+                             opt.select)
     
-    # take the model with best parameter
-    modpar <- models[, dimnames(models)[[2]] %in% select.by]
+    # take the matrix with selected goodness of fit
+    modpar <- models[, ,dimnames(models)[[3]] %in% select.by]
     
     # if TRUE
     # then the highest value is taken 
     if (.is_true(aw)) {
+      
+      # calculate akaike weigths 
+      modpar <- apply(modpar, 2, function(x) {
+        akaike_weights(x)[[3]]
+        })
+      
+      # then take the stouffer mean
+      modpar <- apply(modpar, 1, function(x) {
+        .mean_crossvalidation(object = x, 
+                              folds = folds,
+                              mean.method = "stouffer")
+        })
+      
+      
       index_best <- which.max(modpar)
       
       value_best <- modpar[index_best]
       
       best <- .is_greater(value_best, baseline)
+    
+      
     }
     
     # if FALSE
     # select accordingly to the chosen method
     if (.is_false(aw)) {
+      
+      modpar <- apply(modpar, 1, function(x){
+        .mean_crossvalidation(x, 
+                              folds = folds, 
+                              ...)
+      })
+      
       # if AIC or deviance are selected then the model 
       # with lower value is the best 
       # other methods take the higher value
@@ -192,10 +220,16 @@ forward <- function(formula, data, k = NULL, folds = NULL,
       best <- FALSE 
     }
     
+    models_avg <- apply(models, c(1,3), function(x){
+      .mean_crossvalidation(x, 
+                            folds = folds, ...)
+    })
+    
     # model calls to add into list of parameters
     call_m <- paste0(Y, " ~ ", paste(paste(var_keep, collapse = " "), exp_var))
-    call_m <- tibble::as_tibble(cbind(call = call_m, models))
+    call_m <- tibble::as_tibble(cbind(call = call_m, models_avg))
     call_m[2:ncol(call_m)] <- lapply(call_m[2:ncol(call_m)], as.numeric)
+    call_m <- list(call_m, models)
     
     # take outputs from this run and add it to the list of parameters
     coeffs[[counter]] <- call_m
@@ -232,12 +266,12 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   
   # Run a cross-validation with this model and take the outputs
   fform <- as.formula(paste0(Y, " ~ ", paste(c(var_keep), collapse = " + ")))
-  model <- crossvalidation(fform,
-                           data = data, 
-                           k = k,
-                           folds = folds,
-                           akaike.weights = FALSE,
-                           ...)
+  
+  args <- list(fform, data, k, folds)
+  
+  args <- c(args, dots)
+  
+  model <- do.call("crossvalidation", args)
   
   forwardraw <- list(selected_by = select.by,
                      forward_coeffs = coeffs)
@@ -255,7 +289,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
 
 # combine results from parallel
 .comb <- function(...) {
-  abind::abind(..., along = 2, force.array = TRUE)
+  abind::abind(..., along = 1, force.array = TRUE)
 }
 
 # model call for parallel
@@ -265,9 +299,15 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   
   m <- do.call(gosset::crossvalidation, args)
   
-  result <- m[[1]]
+  result <- m$raw$estimators
   
-  return(t(result))
+  nfold <- max(m$raw$folds)
+  
+  result  <- array(unlist(result), c(1, nfold, 6))
+  
+  #result <- as.vector(result)
+  
+  return(result)
   
 }
 
