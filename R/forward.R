@@ -84,7 +84,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   # define initial parameters for forward selection
   # baseline 
   # if AIC or deviance, take a very high number
-  if (select.by %in% c("AIC","deviance") & .is_false(aw)) {
+  if (select.by %in% c("AIC","deviance") & !aw) {
     baseline <-  1e+11
   } else {
     # if other method, take 0 as baseline
@@ -152,7 +152,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
                              opt.select)
     
     # take the matrix with selected goodness of fit
-    modpar <- models[, ,dimnames(models)[[3]] %in% select.by]
+    modpar <- models[, , dimnames(models)[[3]] %in% select.by]
     
     if(is.null(dim(modpar))) {
       modpar <- t(as.matrix(modpar))
@@ -161,20 +161,28 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     
     # if TRUE
     # then the highest value is taken 
-    if (.is_true(aw)) {
+    if (aw) {
       
       # calculate akaike weigths 
-      modpar <- apply(modpar, 2, function(x) {
-        akaike_weights(x)[[3]]
+      # adjust to function to the matrix arrangement
+      if (nrow(modpar) > 1) {
+        modpar <- apply(modpar, 2, function(x) {
+          akaike_weights(x)[[3]]
         })
-      
-      # then take the stouffer mean
+      } else {
+        modpar <- apply(modpar, 1, function(x) {
+          akaike_weights(x)[[3]]
+        })
+        # turn it into a matrix again
+        modpar <- t(as.matrix(modpar))
+      }
+     
+      # then take the foldsize mean
       modpar <- apply(modpar, 1, function(x) {
         .mean_crossvalidation(object = x, 
                               folds = folds,
-                              mean.method = "stouffer")
+                              mean.method = "foldsize")
         })
-      
       
       index_best <- which.max(modpar)
       
@@ -187,7 +195,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     
     # if FALSE
     # select accordingly to the chosen method
-    if (.is_false(aw)) {
+    if (!aw) {
       
       modpar <- apply(modpar, 1, function(x){
         .mean_crossvalidation(x, 
@@ -338,16 +346,5 @@ forward <- function(formula, data, k = NULL, folds = NULL,
 # logical function for < lower
 .is_lower <- function(x, y) {
   x < y
-}
-
-# take code from isTRUE and keep here to
-# avoid problems with R versions
-.is_true <- function(x) {
-  is.logical(x) && length(x) == 1L && !is.na(x) && x
-}
-
-# same for isFALSE
-.is_false <- function(x) {
-  is.logical(x) && length(x) == 1L && !is.na(x) && !x
 }
 

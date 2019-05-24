@@ -122,9 +122,11 @@ pseudoR2 <- function(object, ...) {
 
 # method pseudoR2 for pltree objects
 .pseudoR2_pltree <- function(object, newdata = NULL) {
-  # get the response variable
+  
+  # identify the name of response variable
   Y <- all.vars(formula(object))[1]
   
+  # pR2 in a fit sample
   if (is.null(newdata)) {
     #logLik of object
     LL <- deviance(object)[1] / -2
@@ -140,6 +142,7 @@ pseudoR2 <- function(object, ...) {
     
   }
   
+  # pR2 on a validation sample
   if (!is.null(newdata)) {
     # predicted logLik on newdata using object
     LL <- deviance(object, newdata = newdata) / -2
