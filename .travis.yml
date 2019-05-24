@@ -1,10 +1,18 @@
-    
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: r
-r: bioc-devel
-cache:
-  packages: false
+bioc_packages: msa
+r:
+  - oldrel
+  - release
+  - devel
+
+matrix:
+  exclude:
+    - r: devel
+      os: osx
+
+cache: packages
 
 sudo: false
 
