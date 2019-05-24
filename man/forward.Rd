@@ -24,11 +24,10 @@ select the models. Set as 'deviance' by default.}
 
 \item{akaike.weights}{an optional logical object for averaging the goodness of fit coefficients with Akaike weights}
 
-\item{ncores}{a integer for the number of cores to be used in the parallel computing. 
+\item{ncores}{an integer for the number of cores to be used in the parallel computing.
 Set as 1 by default (no parallelisation)}
 
-\item{packages}{an optional character vector of packages that the parallel tasks depend on, ignore
-if all required packages are loaded to .GlobalEnv}
+\item{packages}{an optional character vector of packages that the parallel tasks depend on}
 
 \item{...}{additional arguments passed to methods}
 }

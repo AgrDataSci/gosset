@@ -8,10 +8,9 @@
 #'   \eqn{ y ~ . }   all variables in data are used  
 #' @param select.by a character for the goodness-of-fit statistical parameter to
 #' select the models. Set as 'deviance' by default.
-#' @param ncores a integer for the number of cores to be used in the parallel computing. 
+#' @param ncores an integer for the number of cores to be used in the parallel computing.
 #' Set as 1 by default (no parallelisation)
-#' @param packages an optional character vector of packages that the parallel tasks depend on, ignore
-#' if all required packages are loaded to .GlobalEnv 
+#' @param packages an optional character vector of packages that the parallel tasks depend on
 #' @param akaike.weights an optional logical object for averaging the goodness of fit coefficients with Akaike weights
 #' @inheritParams crossvalidation
 #' @return The cross-validation goodness-of-fit estimates for the best model, which are:
@@ -39,15 +38,23 @@
 #'                family = poisson(link = "log"))
 #' 
 #' }
-#' @import doParallel
-#' @import foreach
 #' @import abind
+#' @import foreach
+#' @import doParallel
 #' @export
 forward <- function(formula, data, k = NULL, folds = NULL, 
                     select.by = NULL, akaike.weights = FALSE,
                     ncores = NULL, packages = NULL, ...) {
   
   n <- nrow(data)
+  
+  # list of additional arguments
+  dots <- list(...)
+  
+  # number of cores to be used
+  if (is.null(ncores)) {
+    ncores <- 1
+  }
   
   # check/define folds before the forward begans 
   # so all steps will use the same sample
@@ -69,10 +76,6 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   if(!select.by %in% opt.select) {
     stop("invalid method in select.by. Options are: ", 
          toString(opt.select), "\n")
-  }
-  
-  if (is.null(ncores)) {
-    ncores <- 1
   }
   
   # check if models must be selected by akaike.weights
@@ -103,9 +106,9 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   Y <- all.vars(formula)[1]
   
   if ("." %in% exp_var) {
-    exp_var <- c("empty_model", names(data)[-match(Y, names(data))])
+    exp_var <- c(names(data)[-match(Y, names(data))], "empty_model")
   } else {
-    exp_var <- c("empty_model", all.vars(formula)[-1])
+    exp_var <- c(all.vars(formula)[-1], "empty_model")
   }
   
   # add a empty variable to the model 
@@ -127,8 +130,6 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     cat("\nForward Selection. Step ", counter, "\n Time: ", date(), "\n")
     
     fs <- length(exp_var)
-    
-    dots <- list(...)
     
     args <- list(data = data, 
                  k = k, 
@@ -152,6 +153,11 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     
     # take the matrix with selected goodness of fit
     modpar <- models[, ,dimnames(models)[[3]] %in% select.by]
+    
+    if(is.null(dim(modpar))) {
+      modpar <- t(as.matrix(modpar))
+    }
+    
     
     # if TRUE
     # then the highest value is taken 
@@ -185,8 +191,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
       
       modpar <- apply(modpar, 1, function(x){
         .mean_crossvalidation(x, 
-                              folds = folds, 
-                              ...)
+                              folds = folds, ...)
       })
       
       # if AIC or deviance are selected then the model 
@@ -218,13 +223,24 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     
     if (best_model == "empty_model") { 
       best <- FALSE 
+      var_keep <- "empty_model"
     }
     
-    models_avg <- apply(models, c(1,3), function(x){
-      .mean_crossvalidation(x, 
-                            folds = folds, ...)
-    })
-    
+    # this is to prevent error in the array dimension 
+    # if all variables are included in the model
+    if (length(dim(models)) == 3) {
+      models_avg <- apply(models, c(1,3), function(x){
+        .mean_crossvalidation(x, 
+                              folds = folds)
+      })
+      
+    }else{
+      models_avg <- apply(models, 2, function(x){
+        .mean_crossvalidation(x, 
+                              folds = folds)
+      })
+    }
+   
     # model calls to add into list of parameters
     call_m <- paste0(Y, " ~ ", paste(paste(var_keep, collapse = " "), exp_var))
     call_m <- tibble::as_tibble(cbind(call = call_m, models_avg))
@@ -254,7 +270,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     # update counter (number of runs in 'while')
     counter <- counter + 1
     
-    # prevent while loop to broke when the model fits with all variables
+    # prevent while loop to broke if the model fits with all variables
     if(length(exp_var) == 0) {
       best <- FALSE
     }
@@ -263,23 +279,26 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   
   # Stop cluster connection
   parallel::stopCluster(cluster)
-  
+
   # Run a cross-validation with this model and take the outputs
   fform <- as.formula(paste0(Y, " ~ ", paste(c(var_keep), collapse = " + ")))
   
-  args <- list(fform, data, k, folds)
+  args <- list(formula = fform, 
+               data = data,
+               k, 
+               folds)
   
   args <- c(args, dots)
   
   model <- do.call("crossvalidation", args)
   
-  forwardraw <- list(selected_by = select.by,
-                     forward_coeffs = coeffs)
+  forward_raw <- list(selected_by = select.by,
+                      forward_coeffs = coeffs)
   
   cat("\n\nEnd of forward selection.\n")
   
   # combine the raw data from forward regression with the cross-validation
-  result <- c(model, forwardraw)
+  result <- c(model, forward_raw)
   
   class(result) <- c("crossvalidation", class(result))
   
@@ -294,21 +313,19 @@ forward <- function(formula, data, k = NULL, folds = NULL,
 
 # model call for parallel
 .forward_dopar <- function(formula, args){
-  
+
   args <- c(formula, args)
-  
+
   m <- do.call(gosset::crossvalidation, args)
-  
+
   result <- m$raw$estimators
-  
+
   nfold <- max(m$raw$folds)
-  
+
   result  <- array(unlist(result), c(1, nfold, 6))
-  
-  #result <- as.vector(result)
-  
+
   return(result)
-  
+
 }
 
 

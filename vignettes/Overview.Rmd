@@ -4,22 +4,19 @@ package: gosset
 author:
 - name: Kauê de Sousa
   affiliation: Department of Agricultural Sciences, Høgskolen i Innlandet, Norway
-output:
-  if (requireNamespace("BiocStyle", quietly = TRUE)) {
-    BiocStyle::html_document
-  } else if (requireNamespace("bookdown", quietly = TRUE)) {
-    bookdown::html_document2
-  } else html_document
+output: html_document
 vignette: >
-  %\VignetteIndexEntry{Introduction to gosset}
+  %\VignetteIndexEntry{Introduction to ClimMobTools}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
-```{r setup, include = FALSE}
+```{r setup, include=FALSE}
+TRAVIS <- !identical(tolower(Sys.getenv("TRAVIS")), "true")
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  purl = TRAVIS
 )
 ```
 
@@ -30,7 +27,7 @@ The **gosset** package provides an environment for modelling metadata and experi
 
 ## Usage
 
-**gosset** vignette is coming up...
+**gosset** vignette is coming soon...
 
 
 
