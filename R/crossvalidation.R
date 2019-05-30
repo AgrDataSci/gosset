@@ -162,9 +162,11 @@ crossvalidation <- function(formula, data, k = NULL,
     deviance(X, newdata = Y)
   }, X = mod, Y = test[])
   
-  pR2 <- t(mapply(function(X, Y) {
-    pseudoR2(X, newdata = Y)[]
-  }, X = mod, Y = test[]))
+  logLik <- Deviance / -2
+  
+  pR2 <- t(mapply(function(X) {
+    pseudoR2(X)[]
+  }, X = mod))
   
   pR2 <- matrix(unlist(pR2), 
                 ncol = 5, 
@@ -172,9 +174,12 @@ crossvalidation <- function(formula, data, k = NULL,
                 dimnames = list(1:k, dimnames(pR2)[[2]]))
   
   # no need to keep null logLik
-  pR2 <- pR2[, -2]
+  pR2 <- pR2[, -c(1,2)]
   
-  estimators <- cbind(AIC = aic, deviance = Deviance, pR2)
+  estimators <- cbind(AIC = aic, 
+                      deviance = Deviance, 
+                      logLik = logLik, 
+                      pR2)
   
   # estimators are then averaged weighted by 
   # number of predicted cases using selected mean method

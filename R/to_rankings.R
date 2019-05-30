@@ -183,7 +183,7 @@ to_rankings <- function(data = NULL, items = NULL,
       rrank <- data[input]
       
       if (any(rrank[,1] == rrank[,2])) {
-        stop("to_rankings cannot handle ties in objects of type 'tricot'\n")
+        stop("ties cannot be handled in objects of type 'tricot'\n")
       }
       
       r <- .pivot_triadic(i = items, r = data[input])
@@ -470,11 +470,16 @@ to_rankings <- function(data = NULL, items = NULL,
   
   # make sure that values in add are integers 
   # where 1 means Better and 2 means Worse
-  add <- t(apply(add, 1, function(x) {
-    x <- as.factor(x)
-    x <- as.integer(x)
+  add <- apply(add, 2, function(x) {
+    x <- ifelse(x == "Better" | x == 1, 1,
+                ifelse(x == "Worse" | x == 2, 2, NA))
     x
-  }))
+  })
+  
+  # stop if any NA
+  if (any(is.na(add))) {
+    "NAs are not allowed in additional rankings"
+  }
   
   # add local to itemnames
   itemnames <- dimnames(R)[[2]]
@@ -498,7 +503,9 @@ to_rankings <- function(data = NULL, items = NULL,
     x <- PlackettLuce::as.rankings(x, input = "ordering", labels = itemnames)
   })
   
-  R <- rbind(R, do.call("rbind", paired))  
+  paired <- do.call("rbind", paired)
+  
+  R <- rbind(R, paired)  
   
   return(R)
   
