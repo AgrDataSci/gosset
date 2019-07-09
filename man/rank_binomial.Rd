@@ -15,10 +15,27 @@ rank_binomial(object, drop.null = FALSE)
 a binary rank
 }
 \description{
-Pairwise comparisons from a ranking object. Ties are not taken into account, then they are added as NA's.
+Binary comparisons from a ranking object. Ties are not taken into account, then they are added as NA's.
 }
 \examples{
-\\notrun{}
+# Rankings with 5 items randomly assigned
+
+i <- as.data.frame(matrix(NA, nrow = 10, ncol = 5))
+names(i) <- paste0("Item",1:5)
+
+r <- as.data.frame(matrix(NA, nrow = 10, ncol = 5))
+names(r) <- paste0("Position_Item",1:5)
+
+for(s in 1:10) {
+  i[s,] <- sample(LETTERS[1:5])
+  r[s,] <- sample(1:5)
+}
+
+R <- to_rankings(items = i,
+                 input = r)
+
+rank_binomial(R)
+
 }
 \seealso{
 \code{\link[PlackettLuce]{rankings}}, \code{\link[psychotools]{paircomp}}

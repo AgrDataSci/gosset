@@ -68,7 +68,7 @@ for(s in 1:10) {
 }
  
 R <- to_rankings(items = i,
-                 rankings = r)
+                 input = r)
 
 ###################################
 
