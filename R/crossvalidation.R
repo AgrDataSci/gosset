@@ -148,19 +148,23 @@ crossvalidation <- function(formula, data, k = NULL,
       
       args <- c(args, dots)
       
-      do.call(model, args)
+      suppressWarnings(do.call(model, args))
       
     })
   
   # take models from train data to compute deviance, pseudo R-squared
   # and the predictions of the test part of the data
   aic <- mapply(function(X, Y) {
-    AIC(X, newdata = Y)
+    try(AIC(X, newdata = Y), silent = TRUE)
   }, X = mod, Y = test[])
   
+  aic <- as.numeric(aic)
+  
   Deviance <- mapply(function(X, Y) {
-    deviance(X, newdata = Y)
+    try(deviance(X, newdata = Y), silent = TRUE)
   }, X = mod, Y = test[])
+  
+  Deviance <- as.numeric(Deviance)
   
   logLik <- Deviance / -2
   
@@ -196,9 +200,20 @@ crossvalidation <- function(formula, data, k = NULL,
   
   # get predictions for these datasets
   preds <- mapply(function(X,Y) {
-    predict(X, newdata = Y)
+    try(predict(X, newdata = Y), silent = TRUE)
   }, X = mod, Y = test[])
   
+  # check error messages in predictions
+  anyerror <- lapply(preds, function(x){
+    any(grepl("Error", x))
+  })
+  
+  anyerror <- unlist(anyerror)
+  
+  if(any(anyerror)){
+    warning("One or more errors found in predicting folds ", 
+            paste(which(anyerror), collapse = ", ") )
+  }
   
   
   result <- list(coeffs = means,
@@ -254,7 +269,7 @@ print.crossvalidation <- function(x, ...) {
     stouffer <- object * wfold
     
     # sum these values and that is the stouffer mean
-    mean <- sum(stouffer)
+    mean <- sum(stouffer, na.rm = TRUE)
   }
   
   if (mean.method == "foldsize") {
