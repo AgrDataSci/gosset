@@ -227,6 +227,12 @@ pseudoR2 <- function(object, ...) {
 
 # Compute log likelihood of a null ranking model
 .logLikNull <- function(object) {
+  
+  dimo <- dim(object)
+  
+  if(is.null(dimo)){
+    object <- as.matrix(t(object))
+  }
   # This function assumes that all coefficients
   # are equal to get a true null estimates
   coeff <- rep(0, dim(object)[[2]])
