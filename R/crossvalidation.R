@@ -148,7 +148,7 @@ crossvalidation <- function(formula, data, k = NULL,
       
       args <- c(args, dots)
       
-      suppressWarnings(do.call(model, args))
+      do.call(model, args)
       
     })
   
