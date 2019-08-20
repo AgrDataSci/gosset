@@ -56,8 +56,8 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     ncores <- 1
   }
   
-  # check/define folds before the forward begans 
-  # so all steps will use the same sample
+  # check/define folds before starting forward selection
+  # to make sure that all steps will use the same sample
   if(is.null(k)) {
     k <- 10
   }
@@ -81,9 +81,10 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   # check if models must be selected by akaike.weights
   aw <- akaike.weights
 
-  # define initial parameters for forward selection
+  # Define initial parameters for forward selection
   # baseline 
-  # if AIC or deviance, take a very high number
+  # if AIC or deviance without akaike.weights
+  # take a very high number
   if (select.by %in% c("AIC","deviance") & !aw) {
     baseline <-  1e+11
   } else {
@@ -100,21 +101,24 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   # number of runs
   counter <- 1
   
-  # the names of explanatory variables and response
+  # get the names of explanatory and response variables
   exp_var <- c("empty_model", all.vars(formula)[-1])
   
   Y <- all.vars(formula)[1]
   
+  # it explanatory variables are not specified
+  # take then from data
   if ("." %in% exp_var) {
-    exp_var <- c(names(data)[-match(Y, names(data))], "empty_model")
+    exp_var <- c("empty_model", names(data)[-match(Y, names(data))])
   } else {
-    exp_var <- c(all.vars(formula)[-1], "empty_model")
+    exp_var <- c("empty_model", all.vars(formula)[-1])
   }
   
   # add a empty variable to the model 
-  data$empty_model <- rep(1, times = n)
+  data$empty_model <- rep(0, times = n)
+  data <- data[,c(Y, exp_var)]
   
-  # a list to keep the parameters from each step 
+  # a list to keep the goodness-of-fit coefficients from each step 
   coeffs <- list()
   
   cat("\nCreating", ncores, "parallel cluster(s) of", parallel::detectCores(), 
@@ -142,10 +146,12 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     # get predictions from nodes and put in matrix
     models <- try(foreach::foreach(i = i,
                                    .combine = .comb,
-                                   .packages = packages) %dopar% (.forward_dopar(as.formula(
-                                     paste0(Y, " ~ ", paste(c(var_keep, exp_var[i]), collapse = " + "))
-                                   ),
-                                   args)))
+                                   .packages = packages) %dopar% 
+                    (.forward_dopar(
+                      as.formula(paste0(Y, " ~ ", paste(c(var_keep, exp_var[i]), 
+                                                        collapse = " + "))), args)
+                     )
+                  )
     
     dimnames(models) <- list(1:fs,
                              paste0("bin",1:k), 
@@ -159,12 +165,12 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     }
     
     
-    # if TRUE
-    # then the highest value is taken 
+    # if akaike.weights TRUE
+    # then calculate it and take the highest value
     if (aw) {
       
       # calculate akaike weigths 
-      # adjust to function to the matrix arrangement
+      # adjust function to the matrix arrangement
       if (nrow(modpar) > 1) {
         modpar <- apply(modpar, 2, function(x) {
           akaike_weights(x)[[3]]
@@ -177,11 +183,11 @@ forward <- function(formula, data, k = NULL, folds = NULL,
         modpar <- t(as.matrix(modpar))
       }
      
-      # then take the foldsize mean
+      # then take the stouffer mean
       modpar <- apply(modpar, 1, function(x) {
         .mean_crossvalidation(object = x, 
                               folds = folds,
-                              mean.method = "foldsize")
+                              mean.method = "stouffer")
         })
       
       index_best <- which.max(modpar)
@@ -229,11 +235,6 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     # take the name of best variable
     best_model <- exp_var[index_best]
     
-    if (best_model == "empty_model") { 
-      best <- FALSE 
-      var_keep <- "empty_model"
-    }
-    
     # this is to prevent error in the array dimension 
     # if all variables are included in the model
     if (length(dim(models)) == 3) {
@@ -258,6 +259,14 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     # take outputs from this run and add it to the list of parameters
     coeffs[[counter]] <- call_m
     
+    if (best_model == "empty_model") { 
+      best <- FALSE 
+      var_keep <- "empty_model"
+      
+      cat("No model identified to surpass the intercept-only model\n")
+      
+    }
+    
     if (best) {
       
       # remove best variable for the next run
@@ -269,7 +278,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
       # keep this model for the next run
       var_keep <- c(var_keep, best_model)
       
-      cat(" Best model found:", 
+      cat("Best model found:", 
           paste0(Y, " ~ ", paste(var_keep, collapse = " + ")), 
           "\n\n")
       
@@ -289,7 +298,8 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   parallel::stopCluster(cluster)
 
   # Run a cross-validation with this model and take the outputs
-  fform <- as.formula(paste0(Y, " ~ ", paste(c(var_keep), collapse = " + ")))
+  fform <- as.formula(paste0(Y, " ~ ", 
+                             paste(c(var_keep), collapse = " + ")))
   
   args <- list(formula = fform, 
                data = data,

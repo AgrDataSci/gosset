@@ -16,18 +16,18 @@
 #' 'stouffer' a weighted Z-test developed by Stouffer et al. (1949). 
 #' The two last methods are suggested for cross-validation with imbalanced folds
 #' @param ... additional arguments passed to methods
-#' @return The cross-validation goodness-of-fit estimates for the best model, which are:
+#' @return The cross-validation goodness-of-fit estimates, which are:
 #' \item{AIC}{Akaike Information Criterion}
 #' \item{deviance}{Model deviance}
 #' \item{logLik}{Log-Likelihood}
 #' \item{MaxLik}{Maximum likelihood pseudo R-squared}
 #' \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
 #' \item{Agresti}{Agresti pseudo R-squared}
-#' Cross-validation estimates are computed using the fitted models on the validation samples.
+#' Cross-validation estimates are computed using the trained models on the validation samples.
 #' @seealso \code{\link[gnm]{gnm}}, \code{\link[PlackettLuce]{pltree}}, 
 #' \code{\link[psychotree]{bttree}}
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' 
 #' # Generalized Linear Models
 #' 
@@ -35,7 +35,7 @@
 #' 
 #' crossvalidation(Temp ~ Wind + Solar.R,
 #'                 data = airquality,
-#'                 k = 5,
+#'                 k = 3,
 #'                 family = poisson())
 #' 
 #' ########################################
@@ -148,11 +148,11 @@ crossvalidation <- function(formula, data, k = NULL,
       
       args <- c(args, dots)
       
-      do.call(model, args)
+      try(do.call(model, args))
       
     })
   
-  # take models from train data to compute deviance, pseudo R-squared
+  # take models from training data to compute deviance, pseudo R-squared
   # and the predictions of the test part of the data
   aic <- mapply(function(X, Y) {
     try(AIC(X, newdata = Y), silent = TRUE)
@@ -169,7 +169,7 @@ crossvalidation <- function(formula, data, k = NULL,
   logLik <- Deviance / -2
   
   pR2 <- t(mapply(function(X) {
-    pseudoR2(X)[]
+    try(pseudoR2(X)[])
   }, X = mod))
   
   pR2 <- matrix(unlist(pR2), 
@@ -228,6 +228,7 @@ crossvalidation <- function(formula, data, k = NULL,
   return(result)
 }
 
+#' @rdname crossvalidation
 #' @method print crossvalidation
 #' @export
 print.crossvalidation <- function(x, ...) {
@@ -236,6 +237,45 @@ print.crossvalidation <- function(x, ...) {
   cat("Cross-validation estimates: \n")
   print(x[[1]])
 }
+
+#' @rdname crossvalidation
+#' @method predict crossvalidation
+#' @export
+predict.crossvalidation <- function(object, data = NULL, ...) {
+  
+  models <- object$raw$models
+  
+  if (is.null(data)) {
+    data <- object$raw$data
+  }
+  
+  preds <- lapply(models, function(x){
+    predict(x, data)
+  })
+  
+  dims <- c(dim(data)[[1]],
+            dim(preds[[1]])[[2]], 
+            length(preds))
+  
+  if (length(dims) == 2) {
+    dims <- c(dims[[1]], 1, dims[[2]])
+  }
+  
+  name <- dimnames(preds[[1]])[[2]]
+  
+  preds <- array(as.numeric(unlist(preds)), 
+                 dim = dims)
+  
+  preds <- apply(preds, c(1,2), mean)
+  
+  dimnames(preds)[[2]] <- name
+  
+  return(preds)
+  
+}
+
+
+
 
 # Compute weighted means in cross-validation
 .mean_crossvalidation <- function(object, folds = NULL, 

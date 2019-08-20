@@ -137,11 +137,10 @@ pseudoR2 <- function(object, ...) {
     
   }
   
-  # zeros into NA
-  R[R == 0] <- NA
-  
   # logLik of a null model
-  LLNull <- .logLikNull(R)
+  LLNull <- PlackettLuce::PlackettLuce(R)
+  LLNull <- LLNull$null.loglik
+  
   
   pR2 <- .getpseudoR2(LLNull, LL, n)
   

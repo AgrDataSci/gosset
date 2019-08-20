@@ -2,10 +2,16 @@
 % Please edit documentation in R/crossvalidation.R
 \name{crossvalidation}
 \alias{crossvalidation}
+\alias{print.crossvalidation}
+\alias{predict.crossvalidation}
 \title{Cross-validation}
 \usage{
 crossvalidation(formula, data, k = NULL, folds = NULL,
   mean.method = NULL, ...)
+
+\method{print}{crossvalidation}(x, ...)
+
+\method{predict}{crossvalidation}(object, data = NULL, ...)
 }
 \arguments{
 \item{formula}{an object of class "formula" (or one that can be coerced to that class):
@@ -29,20 +35,20 @@ The two last methods are suggested for cross-validation with imbalanced folds}
 \item{...}{additional arguments passed to methods}
 }
 \value{
-The cross-validation goodness-of-fit estimates for the best model, which are:
+The cross-validation goodness-of-fit estimates, which are:
 \item{AIC}{Akaike Information Criterion}
 \item{deviance}{Model deviance}
 \item{logLik}{Log-Likelihood}
 \item{MaxLik}{Maximum likelihood pseudo R-squared}
 \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
 \item{Agresti}{Agresti pseudo R-squared}
-Cross-validation estimates are computed using the fitted models on the validation samples.
+Cross-validation estimates are computed using the trained models on the validation samples.
 }
 \description{
 Methods for measuring the performance of a predictive model on sets of test data.
 }
 \examples{
-\dontrun{
+\donttest{
 
 # Generalized Linear Models
 
@@ -50,7 +56,7 @@ data("airquality")
 
 crossvalidation(Temp ~ Wind + Solar.R,
                 data = airquality,
-                k = 5,
+                k = 3,
                 family = poisson())
 
 ########################################
