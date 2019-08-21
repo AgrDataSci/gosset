@@ -20,8 +20,8 @@
 #'   r[s,] <- sample(1:5)
 #' }
 #' 
-#' R <- to_rankings(items = i,
-#'                  input = r)
+#' R <- rank_PL(items = i,
+#'              input = r)
 #' 
 #' rank_binomial(R)
 #' 
@@ -30,11 +30,11 @@ rank_binomial <- function(object, drop.null = FALSE)
 {
   
   if (.is_grouped_rankings(object)) {
-    object <- to_paircomp(object)
+    object <- rank_paircomp(object)
   }
   
   if (.is_rankings(object)) {
-    object <- to_paircomp(object)
+    object <- rank_paircomp(object)
   }
   
   # take all possible combinations between items
@@ -58,13 +58,6 @@ rank_binomial <- function(object, drop.null = FALSE)
   
   # take the name of all items
   players <- factor(sort(unique(as.vector(unlist(object[,c("player1","player2")])))))
-  
-  # take all possible combinations between items
-  #comb <- t(.combn2(players, 2))
-  
-  # generate two vector with equal factors corresponding to players
-  #player1 <- factor(players[comb[, 1]], levels = players)
-  #player2 <- factor(players[comb[, 2]], levels = players)
   
   # run over object looking for corresponding combination and 
   # add the results into the new dataframe object_bin

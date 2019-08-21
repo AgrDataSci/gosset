@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -89,6 +89,9 @@
       <a href="../articles/Overview.html">Introduction to gosset</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -118,7 +121,10 @@
     </div>
 
     <pre class="usage"><span class='fu'>crossvalidation</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>folds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>mean.method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>mean.method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for crossvalidation</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -148,25 +154,28 @@ containing the variables in the model.</p></td>
       <td><p>a character for the method to calculate the mean of cross-validation estimators. 
 Options are: 'equal', an arithmetic mean; 
 'foldsize', a weighted mean by the size in each fold; 
-'stouffer' a weighted Z-test developed by Stouffer et al. (1949). 
-The two last methods are suggested for cross-validation with imbalanced folds</p></td>
+'stouffer' a weighted Z-test developed by Stouffer et al. (1949).</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>additional arguments passed to methods</p></td>
     </tr>
+    <tr>
+      <th>object</th>
+      <td><p>a model object of class <code>"crossvalidation"</code>.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The cross-validation goodness-of-fit estimates for the best model, which are:</p>
+    <p>The cross-validation goodness-of-fit estimates, which are:</p>
 <dt>AIC</dt><dd><p>Akaike Information Criterion</p></dd>
 <dt>deviance</dt><dd><p>Model deviance</p></dd>
 <dt>logLik</dt><dd><p>Log-Likelihood</p></dd>
 <dt>MaxLik</dt><dd><p>Maximum likelihood pseudo R-squared</p></dd>
 <dt>CraggUhler</dt><dd><p>Cragg and Uhler's pseudo R-squared</p></dd>
 <dt>Agresti</dt><dd><p>Agresti pseudo R-squared</p></dd>
-Cross-validation estimates are computed using the fitted models on the validation samples.
+Cross-validation estimates are computed using the trained models on the validation samples.
 
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -176,18 +185,25 @@ Cross-validation estimates are computed using the fitted models on the validatio
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
+    <pre class="examples"><div class='input'>
 <span class='co'># Generalized Linear Models</span>
 
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='st'>"airquality"</span>)
 
 <span class='fu'>crossvalidation</span>(<span class='no'>Temp</span> ~ <span class='no'>Wind</span> + <span class='no'>Solar.R</span>,
                 <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>airquality</span>,
-                <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-                <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>poisson</a></span>())
+                <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+                <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>poisson</a></span>())</div><div class='output co'>#&gt; Model formula:
+#&gt; Temp ~ Wind + Solar.R 
+#&gt;  
+#&gt; Cross-validation estimates: 
+#&gt; <span style='color: #555555;'># A tibble: 1 x 6</span><span>
+#&gt;     AIC deviance logLik MaxLik CraggUhler Agresti
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>  346.     340.  -</span><span style='color: #BB0000;'>170.</span><span>  0.255      0.382   0.268</div><div class='input'>                
 
-<span class='co'>########################################</span>
-
+########################################
+</div></span><span class='co'># NOT RUN {</span>
 <span class='co'># PlackettLuce Model</span>
 <span class='co'># beans data from PlackettLuce</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"PlackettLuce"</span>)

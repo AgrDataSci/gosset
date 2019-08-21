@@ -34,7 +34,7 @@ data("breadwheat", package = "gosset")
 # into a object of class 'grouped_rankings'
 names(breadwheat)
 
-G <- to_rankings(breadwheat, 
+G <- rank_PL(breadwheat, 
                  items = c("variety_a","variety_b","variety_c"), 
                  rankings = c("overall_best","overall_worst"),
                  type = "tricot",

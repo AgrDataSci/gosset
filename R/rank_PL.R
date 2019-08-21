@@ -6,11 +6,18 @@
 #' An id is required if long format. 
 #' @param items a data frame or index of \code{data} specifying the column(s) containing the item names
 #' @param input a data frame or index of \code{data} specifying the column(s) containing the values to be ranked
-#' @param ... additional arguments passed to methods
+#' @param ... additional arguments passed to methods. See Details
 #' @return a PlackettLuce "rankings" object, which is a matrix of dense rankings 
 #' @seealso \code{\link[PlackettLuce]{rankings}}
+#' @details 
+#' type: a character describing the type of data, c("rank", "tricot")
+#' 
+#' grouped.rankings: logical, to return an object of class "grouped_rankings"
+#' 
+#' id: a data frame or index of \code{data} indicating the ids for "long" rankings
+#' 
+#' add.rank: a data frame for additional rankings if data of type "tricot".
 #' @examples
-#'  
 #' # A matrix with 10 rankings of 5 items (A, B, C, D, E)
 #' # with numeric values as "rank"
 #' set.seed(123)
@@ -19,27 +26,27 @@
 #'             input = runif(50, 1, 3))
 #' 
 #' # return an object of class 'rankings'
-#' R <- to_rankings(df,
-#'                  items = 2,
-#'                  input = 3,
-#'                  id = 1)
+#' R <- rank_PL(df,
+#'              items = 2,
+#'              input = 3,
+#'              id = 1)
 #' 
 #' # rankings can be computed in ascending order
-#' R <- to_rankings(df,
-#'                  items = 2,
-#'                  input = 3,
-#'                  id = 1, 
-#'                  ascending = TRUE)
+#' R <- rank_PL(df,
+#'              items = 2,
+#'              input = 3,
+#'              id = 1,
+#'              ascending = TRUE)
 #' 
 #' 
 #' # return an object of class 'grouped_rankings'
-#' R <- to_rankings(df,
-#'                  items = 2,
-#'                  input = 3,
-#'                  id = 1,
-#'                  grouped.rankings = TRUE)
-#'  
-#' ##################################
+#' R <- rank_PL(df,
+#'              items = 2,
+#'              input = 3,
+#'              id = 1,
+#'              grouped.rankings = TRUE)
+#' 
+#' ######################
 #' 
 #' # Rankings with 5 items randomly assigned
 #' 
@@ -53,20 +60,20 @@
 #'   i[s,] <- sample(LETTERS[1:5])
 #'   r[s,] <- sample(1:5)
 #' }
-#'  
-#' R <- to_rankings(items = i,
-#'                  input = r)
-#'
-#' ###################################
+#' 
+#' R <- rank_PL(items = i,
+#'              input = r)
+#' 
+#' ######################
 #' 
 #' # breadwheat data, which is an object ordered in the 'tricot' format
-#' # each observer compares 3 varieties randomly distributed from a list of 16 
+#' # each observer compares 3 varieties randomly distributed from a list of 16
 #' data("breadwheat", package = "gosset")
-#'   
-#' R <- to_rankings(breadwheat,
-#'                  items = c("variety_a","variety_b","variety_c"),
-#'                  input = c("overall_best","overall_worst"),
-#'                  type = "tricot")
+#' 
+#' R <- rank_PL(breadwheat,
+#'              items = c("variety_a","variety_b","variety_c"),
+#'              input = c("overall_best","overall_worst"),
+#'              type = "tricot")
 #' 
 #' ######################
 #' 
@@ -79,21 +86,21 @@
 #' # comparison with local item is added as an additional rankings, then
 #' # each of the 3 varieties are compared separately with the local item,
 #' # it return a object 1 + n_c (number of comparisons) larger (in rows) than the input data
-#' # combining this with covariates from other dataset is easy since 
+#' # combining this with covariates from other dataset is easy since
 #' # the function keeps an internal id
 #' # argument 'add.rank' must be passed as a dataframe
-#' R <- to_rankings(data = beans,
-#'                  items = c(1:3),
-#'                  input = c(4:5),
-#'                  type = "tricot",
-#'                  add.rank = beans[c(6:8)],
-#'                  grouped.rankings = TRUE)
-#' 
+#' R <- rank_PL(data = beans,
+#'              items = c(1:3),
+#'              input = c(4:5),
+#'              type = "tricot",
+#'              add.rank = beans[c(6:8)],
+#'              grouped.rankings = TRUE)
+#'  
 #' @importFrom dplyr arrange bind_cols bind_rows group_by mutate  
 #' @import tibble
 #' @import tidyr
 #' @export
-to_rankings <- function(data = NULL, items = NULL,
+rank_PL <- function(data = NULL, items = NULL,
                         input = NULL, ...) {
   
   # get extra arguments
@@ -232,6 +239,19 @@ to_rankings <- function(data = NULL, items = NULL,
 
 }
 
+#' Plackett-Luce rankings
+#'
+#' Create an object of class "rankings" from a dataframe or matrix
+#' 
+#' @inheritParams rank_PL
+#' @export
+to_rankings <- function(...){
+  
+  warning("to_rankings is deprecated and will be removed in v0.2-0, use 'rank_PL' instead \n")
+  
+  rank_PL(...)
+  
+}
 
 # organise numbered rankings
 .pivot_default <- function(id, i, r, ascending){
@@ -301,7 +321,7 @@ to_rankings <- function(data = NULL, items = NULL,
   # they are added in the last place
   if (any(is_decimal(r[["rank"]]))) {
 
-    r <- num2rank(r$rank, id = r$id, bindwith = r$item)
+    r <- rank_decimal(r$rank, id = r$id, bindwith = r$item)
     
     names(r)[3] <- "item"
     
@@ -513,7 +533,7 @@ to_rankings <- function(data = NULL, items = NULL,
 
 
 # compute a ascending rank 
-.asc_rank <- num2rank <- function(object){
+.asc_rank <- function(object){
   
   object <- split(object, object$id)
   

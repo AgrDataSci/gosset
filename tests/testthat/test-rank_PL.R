@@ -1,4 +1,4 @@
-context("test-rankings")
+context("test-rank_PL")
 
 library("gosset")
 library("PlackettLuce")
@@ -46,7 +46,7 @@ R <- grouped_rankings(R, rep(1:n, 4))
 R <- R[1:length(R), , as.grouped_rankings = FALSE]
 
 # rankings produced by to_rankings
-G <- to_rankings(data = tricot,
+G <- rank_PL(data = tricot,
                  items = c("variety_a","variety_b","variety_c"),
                  input = c("best","worst"),
                  type = "tricot",

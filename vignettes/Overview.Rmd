@@ -6,7 +6,7 @@ author:
   affiliation: Department of Agricultural Sciences, Høgskolen i Innlandet, Norway
 output: html_document
 vignette: >
-  %\VignetteIndexEntry{Introduction to ClimMobTools}
+  %\VignetteIndexEntry{Introduction to gosset}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---

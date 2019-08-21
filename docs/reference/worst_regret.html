@@ -66,7 +66,7 @@ diversification strategies." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -92,6 +92,9 @@ diversification strategies." />
       <a href="../articles/Overview.html">Introduction to gosset</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -156,7 +159,7 @@ diversification strategies.</p>
 <span class='co'># convert the tricot rankings from breadwheat data</span>
 <span class='co'># into a object of class 'grouped_rankings'</span>
 
-<span class='no'>G</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='to_rankings.html'>to_rankings</a></span>(<span class='no'>breadwheat</span>,
+<span class='no'>G</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rank_PL.html'>rank_PL</a></span>(<span class='no'>breadwheat</span>,
                  <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"variety_a"</span>,<span class='st'>"variety_b"</span>,<span class='st'>"variety_c"</span>),
                  <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"overall_best"</span>,<span class='st'>"overall_worst"</span>),
                  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"tricot"</span>,

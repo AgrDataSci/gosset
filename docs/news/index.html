@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pseudo R-squared — pseudoR2 • gosset</title>
+<title>Changelog • gosset</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,7 @@
 
 
 
-<meta property="og:title" content="Pseudo R-squared — pseudoR2" />
-
-<meta property="og:description" content="Regression coefficient to evaluate goodness-of-fit in a given model" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Changelog" />
 
 
 
@@ -50,7 +47,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -109,68 +106,46 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pseudo R-squared</h1>
-    
-    <div class="hidden name"><code>pseudoR2.Rd</code></div>
+      <h1>Changelog <small></small></h1>
+      
     </div>
 
-    <div class="ref-description">
-    
-    <p>Regression coefficient to evaluate goodness-of-fit in a given model</p>
-    
-    </div>
-
-    <pre class="usage"><span class='fu'>pseudoR2</span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>object</th>
-      <td><p>a model object for which pseudo R-squared is desired</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>additional arguments affecting the R-squared produced</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A data frame containing the pseudo R-squared coefficients:</p>
-<dt>logLik</dt><dd><p>log-likelihood from the fitted model</p></dd>
-<dt>logLikNull</dt><dd><p>log-likelihood from the null model</p></dd>
-<dt>MaxLik</dt><dd><p>maximum likelihood pseudo R-squared</p></dd>
-<dt>CraggUhler</dt><dd><p>Cragg and Uhler's pseudo R-squared</p></dd>
-<dt>Agresti</dt><dd><p>Agresti pseudo R-squared</p></dd>
-
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='st'>"airquality"</span>)
-
-<span class='no'>mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></span>(<span class='no'>Temp</span> ~ <span class='no'>Wind</span> + <span class='no'>Solar.R</span>,
-           <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>airquality</span>,
-           <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>poisson</a></span>())
-
-<span class='fu'>pseudoR2</span>(<span class='no'>mod</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 5</span><span>
-#&gt;   logLik logLikNull MaxLik CraggUhler Agresti
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>  -</span><span style='color: #BB0000;'>59.1</span><span>      -</span><span style='color: #BB0000;'>89.3</span><span>  0.340      0.481   0.339</div><div class='input'>
-</div></span></pre>
+    <div id="climmobtools-0-1-1" class="section level1">
+<h1 class="page-header">
+<a href="#climmobtools-0-1-1" class="anchor"></a>ClimMobTools 0.1-1</h1>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New Features</h2>
+<ul>
+<li>
+<code>predict</code> method for crossvalidation objects.</li>
+<li>
+<code>pseudoR2</code> for object of class “pltree” extracts null loglik from PlackettLuce.</li>
+<li>replace <code>to_rankings</code> by <code>rank_PL</code>. Warning message added</li>
+<li>replace <code>num2rank</code> by <code>rank_decimal</code>. No warning message added</li>
+<li>replace <code>to_paircomp</code> by <code>rank_paircomp</code>. No warning message added</li>
+</ul>
+</div>
+</div>
+    <div id="climmobtools-0-1-0" class="section level1">
+<h1 class="page-header">
+<a href="#climmobtools-0-1-0" class="anchor"></a>ClimMobTools 0.1-0</h1>
+<ul>
+<li>GitHub-only release of prototype package.</li>
+</ul>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+    <div id="tocnav">
+      <h2>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="#climmobtools-0-1-1">0.1-1</a></li>
+        <li><a href="#climmobtools-0-1-0">0.1-0</a></li>
+      </ul>
+    </div>
   </div>
+
 </div>
 
       <footer>

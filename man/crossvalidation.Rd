@@ -2,16 +2,13 @@
 % Please edit documentation in R/crossvalidation.R
 \name{crossvalidation}
 \alias{crossvalidation}
-\alias{print.crossvalidation}
 \alias{predict.crossvalidation}
 \title{Cross-validation}
 \usage{
 crossvalidation(formula, data, k = NULL, folds = NULL,
   mean.method = NULL, ...)
 
-\method{print}{crossvalidation}(x, ...)
-
-\method{predict}{crossvalidation}(object, data = NULL, ...)
+\method{predict}{crossvalidation}(object, ...)
 }
 \arguments{
 \item{formula}{an object of class "formula" (or one that can be coerced to that class):
@@ -29,10 +26,11 @@ containing the variables in the model.}
 \item{mean.method}{a character for the method to calculate the mean of cross-validation estimators. 
 Options are: 'equal', an arithmetic mean; 
 'foldsize', a weighted mean by the size in each fold; 
-'stouffer' a weighted Z-test developed by Stouffer et al. (1949). 
-The two last methods are suggested for cross-validation with imbalanced folds}
+'stouffer' a weighted Z-test developed by Stouffer et al. (1949).}
 
 \item{...}{additional arguments passed to methods}
+
+\item{object}{a model object of class \code{"crossvalidation"}.}
 }
 \value{
 The cross-validation goodness-of-fit estimates, which are:
@@ -48,8 +46,7 @@ Cross-validation estimates are computed using the trained models on the validati
 Methods for measuring the performance of a predictive model on sets of test data.
 }
 \examples{
-\donttest{
-
+ 
 # Generalized Linear Models
 
 data("airquality")
@@ -58,9 +55,10 @@ crossvalidation(Temp ~ Wind + Solar.R,
                 data = airquality,
                 k = 3,
                 family = poisson())
+                
 
 ########################################
-
+\dontrun{
 # PlackettLuce Model
 # beans data from PlackettLuce
 library("PlackettLuce")

@@ -31,8 +31,8 @@ for(s in 1:10) {
   r[s,] <- sample(1:5)
 }
 
-R <- to_rankings(items = i,
-                 input = r)
+R <- rank_PL(items = i,
+             input = r)
 
 rank_binomial(R)
 

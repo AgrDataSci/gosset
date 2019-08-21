@@ -43,7 +43,7 @@ kendallTau <- function(x, y){
   if (any(is_decimal(x))) {
     
    x <- t(apply(x, 1, function(X){
-      t(num2rank(X)["rank"])
+      t(rank_decimal(X)["rank"])
     }))
   
   }
@@ -51,7 +51,7 @@ kendallTau <- function(x, y){
   if (any(is_decimal(y))) {
     
     y <- t(apply(y, 1, function(X){
-      t(num2rank(X)["rank"])
+      t(rank_decimal(X)["rank"])
     }))
     
   }

@@ -21,7 +21,7 @@
 #' colnames(R) <- c("apple", "banana", "orange", "pear")
 #' R <- PlackettLuce::as.rankings(R)
 #' 
-#' to_paircomp(R)
+#' rank_paircomp(R)
 #' 
 #' #############################################
 #' 
@@ -30,17 +30,17 @@
 #' 
 #' # convert the tricot rankings from breadwheat data
 #' # into a object of class 'rankings' from PlackettLuce
-#' R <- to_rankings(breadwheat,
-#'                  items = c("variety_a","variety_b","variety_c"),
-#'                  rankings = c("overall_best","overall_worst"),
-#'                  type = "tricot")
+#' R <- rank_PL(breadwheat,
+#'              items = c("variety_a","variety_b","variety_c"),
+#'              rankings = c("overall_best","overall_worst"),
+#'              type = "tricot")
+#'  
 #' 
-#' 
-#' PC <- to_paircomp(R)
+#' PC <- rank_paircomp(R)
 #' 
 #' 
 #' @export
-to_paircomp <- function(object){
+rank_paircomp <- function(object){
   
   R <- object
   

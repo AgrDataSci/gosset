@@ -36,7 +36,7 @@ is_decimal <- function(x) {
   return(x)
 }
 
-#' Numbers into rankings
+#' Decimals into rankings
 #'
 #' Group and convert numeric values into integer ranks
 #'
@@ -52,7 +52,7 @@ is_decimal <- function(x) {
 #' 
 #' x <- c(1, 2, 1.4, 3, 4.01, -0.5)
 #' 
-#' num2rank(x)
+#' rank_decimal(x)
 #' 
 #' # passing a vector with an id
 #' # ids are used to group values and 
@@ -61,10 +61,10 @@ is_decimal <- function(x) {
 #' x <- c(1, 2, 1.4, 3, 4.01, -0.5)
 #' id <- c(rep(1, 3), rep(2, 3))
 #' 
-#' num2rank(x, id = id)
+#' rank_decimal(x, id = id)
 #' 
 #' @export
-num2rank <- function(object, id = NULL, ...){
+rank_decimal <- function(object, id = NULL, ...){
   
   dots <- list(...)
   

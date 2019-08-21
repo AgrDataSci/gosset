@@ -14,7 +14,7 @@
 #' Options are: 'equal', an arithmetic mean; 
 #' 'foldsize', a weighted mean by the size in each fold; 
 #' 'stouffer' a weighted Z-test developed by Stouffer et al. (1949). 
-#' The two last methods are suggested for cross-validation with imbalanced folds
+#' @param object a model object of class \code{"crossvalidation"}.
 #' @param ... additional arguments passed to methods
 #' @return The cross-validation goodness-of-fit estimates, which are:
 #' \item{AIC}{Akaike Information Criterion}
@@ -27,8 +27,7 @@
 #' @seealso \code{\link[gnm]{gnm}}, \code{\link[PlackettLuce]{pltree}}, 
 #' \code{\link[psychotree]{bttree}}
 #' @examples
-#' \donttest{
-#' 
+#'  
 #' # Generalized Linear Models
 #' 
 #' data("airquality")
@@ -37,9 +36,11 @@
 #'                 data = airquality,
 #'                 k = 3,
 #'                 family = poisson())
+#'                 
 #' 
 #' ########################################
-#' 
+#' @examples 
+#' \dontrun{
 #' # PlackettLuce Model
 #' # beans data from PlackettLuce
 #' library("PlackettLuce")
@@ -228,7 +229,6 @@ crossvalidation <- function(formula, data, k = NULL,
   return(result)
 }
 
-#' @rdname crossvalidation
 #' @method print crossvalidation
 #' @export
 print.crossvalidation <- function(x, ...) {
@@ -241,19 +241,23 @@ print.crossvalidation <- function(x, ...) {
 #' @rdname crossvalidation
 #' @method predict crossvalidation
 #' @export
-predict.crossvalidation <- function(object, data = NULL, ...) {
+predict.crossvalidation <- function(object, ...) {
+  
+  dots <- list(...)
+  
+  newdata <- dots[["newdata"]]
+  
+  if (is.null(newdata)) {
+    newdata <- object$raw$data
+  }
   
   models <- object$raw$models
   
-  if (is.null(data)) {
-    data <- object$raw$data
-  }
-  
   preds <- lapply(models, function(x){
-    predict(x, data)
+    predict(object = x, newdata = newdata)
   })
   
-  dims <- c(dim(data)[[1]],
+  dims <- c(dim(newdata)[[1]],
             dim(preds[[1]])[[2]], 
             length(preds))
   
