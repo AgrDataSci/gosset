@@ -164,7 +164,6 @@ forward <- function(formula, data, k = NULL, folds = NULL,
       modpar <- t(as.matrix(modpar))
     }
     
-    
     # if akaike.weights TRUE
     # then calculate it and take the highest value
     if (aw) {
@@ -258,6 +257,12 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     
     # take outputs from this run and add it to the list of parameters
     coeffs[[counter]] <- call_m
+    
+    if (length(best_model) == 0) {
+      warning("Error predicting one or more folds. Check your input data. \n")
+      parallel::stopCluster(cluster)
+      return(call_m)
+    }
     
     if (best_model == "empty_model") { 
       best <- FALSE 

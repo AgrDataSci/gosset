@@ -2,11 +2,11 @@
 #' 
 #' Regression coefficient to evaluate goodness-of-fit in a given model
 #'
-#' @param object a model object for which pseudo R-squared is desired
+#' @param object a fitted model object
 #' @param ... additional arguments affecting the R-squared produced
 #' @return A data frame containing the pseudo R-squared coefficients:
-#' \item{logLik}{log-likelihood from the fitted model}
-#' \item{logLikNull}{log-likelihood from the null model}
+#' \item{logLik}{log-likelihood}
+#' \item{logLikNull}{Null log-likelihood}
 #' \item{MaxLik}{maximum likelihood pseudo R-squared}
 #' \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
 #' \item{Agresti}{Agresti pseudo R-squared}
@@ -42,6 +42,9 @@ pseudoR2 <- function(object, ...) {
 
 # I've tried to do this as S3 method but returns a error in 
 # CRAN checks
+# checking S3 generic/method consistency ... WARNING
+# See section 'Generic functions and methods' in the 'Writing R
+# Extensions' manual.
 # pseudoR2 <- function(object, ...){
 #   
 #   UseMethod("pseudoR2")

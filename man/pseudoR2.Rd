@@ -7,14 +7,14 @@
 pseudoR2(object, ...)
 }
 \arguments{
-\item{object}{a model object for which pseudo R-squared is desired}
+\item{object}{a fitted model object}
 
 \item{...}{additional arguments affecting the R-squared produced}
 }
 \value{
 A data frame containing the pseudo R-squared coefficients:
-\item{logLik}{log-likelihood from the fitted model}
-\item{logLikNull}{log-likelihood from the null model}
+\item{logLik}{log-likelihood}
+\item{logLikNull}{Null log-likelihood}
 \item{MaxLik}{maximum likelihood pseudo R-squared}
 \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
 \item{Agresti}{Agresti pseudo R-squared}

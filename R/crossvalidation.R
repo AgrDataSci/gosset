@@ -313,7 +313,7 @@ predict.crossvalidation <- function(object, ...) {
     stouffer <- object * wfold
     
     # sum these values and that is the stouffer mean
-    mean <- sum(stouffer, na.rm = TRUE)
+    mean <- sum(stouffer)
   }
   
   if (mean.method == "foldsize") {
@@ -323,11 +323,11 @@ predict.crossvalidation <- function(object, ...) {
     
     # fold size mean is the product of multiplication of object values by 
     # its number of observations then divided by the total number of observations
-    mean <- sum(object * foldsize, na.rm = TRUE) / sum(foldsize, na.rm = TRUE)
+    mean <- sum(object * foldsize) / sum(foldsize)
   }
   
   if (mean.method == "equal") {
-    mean <- mean(object, na.rm = TRUE)
+    mean <- mean(object)
   }
   
   return(mean)
