@@ -98,7 +98,7 @@
 #'  
 #' @importFrom dplyr arrange bind_cols bind_rows group_by mutate  
 #' @import tibble
-#' @import tidyr
+#' @importFrom tidyr gather spread
 #' @export
 rank_PL <- function(data = NULL, items = NULL,
                         input = NULL, ...) {
@@ -176,7 +176,7 @@ rank_PL <- function(data = NULL, items = NULL,
     
     # and a PlackettLuce grouped_rankings
     n <- nrow(R)
-    G <- PlackettLuce::grouped_rankings(R, index = seq_len(n))
+    G <- PlackettLuce::group(R, index = seq_len(n))
   
   }
   
@@ -205,7 +205,7 @@ rank_PL <- function(data = NULL, items = NULL,
     itemnames <- sort(unique(as.vector(r)))
     
     # convert it into a PlackettLuce rank
-    R <- PlackettLuce::as.rankings(r, input = "ordering", labels = itemnames)
+    R <- PlackettLuce::as.rankings(r, input = "ordering", items = itemnames)
     
     # if pseudo-item were added, it is removed
     pseudo <- grepl("pseudoitem", itemnames) 
@@ -221,7 +221,7 @@ rank_PL <- function(data = NULL, items = NULL,
     
     # and into a grouped_rankings
     gi <- rep(seq_len(n), (nrow(R) / n))
-    G <- PlackettLuce::grouped_rankings(R, index = gi)
+    G <- PlackettLuce::group(R, index = gi)
  
   }
   
@@ -520,7 +520,7 @@ to_rankings <- function(...){
   # we then convert these orderings to sub-rankings of the full set of items
   # and combine them with the rankings
   paired <- lapply(paired, function(x) {
-    x <- PlackettLuce::as.rankings(x, input = "ordering", labels = itemnames)
+    x <- PlackettLuce::as.rankings(x, input = "ordering", items = itemnames)
   })
   
   paired <- do.call("rbind", paired)

@@ -142,6 +142,20 @@ crossvalidation <- function(formula, data, k = NULL,
     test[[i]] <- data[folds == i  ,]
   }
   
+  # drop folds
+  drop.folds <- dots[["drop.folds"]] 
+  if(!is.null(drop.folds)) {
+    cat("Folds ", paste(drop.folds, collapse = ", "),
+        "are excluded from modelling exercise\n")
+    train <- train[-drop.folds]
+    test  <- test[-drop.folds]
+    folds <- folds[!folds %in% drop.folds]
+    k <- length(unique(folds))
+    drop <- match("drop.folds", names(dots))
+    dots <- dots[-drop]
+
+  }
+  
   # fit the models
   mod <- lapply(train, function(X) {
       
@@ -222,7 +236,6 @@ crossvalidation <- function(formula, data, k = NULL,
                             estimators = estimators,
                             folds = folds,
                             models = mod,
-                            predictions = preds,
                             data = data))
   
   class(result) <- c("crossvalidation", class(result))
