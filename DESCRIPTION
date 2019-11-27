@@ -5,16 +5,16 @@ Version: 0.1-2
 Authors@R: c(person("Kaue", "de Sousa", 
         email = "kaue.desousa@inn.no", role = c("aut", "cre"),
         comment = c(ORCID = "0000-0002-7571-7845")),
-        person("Jonathan", "Steinke", role = c("aut", "ctb"),
-        comment = c(ORCID = "0000-0000-0000-0000")),
         person("Jacob", "van Etten", role = c("aut", "ctb"),
         comment = c(ORCID = "0000-0001-7554-2558")),
+        person("Sam", "Dumble", role = c("aut", "ctb")),
+        person("Nicolas", "Greliche", role = c("aut", "ctb")),
         person("Jonathan", "Steinke", role = c("aut", "ctb"),
         comment = c(ORCID = "0000-0001-5742-702X")))
 Maintainer: Kaue de Sousa <kaue.desousa@inn.no>
 URL: https://agrobioinfoservices.github.io/gosset/
 BugReports: https://github.com/agrobioinfoservices/gosset/issues
-Description: an environment for modelling metadata and experimental citizen science data.
+Description: An environment for modelling metadata and experimental citizen science data.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
