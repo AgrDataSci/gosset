@@ -5,6 +5,9 @@ gosset
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/gosset)](https://cran.r-project.org/package=gosset) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/agrobioinfoservices/gosset?branch=master&svg=true)](https://ci.appveyor.com/project/kauedesousa/gosset) [![Build Status](https://travis-ci.org/agrobioinfoservices/gosset.svg?branch=master)](https://travis-ci.org/agrobioinfoservices/gosset) [![codecov](https://codecov.io/gh/agrobioinfoservices/gosset/master.svg)](https://codecov.io/github/agrobioinfoservices/gosset?branch=master) [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.r-project.org/Licenses/GPL-3) <!-- badges: end -->
 
+*gosset*: Modelling Metadata and Experimental Citizen Science <img align="right" src="man/figures/logo.png">
+============================================================================================================
+
 Package website: <https://agrobioinfoservices.github.io/gosset/>
 
 Overview

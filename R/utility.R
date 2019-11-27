@@ -1,102 +1,104 @@
-#' Whole number
-#'
-#' Find integer values in a vector with decimals
-#'
-#' @param x vector with numbers of class "numeric" or "integer"
-#' @return a logical vector 
-#' @examples
-#' 
-#' x <- c(1, 2, 1.4, 3, 4.01)
-#' 
-#' is_wholenumber(x)
-#'
-#' @export
-is_wholenumber <- function(x) {
+# Find integer values in a vector with decimals
+.is_wholenumber <- function(x) {
   x <- as.vector(t(x))
   x <- x %% 1 == 0
   return(x)
 }
 
-#' Decimal number
-#'
-#' Find a decimal number in a vector with integers
-#'
-#' @param x vector with numbers of class "numeric" or "integer"
-#' @return a logical vector 
-#' @examples
-#' 
-#' x <- c(1, 2, 1.4, 3, 4.01)
-#' 
-#' is_decimal(x)
-#' 
-#' @export
-is_decimal <- function(x) {
+# Find a decimal number in a vector with integers
+.is_decimal <- function(x) {
   x <- as.vector(t(x))
   x <- !x %% 1 == 0
   return(x)
 }
 
-#' Decimals into rankings
-#'
-#' Group and convert numeric values into integer ranks
-#'
-#' @param object vector with numbers of class "numeric" or "integer"
-#' @param id optional, a vector with ids to group values
-#' @param ... additional arguments passed to methods
-#' @return a data frame with ranked values where highest values are placed first
-#' @examples
-#' 
-#' # passing a vector with decimals
-#' # the highest positive value is the best scored item
-#' # negative values are included as least scored items
-#' 
-#' x <- c(1, 2, 1.4, 3, 4.01, -0.5)
-#' 
-#' rank_decimal(x)
-#' 
-#' # passing a vector with an id
-#' # ids are used to group values and 
-#' # return a rank for each group
-#' 
-#' x <- c(1, 2, 1.4, 3, 4.01, -0.5)
-#' id <- c(rep(1, 3), rep(2, 3))
-#' 
-#' rank_decimal(x, id = id)
-#' 
-#' @export
-rank_decimal <- function(object, id = NULL, ...){
+# Test a grouped_rankings object
+.is_grouped_rankings <- function(object) {
   
-  dots <- list(...)
+  return(class(object) == "grouped_rankings")
   
-  bindwith <- dots[["bindwith"]]
-  
-  isdf <- "data.frame" %in% class(object)
-  
-  if (!isdf) {
-    object <- as.data.frame(object)
-    names(object) <- "rank"
-  }
-  
-  if (!is.null(bindwith)) {
-    object <- cbind(object, bindwith)
-  }
-  
-  if(is.null(id)) {
-    id <- rep(1, nrow(object))
-  }
+}
 
-  object <- cbind(id = id, object)
+# Test a rankings object
+.is_rankings <- function(object) {
   
-  object <- dplyr::mutate(dplyr::group_by(object, id),
-                          rank = rank((rank - 1) * -1, na.last = "keep"))
+  return(class(object) == "rankings")
   
+}
+
+# Test a paircomp object
+.is_paircomp <- function(object) {
   
-  object <- tibble::as_tibble(object) 
-  
-  return(object)
+  return(class(object) == "paircomp")
   
 }
 
 
+# logical function for > greater 
+.is_greater <- function(x, y) {
+  x > y
+}
 
+
+# logical function for < lower
+.is_lower <- function(x, y) {
+  x < y
+}
+
+
+# Validate a tibble object
+.is_tibble <- function(object) {
+  
+  c("tbl_df") %in% class(object)
+  
+}
+
+
+# Round to the nearest base value
+.round5 <- function(x, base.value) {
+  
+  base.value * round( x / base.value )
+  
+}
+
+
+# Checks data in functions favourite and contests
+.check_data <- function(data = NULL, 
+                        items = NULL, 
+                        input = NULL) {
+  # keep only target columns in data
+  if (!is.null(data)) {
+    data <- tibble::as_tibble(data)
+    items <- names(data[, items])
+    input <- names(data[, input])
+    data <- data[, c(items, input)]
+  }
+  
+  # if 'items' and 'input' are provided as data.frame
+  # put all together as 'data'
+  if (is.null(data)) {
+    data <- tibble::as_tibble(cbind(items, input))
+    items <- names(items)
+    input <- names(input)
+  }
+  
+  # if 'data' is an object of class tbl_df
+  # convert to "data.frame"
+  if (.is_tibble(data)) {
+    data <- as.data.frame(data, stringsAsFactors = FALSE)
+  }
+  
+  # check for NAs within data
+  nalist <- apply(data, 2, is.na)
+  nalist <- !apply(nalist, 1, any)
+  
+  # apply vector to data
+  data <- data[nalist, ]
+  
+  if (!any(nalist)) {
+    cat("Suppressing", sum(!nalist), "rows with missing data \n")
+  }
+  
+  return(list(data = data, items = items, input = input))
+}
 

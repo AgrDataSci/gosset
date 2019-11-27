@@ -1,28 +1,41 @@
 Package: gosset
 Type: Package
 Title: Modelling Metadata and Experimental Citizen Science
-Version: 0.1-1
+Version: 0.1-2
 Authors@R: c(person("Kaue", "de Sousa", 
         email = "kaue.desousa@inn.no", role = c("aut", "cre"),
         comment = c(ORCID = "0000-0002-7571-7845")),
         person("Jonathan", "Steinke", role = c("aut", "ctb"),
         comment = c(ORCID = "0000-0000-0000-0000")),
         person("Jacob", "van Etten", role = c("aut", "ctb"),
-        comment = c(ORCID = "0000-0001-7554-2558")))
+        comment = c(ORCID = "0000-0001-7554-2558")),
+        person("Jonathan", "Steinke", role = c("aut", "ctb"),
+        comment = c(ORCID = "0000-0001-5742-702X")))
 Maintainer: Kaue de Sousa <kaue.desousa@inn.no>
 URL: https://agrobioinfoservices.github.io/gosset/
 BugReports: https://github.com/agrobioinfoservices/gosset/issues
-Description: gosset provides an environment for modelling metadata and experimental citizen science data.
+Description: an environment for modelling metadata and experimental citizen science data.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 2.10)
-Imports: abind, dplyr, doParallel, foreach, gnm, ggplot2, partykit, PlackettLuce, psychotree, psychotools, qvcalc, stats, tibble, tidyr
+Imports: 
+    BradleyTerry2, 
+    gnm, 
+    ggplot2, 
+    partykit, 
+    PlackettLuce, 
+    psychotree, 
+    psychotools, 
+    qvcalc, 
+    stats, 
+    tibble, 
+    tidyr
 Suggests: 
     ClimMobTools,
     knitr,
     rmarkdown,
     testthat
 Language: en-GB
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.0
 VignetteBuilder: knitr

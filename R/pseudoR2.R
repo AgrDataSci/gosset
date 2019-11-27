@@ -215,7 +215,7 @@ pseudoR2 <- function(object, ...) {
   # Agresti pseudo R2
   agr_pr2 <- 1 - (LL / LLNull)
   
-  result <- dplyr::bind_cols(
+  result <- tibble::tibble(
     logLik = LL,
     logLikNull = LLNull,
     MaxLik = maxlike,
@@ -243,7 +243,8 @@ pseudoR2 <- function(object, ...) {
     # Put coefficients in the right order
     v <- as.vector(na.omit(coeff[order(x, na.last = NA)]))
     l <- 0
-    # From Hunter MM(2004) The Annals of Statistics, Vol. 32, No. 1, 384-406, page 397
+    # From Hunter MM(2004) The Annals of Statistics, Vol. 32, 
+    # No. 1, 384-406, page 397
     for (i in 1:(length(v) - 1))
       l <- l + v[i] - log(sum(exp(v[(i):(length(v))])))
     

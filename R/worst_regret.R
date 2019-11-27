@@ -20,11 +20,10 @@
 #' # convert the tricot rankings from breadwheat data
 #' # into a object of class 'grouped_rankings'
 #' 
-#' G <- rank_PL(breadwheat,
+#' G <- rank_tricot(breadwheat,
 #'                  items = c("variety_a","variety_b","variety_c"),
 #'                  input = c("overall_best","overall_worst"),
-#'                  type = "tricot",
-#'                  grouped.rankings = TRUE)
+#'                  group = TRUE)
 #' 
 #' 
 #' # combine grouped rankings with temperature indices
@@ -95,7 +94,7 @@ worst_regret <- function(object, ...){
 
   row.names(w) <- 1:nrow(w)
   
-  w <- dplyr::arrange(w, worst_regret)
+  w <- w[order(w$worst_regret), ]
 
   w <- tibble::as_tibble(w[ ,c(3,1:2)])
 

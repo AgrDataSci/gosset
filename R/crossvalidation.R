@@ -5,8 +5,8 @@
 #' @param formula an object of class "formula" (or one that can be coerced to that class):
 #' a symbolic description of the model to be fitted,
 #' of the form \eqn{ y ~ x1 + ... + xn }
-#' @param data a data frame, list or environment
-#'(or object coercible by as.data.frame to a data frame) 
+#' @param data a data frame, list or environment 
+#' (or object coercible by as.data.frame to a data frame) 
 #' containing the variables in the model.
 #' @param k an integer for the number of splits in the cross-validation
 #' @param folds an optional vector specifying the folds in the cross-validation
@@ -14,7 +14,7 @@
 #' Options are: 'equal', an arithmetic mean; 
 #' 'foldsize', a weighted mean by the size in each fold; 
 #' 'stouffer' a weighted Z-test developed by Stouffer et al. (1949). 
-#' @param object a model object of class \code{"crossvalidation"}.
+#' @param seed The seed for random number generation. If NULL (the default), gosset will set the seed randomly
 #' @param ... additional arguments passed to methods
 #' @return The cross-validation goodness-of-fit estimates, which are:
 #' \item{AIC}{Akaike Information Criterion}
@@ -40,7 +40,7 @@
 #' 
 #' ########################################
 #' @examples 
-#' \dontrun{
+#' \donttest{
 #' # PlackettLuce Model
 #' # beans data from PlackettLuce
 #' library("PlackettLuce")
@@ -80,8 +80,12 @@
 #' @import PlackettLuce
 #' @import gnm
 #' @export
-crossvalidation <- function(formula, data, k = NULL,
-                            folds = NULL, mean.method = NULL,
+crossvalidation <- function(formula, 
+                            data, 
+                            k = 10,
+                            folds = NULL, 
+                            mean.method = NULL,
+                            seed = NULL,
                             ...)
 {
   
@@ -91,13 +95,18 @@ crossvalidation <- function(formula, data, k = NULL,
   # create folds if needed, check length if given
   n <- nrow(data)
   
-  # 10 folds by default
-  if (is.null(k)) {
-    k <- 10
-  }
-  
+  # assign folds
   if (is.null(folds)) {
+    
+    # check if a seed is provided
+    if (is.null(seed)) {
+      seed <- as.integer(runif(1, 0, 10000))
+    }
+    
+    set.seed(seed)
+    
     folds <- sample(rep(1:k, times = ceiling(n / k), length.out = n))
+  
   }
   
   if (length(folds) != n) {
@@ -183,9 +192,9 @@ crossvalidation <- function(formula, data, k = NULL,
   
   logLik <- Deviance / -2
   
-  pR2 <- t(mapply(function(X) {
-    try(pseudoR2(X)[])
-  }, X = mod))
+  pR2 <- t(mapply(function(X, Y) {
+    try(pseudoR2(X, newdata = Y), silent = TRUE)
+  }, X = mod, Y = test[]))
   
   pR2 <- matrix(unlist(pR2), 
                 ncol = 5, 
@@ -195,9 +204,9 @@ crossvalidation <- function(formula, data, k = NULL,
   # no need to keep null logLik
   pR2 <- pR2[, -c(1,2)]
   
-  estimators <- cbind(AIC = aic, 
-                      deviance = Deviance, 
-                      logLik = logLik, 
+  estimators <- cbind(data.frame(AIC = aic, 
+                                 deviance = Deviance, 
+                                 logLik = logLik),
                       pR2)
   
   # estimators are then averaged weighted by 
@@ -213,24 +222,7 @@ crossvalidation <- function(formula, data, k = NULL,
 
   estimators <- tibble::as_tibble(estimators)
   
-  # get predictions for these datasets
-  preds <- mapply(function(X,Y) {
-    try(predict(X, newdata = Y), silent = TRUE)
-  }, X = mod, Y = test[])
-  
-  # check error messages in predictions
-  anyerror <- lapply(preds, function(x){
-    any(grepl("Error", x))
-  })
-  
-  anyerror <- unlist(anyerror)
-  
-  if(any(anyerror)){
-    warning("One or more errors found in predicting folds ", 
-            paste(which(anyerror), collapse = ", ") )
-  }
-  
-  
+
   result <- list(coeffs = means,
                  raw = list(call = deparse(formula, width.cutoff = 500),
                             estimators = estimators,
@@ -251,49 +243,6 @@ print.crossvalidation <- function(x, ...) {
   print(x[[1]])
 }
 
-#' @rdname crossvalidation
-#' @method predict crossvalidation
-#' @export
-predict.crossvalidation <- function(object, ...) {
-  
-  dots <- list(...)
-  
-  newdata <- dots[["newdata"]]
-  
-  if (is.null(newdata)) {
-    newdata <- object$raw$data
-  }
-  
-  models <- object$raw$models
-  
-  preds <- lapply(models, function(x){
-    predict(object = x, newdata = newdata)
-  })
-  
-  dims <- c(dim(newdata)[[1]],
-            dim(preds[[1]])[[2]], 
-            length(preds))
-  
-  if (length(dims) == 2) {
-    dims <- c(dims[[1]], 1, dims[[2]])
-  }
-  
-  name <- dimnames(preds[[1]])[[2]]
-  
-  preds <- array(as.numeric(unlist(preds)), 
-                 dim = dims)
-  
-  preds <- apply(preds, c(1,2), mean)
-  
-  dimnames(preds)[[2]] <- name
-  
-  return(preds)
-  
-}
-
-
-
-
 # Compute weighted means in cross-validation
 .mean_crossvalidation <- function(object, folds = NULL, 
                                   mean.method = NULL, 
@@ -301,7 +250,9 @@ predict.crossvalidation <- function(object, ...) {
   # take length of folds
   N <- length(folds)
   
-  if (is.null(mean.method)) {mean.method <- "stouffer"}
+  if (is.null(mean.method)) {
+    mean.method <- "stouffer"
+    }
   
   # weight of imbalanced folds
   if (mean.method == "stouffer") {
@@ -346,29 +297,3 @@ predict.crossvalidation <- function(object, ...) {
   return(mean)
   
 }
-
-
-# Test a grouped_rankings object
-.is_grouped_rankings <- function(object) {
-  
-  return(class(object) == "grouped_rankings")
-  
-}
-
-# Test a rankings object
-.is_rankings <- function(object) {
-  
-  return(class(object) == "rankings")
-  
-}
-
-# Test a paircomp object
-.is_paircomp <- function(object) {
-  
-  return(class(object) == "paircomp")
-  
-}
-
-
-
-

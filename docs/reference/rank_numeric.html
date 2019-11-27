@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Binary rankings — rank_binomial • gosset</title>
+<title>Plackett-Luce rankings from numeric values — rank_numeric • gosset</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Binary rankings — rank_binomial" />
+<meta property="og:title" content="Plackett-Luce rankings from numeric values — rank_numeric" />
 
-<meta property="og:description" content="Binary comparisons from a ranking object. Ties are not taken into account, then they are added as NA's." />
+<meta property="og:description" content="Group and convert numeric values into integer ranks" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -111,43 +111,101 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Binary rankings</h1>
+    <h1>Plackett-Luce rankings from numeric values</h1>
     
-    <div class="hidden name"><code>rank_binomial.Rd</code></div>
+    <div class="hidden name"><code>rank_numeric.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Binary comparisons from a ranking object. Ties are not taken into account, then they are added as NA's.</p>
+    <p>Group and convert numeric values into integer ranks</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>rank_binomial</span>(<span class='no'>object</span>, <span class='kw'>drop.null</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>rank_numeric</span>(
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>items</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>input</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ascending</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>an object of class "rankings", "grouped_rankings" or "paircomp".</p></td>
+      <th>data</th>
+      <td><p>a data frame with columns specified by items and input values</p></td>
     </tr>
     <tr>
-      <th>drop.null</th>
-      <td><p>logical, an optional argument to remove players without comparisons</p></td>
+      <th>items</th>
+      <td><p>a data frame or index of <code>data</code> for the column(s) containing the item names</p></td>
+    </tr>
+    <tr>
+      <th>input</th>
+      <td><p>a data frame or index of <code>data</code> for the column(s) containing the values to be ranked</p></td>
+    </tr>
+    <tr>
+      <th>id</th>
+      <td><p>a data frame or index of <code>data</code> indicating the ids for "long" <code>data</code></p></td>
+    </tr>
+    <tr>
+      <th>group</th>
+      <td><p>logical, if TRUE return an object of class "grouped_rankings"</p></td>
+    </tr>
+    <tr>
+      <th>ascending</th>
+      <td><p>logical, to compute rankings from lower to higher values</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments passed to methods</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a binary rank of pairwise contests</p>
+    <p>a PlackettLuce "rankings" object, which is a matrix of dense rankings</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/PlackettLuce/topics/rankings'>rankings</a></code>, <code><a href='https://www.rdocumentation.org/packages/psychotools/topics/paircomp'>paircomp</a></code></p></div>
+    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/PlackettLuce/topics/rankings'>rankings</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Rankings with 5 items randomly assigned</span>
+    <pre class="examples"><div class='input'><span class='co'># A matrix with 10 rankings of 5 items (A, B, C, D, E)</span>
+<span class='co'># with numeric values as "rank"</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>123</span>)
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>cbind</a></span>(<span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>5</span>),
+            <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>10</span>),
+            <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>50</span>, <span class='fl'>1</span>, <span class='fl'>3</span>))
+
+<span class='co'># return an object of class 'rankings'</span>
+<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_numeric</span>(<span class='no'>df</span>,
+                  <span class='kw'>items</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+                  <span class='kw'>input</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+                  <span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+
+<span class='co'># rankings can be computed in ascending order</span>
+<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_numeric</span>(<span class='no'>df</span>,
+                  <span class='kw'>items</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+                  <span class='kw'>input</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+                  <span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+                  <span class='kw'>ascending</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+
+<span class='co'># return an object of class 'grouped_rankings'</span>
+<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_numeric</span>(<span class='no'>df</span>,
+                  <span class='kw'>items</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+                  <span class='kw'>input</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+                  <span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+                  <span class='kw'>grouped.rankings</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='co'>######################</span>
+
+<span class='co'># Rankings with 5 items randomly assigned</span>
 
 <span class='no'>i</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fl'>NA</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>5</span>))
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/names'>names</a></span>(<span class='no'>i</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='st'>"Item"</span>,<span class='fl'>1</span>:<span class='fl'>5</span>)
@@ -160,23 +218,8 @@
   <span class='no'>r</span>[<span class='no'>s</span>,] <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>)
 }
 
-<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rank_numeric.html'>rank_numeric</a></span>(<span class='kw'>items</span> <span class='kw'>=</span> <span class='no'>i</span>,
-                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='no'>r</span>)
-
-<span class='fu'>rank_binomial</span>(<span class='no'>R</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 10 x 4</span><span>
-#&gt;    player1 player2  win1  win2
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> A       B           7     3
-#&gt; </span><span style='color: #555555;'> 2</span><span> A       C           7     3
-#&gt; </span><span style='color: #555555;'> 3</span><span> B       C           7     3
-#&gt; </span><span style='color: #555555;'> 4</span><span> A       D           7     3
-#&gt; </span><span style='color: #555555;'> 5</span><span> B       D           4     6
-#&gt; </span><span style='color: #555555;'> 6</span><span> C       D           3     7
-#&gt; </span><span style='color: #555555;'> 7</span><span> A       E           6     4
-#&gt; </span><span style='color: #555555;'> 8</span><span> B       E           5     5
-#&gt; </span><span style='color: #555555;'> 9</span><span> C       E           5     5
-#&gt; </span><span style='color: #555555;'>10</span><span> D       E           6     4</div><div class='input'>
-</div></span></pre>
+<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_numeric</span>(<span class='kw'>items</span> <span class='kw'>=</span> <span class='no'>i</span>,
+                  <span class='kw'>input</span> <span class='kw'>=</span> <span class='no'>r</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

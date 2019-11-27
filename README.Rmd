@@ -6,6 +6,7 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
+  fig.path = "man/figures/README-",
   out.width = "100%"
 )
 options(width = 120)
@@ -20,6 +21,9 @@ options(width = 120)
 [![codecov](https://codecov.io/gh/agrobioinfoservices/gosset/master.svg)](https://codecov.io/github/agrobioinfoservices/gosset?branch=master)
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.r-project.org/Licenses/GPL-3)
 <!-- badges: end -->
+
+# _gosset_: Modelling Metadata and Experimental Citizen Science <img align="right" src="man/figures/logo.png">
+
 
 Package website: https://agrobioinfoservices.github.io/gosset/
 

@@ -33,6 +33,8 @@
 <meta property="og:title" content="Kendall Tau correlation coefficient — kendallTau" />
 
 <meta property="og:description" content="Compute Kendall Tau correlation coefficient between two matrices" />
+
+<meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -63,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -161,7 +163,7 @@ Used for significance testing.</p>
               <span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>3</span>, <span class='fl'>2</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>R</span>) <span class='kw'>&lt;-</span> <span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>4</span>]
 
-<span class='no'>G</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/PlackettLuce/topics/grouped_rankings'>grouped_rankings</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/PlackettLuce/topics/rankings'>as.rankings</a></span>(<span class='no'>R</span>), <span class='fl'>1</span>:<span class='fl'>6</span>)
+<span class='no'>G</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/PlackettLuce/topics/group'>group</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/PlackettLuce/topics/rankings'>as.rankings</a></span>(<span class='no'>R</span>), <span class='fl'>1</span>:<span class='fl'>6</span>)
 
 <span class='no'>mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/PlackettLuce/topics/pltree'>pltree</a></span>(<span class='no'>G</span> ~ <span class='fl'>1</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>G</span>)
 
@@ -190,7 +192,7 @@ Used for significance testing.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kaue de Sousa, Jacob van Etten.</p>
+  <p>Developed by Kaue de Sousa, Jonathan Steinke, Jacob van Etten, Jonathan Steinke.</p>
 </div>
 
 <div class="pkgdown">

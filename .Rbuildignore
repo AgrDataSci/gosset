@@ -11,4 +11,5 @@
 ^codecov\.yml$
 ^docs$
 ^pkgdown$
-^vignettes$
+^dev$
+^logo\.svg$

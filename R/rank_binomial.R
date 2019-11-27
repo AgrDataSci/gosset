@@ -4,7 +4,7 @@
 #'
 #' @param object an object of class "rankings", "grouped_rankings" or "paircomp".
 #' @param drop.null logical, an optional argument to remove players without comparisons 
-#' @return a binary rank
+#' @return a binary rank of pairwise contests
 #' @seealso \code{\link[PlackettLuce]{rankings}}, \code{\link[psychotools]{paircomp}}
 #' @examples 
 #' # Rankings with 5 items randomly assigned
@@ -20,8 +20,8 @@
 #'   r[s,] <- sample(1:5)
 #' }
 #' 
-#' R <- rank_PL(items = i,
-#'              input = r)
+#' R <- rank_numeric(items = i,
+#'                  input = r)
 #' 
 #' rank_binomial(R)
 #' 

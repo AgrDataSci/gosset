@@ -30,11 +30,10 @@
 #' 
 #' # convert the tricot rankings from breadwheat data
 #' # into a object of class 'rankings' from PlackettLuce
-#' R <- rank_PL(breadwheat,
-#'              items = c("variety_a","variety_b","variety_c"),
-#'              rankings = c("overall_best","overall_worst"),
-#'              type = "tricot")
-#'  
+#' R <- rank_tricot(breadwheat,
+#'                  items = c("variety_a","variety_b","variety_c"),
+#'                  input = c("overall_best","overall_worst"))
+#' 
 #' 
 #' PC <- rank_paircomp(R)
 #' 

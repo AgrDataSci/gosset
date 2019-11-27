@@ -10,7 +10,6 @@
 #' intervals based on quasi-standard errors
 #' @seealso \code{\link[qvcalc]{qvcalc}}
 #' @examples
-#' \dontrun{
 #' 
 #' library("PlackettLuce")
 #' library("qvcalc")
@@ -22,11 +21,10 @@
 #' # into a object of class 'grouped_rankings'
 #' names(breadwheat)
 #' 
-#' G <- rank_PL(breadwheat, 
+#' G <- rank_tricot(data = breadwheat, 
 #'                  items = c("variety_a","variety_b","variety_c"), 
-#'                  rankings = c("overall_best","overall_worst"),
-#'                  type = "tricot",
-#'                  grouped.rankings = TRUE)
+#'                  input = c("overall_best","overall_worst"),
+#'                  group = TRUE)
 #' 
 #' # combine grouped rankings with lon lat from wheat dataset
 #' mydata <- cbind(G, breadwheat[c("lon","lat")])
@@ -35,9 +33,7 @@
 #' mod <- pltree(G ~ ., data = mydata)
 #' 
 #' # plot nodes
-#' plot_nodes(mod)
-#' 
-#' }
+#' p <- plot_nodes(mod)
 #' 
 #' @import qvcalc
 #' @import ggplot2

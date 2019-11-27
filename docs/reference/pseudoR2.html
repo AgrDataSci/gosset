@@ -33,6 +33,8 @@
 <meta property="og:title" content="Pseudo R-squared — pseudoR2" />
 
 <meta property="og:description" content="Regression coefficient to evaluate goodness-of-fit in a given model" />
+
+<meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -63,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -127,7 +129,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>a model object for which pseudo R-squared is desired</p></td>
+      <td><p>a fitted model object</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -138,8 +140,8 @@
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A data frame containing the pseudo R-squared coefficients:</p>
-<dt>logLik</dt><dd><p>log-likelihood from the fitted model</p></dd>
-<dt>logLikNull</dt><dd><p>log-likelihood from the null model</p></dd>
+<dt>logLik</dt><dd><p>log-likelihood</p></dd>
+<dt>logLikNull</dt><dd><p>Null log-likelihood</p></dd>
 <dt>MaxLik</dt><dd><p>maximum likelihood pseudo R-squared</p></dd>
 <dt>CraggUhler</dt><dd><p>Cragg and Uhler's pseudo R-squared</p></dd>
 <dt>Agresti</dt><dd><p>Agresti pseudo R-squared</p></dd>
@@ -175,7 +177,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kaue de Sousa, Jacob van Etten.</p>
+  <p>Developed by Kaue de Sousa, Jonathan Steinke, Jacob van Etten, Jonathan Steinke.</p>
 </div>
 
 <div class="pkgdown">

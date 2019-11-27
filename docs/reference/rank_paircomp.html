@@ -33,6 +33,8 @@
 <meta property="og:title" content="Pairwise comparison rankings — rank_paircomp" />
 
 <meta property="og:description" content="Pairwise comparisons from a ranking object. Ties are not taken into account, then they are added as NA's." />
+
+<meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -63,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -169,10 +171,10 @@
 
 <span class='co'># convert the tricot rankings from breadwheat data</span>
 <span class='co'># into a object of class 'rankings' from PlackettLuce</span>
-<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rank_PL.html'>rank_PL</a></span>(<span class='no'>breadwheat</span>,
-             <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"variety_a"</span>,<span class='st'>"variety_b"</span>,<span class='st'>"variety_c"</span>),
-             <span class='kw'>rankings</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"overall_best"</span>,<span class='st'>"overall_worst"</span>),
-             <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"tricot"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Argument 'rankings' is deprecated, use 'input' instead </span></div><div class='input'>
+<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rank_tricot.html'>rank_tricot</a></span>(<span class='no'>breadwheat</span>,
+                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"variety_a"</span>,<span class='st'>"variety_b"</span>,<span class='st'>"variety_c"</span>),
+                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"overall_best"</span>,<span class='st'>"overall_worst"</span>))
+
 
 <span class='no'>PC</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_paircomp</span>(<span class='no'>R</span>)</div></pre>
   </div>
@@ -193,7 +195,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kaue de Sousa, Jacob van Etten.</p>
+  <p>Developed by Kaue de Sousa, Jonathan Steinke, Jacob van Etten, Jonathan Steinke.</p>
 </div>
 
 <div class="pkgdown">

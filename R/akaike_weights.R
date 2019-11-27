@@ -1,6 +1,7 @@
 #' Akaike weights
 #' 
-#' Akaike weights represent the relative likelihood of a model. It can be used in model averaging and selection.
+#' Akaike weights represent the relative likelihood of a model. 
+#' It can be used in model averaging and selection.
 #' 
 #' @param object a numerical vector with models goodness of fit coefficients 
 #' @return A data frame containing the coefficients:

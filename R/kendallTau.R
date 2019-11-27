@@ -22,7 +22,7 @@
 #'               1, 4, 3, 2), nrow = 6, byrow = TRUE)
 #' colnames(R) <- LETTERS[1:4]
 #' 
-#' G <- grouped_rankings(as.rankings(R), 1:6)
+#' G <- group(as.rankings(R), 1:6)
 #' 
 #' mod <- pltree(G ~ 1, data = G)
 #' 
@@ -40,18 +40,18 @@ kendallTau <- function(x, y){
   # decimals will be computed as descending rankings
   # where the highest values are the "best" 
   # negative values are placed as least positions
-  if (any(is_decimal(x))) {
+  if (any(.is_decimal(x))) {
     
    x <- t(apply(x, 1, function(X){
-      t(rank_decimal(X)["rank"])
+      t(.rank_decimal(X)["rank"])
     }))
   
   }
   
-  if (any(is_decimal(y))) {
+  if (any(.is_decimal(y))) {
     
     y <- t(apply(y, 1, function(X){
-      t(rank_decimal(X)["rank"])
+      t(.rank_decimal(X)["rank"])
     }))
     
   }
