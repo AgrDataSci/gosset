@@ -13,9 +13,9 @@
    version="1.1"
    id="svg6"
    sodipodi:docname="logo.svg"
-   inkscape:export-filename="C:\Users\kaued\Dropbox (Bioversity CR)\Rcode\gosset\man\figures\logox.png"
-   inkscape:export-xdpi="250"
-   inkscape:export-ydpi="250"
+   inkscape:export-filename="C:\Users\kaued\Dropbox (Bioversity CR)\Rcode\gosset\man\figures\logo.png"
+   inkscape:export-xdpi="100"
+   inkscape:export-ydpi="100"
    inkscape:version="0.92.3 (2405546, 2018-03-11)">
   <metadata
      id="metadata12">
@@ -40,13 +40,13 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1366"
-     inkscape:window-height="705"
+     inkscape:window-width="1280"
+     inkscape:window-height="961"
      id="namedview8"
      showgrid="false"
      inkscape:zoom="2.3787325"
-     inkscape:cx="65.508191"
-     inkscape:cy="100.37454"
+     inkscape:cx="76.070219"
+     inkscape:cy="104.74772"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -56,19 +56,19 @@
      d="M 6.4162442,142.36982 V 52.047455 L 84.493098,6.8784349 162.56995,52.047455 v 90.322365 l -78.076852,45.16771 z"
      id="path2"
      inkscape:connector-curvature="0"
-     style="fill:#ffffff;stroke-width:1.30410552"
+     style="fill:#2b2200;stroke-width:1.30410552"
      inkscape:export-xdpi="100"
      inkscape:export-ydpi="100" />
   <path
      d="M 85.333882,9.8211794 161.65767,53.979539 V 142.27359 L 85.333882,186.43196 9.0101013,142.27359 V 53.979539 Z m 0,-7.6946117 L 2.3732513,50.126233 V 146.1269 L 85.333882,194.12657 168.29452,146.1269 V 50.126233 Z"
      id="path4"
-     style="fill:#008000;stroke-width:1.33034372"
+     style="fill:#008080;stroke-width:1.33034372"
      inkscape:connector-curvature="0"
      inkscape:export-xdpi="100"
      inkscape:export-ydpi="100" />
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#4d4d4d;fill-opacity:1;stroke:none"
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#cccccc;fill-opacity:1;stroke:none;"
      x="47.662518"
      y="153.47388"
      id="text833"

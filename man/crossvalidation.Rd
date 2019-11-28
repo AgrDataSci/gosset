@@ -85,9 +85,7 @@ cv <- crossvalidation(G ~ maxTN,
                       minsize = 100)
 
 ########################################
-}
 
-\dontrun{
 # BradleyTerry Model
 library("psychotree")
 # Germany's Next Topmodel 2007 data from psychotree

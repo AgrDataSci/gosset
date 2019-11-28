@@ -15,33 +15,27 @@
 #' Turner H. & Firth D. (2012). Journal of Statistical Software, 48(9), 1–21. http://dx.doi.org/10.18637/jss.v048.i09
 #' 
 #' @examples 
-#' # Rankings with 5 items randomly assigned
+#' \donttest{
+#' library("PlackettLuce")
 #' 
-#' i <- as.data.frame(matrix(NA, nrow = 10, ncol = 5))
-#' names(i) <- paste0("Item",1:5)
+#' # a simple matrix with 4 items
+#' # ties are computed as NA's
+#' R <- matrix(c(1, 2, 0, 0,
+#'               4, 1, 2, 3,
+#'               2, 4, 3, 1,
+#'               1, 2, 3, 0,
+#'               2, 1, 1, 0,
+#'               1, 0, 3, 2), nrow = 6, byrow = TRUE)
+#' colnames(R) <- c("apple", "banana", "orange", "pear")
+#' R <- PlackettLuce::as.rankings(R)
 #' 
-#' r <- as.data.frame(matrix(NA, nrow = 10, ncol = 5))
-#' names(r) <- paste0("Position_Item",1:5)
-#' 
-#' for(s in 1:10) {
-#'   i[s,] <- sample(LETTERS[1:5])
-#'   r[s,] <- sample(1:5)
+#' R <- rank_binomial(R)
 #' }
-#'  
-#' R <- rank_numeric(items = i,
-#'                   input = r)
-#' 
-#' bin <- rank_binomial(R)
-#' 
 #' @export
 rank_binomial <- function(object, drop.null = FALSE) 
 {
   
-  if (.is_grouped_rankings(object)) {
-    object <- rank_paircomp(object)
-  }
-  
-  if (.is_rankings(object)) {
+  if (.is_grouped_rankings(object) | .is_rankings(object)) {
     object <- rank_paircomp(object)
   }
   

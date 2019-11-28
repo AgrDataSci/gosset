@@ -16,12 +16,12 @@ an object of class "paircomp" which is a matrix of pairwise comparisons
 Pairwise comparisons from a ranking object. Ties are not taken into account, then they are added as NA's.
 }
 \examples{
-
+ 
 library("PlackettLuce")
 library("psychotools")
 
 # a simple matrix with 4 items
-# ties are computed as NA's 
+# ties are computed as NA's
 R <- matrix(c(1, 2, 0, 0,
               4, 1, 2, 3,
               2, 4, 3, 1,

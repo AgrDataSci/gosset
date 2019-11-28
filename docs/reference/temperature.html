@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -79,18 +79,6 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/Overview.html">Introduction to gosset</a>
-    </li>
-  </ul>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -122,7 +110,13 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>temperature</span>(<span class='no'>object</span>, <span class='kw'>day.one</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>span</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>temperature</span>(
+  <span class='no'>object</span>,
+  <span class='kw'>day.one</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>span</span> <span class='kw'>=</span> <span class='fl'>150</span>,
+  <span class='kw'>index</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"maxDT"</span>, <span class='st'>"minDT"</span>, <span class='st'>"maxNT"</span>, <span class='st'>"minNT"</span>, <span class='st'>"SU"</span>, <span class='st'>"TR"</span>, <span class='st'>"DTR"</span>),
+  <span class='no'>...</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,6 +161,12 @@ All indices are given by default</p></td>
 <dt>TR</dt><dd><p>tropical nights, number of nights with maximum temperature &gt; 25 (degree Celsius)</p></dd>
 
     
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Aguilar E., et al. (2005). Journal of Geophysical Research, 110(D23), D23107. https://doi.org/10.1029/2005JD006119.</p>
+<p>Kehel Z., et al. (2016). Identifying Climate Patterns during the Crop-Growing Cycle from 30 Years of CIMMYT Elite Spring Wheat International Yield Trials. In: Applied Mathematics and Omics to Assess Crop Genetic Resources for Climate Change Adaptive Traits (eds Bari A., Damania A. B., Mackay M., Dayanandan S.), pp. 151–174. CRC Press.</p>
+<p>Sparks A. H. (2018). Journal of Open Source Software, 3(30), 1035. https://doi.org/10.21105/joss.01035.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -204,6 +204,8 @@ All indices are given by default</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#references">References</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

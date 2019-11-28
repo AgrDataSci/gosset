@@ -9,12 +9,12 @@
 #' Strobl C., Wickelmaier F. & Zeileis A. (2011). Journal of Educational and Behavioral Statistics, 36(2), 135–153. https://doi.org/10.3102/1076998609359791.
 #' 
 #' @examples 
-#' 
+#'  
 #' library("PlackettLuce")
 #' library("psychotools")
 #' 
 #' # a simple matrix with 4 items
-#' # ties are computed as NA's 
+#' # ties are computed as NA's
 #' R <- matrix(c(1, 2, 0, 0,
 #'               4, 1, 2, 3,
 #'               2, 4, 3, 1,
@@ -46,12 +46,8 @@ rank_paircomp <- function(object){
   
   R <- object
   
-  if (!class(R) %in% c("rankings", "grouped_rankings")) {
-    stop("object must be of class 'rankings' or 'grouped_rankings' \n")
-  }
-  
-  # check wich kind of input is given and convert it into a 
-  # matrix with rankings 
+  # check wich kind of input is given and convert it into a
+  # matrix with rankings
   if (.is_rankings(R)) {
     R <- R[1:length(R), , as.rankings = FALSE]
   }

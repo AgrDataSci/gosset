@@ -15,21 +15,21 @@
 # Test a grouped_rankings object
 .is_grouped_rankings <- function(object) {
   
-  return(class(object) == "grouped_rankings")
+  return(any(class(object) == "grouped_rankings"))
   
 }
 
 # Test a rankings object
 .is_rankings <- function(object) {
   
-  return(class(object) == "rankings")
+  return(any(class(object) == "rankings"))
   
 }
 
 # Test a paircomp object
 .is_paircomp <- function(object) {
   
-  return(class(object) == "paircomp")
+  return(any(class(object) == "paircomp"))
   
 }
 

@@ -8,12 +8,10 @@ gosset
 *gosset*: Modelling Metadata and Experimental Citizen Science <img align="right" src="man/figures/logo.png">
 ============================================================================================================
 
-Package website: <https://agrobioinfoservices.github.io/gosset/>
-
 Overview
 --------
 
-The **gosset** package provides an environment for modelling metadata and experimental citizen science data. It has implementations of cross-validation and stepwise variable selection for glm, lm, Bradley-Terry and Plackett-Luce models.
+The **gosset** package provides an environment for modelling metadata and experimental citizen science data.
 
 Installation
 ------------
