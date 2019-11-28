@@ -11,7 +11,7 @@ gosset
 Overview
 --------
 
-The **gosset** package provides an environment for modelling metadata and experimental citizen science data.
+The **gosset** package provides the toolkit for a workflow on modelling metadata and experimental citizen science data, from collating data of different sources, model sellection and visualisation. The package is named after W.S. Gosset aka 'Student', a pioneer of modern statistics in small sample experimental design and analysis.
 
 Installation
 ------------
@@ -21,12 +21,10 @@ The development version can be installed via
     library("devtools")
     devtools::install_github("agrobioinfoservices/gosset", upgrade = "never")
 
-**gosset** is under development. Use with caution.
-
 Going further
 -------------
 
-The full functionality of **gosset** is illustrated in the package vignette. The vignette can be found on the [package website](https://agrobioinfoservices.github.io/gosset/) or from within R once the package has been installed.
+The full functionality of **gosset** is illustrated in the package vignette. The vignette can be found on the [package website](https://agrobioinfoservices.github.io/gosset/).
 
 Contribution
 ------------

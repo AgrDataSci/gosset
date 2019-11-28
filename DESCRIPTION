@@ -14,7 +14,7 @@ Authors@R: c(person("Kaue", "de Sousa",
 Maintainer: Kaue de Sousa <kaue.desousa@inn.no>
 URL: https://agrobioinfoservices.github.io/gosset/
 BugReports: https://github.com/agrobioinfoservices/gosset/issues
-Description: An environment for modelling metadata and experimental citizen science data.
+Description: Toolkit for a workflow on modelling metadata and experimental citizen science data, from collating data of different sources, model sellection and visualisation. The package is named after W.S. Gosset aka 'Student', a pioneer of modern statistics in small sample experimental design and analysis.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
