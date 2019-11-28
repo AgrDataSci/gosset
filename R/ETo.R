@@ -1,6 +1,7 @@
 #' Evapotranspiration
 #' 
-#' Compute evapotranspiration using the Blaney-Criddle method
+#' Compute evapotranspiration using the Blaney-Criddle method. A theoretical method used 
+#' when no measured data on pan evaporation are available locally. 
 #' 
 #' @inheritParams temperature
 #' @param lat a vector for the latitude (in Decimal degrees)
@@ -9,6 +10,9 @@
 #' representing the mean daily percentage of annual daytime hours 
 #' for different latitudes
 #' @return The evapotranspiration in mm/day
+#' @references
+#' Brouwer C. & Heibloem M. (1986). Irrigation water management: Irrigation water needs. Food and Agriculture Organization of The United Nations, Rome, Italy. http://www.fao.org/3/S2022E/s2022e00.htm
+#' 
 #' @examples
 #' \donttest{
 #'  
@@ -24,14 +28,14 @@
 #' pdates <- as.Date(pdates, origin = "1970-01-01")
 #' 
 #' # the evapotranspiration in the first 50 days after planting
-#' ETo(lonlat,
-#'     day.one = pdates,
-#'     span = 50,
-#'     lat = lonlat[["lat"]])
+#' e <- ETo(lonlat,
+#'          day.one = pdates,
+#'          span = 50,
+#'          lat = lonlat[["lat"]])
 #' }
 #' 
 #' @export
-ETo <- function(object, day.one = NULL, span = NULL, 
+ETo <- function(object, day.one = NULL, span = 150, 
                 lat = NULL, Kc = 1, p = NULL){
   
   # remove vector from a tibble object

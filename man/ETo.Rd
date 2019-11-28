@@ -4,7 +4,7 @@
 \alias{ETo}
 \title{Evapotranspiration}
 \usage{
-ETo(object, day.one = NULL, span = NULL, lat = NULL, Kc = 1, p = NULL)
+ETo(object, day.one = NULL, span = 150, lat = NULL, Kc = 1, p = NULL)
 }
 \arguments{
 \item{object}{a numeric vector of geographic coordinates (lonlat) or
@@ -30,7 +30,8 @@ for different latitudes}
 The evapotranspiration in mm/day
 }
 \description{
-Compute evapotranspiration using the Blaney-Criddle method
+Compute evapotranspiration using the Blaney-Criddle method. A theoretical method used 
+when no measured data on pan evaporation are available locally.
 }
 \examples{
 \donttest{
@@ -47,10 +48,13 @@ pdates <- as.integer(runif(10, 17666, 17670))
 pdates <- as.Date(pdates, origin = "1970-01-01")
 
 # the evapotranspiration in the first 50 days after planting
-ETo(lonlat,
-    day.one = pdates,
-    span = 50,
-    lat = lonlat[["lat"]])
+e <- ETo(lonlat,
+         day.one = pdates,
+         span = 50,
+         lat = lonlat[["lat"]])
 }
 
+}
+\references{
+Brouwer C. & Heibloem M. (1986). Irrigation water management: Irrigation water needs. Food and Agriculture Organization of The United Nations, Rome, Italy. http://www.fao.org/3/S2022E/s2022e00.htm
 }

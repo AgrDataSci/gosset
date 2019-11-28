@@ -21,6 +21,13 @@
 #' \item{DTR}{diurnal temperature range (mean difference between DT and NT (degree Celsius)) }
 #' \item{SU}{summer days, number of days with maximum temperature > 30 (degree Celsius)}
 #' \item{TR}{tropical nights, number of nights with maximum temperature > 25 (degree Celsius) }
+#' @references 
+#' Aguilar E., et al. (2005). Journal of Geophysical Research, 110(D23), D23107. https://doi.org/10.1029/2005JD006119.
+#' 
+#' Kehel Z., et al. (2016). Identifying Climate Patterns during the Crop-Growing Cycle from 30 Years of CIMMYT Elite Spring Wheat International Yield Trials. In: Applied Mathematics and Omics to Assess Crop Genetic Resources for Climate Change Adaptive Traits (eds Bari A., Damania A. B., Mackay M., Dayanandan S.), pp. 151–174. CRC Press.
+#' 
+#' Sparks A. H. (2018). Journal of Open Source Software, 3(30), 1035. https://doi.org/10.21105/joss.01035.
+#' 
 #' @examples
 #' \donttest{
 #' 
@@ -41,13 +48,10 @@
 #'             span = 40)
 #' }
 #' @export
-temperature <- function(object, day.one = NULL, span = NULL,
-                        index = NULL, ...)
+temperature <- function(object, day.one = NULL, span = 150,
+                        index = c("maxDT","minDT","maxNT","minNT","SU","TR","DTR"), 
+                        ...)
 {
-  
-  if (is.null(index)) {
-    index <- c("maxDT","minDT","maxNT","minNT","SU","TR","DTR")
-  }
   
   # get timespan for the day temperature
   if (dim(object)[2] == 2) {

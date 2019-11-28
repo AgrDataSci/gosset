@@ -3,12 +3,12 @@
 \name{favourite}
 \alias{favourite}
 \alias{favorite}
-\alias{plot.cmb_fvrt}
+\alias{plot.gosset_fvrt}
 \title{Favourability scores}
 \usage{
 favourite(data = NULL, items = NULL, input = NULL, reorder = TRUE)
 
-\method{plot}{cmb_fvrt}(x, ...)
+\method{plot}{gosset_fvrt}(x, ...)
 }
 \arguments{
 \item{data}{a data frame with columns specified by items and input values}
@@ -19,12 +19,12 @@ favourite(data = NULL, items = NULL, input = NULL, reorder = TRUE)
 
 \item{reorder}{logical, if items should be reordered from higher favourability score to least favourability score}
 
-\item{x}{an object of class 'cmb_fvrt' for the plotting method. Generates a 'ggplot' object that can be passed to any ggplot2 method}
+\item{x}{an object of class 'gosset_fvrt' for the plotting method. Generates a 'ggplot' object that can be passed to any ggplot2 method}
 
 \item{...}{additional arguments passed to methods. See details}
 }
 \value{
-a data.frame with descriptive statistics
+A data.frame with the descriptive statistics:
 \item{N}{number of times the given item was evaluated}
 \item{best}{relative number of times (in percentage) the given item was ranked as first}
 \item{worst}{relative number of times (in percentage) the given item was ranked as worst}
@@ -32,15 +32,14 @@ a data.frame with descriptive statistics
 \item{fav_score}{the favourability score, which is the difference between best and worst performance}
 }
 \description{
-Compute favourability scores
+Summarise favourability scores from tricot data
 }
 \examples{
-
 data("breadwheat", package = "gosset")
 
-favourite(data = breadwheat,
-          items = c(1:3),
-          input = c(18:19))
+fv <- favourite(data = breadwheat,
+                items = c(1:3),
+                input = c(18:19))
 
  
 }

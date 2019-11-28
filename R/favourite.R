@@ -1,24 +1,23 @@
 #' Favourability scores
 #'
-#' Compute favourability scores
+#' Summarise favourability scores from tricot data
 #' 
 #' @inheritParams rank_tricot
 #' @param reorder logical, if items should be reordered from higher favourability score to least favourability score
-#' @param x an object of class 'cmb_fvrt' for the plotting method. Generates a 'ggplot' object that can be passed to any ggplot2 method
+#' @param x an object of class 'gosset_fvrt' for the plotting method. Generates a 'ggplot' object that can be passed to any ggplot2 method
 #' @aliases favorite
-#' @return a data.frame with descriptive statistics
+#' @return A data.frame with the descriptive statistics:
 #' \item{N}{number of times the given item was evaluated}
 #' \item{best}{relative number of times (in percentage) the given item was ranked as first}
 #' \item{worst}{relative number of times (in percentage) the given item was ranked as worst}
 #' \item{wins}{relative number of times (in percentage) the given item wins against the others}
 #' \item{fav_score}{the favourability score, which is the difference between best and worst performance}
 #' @examples
-#' 
 #' data("breadwheat", package = "gosset")
 #' 
-#' favourite(data = breadwheat,
-#'           items = c(1:3),
-#'           input = c(18:19))
+#' fv <- favourite(data = breadwheat,
+#'                 items = c(1:3),
+#'                 input = c(18:19))
 #' 
 #'  
 #' @import ggplot2
@@ -105,7 +104,7 @@ favourite <- function(data = NULL, items = NULL,
     sumstats <- sumstats[rev(order(sumstats$fav_score)), ]
   }
   
-  class(sumstats) <- c("cmb_fvrt", class(sumstats))
+  class(sumstats) <- c("gosset_fvrt", class(sumstats))
   
   return(sumstats)
 
@@ -120,9 +119,9 @@ favorite <- function(...){
 }
 
 #' @rdname favourite
-#' @method plot cmb_fvrt
+#' @method plot gosset_fvrt
 #' @export
-plot.cmb_fvrt <- function(x, ...) {
+plot.gosset_fvrt <- function(x, ...) {
   
   p <- ggplot2::ggplot(data = x, 
                        ggplot2::aes(y = x$fav_score, 

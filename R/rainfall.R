@@ -17,6 +17,13 @@
 #' \item{Rx1day}{maximum 1-day rainfall (mm)}
 #' \item{Rx5day}{maximum 5-day rainfall (mm) }
 #' \item{Rtotal}{total rainfall (mm) in wet days (R >= 1)}
+#' @references 
+#' Aguilar E., et al. (2005). Journal of Geophysical Research, 110(D23), D23107. https://doi.org/10.1029/2005JD006119.
+#' 
+#' Kehel Z., et al. (2016). Identifying Climate Patterns during the Crop-Growing Cycle from 30 Years of CIMMYT Elite Spring Wheat International Yield Trials. In: Applied Mathematics and Omics to Assess Crop Genetic Resources for Climate Change Adaptive Traits (eds Bari A., Damania A. B., Mackay M., Dayanandan S.), pp. 151–174. CRC Press.
+#' 
+#' Sparks A. H. (2018). Journal of Open Source Software, 3(30), 1035. https://doi.org/10.21105/joss.01035.
+#' 
 #' @examples
 #' \donttest{
 #' 
@@ -46,13 +53,10 @@
 #' }       
 #'          
 #' @export
-rainfall <- function(object, day.one = NULL, span = NULL,
-                     index = NULL, ...)
+rainfall <- function(object, day.one = NULL, span = 150,
+                     index = c("MLDS","MLWS","R10mm","R20mm","SDII","Rx1day","Rx5day","Rtotal"), 
+                     ...)
 {
-  
-  if (is.null(index)) {
-    index <- c("MLDS","MLWS","R10mm","R20mm","SDII","Rx1day","Rx5day","Rtotal")
-  }
   
   # get timespan
   if (dim(object)[2] == 2) {

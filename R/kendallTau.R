@@ -12,6 +12,7 @@
 #' Used for significance testing.
 #' @references 
 #' Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. https://doi.org/10.1093/biomet/30.1-2.81.
+#' 
 #' @examples
 #' 
 #' # check the correlation between observed rankings 

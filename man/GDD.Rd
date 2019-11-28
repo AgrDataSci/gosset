@@ -2,9 +2,9 @@
 % Please edit documentation in R/GDD.R
 \name{GDD}
 \alias{GDD}
-\title{Growing Degree Days}
+\title{Growing degree-days}
 \usage{
-GDD(object, day.one = NULL, degree.days = NULL, base = NULL, span = NULL, ...)
+GDD(object, day.one = NULL, degree.days = NULL, base = 10, span = 150, ...)
 }
 \arguments{
 \item{object}{a numeric vector of geographic coordinates (lonlat) or
@@ -18,7 +18,7 @@ When lonlat is used, the function makes a call to
 
 \item{degree.days}{an integer for the degree days required by the crop (look at the physiology of the focal crop)}
 
-\item{base}{an integer for the base temperature. Set 10 as default.}
+\item{base}{an integer for the base temperature.}
 
 \item{span}{an integer or a vector with integers for the duration of the timespan to be captured}
 
@@ -28,8 +28,10 @@ When lonlat is used, the function makes a call to
 The number of days required to reach the growing degree days.
 }
 \description{
-Compute number of days required to reach growing degree days.
-GDD are calculated by taking the integral of warmth above a base temperature.
+Compute number of days required to reach Growing degree-days.
+Is a heuristic tool in phenology. Growing degree-days are a measure of heat accumulation 
+used to predict plant and animal development rates. Growing degree-days are calculated by 
+taking the integral of warmth above a base temperature.
 }
 \examples{
 \donttest{
@@ -54,4 +56,7 @@ GDD(lonlat,
     base = 5)
 }
     
+}
+\references{
+Prentice I. C., et al. (1992) Journal of Biogeography, 19(2), 117. https://doi.org/10.2307/2845499.
 }

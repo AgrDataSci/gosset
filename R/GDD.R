@@ -1,12 +1,17 @@
-#' Growing Degree Days
+#' Growing degree-days
 #' 
-#' Compute number of days required to reach growing degree days.
-#' GDD are calculated by taking the integral of warmth above a base temperature.
+#' Compute number of days required to reach Growing degree-days.
+#' Is a heuristic tool in phenology. Growing degree-days are a measure of heat accumulation 
+#' used to predict plant and animal development rates. Growing degree-days are calculated by 
+#' taking the integral of warmth above a base temperature.
 #' 
 #' @param degree.days an integer for the degree days required by the crop (look at the physiology of the focal crop)
-#' @param base an integer for the base temperature. Set 10 as default.
+#' @param base an integer for the base temperature.
 #' @inheritParams temperature
 #' @return The number of days required to reach the growing degree days.
+#' @references 
+#' Prentice I. C., et al. (1992) Journal of Biogeography, 19(2), 117. https://doi.org/10.2307/2845499.
+#' 
 #' @examples
 #' \donttest{
 #' 
@@ -32,7 +37,7 @@
 #'     
 #' @export
 GDD <- function(object, day.one = NULL, degree.days = NULL,
-                base = NULL, span = NULL, ...)
+                base = 10, span = 150, ...)
 {
   
   # validate parameters
@@ -40,14 +45,7 @@ GDD <- function(object, day.one = NULL, degree.days = NULL,
     stop("degree.days is missing with no default \n")
   }
   
-  if (is.null(base)) {
-    base <- 10
-  }
-  
-  if (is.null(span)) {
-    span <- 150
-  }
-  
+
   # get timespan for the day temperature
   if (dim(object)[2] == 2) {
     day <- .get_timespan(object, day.one, span, pars = "T2M_MAX", ...)

@@ -1,7 +1,7 @@
 Package: gosset
 Type: Package
 Title: Modelling Metadata and Experimental Citizen Science
-Version: 0.1-2
+Version: 0.1-3
 Authors@R: c(person("Kaue", "de Sousa", 
         email = "kaue.desousa@inn.no", role = c("aut", "cre"),
         comment = c(ORCID = "0000-0002-7571-7845")),
