@@ -1,8 +1,8 @@
-# gosset v0.1-3
+# gosset 0.1-3
 
 * Successfull migration from **ClimMobTools** to **gosset**
 
-# gosset v0.1-2
+# gosset 0.1-2
 
 ## New features
 
@@ -13,7 +13,7 @@
 * `predict` method for crossvalidation and `rank_decimal` deprecated.
 * `rank_numeric` and `rank_tricot ` replaces `rank_PL`. NO warning message added.
 
-# gosset v0.1-1
+# gosset 0.1-1
 
 ## New features
 
@@ -24,6 +24,6 @@
 * replace `to_paircomp` by `rank_paircomp`. No warning message added
 
 
-# gosset v0.1-0
+# gosset 0.1-0
 
 * GitHub-only release of prototype package.
