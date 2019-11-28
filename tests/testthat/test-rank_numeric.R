@@ -48,8 +48,8 @@ test_that("wide and group ok", {
   
 })
 
-# 
-# save(lonlat, rain, tetra, tetra_true, triadic,
+# # 
+# save(d, lonlat, rain, tetra, tetra_true, triadic,
 #      triadic_true, triadic_true_local, default,
 #      default_true, temp, tricot, default_wide, default_wide_true,
 #      file = "tests/test_data.rda")

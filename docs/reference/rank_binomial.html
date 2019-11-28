@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Binary rankings — rank_binomial • gosset</title>
+<title>Binary rankings from pairwise contests — rank_binomial • gosset</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="Binary rankings — rank_binomial" />
+<meta property="og:title" content="Binary rankings from pairwise contests — rank_binomial" />
 
-<meta property="og:description" content="Binary comparisons from a ranking object. Ties are not taken into account, then they are added as NA's." />
+<meta property="og:description" content="Binary comparisons from a ranking object. Ties are not taken into account, 
+then they are added as NA's." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -111,14 +112,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Binary rankings</h1>
+    <h1>Binary rankings from pairwise contests</h1>
     
     <div class="hidden name"><code>rank_binomial.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Binary comparisons from a ranking object. Ties are not taken into account, then they are added as NA's.</p>
+    <p>Binary comparisons from a ranking object. Ties are not taken into account, 
+then they are added as NA's.</p>
     
     </div>
 
@@ -133,17 +135,26 @@
     </tr>
     <tr>
       <th>drop.null</th>
-      <td><p>logical, an optional argument to remove players without comparisons</p></td>
+      <td><p>logical, an optional argument to remove null contests</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a binary rank of pairwise contests</p>
+    <p>A data.frame with binary rank of pairwise contests:</p>
+<dt>player1</dt><dd><p>a factor with n levels for the first player in the contests</p></dd>
+<dt>player2</dt><dd><p>a factor with n levels (same as player1) for the second player in the contests</p></dd>
+<dt>win1</dt><dd><p>number of times player1 wins against player2</p></dd>
+<dt>win2</dt><dd><p>number of times player2 wins against player1</p></dd>
+
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Turner H. &amp; Firth D. (2012). Journal of Statistical Software, 48(9), 1–21. http://dx.doi.org/10.18637/jss.v048.i09</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/PlackettLuce/topics/rankings'>rankings</a></code>, <code><a href='https://www.rdocumentation.org/packages/psychotools/topics/paircomp'>paircomp</a></code></p></div>
+    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/BradleyTerry2/topics/BTm'>BTm</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -161,22 +172,9 @@
 }
 
 <span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rank_numeric.html'>rank_numeric</a></span>(<span class='kw'>items</span> <span class='kw'>=</span> <span class='no'>i</span>,
-                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='no'>r</span>)
+                  <span class='kw'>input</span> <span class='kw'>=</span> <span class='no'>r</span>)
 
-<span class='fu'>rank_binomial</span>(<span class='no'>R</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 10 x 4</span><span>
-#&gt;    player1 player2  win1  win2
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> A       B           7     3
-#&gt; </span><span style='color: #555555;'> 2</span><span> A       C           7     3
-#&gt; </span><span style='color: #555555;'> 3</span><span> B       C           7     3
-#&gt; </span><span style='color: #555555;'> 4</span><span> A       D           7     3
-#&gt; </span><span style='color: #555555;'> 5</span><span> B       D           4     6
-#&gt; </span><span style='color: #555555;'> 6</span><span> C       D           3     7
-#&gt; </span><span style='color: #555555;'> 7</span><span> A       E           6     4
-#&gt; </span><span style='color: #555555;'> 8</span><span> B       E           5     5
-#&gt; </span><span style='color: #555555;'> 9</span><span> C       E           5     5
-#&gt; </span><span style='color: #555555;'>10</span><span> D       E           6     4</div><div class='input'>
-</div></span></pre>
+<span class='no'>bin</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_binomial</span>(<span class='no'>R</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -184,6 +182,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

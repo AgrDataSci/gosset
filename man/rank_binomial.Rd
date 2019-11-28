@@ -2,20 +2,25 @@
 % Please edit documentation in R/rank_binomial.R
 \name{rank_binomial}
 \alias{rank_binomial}
-\title{Binary rankings}
+\title{Binary rankings from pairwise contests}
 \usage{
 rank_binomial(object, drop.null = FALSE)
 }
 \arguments{
 \item{object}{an object of class "rankings", "grouped_rankings" or "paircomp".}
 
-\item{drop.null}{logical, an optional argument to remove players without comparisons}
+\item{drop.null}{logical, an optional argument to remove null contests}
 }
 \value{
-a binary rank of pairwise contests
+A data.frame with binary rank of pairwise contests:
+\item{player1}{a factor with n levels for the first player in the contests}
+\item{player2}{a factor with n levels (same as player1) for the second player in the contests}
+\item{win1}{number of times player1 wins against player2}
+\item{win2}{number of times player2 wins against player1}
 }
 \description{
-Binary comparisons from a ranking object. Ties are not taken into account, then they are added as NA's.
+Binary comparisons from a ranking object. Ties are not taken into account, 
+then they are added as NA's.
 }
 \examples{
 # Rankings with 5 items randomly assigned
@@ -30,13 +35,16 @@ for(s in 1:10) {
   i[s,] <- sample(LETTERS[1:5])
   r[s,] <- sample(1:5)
 }
-
+ 
 R <- rank_numeric(items = i,
-                 input = r)
+                  input = r)
 
-rank_binomial(R)
+bin <- rank_binomial(R)
 
 }
+\references{
+Turner H. & Firth D. (2012). Journal of Statistical Software, 48(9), 1–21. http://dx.doi.org/10.18637/jss.v048.i09
+}
 \seealso{
-\code{\link[PlackettLuce]{rankings}}, \code{\link[psychotools]{paircomp}}
+\code{\link[BradleyTerry2]{BTm}}
 }

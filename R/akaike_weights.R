@@ -1,6 +1,6 @@
 #' Akaike weights
 #' 
-#' Akaike weights represent the relative likelihood of a model. 
+#' Akaike weights represent the relative likelihood of a model.  
 #' It can be used in model averaging and selection.
 #' 
 #' @param object a numerical vector with models goodness of fit coefficients 
@@ -8,8 +8,9 @@
 #' \item{delta}{the delta overall change in the coefficients}
 #' \item{relative_logLik}{the relative log-likelihood}
 #' \item{akaike_weights}{the Akaike weights}
+#' @references Wagenmakers E. J. & Farrell S. (2004). Psychonomic Bulletin and Review, 11(1), 192–196. https://doi.org/10.3758/BF03206482
 #' @examples
-#' 
+#'  
 #' data("airquality")
 #' 
 #' # try three model approaches
@@ -25,9 +26,17 @@
 #'             data = airquality,
 #'             family = poisson())
 #' 
+#' # models AICs together in a single vector
+#' models <- c(mod1 = AIC(mod1),
+#'             mod2 = AIC(mod2),
+#'             mod3 = AIC(mod3))
 #' 
-#' akaike_weights(c(AIC(mod1), AIC(mod2), AIC(mod3)))
-#'  
+#' # calculate akaike weights
+#' aw <- akaike_weights(models)
+#' 
+#' # the higher the better
+#' names(models[which.max(aw$akaike_weights)])
+#' 
 #' @export 
 akaike_weights <- function(object){
 
@@ -43,7 +52,7 @@ akaike_weights <- function(object){
   # get the Akaike weight
   weights <- rel_LL / sum_LL
 
-  # combine values into a single vector
+  # combine values into a single data.frame
   result <- tibble::tibble(delta = delta, 
                            relative_logLik = rel_LL, 
                            akaike_weights = weights)

@@ -1,16 +1,21 @@
-#' Kendall Tau correlation coefficient
+#' Kendall rank correlation coefficient
 #' 
-#' Compute Kendall Tau correlation coefficient between two matrices
+#' Compute Kendall rank correlation coefficient between two matrices. Is coefficient 
+#' used in statistics to measure the ordinal association between two measured quantities.
+#' A tau test is a non-parametric hypothesis test for statistical dependence based 
+#' on the tau coefficient.
 #' 
 #' @param x a matrix with rankings or model coefficients 
 #' @param y a matrix with rankings or model coefficients
 #' @return The Kendall correlation coefficient and the Effective N, which 
 #' is the equivalent N needed if all items were compared to all items. 
 #' Used for significance testing.
+#' @references 
+#' Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. https://doi.org/10.1093/biomet/30.1-2.81.
 #' @examples
 #' 
 #' # check the correlation between observed rankings 
-#' # and the predicted coefficients from PlackettLuce
+#' # and the predicted rankings from PlackettLuce
 #' 
 #' library("PlackettLuce")
 #' 
@@ -28,7 +33,7 @@
 #' 
 #' preds <- predict(mod)
 #' 
-#' kendallTau(R, preds)
+#' k <- kendallTau(R, preds)
 #' 
 #' @seealso \code{\link[stats]{cor}}
 #' @export

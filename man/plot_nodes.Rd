@@ -29,16 +29,11 @@ library("ggplot2")
 
 data("breadwheat", package = "gosset")
 
-# convert the tricot rankings from breadwheat data
-# into a object of class 'grouped_rankings'
-names(breadwheat)
-
 G <- rank_tricot(data = breadwheat, 
                  items = c("variety_a","variety_b","variety_c"), 
                  input = c("overall_best","overall_worst"),
                  group = TRUE)
 
-# combine grouped rankings with lon lat from wheat dataset
 mydata <- cbind(G, breadwheat[c("lon","lat")])
 
 # fit a pltree model using lon and lat
@@ -49,5 +44,5 @@ p <- plot_nodes(mod)
 
 }
 \seealso{
-\code{\link[qvcalc]{qvcalc}}
+\code{\link[qvcalc]{qvcalc}} \code{\link[ggplot2]{ggplot}}
 }

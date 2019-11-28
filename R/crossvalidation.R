@@ -13,7 +13,7 @@
 #' @param mean.method a character for the method to calculate the mean of cross-validation estimators. 
 #' Options are: 'equal', an arithmetic mean; 
 #' 'foldsize', a weighted mean by the size in each fold; 
-#' 'stouffer' a weighted Z-test developed by Stouffer et al. (1949). 
+#' 'stouffer' a weighted Z-test. See references. 
 #' @param seed The seed for random number generation. If NULL (the default), gosset will set the seed randomly
 #' @param ... additional arguments passed to methods
 #' @return The cross-validation goodness-of-fit estimates, which are:
@@ -23,31 +23,37 @@
 #' \item{MaxLik}{Maximum likelihood pseudo R-squared}
 #' \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
 #' \item{Agresti}{Agresti pseudo R-squared}
-#' Cross-validation estimates are computed using the trained models on the validation samples.
 #' @seealso \code{\link[gnm]{gnm}}, \code{\link[PlackettLuce]{pltree}}, 
 #' \code{\link[psychotree]{bttree}}
+#' @references 
+#' Agresti A. (2002). Categorical Data Analysis. John Wiley & Sons, Inc., Hoboken, NJ, USA. http://doi.wiley.com/10.1002/0471249688
+#' 
+#' Elder J. F. (2003). Journal of Computational and Graphical Statistics, 12(4), 853–864. https://doi.org/10.1198/1061860032733.
+#' 
+#' Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. https://doi.org/10.1111/j.1420-9101.2005.00917.x.
 #' @examples
-#'  
 #' # Generalized Linear Models
 #' 
 #' data("airquality")
 #' 
-#' crossvalidation(Temp ~ Wind + Solar.R,
-#'                 data = airquality,
-#'                 k = 3,
-#'                 family = poisson())
+#' cv <- crossvalidation(Temp ~ Wind + Solar.R,
+#'                       data = airquality,
+#'                       k = 3,
+#'                       seed = 999,
+#'                       family = poisson())
 #'                 
 #' 
-#' ########################################
-#' @examples 
 #' \donttest{
 #' # PlackettLuce Model
 #' # beans data from PlackettLuce
 #' library("PlackettLuce")
+#' data("beans", package = "PlackettLuce")
 #' 
-#' example("beans", package = "PlackettLuce")
-#' 
-#' G <- grouped_rankings(R, rep(seq_len(nrow(beans)), 4))
+#' G <- rank_tricot(data = beans,
+#'                  items = c(1:3),
+#'                  input = c(4:5),
+#'                  additional.rank = beans[c(6:8)],
+#'                  group = TRUE)
 #' 
 #' beans <- cbind(G, beans)
 #' 
@@ -55,22 +61,24 @@
 #' k <- length(unique(beans$season))
 #' folds <- as.integer(as.factor(beans$season))
 #' 
-#' crossvalidation(G ~ maxTN, 
-#'                 data = beans, 
-#'                 k = k, 
-#'                 folds = folds, 
-#'                 minsize = 100)
+#' cv <- crossvalidation(G ~ maxTN,
+#'                       data = beans,
+#'                       k = k,
+#'                       folds = folds,
+#'                       minsize = 100)
 #' 
 #' ########################################
+#' }
 #' 
+#' \dontrun{
 #' # BradleyTerry Model
 #' library("psychotree")
 #' # Germany's Next Topmodel 2007 data from psychotree
 #' data("Topmodel2007", package = "psychotree")
 #' 
-#' crossvalidation(preference ~ ., 
-#'                 data = Topmodel2007,
-#'                 k = 5)
+#' cv <- crossvalidation(preference ~ .,
+#'                       data = Topmodel2007,
+#'                       k = 5)
 #'                 
 #' }
 #'                 

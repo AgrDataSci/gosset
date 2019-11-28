@@ -78,6 +78,9 @@ G <- rank_tricot(data = beans,
 head(G)
 
 }
+\references{
+van Etten J., et al. (2019). Experimental Agriculture, 55(S1), 275–296. https://doi.org/10.1017/S0014479716000739.
+}
 \seealso{
 \code{\link[PlackettLuce]{rankings}}  \code{\link{breadwheat}}
 }

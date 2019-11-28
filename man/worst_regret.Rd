@@ -26,7 +26,6 @@ diversification strategies.
 \examples{
 
 library("PlackettLuce")
-
 data("breadwheat", package = "gosset")
 
 # convert the tricot rankings from breadwheat data
@@ -47,4 +46,9 @@ mod <- pltree(G ~ ., data = mydata)
 worst_regret(mod)
 
 
+}
+\references{
+Loomes G. & Sugden R. (1982). The Economic Journal, 92(368), 805. https://doi.org/10.2307/2232669.
+
+Bleichrodt H. & Wakker P. P. (2015). The Economic Journal, 125(583), 493–532. https://doi.org/10.1111/ecoj.12200.
 }

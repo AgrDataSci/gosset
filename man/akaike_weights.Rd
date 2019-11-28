@@ -16,11 +16,11 @@ A data frame containing the coefficients:
 \item{akaike_weights}{the Akaike weights}
 }
 \description{
-Akaike weights represent the relative likelihood of a model. 
+Akaike weights represent the relative likelihood of a model.  
 It can be used in model averaging and selection.
 }
 \examples{
-
+ 
 data("airquality")
 
 # try three model approaches
@@ -36,7 +36,18 @@ mod3 <- glm(Temp ~ Ozone + Solar.R,
             data = airquality,
             family = poisson())
 
+# models AICs together in a single vector
+models <- c(mod1 = AIC(mod1),
+            mod2 = AIC(mod2),
+            mod3 = AIC(mod3))
 
-akaike_weights(c(AIC(mod1), AIC(mod2), AIC(mod3)))
- 
+# calculate akaike weights
+aw <- akaike_weights(models)
+
+# the higher the better
+names(models[which.max(aw$akaike_weights)])
+
+}
+\references{
+Wagenmakers E. J. & Farrell S. (2004). Psychonomic Bulletin and Review, 11(1), 192–196. https://doi.org/10.3758/BF03206482
 }

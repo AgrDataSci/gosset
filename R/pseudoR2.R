@@ -1,6 +1,11 @@
 #' Pseudo R-squared
 #' 
-#' Regression coefficient to evaluate goodness-of-fit in a given model
+#' Regression coefficient to evaluate goodness-of-fit in a given model when 
+#' ordinary least squares (OLS) are not available. The algorithm computes estimates 
+#' from the maximum likelihood through an iterative process. These estimates are called 
+#' 'pseudo R-squared' because they look like 'R-squared' in the sense that they are on 
+#' a similar scale (from 0 to 1), with higher values indicating better model fit. However, 
+#' 'pseudo R-squared' cannot be interpreted as one would interpret an OLS R-squared.  
 #'
 #' @param object a fitted model object
 #' @param ... additional arguments affecting the R-squared produced
@@ -10,6 +15,9 @@
 #' \item{MaxLik}{maximum likelihood pseudo R-squared}
 #' \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
 #' \item{Agresti}{Agresti pseudo R-squared}
+#' @references 
+#' Agresti A. (2002). Categorical Data Analysis. John Wiley & Sons, Inc., Hoboken, NJ, USA. http://doi.wiley.com/10.1002/0471249688
+#'  
 #' @examples
 #'
 #' data("airquality")

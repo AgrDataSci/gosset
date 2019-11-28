@@ -137,6 +137,10 @@
 
     <p>an object of class "paircomp" which is a matrix of pairwise comparisons</p>
     
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Strobl C., Wickelmaier F. &amp; Zeileis A. (2011). Journal of Educational and Behavioral Statistics, 36(2), 135–153. https://doi.org/10.3102/1076998609359791.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/PlackettLuce/topics/rankings'>rankings</a></code> , <code><a href='https://www.rdocumentation.org/packages/psychotools/topics/paircomp'>paircomp</a></code></p></div>
@@ -158,12 +162,8 @@
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>R</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"apple"</span>, <span class='st'>"banana"</span>, <span class='st'>"orange"</span>, <span class='st'>"pear"</span>)
 <span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>PlackettLuce</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/PlackettLuce/topics/rankings'>as.rankings</a></span>(<span class='no'>R</span>)
 
-<span class='fu'>rank_paircomp</span>(<span class='no'>R</span>)</div><div class='output co'>#&gt; [1] {app &gt; bnn, NA, NA, NA, NA, NA}                                   
-#&gt; [2] {app &lt; bnn, app &lt; orn, bnn &gt; orn, app &lt; per, bnn &gt; per, orn &gt; per}
-#&gt; [3] {app &gt; bnn, app &gt; orn, bnn &lt; orn, app &lt; per, bnn &lt; per, orn &lt; per}
-#&gt; [4] {app &gt; bnn, app &gt; orn, bnn &gt; orn, NA, NA, NA}                     
-#&gt; [5] {app &lt; bnn, app &lt; orn, NA, NA, NA, NA}                            
-#&gt; [6] {NA, app &gt; orn, NA, app &gt; per, NA, orn &lt; per}                     </div><div class='input'>
+<span class='no'>PC</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_paircomp</span>(<span class='no'>R</span>)
+
 <span class='co'>#############################################</span>
 
 <span class='co'># using breadwheat data</span>
@@ -184,6 +184,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

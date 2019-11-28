@@ -20,7 +20,12 @@ A data frame containing the pseudo R-squared coefficients:
 \item{Agresti}{Agresti pseudo R-squared}
 }
 \description{
-Regression coefficient to evaluate goodness-of-fit in a given model
+Regression coefficient to evaluate goodness-of-fit in a given model when 
+ordinary least squares (OLS) are not available. The algorithm computes estimates 
+from the maximum likelihood through an iterative process. These estimates are called 
+'pseudo R-squared' because they look like 'R-squared' in the sense that they are on 
+a similar scale (from 0 to 1), with higher values indicating better model fit. However, 
+'pseudo R-squared' cannot be interpreted as one would interpret an OLS R-squared.
 }
 \examples{
 
@@ -32,4 +37,7 @@ mod <- glm(Temp ~ Wind + Solar.R,
 
 pseudoR2(mod)
 
+}
+\references{
+Agresti A. (2002). Categorical Data Analysis. John Wiley & Sons, Inc., Hoboken, NJ, USA. http://doi.wiley.com/10.1002/0471249688
 }

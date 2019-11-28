@@ -33,7 +33,7 @@ rank_numeric(
 a PlackettLuce "rankings" object, which is a matrix of dense rankings
 }
 \description{
-Group and convert numeric values into integer ranks
+Group and convert numeric values into Plackett-Luce rankings.
 }
 \examples{
 # A matrix with 10 rankings of 5 items (A, B, C, D, E)

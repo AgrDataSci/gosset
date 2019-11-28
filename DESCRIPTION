@@ -22,15 +22,20 @@ Depends: R (>= 2.10)
 Imports: 
     BradleyTerry2, 
     gnm, 
-    ggplot2, 
+    ggplot2,
+    methods,
+    nasapower,
     partykit, 
-    PlackettLuce, 
+    PlackettLuce (>= 0.2-8), 
     psychotree, 
     psychotools, 
-    qvcalc, 
+    qvcalc,
+    raster,
+    scales,
     stats, 
     tibble, 
-    tidyr
+    tidyr,
+    utils
 Suggests: 
     ClimMobTools,
     knitr,

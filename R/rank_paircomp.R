@@ -5,6 +5,9 @@
 #' @param object an object of class "rankings" or "grouped_rankings" which is a matrix of dense rankings. 
 #' @return an object of class "paircomp" which is a matrix of pairwise comparisons
 #' @seealso \code{\link[PlackettLuce]{rankings}} , \code{\link[psychotools]{paircomp}}
+#' @references 
+#' Strobl C., Wickelmaier F. & Zeileis A. (2011). Journal of Educational and Behavioral Statistics, 36(2), 135–153. https://doi.org/10.3102/1076998609359791.
+#' 
 #' @examples 
 #' 
 #' library("PlackettLuce")
@@ -21,7 +24,7 @@
 #' colnames(R) <- c("apple", "banana", "orange", "pear")
 #' R <- PlackettLuce::as.rankings(R)
 #' 
-#' rank_paircomp(R)
+#' PC <- rank_paircomp(R)
 #' 
 #' #############################################
 #' 

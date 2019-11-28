@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Kendall Tau correlation coefficient — kendallTau • gosset</title>
+<title>Kendall rank correlation coefficient — kendallTau • gosset</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,12 @@
 
 
 
-<meta property="og:title" content="Kendall Tau correlation coefficient — kendallTau" />
+<meta property="og:title" content="Kendall rank correlation coefficient — kendallTau" />
 
-<meta property="og:description" content="Compute Kendall Tau correlation coefficient between two matrices" />
+<meta property="og:description" content="Compute Kendall rank correlation coefficient between two matrices. Is coefficient 
+used in statistics to measure the ordinal association between two measured quantities.
+A tau test is a non-parametric hypothesis test for statistical dependence based 
+on the tau coefficient." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -111,14 +114,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Kendall Tau correlation coefficient</h1>
+    <h1>Kendall rank correlation coefficient</h1>
     
     <div class="hidden name"><code>kendallTau.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Compute Kendall Tau correlation coefficient between two matrices</p>
+    <p>Compute Kendall rank correlation coefficient between two matrices. Is coefficient 
+used in statistics to measure the ordinal association between two measured quantities.
+A tau test is a non-parametric hypothesis test for statistical dependence based 
+on the tau coefficient.</p>
     
     </div>
 
@@ -143,6 +149,10 @@
 is the equivalent N needed if all items were compared to all items. 
 Used for significance testing.</p>
     
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. https://doi.org/10.1093/biomet/30.1-2.81.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/stats/topics/cor'>cor</a></code></p></div>
@@ -151,7 +161,7 @@ Used for significance testing.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'># check the correlation between observed rankings </span>
-<span class='co'># and the predicted coefficients from PlackettLuce</span>
+<span class='co'># and the predicted rankings from PlackettLuce</span>
 
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"PlackettLuce"</span>)
 
@@ -169,11 +179,7 @@ Used for significance testing.</p>
 
 <span class='no'>preds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>mod</span>)
 
-<span class='fu'>kendallTau</span>(<span class='no'>R</span>, <span class='no'>preds</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 2</span><span>
-#&gt;   kendallTau N_effective
-#&gt;        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>      0.667           9</div><div class='input'>
-</div></span></pre>
+<span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'>kendallTau</span>(<span class='no'>R</span>, <span class='no'>preds</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -181,6 +187,8 @@ Used for significance testing.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

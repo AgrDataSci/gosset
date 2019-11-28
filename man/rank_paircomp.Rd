@@ -31,7 +31,7 @@ R <- matrix(c(1, 2, 0, 0,
 colnames(R) <- c("apple", "banana", "orange", "pear")
 R <- PlackettLuce::as.rankings(R)
 
-rank_paircomp(R)
+PC <- rank_paircomp(R)
 
 #############################################
 
@@ -48,6 +48,9 @@ R <- rank_tricot(breadwheat,
 PC <- rank_paircomp(R)
 
 
+}
+\references{
+Strobl C., Wickelmaier F. & Zeileis A. (2011). Journal of Educational and Behavioral Statistics, 36(2), 135–153. https://doi.org/10.3102/1076998609359791.
 }
 \seealso{
 \code{\link[PlackettLuce]{rankings}} , \code{\link[psychotools]{paircomp}}

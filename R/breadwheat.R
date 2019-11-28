@@ -1,7 +1,7 @@
 #' Preferred bread wheat varieties
 #'
 #' Data from crowdsourcing citizen-science trials of bread wheat 
-#' (\emph{Triticum aestivum}) varieties in Vaishali, India over the 
+#' (\emph{Triticum aestivum} L.) varieties in Vaishali, India over the 
 #' 2014's Rabi season. Farmers were asked to test three varieties 
 #' of bread wheat randomly assigned from a total of 16 varieties 
 #' and report which one had the best and worst performance considering 
@@ -37,6 +37,6 @@
 #'     \item{\code{overall_worst}}{The variety ranked as worst for overall perfomance ("A",
 #'     "B" or "C").}
 #' }
-#' @source The data were provided by Bioversity International, a CGIAR Research
-#' Centre, through the ClimMob platform \url{https://climmob.net}.
+#' @source The data were provided by Bioversity International \url{https://www.bioversityinternational.org/}, 
+#' a CGIAR Research Centre, through the ClimMob platform \url{https://climmob.net}.
 "breadwheat"

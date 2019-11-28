@@ -2,7 +2,7 @@
 % Please edit documentation in R/kendallTau.R
 \name{kendallTau}
 \alias{kendallTau}
-\title{Kendall Tau correlation coefficient}
+\title{Kendall rank correlation coefficient}
 \usage{
 kendallTau(x, y)
 }
@@ -17,12 +17,15 @@ is the equivalent N needed if all items were compared to all items.
 Used for significance testing.
 }
 \description{
-Compute Kendall Tau correlation coefficient between two matrices
+Compute Kendall rank correlation coefficient between two matrices. Is coefficient 
+used in statistics to measure the ordinal association between two measured quantities.
+A tau test is a non-parametric hypothesis test for statistical dependence based 
+on the tau coefficient.
 }
 \examples{
 
 # check the correlation between observed rankings 
-# and the predicted coefficients from PlackettLuce
+# and the predicted rankings from PlackettLuce
 
 library("PlackettLuce")
 
@@ -40,8 +43,11 @@ mod <- pltree(G ~ 1, data = G)
 
 preds <- predict(mod)
 
-kendallTau(R, preds)
+k <- kendallTau(R, preds)
 
+}
+\references{
+Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. https://doi.org/10.1093/biomet/30.1-2.81.
 }
 \seealso{
 \code{\link[stats]{cor}}

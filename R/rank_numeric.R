@@ -1,6 +1,6 @@
 #' Plackett-Luce rankings from numeric values
 #'
-#' Group and convert numeric values into integer ranks
+#' Group and convert numeric values into Plackett-Luce rankings.
 #'
 #' @inheritParams rank_tricot
 #' @param id a data frame or index of \code{data} indicating the ids for "long" \code{data}

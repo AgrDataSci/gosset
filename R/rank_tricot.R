@@ -13,6 +13,9 @@
 #' @param ... additional arguments passed to methods. See details
 #' @return a PlackettLuce "rankings" object, which is a matrix of dense rankings 
 #' @seealso \code{\link[PlackettLuce]{rankings}}  \code{\link{breadwheat}}
+#' @references 
+#' van Etten J., et al. (2019). Experimental Agriculture, 55(S1), 275–296. https://doi.org/10.1017/S0014479716000739.
+#' 
 #' @details 
 #' full.output: logical, to return a list with a "rankings", a "grouped_rankings" and the ordered items
 #' @examples

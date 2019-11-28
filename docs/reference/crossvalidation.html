@@ -160,7 +160,7 @@ containing the variables in the model.</p></td>
       <td><p>a character for the method to calculate the mean of cross-validation estimators. 
 Options are: 'equal', an arithmetic mean; 
 'foldsize', a weighted mean by the size in each fold; 
-'stouffer' a weighted Z-test developed by Stouffer et al. (1949).</p></td>
+'stouffer' a weighted Z-test. See references.</p></td>
     </tr>
     <tr>
       <th>seed</th>
@@ -181,8 +181,13 @@ Options are: 'equal', an arithmetic mean;
 <dt>MaxLik</dt><dd><p>Maximum likelihood pseudo R-squared</p></dd>
 <dt>CraggUhler</dt><dd><p>Cragg and Uhler's pseudo R-squared</p></dd>
 <dt>Agresti</dt><dd><p>Agresti pseudo R-squared</p></dd>
-Cross-validation estimates are computed using the trained models on the validation samples.
 
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Agresti A. (2002). Categorical Data Analysis. John Wiley &amp; Sons, Inc., Hoboken, NJ, USA. http://doi.wiley.com/10.1002/0471249688</p>
+<p>Elder J. F. (2003). Journal of Computational and Graphical Statistics, 12(4), 853–864. https://doi.org/10.1198/1061860032733.</p>
+<p>Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. https://doi.org/10.1111/j.1420-9101.2005.00917.x.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -191,140 +196,49 @@ Cross-validation estimates are computed using the trained models on the validati
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># Generalized Linear Models</span>
+    <pre class="examples"><div class='input'><span class='co'># Generalized Linear Models</span>
 
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='st'>"airquality"</span>)
 
-<span class='fu'>crossvalidation</span>(<span class='no'>Temp</span> ~ <span class='no'>Wind</span> + <span class='no'>Solar.R</span>,
-                <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>airquality</span>,
-                <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-                <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>poisson</a></span>())</div><div class='output co'>#&gt; Model formula:
-#&gt; Temp ~ Wind + Solar.R 
-#&gt;  
-#&gt; Cross-validation estimates: 
-#&gt; <span style='color: #555555;'># A tibble: 1 x 6</span><span>
-#&gt;     AIC deviance logLik MaxLik CraggUhler Agresti
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>  346.     340.  -</span><span style='color: #BB0000;'>170.</span><span>  0.250      0.250  0.042</span><span style='text-decoration: underline;'>0</span><span></div><div class='input'>                
-
-########################################
-</div></span><div class='input'><span class='co'># PlackettLuce Model</span>
+<span class='no'>cv</span> <span class='kw'>&lt;-</span> <span class='fu'>crossvalidation</span>(<span class='no'>Temp</span> ~ <span class='no'>Wind</span> + <span class='no'>Solar.R</span>,
+                      <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>airquality</span>,
+                      <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+                      <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>999</span>,
+                      <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>poisson</a></span>())</div><div class='input'><span class='co'># PlackettLuce Model</span>
 <span class='co'># beans data from PlackettLuce</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"PlackettLuce"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='st'>"beans"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"PlackettLuce"</span>)
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/example'>example</a></span>(<span class='st'>"beans"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"PlackettLuce"</span>)</div><div class='output co'>#&gt; 
-#&gt; beans&gt; # Consider the best and worst rankings. These give the variety the
-#&gt; beans&gt; # farmer thought was best or worst, coded as A, B or C for the
-#&gt; beans&gt; # first, second or third variety assigned to the farmer
-#&gt; beans&gt; # respectively.
-#&gt; beans&gt; data(beans)
-#&gt; 
-#&gt; beans&gt; head(beans[c("best", "worst")], 2)
-#&gt;   best worst
-#&gt; 1    C     A
-#&gt; 2    B     A
-#&gt; 
-#&gt; beans&gt; # Fill in the missing item
-#&gt; beans&gt; beans$middle &lt;- complete(beans[c("best", "worst")],
-#&gt; beans+                          items = c("A", "B", "C"))
-#&gt; 
-#&gt; beans&gt; head(beans[c("best", "middle", "worst")], 2)
-#&gt;   best middle worst
-#&gt; 1    C      B     A
-#&gt; 2    B      C     A
-#&gt; 
-#&gt; beans&gt; # This gives an ordering of the three varieties the farmer was
-#&gt; beans&gt; # given. The names of these varieties are stored in separate
-#&gt; beans&gt; # columns
-#&gt; beans&gt; varieties &lt;- beans[c("variety_a", "variety_b", "variety_c")]
-#&gt; 
-#&gt; beans&gt; head(varieties, 2)
-#&gt;     variety_a       variety_b   variety_c
-#&gt; 1 BRT 103-182      SJC 730-79 PM2 Don Rey
-#&gt; 2   INTA Rojo INTA Centro Sur INTA Sequia
-#&gt; 
-#&gt; beans&gt; # Use these names to decode the orderings of order 3
-#&gt; beans&gt; order3 &lt;- decode(beans[c("best", "middle", "worst")],
-#&gt; beans+                  items = beans[c("variety_a", "variety_b", "variety_c")],
-#&gt; beans+                  code = c("A", "B", "C"))
-#&gt; 
-#&gt; beans&gt; # Now consider the paired comparisons agains the local variety
-#&gt; beans&gt; head(beans[c("var_a", "var_b", "var_c")], 2)
-#&gt;   var_a  var_b  var_c
-#&gt; 1 Worse  Worse Better
-#&gt; 2 Worse Better Better
-#&gt; 
-#&gt; beans&gt; # Convert these results to a vector and get the corresponding trial variety
-#&gt; beans&gt; outcome &lt;- unlist(beans[c("var_a", "var_b", "var_c")])
-#&gt; 
-#&gt; beans&gt; trial_variety &lt;- unlist(beans[c("variety_a", "variety_b", "variety_c")])
-#&gt; 
-#&gt; beans&gt; # Create a data frame of the implied orderings of order 2
-#&gt; beans&gt; order2 &lt;- data.frame(Winner = ifelse(outcome == "Worse",
-#&gt; beans+                                      "Local", trial_variety),
-#&gt; beans+                      Loser = ifelse(outcome == "Worse",
-#&gt; beans+                                     trial_variety, "Local"),
-#&gt; beans+                      stringsAsFactors = FALSE, row.names = NULL)
-#&gt; 
-#&gt; beans&gt; head(order2, 2)
-#&gt;   Winner       Loser
-#&gt; 1  Local BRT 103-182
-#&gt; 2  Local   INTA Rojo
-#&gt; 
-#&gt; beans&gt; # Finally combine the rankings of order 2 and order 3
-#&gt; beans&gt; R &lt;- rbind(as.rankings(order3, input = "ordering"),
-#&gt; beans+            as.rankings(order2, input = "ordering"))
-#&gt; 
-#&gt; beans&gt; head(R)
-#&gt; [1] "PM2 Don Rey &gt; SJC 730-79 &gt; BRT 103-182"  
-#&gt; [2] "INTA Centro Sur &gt; INTA Sequia &gt; INTA ..."
-#&gt; [3] "INTA Ferroso &gt; INTA Matagalpa &gt; BRT  ..."
-#&gt; [4] "INTA Rojo &gt; INTA Centro Sur &gt; ALS 0532-6"
-#&gt; [5] "PM2 Don Rey &gt; INTA Sequia &gt; SJC 730-79"  
-#&gt; [6] "ALS 0532-6 &gt; INTA Matagalpa &gt; INTA Rojo" 
-#&gt; 
-#&gt; beans&gt; tail(R)
-#&gt; [1] "INTA Sequia &gt; Local"    "INTA Sequia &gt; Local"    "BRT 103-182 &gt; Local"   
-#&gt; [4] "Local &gt; INTA Matagalpa" "Local &gt; INTA Rojo"      "Local &gt; SJC 730-79"    </div><div class='input'>
-<span class='no'>G</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/PlackettLuce/topics/PlackettLuce-deprecated'>grouped_rankings</a></span>(<span class='no'>R</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq_len</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>beans</span>)), <span class='fl'>4</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: 'grouped_rankings' is deprecated.</span>
-#&gt; <span class='warning'>Use 'group' instead.</span>
-#&gt; <span class='warning'>See help("Deprecated") and help("PlackettLuce-deprecated").</span></div><div class='input'>
+<span class='no'>G</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rank_tricot.html'>rank_tricot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beans</span>,
+                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>),
+                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>4</span>:<span class='fl'>5</span>),
+                 <span class='kw'>additional.rank</span> <span class='kw'>=</span> <span class='no'>beans</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>6</span>:<span class='fl'>8</span>)],
+                 <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
 <span class='no'>beans</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>cbind</a></span>(<span class='no'>G</span>, <span class='no'>beans</span>)
 
 <span class='co'># take seasons as bins</span>
 <span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/length'>length</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unique'>unique</a></span>(<span class='no'>beans</span>$<span class='no'>season</span>))
 <span class='no'>folds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/integer'>as.integer</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>as.factor</a></span>(<span class='no'>beans</span>$<span class='no'>season</span>))
 
-<span class='fu'>crossvalidation</span>(<span class='no'>G</span> ~ <span class='no'>maxTN</span>,
-                <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beans</span>,
-                <span class='kw'>k</span> <span class='kw'>=</span> <span class='no'>k</span>,
-                <span class='kw'>folds</span> <span class='kw'>=</span> <span class='no'>folds</span>,
-                <span class='kw'>minsize</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='output co'>#&gt; Model formula:
-#&gt; G ~ maxTN 
-#&gt;  
-#&gt; Cross-validation estimates: 
-#&gt; <span style='color: #555555;'># A tibble: 1 x 6</span><span>
-#&gt;     AIC deviance logLik MaxLik CraggUhler Agresti
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> </span><span style='text-decoration: underline;'>1</span><span>940.    </span><span style='text-decoration: underline;'>1</span><span>898.  -</span><span style='color: #BB0000;'>949.</span><span> 0.022</span><span style='text-decoration: underline;'>8</span><span>     0.022</span><span style='text-decoration: underline;'>8</span><span> 0.005</span><span style='text-decoration: underline;'>60</span><span></div><div class='input'>
-<span class='co'>########################################</span>
+<span class='no'>cv</span> <span class='kw'>&lt;-</span> <span class='fu'>crossvalidation</span>(<span class='no'>G</span> ~ <span class='no'>maxTN</span>,
+                      <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beans</span>,
+                      <span class='kw'>k</span> <span class='kw'>=</span> <span class='no'>k</span>,
+                      <span class='kw'>folds</span> <span class='kw'>=</span> <span class='no'>folds</span>,
+                      <span class='kw'>minsize</span> <span class='kw'>=</span> <span class='fl'>100</span>)
 
+<span class='co'>########################################</span></div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
 <span class='co'># BradleyTerry Model</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"psychotree"</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: partykit</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: grid</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: libcoin</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: mvtnorm</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: psychotools</span></div><div class='input'><span class='co'># Germany's Next Topmodel 2007 data from psychotree</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"psychotree"</span>)
+<span class='co'># Germany's Next Topmodel 2007 data from psychotree</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='st'>"Topmodel2007"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"psychotree"</span>)
 
-<span class='fu'>crossvalidation</span>(<span class='no'>preference</span> ~ <span class='no'>.</span>,
-                <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>Topmodel2007</span>,
-                <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='output co'>#&gt; Model formula:
-#&gt; preference ~ . 
-#&gt;  
-#&gt; Cross-validation estimates: 
-#&gt; </span><span style='color: #555555;'># A tibble: 1 x 6</span><span>
-#&gt;     AIC deviance logLik MaxLik CraggUhler Agresti
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>  759.     725.  -</span><span style='color: #BB0000;'>363.</span><span>  0.118      0.158  0.091</span><span style='text-decoration: underline;'>9</span><span></div><div class='input'>                
-</div></span><div class='input'>                
+<span class='no'>cv</span> <span class='kw'>&lt;-</span> <span class='fu'>crossvalidation</span>(<span class='no'>preference</span> ~ <span class='no'>.</span>,
+                      <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>Topmodel2007</span>,
+                      <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>5</span>)
+
+<span class='co'># }</span><div class='input'>                
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -333,6 +247,8 @@ Cross-validation estimates are computed using the trained models on the validati
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
