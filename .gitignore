@@ -33,5 +33,3 @@ vignettes/*.tex
 *.utf8.md
 *.knit.md
 .Rproj.user
-/data/gossetJonathanData.rda
-/r/permic.R

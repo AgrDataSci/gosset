@@ -17,20 +17,19 @@ crossvalidation(
 \arguments{
 \item{formula}{an object of class "formula" (or one that can be coerced to that class):
 a symbolic description of the model to be fitted,
-of the form \eqn{ y ~ x1 + ... + xn }}
+of the form \eqn{y ~ x1 + ... + xn}}
 
-\item{data}{a data frame, list or environment 
-(or object coercible by as.data.frame to a data frame) 
-containing the variables in the model.}
+\item{data}{a data frame (or object coercible by as.data.frame to a data frame)
+containing the variables in the model}
 
 \item{k}{an integer for the number of splits in the cross-validation}
 
 \item{folds}{an optional vector specifying the folds in the cross-validation}
 
 \item{mean.method}{a character for the method to calculate the mean of cross-validation estimators. 
-Options are: 'equal', an arithmetic mean; 
-'foldsize', a weighted mean by the size in each fold; 
-'stouffer' a weighted Z-test. See references.}
+Options are: 'equal', arithmetic mean; 
+'foldsize', weighted mean by the size in each fold; 
+'stouffer' weighted through Z-test. See references}
 
 \item{seed}{The seed for random number generation. If NULL (the default), gosset will set the seed randomly}
 
@@ -99,9 +98,11 @@ cv <- crossvalidation(preference ~ .,
                 
 }
 \references{
-Agresti A. (2002). Categorical Data Analysis. John Wiley & Sons, Inc., Hoboken, NJ, USA. http://doi.wiley.com/10.1002/0471249688
+Agresti A. (2002). Categorical Data Analysis. http://doi.wiley.com/10.1002/0471249688
 
 Elder J. F. (2003). Journal of Computational and Graphical Statistics, 12(4), 853–864. https://doi.org/10.1198/1061860032733.
+
+James G., et al. (2013). An Introduction to Statistical Learning: with Applications in R. https://doi.org/10.1007/978-1-4614-7138-7
 
 Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. https://doi.org/10.1111/j.1420-9101.2005.00917.x.
 }

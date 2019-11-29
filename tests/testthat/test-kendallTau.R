@@ -21,6 +21,8 @@ preds <- predict(mod)
 
 test_that("kendall works", {
   
+  R <- predict(mod)
+  
   k <- kendallTau(R, preds)
   
   k <- !any(as.vector(k) == c(1,9))

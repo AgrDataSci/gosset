@@ -102,3 +102,45 @@
   return(list(data = data, items = items, input = input))
 }
 
+# rank decimal numbers
+.rank_decimal <- function(object, id = NULL, ...){
+  
+  dots <- list(...)
+  
+  bindwith <- dots[["bindwith"]]
+  
+  isdf <- "data.frame" %in% class(object)
+  
+  if (!isdf) {
+    object <- as.data.frame(object)
+    names(object) <- "rank"
+  }
+  
+  if (!is.null(bindwith)) {
+    object <- cbind(object, bindwith)
+  }
+  
+  if(is.null(id)) {
+    id <- rep(1, nrow(object))
+  }
+  
+  object <- cbind(id = id, object)
+  
+  object <- split(object, id)
+  
+  object <- lapply(object, function(x) {
+    x$rank <- rank((x$rank - 1) * -1, na.last = "keep")
+    return(x)
+  })
+  
+  object <- do.call("rbind", object)
+  
+  object <- tibble::as_tibble(object) 
+  
+  object[,c("id","rank")] <- lapply(object[,c("id","rank")], 
+                                    as.integer)
+  
+  return(object)
+  
+}
+

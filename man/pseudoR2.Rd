@@ -24,8 +24,7 @@ Regression coefficient to evaluate goodness-of-fit in a given model when
 ordinary least squares (OLS) are not available. The algorithm computes estimates 
 from the maximum likelihood through an iterative process. These estimates are called 
 'pseudo R-squared' because they look like 'R-squared' in the sense that they are on 
-a similar scale (from 0 to 1), with higher values indicating better model fit. However, 
-'pseudo R-squared' cannot be interpreted as one would interpret an OLS R-squared.
+a similar scale (from 0 to 1), with higher values indicating better model fit.
 }
 \examples{
 
@@ -40,4 +39,6 @@ pseudoR2(mod)
 }
 \references{
 Agresti A. (2002). Categorical Data Analysis. John Wiley & Sons, Inc., Hoboken, NJ, USA. http://doi.wiley.com/10.1002/0471249688
+
+Hunter D. R. (2004). The Annals of Statistics, 32(1), 384–406. http://www.jstor.org/stable/3448514
 }

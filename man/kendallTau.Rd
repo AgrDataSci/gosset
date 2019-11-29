@@ -4,17 +4,19 @@
 \alias{kendallTau}
 \title{Kendall rank correlation coefficient}
 \usage{
-kendallTau(x, y)
+kendallTau(x, y, null.rm = TRUE)
 }
 \arguments{
-\item{x}{a matrix with rankings or model coefficients}
+\item{x}{a matrix with rankings or model coefficients with same dimensions of \code{y}}
 
-\item{y}{a matrix with rankings or model coefficients}
+\item{y}{a matrix with rankings or model coefficients with same dimensions of \code{x}}
+
+\item{null.rm}{logical, to remove zeros from matrix \code{x} and \code{y}}
 }
 \value{
 The Kendall correlation coefficient and the Effective N, which 
 is the equivalent N needed if all items were compared to all items. 
-Used for significance testing.
+Can be used for significance testing.
 }
 \description{
 Compute Kendall rank correlation coefficient between two matrices. Is coefficient 

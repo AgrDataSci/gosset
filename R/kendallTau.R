@@ -5,11 +5,12 @@
 #' A tau test is a non-parametric hypothesis test for statistical dependence based 
 #' on the tau coefficient.
 #' 
-#' @param x a matrix with rankings or model coefficients 
-#' @param y a matrix with rankings or model coefficients
+#' @param x a matrix with rankings or model coefficients with same dimensions of \code{y}
+#' @param y a matrix with rankings or model coefficients with same dimensions of \code{x}
+#' @param null.rm logical, to remove zeros from matrix \code{x} and \code{y} 
 #' @return The Kendall correlation coefficient and the Effective N, which 
 #' is the equivalent N needed if all items were compared to all items. 
-#' Used for significance testing.
+#' Can be used for significance testing.
 #' @references 
 #' Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. https://doi.org/10.1093/biomet/30.1-2.81.
 #' 
@@ -38,31 +39,10 @@
 #' 
 #' @seealso \code{\link[stats]{cor}}
 #' @export
-kendallTau <- function(x, y){
+kendallTau <- function(x, y, null.rm = TRUE){
   
   nc <- ncol(x)
-  
-  # if any decimal in x or y transform this to rankings
-  # decimals will be computed as descending rankings
-  # where the highest values are the "best" 
-  # negative values are placed as least positions
-  if (any(.is_decimal(x))) {
     
-   x <- t(apply(x, 1, function(X){
-      t(.rank_decimal(X)["rank"])
-    }))
-  
-  }
-  
-  if (any(.is_decimal(y))) {
-    
-    y <- t(apply(y, 1, function(X){
-      t(.rank_decimal(X)["rank"])
-    }))
-    
-  }
-  
-  
   # Function bellow produces a matrix with two rows
   # First row: Kendall tau value for that row
   # Second row: how many pairs entered the comparison as a weight
@@ -75,13 +55,34 @@ kendallTau <- function(x, y){
                    
                    keep <- !is.na(obr) & !is.na(prr)
                    
+                   # if TRUE, remove zeros in both rankings
+                   if (null.rm) {
+                     
+                     keep <- obr != 0 & prr != 0 & keep
+                     
+                   }
+                   
                    obr <- obr[keep]
                    
                    prr <- prr[keep]
                    
+                   # if any decimal in x or y transform it to integer rankings
+                   # decimals will be computed as descending rankings
+                   # where the highest values are the "best" 
+                   # negative values are placed as least positions
+                   
+                   if (any(.is_decimal(c(obr, prr)))) {
+                     
+                     obr <- .rank_decimal(obr)$rank
+                     
+                     prr <- .rank_decimal(prr)$rank
+                     
+                   }
+                   
+                   
                    tau_cor <- stats::cor(prr, 
                                          obr, 
-                                         method = "kendall", 
+                                         method = "kendall",
                                          use = "pairwise.complete.obs")
                    
                    n <- sum(obr > 0, na.rm = TRUE)
