@@ -78,8 +78,7 @@ kendallTau <- function(x, y, null.rm = TRUE){
                      prr <- .rank_decimal(prr)$rank
                      
                    }
-                   
-                   
+              
                    tau_cor <- stats::cor(prr, 
                                          obr, 
                                          method = "kendall",

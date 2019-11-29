@@ -2,9 +2,12 @@
 % Please edit documentation in R/agreement.R
 \name{agreement}
 \alias{agreement}
+\alias{plot.gosset_agree}
 \title{Agreement between ranks}
 \usage{
 agreement(baseline, compare, labels = NULL)
+
+\method{plot}{gosset_agree}(x, ...)
 }
 \arguments{
 \item{baseline}{a rankings object of class 'rankings' or 'grouped_rankings' that will

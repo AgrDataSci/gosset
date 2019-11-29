@@ -116,18 +116,22 @@ on the tau coefficient.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>kendallTau</span>(<span class='no'>x</span>, <span class='no'>y</span>)</pre>
+    <pre class="usage"><span class='fu'>kendallTau</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>null.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a matrix with rankings or model coefficients</p></td>
+      <td><p>a matrix with rankings or model coefficients with same dimensions of <code>y</code></p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>a matrix with rankings or model coefficients</p></td>
+      <td><p>a matrix with rankings or model coefficients with same dimensions of <code>x</code></p></td>
+    </tr>
+    <tr>
+      <th>null.rm</th>
+      <td><p>logical, to remove zeros from matrix <code>x</code> and <code>y</code></p></td>
     </tr>
     </table>
     
@@ -135,7 +139,7 @@ on the tau coefficient.</p>
 
     <p>The Kendall correlation coefficient and the Effective N, which 
 is the equivalent N needed if all items were compared to all items. 
-Used for significance testing.</p>
+Can be used for significance testing.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 

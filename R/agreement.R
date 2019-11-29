@@ -56,7 +56,7 @@ agreement <- function(baseline, compare, labels = NULL){
   B <- baseline
   CC <- compare
   
-  if(gosset:::.is_grouped_rankings(B)) {
+  if(.is_grouped_rankings(B)) {
     B <- B[1:length(B),, as.grouped_rankings = FALSE]
     
     CC <- lapply(CC, function(x) {
@@ -66,7 +66,7 @@ agreement <- function(baseline, compare, labels = NULL){
   }
   
   
-  if(gosset:::.is_rankings(B)) {
+  if(.is_rankings(B)) {
     
     B <- B[1:length(B),, as.rankings = FALSE]
     
@@ -155,66 +155,65 @@ agreement <- function(baseline, compare, labels = NULL){
 
 
 
-# # @rdname agreement
-# # @method plot gosset_agree
-# # @export
-# plot.gosset_agree <- function(x, ...) {
-#   
-#   x <- tidyr::gather(a, 
-#                      key = "variable",
-#                      value = "value",
-#                      names(x)[2:ncol(x)])
-#   
-#   
-#   
-#   x$variable <- factor(x$variable, levels = c("kendall","first","last"))
-#   
-#   ggplot(x,
-#          aes(y = x$value,
-#              x = x$labels,
-#              alpha = x$value)) +
-#     geom_bar(stat = "identity",
-#              position = "dodge",
-#              col = alpha("gray50", 1), 
-#              show.legend = FALSE) +
-#     facet_wrap(. ~ variable) +
-#     coord_flip() +
-#     geom_hline(yintercept = 0:1, size = 1) +
-#     scale_fill_manual(values = c("purple","forestgreen","red")) +
-#     # geom_text(aes(y = agreement/2,
-#     #               label = formattable::percent(agreement, 1)),
-#     #           fontface = 2, size = 8, alpha = 1) +
-#     scale_y_continuous(labels = scales::percent, 
-#                        breaks = seq(0,1, by = 0.2),
-#                        limits=c(0,1)) +
-#     ylab("") + 
-#     xlab("") +
-#     theme(axis.text.y = element_text(size = 15,face = 2), 
-#           strip.text = element_text(size = 15, face = 2))
-#   
-#   
-#   
-#   p <- 
-#     ggplot2::ggplot(x) +
-#     ggplot2::geom_bar(ggplot2::aes(y = x$victories, 
-#                                    x = x$player2,
-#                                    fill = x$victories), 
-#                       stat = "identity", 
-#                       col = "black") +
-#     ggplot2::facet_wrap(. ~ x$player1,
-#                         scales = "free_y", 
-#                         ncol = 3) +
-#     ggplot2::coord_flip() + 
-#     ggplot2::scale_fill_gradient2(
-#       limits = c(0, 1),
-#       low =  scales::alpha("#FFFFFF", 0.90),
-#       high =  scales::alpha("#0571B0", 0.90),
-#       labels = scales::percent,
-#       name = ""
-#     ) +
-#     ggplot2::scale_y_continuous(labels = scales::percent, 
-#                                 limits = c(0, 1)) + 
-#     labs(x = "Player", y = "Relative victories")
-#   
-#   return(p)
-# }
+#' @rdname agreement
+#' @method plot gosset_agree
+#' @export
+plot.gosset_agree <- function(x, ...) {
+
+  # force labels to be in the order as provided by input
+  labels_lv <- x$labels
+  
+  # force capital letter in type
+  names(x) <- c("labels","Kendall","First","Last")
+  
+  # put in long format
+  x <- tidyr::gather(x,
+                     key = "type",
+                     value = "agreement",
+                     names(x)[2:ncol(x)])
+
+  # convert type into factor 
+  x$type <- factor(x$type,
+                   levels = c("Kendall","First","Last"))
+
+  # and labels into factor
+  x$labels <- factor(x$labels,
+                     levels = labels_lv)
+  
+  # plot
+  p <- 
+  ggplot2::ggplot(x,
+                  ggplot2::aes(
+                    y = x$agreement,
+                    x = x$labels,
+                    alpha = x$agreement,
+                    fill = x$type
+                  )) +
+    ggplot2::geom_bar(
+      stat = "identity",
+      position = "dodge",
+      col = alpha("gray50", 1),
+      show.legend = FALSE
+    ) +
+    ggplot2::facet_wrap(. ~ x$type) +
+    ggplot2::coord_flip() +
+    ggplot2::geom_text(
+      aes(y = x$agreement / 2,
+          label = round(x$agreement, 0)),
+      fontface = 2,
+      size = 8,
+      alpha = 1
+    ) +
+    ggplot2::scale_y_continuous(
+      labels = paste0(c(0, 20, 40, 60, 80, 100), "%"),
+      breaks = seq(0, 100, by = 20),
+      limits = c(0, 100)
+    ) +
+    ggplot2::theme(
+      axis.text.y = ggplot2::element_text(size = 15, face = 2),
+      strip.text = ggplot2::element_text(size = 15, face = 2)
+    ) +
+    ggplot2::labs(x = "", y = "")
+
+  return(p)
+}

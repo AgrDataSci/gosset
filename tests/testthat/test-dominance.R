@@ -1,9 +1,5 @@
 context("test-dominance")
 
-library("gosset")
-# load("tests/test_data.rda")
-load("../test_data.rda")
-
 data("breadwheat", package = "gosset")
 
 R <- rank_tricot(data = breadwheat,
@@ -16,7 +12,7 @@ test_that("return a data.frame", {
   
   pref <- dim(pref)
   
-  pref <- any(pref != c(240,5)) 
+  pref <- any(pref != c(240, 4)) 
   
   expect_equal(pref, FALSE)
   
