@@ -5,15 +5,14 @@
 \alias{plot.gosset_agree}
 \title{Agreement between ranks}
 \usage{
-agreement(baseline, compare, labels = NULL)
+agreement(baseline, compare.to, labels = NULL)
 
 \method{plot}{gosset_agree}(x, ...)
 }
 \arguments{
-\item{baseline}{a rankings object of class 'rankings' or 'grouped_rankings' that will
-be the baseline for comparing the other characteristics}
+\item{baseline}{an object of class 'rankings' or 'grouped_rankings' that serves as baseline for comparing the other characteristics}
 
-\item{compare}{a list of objects of same class and dimensions of \code{baseline} to be compared}
+\item{compare.to}{a list of objects of same class and dimensions of \code{baseline} to be compared}
 
 \item{labels}{a character to specify the name of compared chacteristics}
 
@@ -29,7 +28,7 @@ A data.frame with summary of agreement:
 \item{last}{relative agreement of a certain item being ranked last in the baseline}
 }
 \description{
-Summarise the concordance between two or more caracteristics from a baseline
+Summarise the concordance between one or more caracteristics from a baseline
 ranking
 }
 \examples{
@@ -64,7 +63,7 @@ labels <- c("Germination", "Grain quality", "Yield")
 
 
 agreement(R, 
-          compare = compare, 
+          compare.to = compare, 
           labels = labels)
  
 }

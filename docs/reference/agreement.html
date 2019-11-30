@@ -32,7 +32,7 @@
 
 <meta property="og:title" content="Agreement between ranks — agreement" />
 
-<meta property="og:description" content="Summarise the concordance between two or more caracteristics from a baseline
+<meta property="og:description" content="Summarise the concordance between one or more caracteristics from a baseline
 ranking" />
 
 <meta property="og:image" content="/logo.png" />
@@ -107,12 +107,12 @@ ranking" />
 
     <div class="ref-description">
     
-    <p>Summarise the concordance between two or more caracteristics from a baseline
+    <p>Summarise the concordance between one or more caracteristics from a baseline
 ranking</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>agreement</span>(<span class='no'>baseline</span>, <span class='no'>compare</span>, <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>agreement</span>(<span class='no'>baseline</span>, <span class='no'>compare.to</span>, <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='co'># S3 method for gosset_agree</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
@@ -122,11 +122,10 @@ ranking</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>baseline</th>
-      <td><p>a rankings object of class 'rankings' or 'grouped_rankings' that will
-be the baseline for comparing the other characteristics</p></td>
+      <td><p>an object of class 'rankings' or 'grouped_rankings' that serves as baseline for comparing the other characteristics</p></td>
     </tr>
     <tr>
-      <th>compare</th>
+      <th>compare.to</th>
       <td><p>a list of objects of same class and dimensions of <code>baseline</code> to be compared</p></td>
     </tr>
     <tr>
@@ -189,7 +188,7 @@ be the baseline for comparing the other characteristics</p></td>
 
 
 <span class='fu'>agreement</span>(<span class='no'>R</span>,
-          <span class='kw'>compare</span> <span class='kw'>=</span> <span class='no'>compare</span>,
+          <span class='kw'>compare.to</span> <span class='kw'>=</span> <span class='no'>compare</span>,
           <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>labels</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 3 x 4</span><span>
 #&gt;   labels        kendall first  last
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>

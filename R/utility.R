@@ -144,3 +144,14 @@
   
 }
 
+# check if objects has the same class
+.same_class <- function(x, y) {
+  
+  class_x <- class(x)
+  
+  any(class(x) %in% class(y))
+
+}
+
+
+

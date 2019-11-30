@@ -1,11 +1,10 @@
 #' Agreement between ranks
 #' 
-#' Summarise the concordance between two or more caracteristics from a baseline
+#' Summarise the concordance between one or more caracteristics from a baseline
 #' ranking
 #' 
-#' @param baseline a rankings object of class 'rankings' or 'grouped_rankings' that will
-#' be the baseline for comparing the other characteristics
-#' @param compare a list of objects of same class and dimensions of \code{baseline} to be compared
+#' @param baseline an object of class 'rankings' or 'grouped_rankings' that serves as baseline for comparing the other characteristics
+#' @param compare.to a list of objects of same class and dimensions of \code{baseline} to be compared
 #' @param labels a character to specify the name of compared chacteristics
 #' @param x object of class 'gosset_agree' for the plotting method. Generates a 'ggplot' object that can be passed to any ggplot2 method
 #' @param ... further arguments passed to methods. Not enabled yet
@@ -47,14 +46,25 @@
 #' 
 #' 
 #' agreement(R, 
-#'           compare = compare, 
+#'           compare.to = compare, 
 #'           labels = labels)
 #'  
 #' @export
-agreement <- function(baseline, compare, labels = NULL){
+agreement <- function(baseline, compare.to, labels = NULL){
 
   B <- baseline
-  CC <- compare
+  CC <- compare.to
+  
+  # check if both objects have the same class
+  same_class <- lapply(CC, function (x) {
+    .same_class(B, x)
+  })
+  
+  # if not, stop
+  if (!any(unlist(same_class))) {
+    stop("baseline and compare.to are objects of different class \n")
+  }
+  
   
   if(.is_grouped_rankings(B)) {
     B <- B[1:length(B),, as.grouped_rankings = FALSE]
