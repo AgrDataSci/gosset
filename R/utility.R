@@ -153,5 +153,52 @@
 
 }
 
+# check order of players based on their performance in contests
+.player_order <- function(data, split, value) {
+  
+  # get sums of victories to order items from higher to lower
+  p_order <- split(data, data[, split])
+  
+  p_order <- lapply(p_order, function(z) {
+    sum(z[, value])
+  })
+  
+  p_order <- sort(unlist(p_order))
+  
+  # get order
+  p_order <- rev(names(p_order))
+  
+  return(p_order)
+  
+}
+
+# decode rankings to avoid many dependencies
+.decode_ranking <- function(items, rankings) {
+  
+  nc <- ncol(rankings)
+  nr <- nrow(rankings)
+  
+  rankings <- split(rankings, rownames(rankings))
+  
+  index <- lapply(rankings, function(y) {
+    
+    order(y, na.last = NA)
+    
+  })
+  
+  index <- do.call("rbind", index)
+  
+  ranks <- matrix(NA, nrow = nr, ncol = nc)
+  
+  for (z in seq_len(nc)) {
+    
+    ranks[, z ] <- items[cbind(1:nr, index[, z])]
+    
+  }
+  
+  return(ranks)
+  
+}
+
 
 

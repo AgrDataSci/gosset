@@ -24,8 +24,8 @@ agreement(baseline, compare.to, labels = NULL)
 A data.frame with summary of agreement:
 \item{labels}{the labels for each characteristic}
 \item{kendall}{relative Kendall rank correlation coefficient}
-\item{first}{relative agreement of a certain item being ranked first in the baseline}
-\item{last}{relative agreement of a certain item being ranked last in the baseline}
+\item{first}{relative agreement of the first item in the baseline being ranked first in compare.to}
+\item{last}{relative agreement of the last item in the baseline being ranked last in compare.to}
 }
 \description{
 Summarise the concordance between one or more caracteristics from a baseline

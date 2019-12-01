@@ -3,7 +3,7 @@
 #' Summarise victories from pairwise comparisons
 #' 
 #' @param object a rankings object of class 'rankings', 'grouped_rankings' or 'paircomp'
-#' @param x an object of class 'gosset_vtr' for the plotting method. Generates a 'ggplot' object that can be passed to any ggplot2 method
+#' @param x an object of class 'gosset_vctr' for the plotting method. Generates a 'ggplot' object that can be passed to any ggplot2 method
 #' @param ... further arguments passed to methods. Not enabled yet
 #' @return A data.frame with summary of victories from pairwise comparisons: 
 #' \item{player1}{the first player in the comparison}
@@ -38,8 +38,6 @@
 #' v <- victories(R)
 #' 
 #'  
-#' @import scales
-#' @importFrom stats aggregate
 #' @export
 victories <- function(object){
 
@@ -66,7 +64,7 @@ victories <- function(object){
   bin <- bin[order(bin$player1), ]
   
   # add class for the plotting method
-  class(bin) <- c("gosset_vtr", class(bin))
+  class(bin) <- c("gosset_vctr", class(bin))
   
   return(bin)
   
@@ -74,24 +72,19 @@ victories <- function(object){
 
 
 #' @rdname victories
-#' @method plot gosset_vtr
+#' @method plot gosset_vctr
 #' @export
-plot.gosset_vtr <- function(x, ...) {
+plot.gosset_vctr <- function(x, ...) {
   
-  # get summary to order items from higher to lower
-  x_mean <- stats::aggregate(x$victories, 
-                             by = list(x$player1),
-                             mean)
-  # get order
-  player_levels <- rev(order(x_mean[,2]))
-  
-  # define levels
-  player_levels <- x_mean[player_levels, 1]
+
+  # get order of players based on their performance
+  player_levels <- .player_order(x, "player1", "victories")
   
   # set levels to player1 and player2
   x$player1 <- factor(x$player1, levels = player_levels)
   x$player2 <- factor(x$player2, levels = player_levels)
   
+  x$victories <- x$victories * 100
   
   p <- 
   ggplot2::ggplot(x) +
@@ -105,15 +98,17 @@ plot.gosset_vtr <- function(x, ...) {
                         ncol = 3) +
     ggplot2::coord_flip() + 
     ggplot2::scale_fill_gradient2(
-      limits = c(0, 1),
-      low =  scales::alpha("#FFFFFF", 0.90),
-      high =  scales::alpha("#0571B0", 0.90),
-      labels = scales::percent,
+      limits = c(0, 100),
+      labels = paste0(seq(0, 100, by = 25), "%"),
+      breaks = seq(0, 100, by = 25),
+      low =  "#FFFFFF",
+      high =  "#0571B0",
       name = ""
     ) +
-    ggplot2::scale_y_continuous(labels = scales::percent, 
-                                limits = c(0, 1)) + 
-    labs(x = "Player", y = "Relative victories")
+    ggplot2::scale_y_continuous(limits = c(0, 100),
+                                labels = paste0(seq(0, 100, by = 25), "%"),
+                                breaks = seq(0, 100, by = 25)) + 
+    ggplot2::labs(x = "Player", y = "Relative victories")
 
   return(p)
 }

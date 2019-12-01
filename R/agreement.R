@@ -11,8 +11,8 @@
 #' @return A data.frame with summary of agreement:
 #' \item{labels}{the labels for each characteristic}
 #' \item{kendall}{relative Kendall rank correlation coefficient}
-#' \item{first}{relative agreement of a certain item being ranked first in the baseline}
-#' \item{last}{relative agreement of a certain item being ranked last in the baseline}
+#' \item{first}{relative agreement of the first item in the baseline being ranked first in compare.to}
+#' \item{last}{relative agreement of the last item in the baseline being ranked last in compare.to}
 #' @seealso \code{\link{kendallTau}} 
 #' @examples 
 #' # from the breadwheat data
@@ -208,15 +208,15 @@ plot.gosset_agree <- function(x, ...) {
     ggplot2::facet_wrap(. ~ x$type) +
     ggplot2::coord_flip() +
     ggplot2::geom_text(
-      aes(y = x$agreement / 2,
-          label = round(x$agreement, 0)),
+      ggplot2::aes(y = x$agreement / 2,
+                   label = round(x$agreement, 0)),
       fontface = 2,
       size = 8,
       alpha = 1
     ) +
     ggplot2::scale_y_continuous(
-      labels = paste0(c(0, 20, 40, 60, 80, 100), "%"),
-      breaks = seq(0, 100, by = 20),
+      labels = paste0(seq(0, 100, by = 25), "%"),
+      breaks = seq(0, 100, by = 25),
       limits = c(0, 100)
     ) +
     ggplot2::theme(

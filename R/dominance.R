@@ -37,8 +37,6 @@
 #' d <- dominance(R)
 #' 
 #'  
-#' @importFrom scales percent
-#' @importFrom stats aggregate
 #' @export
 dominance <- function(object){
 
@@ -79,15 +77,8 @@ dominance <- function(object){
 #' @export
 plot.gosset_dmnc <- function(x, ...) {
   
-  # get summary to order items from higher to lower
-  x_mean <- stats::aggregate(x$dominance, 
-                             by = list(x$player1),
-                             mean)
-  # get order
-  player_levels <- order(x_mean[,2])
-  
-  # define levels
-  player_levels <- x_mean[player_levels, 1]
+  # get order of players based on their performance
+  player_levels <- .player_order(x, "player1", "dominance")
   
   # set levels to player1 and player2
   x$player1 <- factor(x$player1, levels = player_levels)
@@ -102,8 +93,8 @@ plot.gosset_dmnc <- function(x, ...) {
     ggplot2::geom_text(size = 3, fontface = 2) +
     ggplot2::scale_x_discrete(position = "top")+
     ggplot2::scale_fill_gradient2(limits = c(0, 100),
-                                  low =  scales::alpha("#FFFFFF", 0.90),
-                                  high =  scales::alpha("#0571B0", 0.90)) +
+                                  low =  "#FFFFFF",
+                                  high =  "#0571B0") +
     ggplot2::labs(x = "Player 2", 
                   y = "Player 1",
                   fill="Relative dominance of player1")

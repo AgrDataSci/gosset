@@ -11,11 +11,11 @@ favourite(data = NULL, items = NULL, input = NULL, reorder = TRUE)
 \method{plot}{gosset_fvrt}(x, ...)
 }
 \arguments{
-\item{data}{a data frame with columns specified by items and input values}
+\item{data}{a data.frame with columns specified by items and input values}
 
-\item{items}{a data frame or index of \code{data} for the column(s) containing the item names}
+\item{items}{a character or numerical vector for indexing the column(s) containing the item names in \code{data}}
 
-\item{input}{a data frame or index of \code{data} for the column(s) containing the values to be ranked}
+\item{input}{a character or numerical vector for indexing the column(s) containing the values in \code{data} to be ranked}
 
 \item{reorder}{logical, if items should be reordered from higher favourability score to least favourability score}
 

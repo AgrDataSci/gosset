@@ -8,21 +8,21 @@ rank_tricot(
   data = NULL,
   items = NULL,
   input = NULL,
-  additional.rank = NULL,
   group = FALSE,
+  additional.rank = NULL,
   ...
 )
 }
 \arguments{
-\item{data}{a data frame with columns specified by items and input values}
+\item{data}{a data.frame with columns specified by items and input values}
 
-\item{items}{a data frame or index of \code{data} for the column(s) containing the item names}
+\item{items}{a character or numerical vector for indexing the column(s) containing the item names in \code{data}}
 
-\item{input}{a data frame or index of \code{data} for the column(s) containing the values to be ranked}
-
-\item{additional.rank}{optional, a data frame for the comparisons between tricot items and the local item}
+\item{input}{a character or numerical vector for indexing the column(s) containing the values in \code{data} to be ranked}
 
 \item{group}{logical, if TRUE return an object of class "grouped_rankings"}
+
+\item{additional.rank}{optional, a data frame for the comparisons between tricot items and the local item}
 
 \item{...}{additional arguments passed to methods. See details}
 }
@@ -45,7 +45,7 @@ data("breadwheat", package = "gosset")
 
 # convert the tricot rankings from breadwheat data
 # into a object of class 'rankings' from PlackettLuce
-R <- rank_tricot(breadwheat,
+R <- rank_tricot(data = breadwheat,
                  items = c("variety_a","variety_b","variety_c"),
                  input = c("overall_best","overall_worst"))
                  
@@ -60,8 +60,8 @@ data("beans", package = "PlackettLuce")
 # first build rankings with only tricot items
 # and return an object of class 'rankings'
 R <- rank_tricot(data = beans,
-                    items = c(1:3),
-                    input = c(4:5))
+                 items = c(1:3),
+                 input = c(4:5))
 head(R)
 
 ############################################################
@@ -70,10 +70,10 @@ head(R)
 # each of the 3 varieties are compared separately with the local item
 # and return an object of class grouped_rankings
 G <- rank_tricot(data = beans,
-                    items = c(1:3),
-                    input = c(4:5),
-                    additional.rank = beans[c(6:8)],
-                    group = TRUE)
+                 items = c(1:3),
+                 input = c(4:5),
+                 group = TRUE,
+                 additional.rank = beans[c(6:8)])
 
 head(G)
 

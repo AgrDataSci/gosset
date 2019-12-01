@@ -199,9 +199,9 @@ crossvalidation <- function(formula,
   
   logLik <- Deviance / -2
   
-  pR2 <- t(mapply(function(X, Y) {
-    try(pseudoR2(X, newdata = Y), silent = TRUE)
-  }, X = mod, Y = test[]))
+  pR2 <- t(mapply(function(X) {
+    try(pseudoR2(X), silent = TRUE)
+  }, X = mod))
   
   pR2 <- matrix(unlist(pR2), 
                 ncol = 5, 

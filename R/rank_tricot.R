@@ -5,19 +5,21 @@
 #' the comparison between many alternative technologies, in many different environments. Each participant
 #' evaluates a set of three randomised technologies from a larger set. 
 #'
-#' @param data a data frame with columns specified by items and input values
-#' @param items a data frame or index of \code{data} for the column(s) containing the item names
-#' @param input a data frame or index of \code{data} for the column(s) containing the values to be ranked
-#' @param additional.rank optional, a data frame for the comparisons between tricot items and the local item
+#' @param data a data.frame with columns specified by items and input values
+#' @param items a character or numerical vector for indexing the column(s) containing the item names in \code{data} 
+#' @param input a character or numerical vector for indexing the column(s) containing the values in \code{data} to be ranked 
 #' @param group logical, if TRUE return an object of class "grouped_rankings"
+#' @param additional.rank optional, a data frame for the comparisons between tricot items and the local item
 #' @param ... additional arguments passed to methods. See details
 #' @return a PlackettLuce "rankings" object, which is a matrix of dense rankings 
 #' @seealso \code{\link[PlackettLuce]{rankings}}  \code{\link{breadwheat}}
 #' @references 
+#' 
 #' van Etten J., et al. (2019). Experimental Agriculture, 55(S1), 275–296. https://doi.org/10.1017/S0014479716000739.
 #' 
 #' @details 
 #' full.output: logical, to return a list with a "rankings", a "grouped_rankings" and the ordered items
+#' 
 #' @examples
 #' 
 #' # using breadwheat data
@@ -25,7 +27,7 @@
 #' 
 #' # convert the tricot rankings from breadwheat data
 #' # into a object of class 'rankings' from PlackettLuce
-#' R <- rank_tricot(breadwheat,
+#' R <- rank_tricot(data = breadwheat,
 #'                  items = c("variety_a","variety_b","variety_c"),
 #'                  input = c("overall_best","overall_worst"))
 #'                  
@@ -40,8 +42,8 @@
 #' # first build rankings with only tricot items
 #' # and return an object of class 'rankings'
 #' R <- rank_tricot(data = beans,
-#'                     items = c(1:3),
-#'                     input = c(4:5))
+#'                  items = c(1:3),
+#'                  input = c(4:5))
 #' head(R)
 #' 
 #' ############################################################
@@ -50,47 +52,38 @@
 #' # each of the 3 varieties are compared separately with the local item
 #' # and return an object of class grouped_rankings
 #' G <- rank_tricot(data = beans,
-#'                     items = c(1:3),
-#'                     input = c(4:5),
-#'                     additional.rank = beans[c(6:8)],
-#'                     group = TRUE)
+#'                  items = c(1:3),
+#'                  input = c(4:5),
+#'                  group = TRUE,
+#'                  additional.rank = beans[c(6:8)])
 #' 
 #' head(G)
 #' 
 #' @import PlackettLuce
 #' @export
-rank_tricot <- function(data = NULL, items = NULL,
-                           input = NULL, additional.rank = NULL, 
-                           group = FALSE, ...) {
-  
-  # get extra arguments
-  dots <- list(...)
+rank_tricot <- function(data = NULL, items = NULL, 
+                        input = NULL, group = FALSE, 
+                        additional.rank = NULL, ...) {
   
   # keep only target columns in data
-  if (!is.null(data)) {
-    items <- names(data[, items])
-    input <- names(data[, input])
-    data <- data[, c(items, input)]
-  }
-  
-  # if 'items' and 'input' are provided as data.frame
-  # put all together as 'data'
   if (is.null(data)) {
-    data <- cbind(items, input)
-    items <- names(items)
-    input <- names(input)
+    stop("argument 'data' is missing with no default")
   }
   
-  if (.is_tibble(data)){
+  # if tibble put it as data.frame
+  if (.is_tibble(data)) {
     data <- as.data.frame(data, stringsAsFactors = FALSE)
   }
   
-  # get nrow in object
+  items <- data[, items]
+  
+  input <- data[, input]
+  
+  # get nrow
   n <- nrow(data)
   
-  # get the items in data
-  items <- data[items]
-  
+  # get extra arguments
+  dots <- list(...)
   # if all data is required
   full.output <- dots[["full.output"]]
   full.output <- isTRUE(full.output)
@@ -101,23 +94,16 @@ rank_tricot <- function(data = NULL, items = NULL,
   
   # with 3 comparisons
   if (ncomp == 3) {
-    rrank <- data[input]
     
-    if (any(rrank[,1] == rrank[,2])) {
-      stop("ties cannot be handled in objects of type 'tricot' \n")
-    }
-    
-    if (any(is.na(unlist(rrank)))) {
-      stop("NAs cannot be handled in objects of type 'tricot' \n")
-    }
-    
-    r <- .pivot_triadic(i = items, r = data[input])
+    r <- .pivot_triadic(i = items, r = input)
     
   }
   
   # with 4 or more comparisons
   if (ncomp >= 4) {
-    r <- .pivot_tetra(i = items, r = data[input])
+    
+    r <- .pivot_tetra(i = items, r = input)
+  
   }
   
   # get item names 
@@ -164,6 +150,27 @@ rank_tricot <- function(data = NULL, items = NULL,
   
   n <- nrow(i)
   
+  if (any(is.na(unlist(r)))) {
+    stop("NAs cannot be handled in tricot rankings \n")
+  }
+  
+  if (any(r[,1] == r[,2])) {
+    stop("Ties cannot be handled in tricot rankings \n")
+  }
+  
+  # check for more than two missing labels in items
+  mi <- rowSums(apply(i, 2, is.na))
+  if( any(mi > 1) ) {
+    stop("Cannot handle less than 2 NAs per row in 'items' \n")
+  }
+  
+  # if there is one NA  per row in items and observations 
+  # with only two items add a pseudo-item which will be removed later
+  if ( any(mi == 1) )  {
+    i[is.na(i)] <- "pseudoitem"
+  }
+  
+  
   # fix names in rankings
   # first column must be the best item
   # and the second the worst
@@ -178,12 +185,6 @@ rank_tricot <- function(data = NULL, items = NULL,
     worst = as.integer(factor(worst, levels = LETTERS[1:3]))
     middle = as.integer(6 - best - worst)
   })
-  
-  # if there is any NA in items and observations with only two items
-  # add a stopper pseudo-item which will be removed later
-  if (sum(is.na(i)) > 0)  {
-    i[is.na(i)] <- "pseudoitem"
-  }
   
   # combine items with rankings
   r <- cbind(i, r)
@@ -210,6 +211,7 @@ rank_tricot <- function(data = NULL, items = NULL,
 # in ClimMob when four or more items are tested by each participant
 # i, is a dataframe with items
 # r, is a dataframe with rankings 
+
 .pivot_tetra <- function(i, r){
   
   # fix names in r data
@@ -220,57 +222,40 @@ rank_tricot <- function(data = NULL, items = NULL,
   # number of rows
   n <- nrow(r)
   
-  # if there is any NA in items
-  # add a pseudo-item which will be removed later
-  if (sum(is.na(i)) > 0)  {
-    for (p in seq_len(nrank)) {
-      i[is.na(i[p]), p] <- paste0("pseudoitem", p)
-    }
+  # handle NAs
+  r[r==0] <- NA
+  
+  for (z in seq_len(nrank)) {
+    rm <- is.na(i[, z]) | is.na(r[, z])
+    i[rm , z] <- NA
+    r[rm , z] <- NA
   }
   
-  # add 0 if there is any missing ranking in r
-  if (sum(is.na(r)) > 0)  {
-    r[is.na(r)] <- 0
+  # check for more than two missing labels in items
+  mi <- rowSums(t(apply(i, 1, is.na)))
+  mi <- nrank - mi
+  if( any(mi <= 1) ) {
+    stop("Cannot handle less than 2 NAs per row in 'items' \n")
   }
   
-  # create an id for the rankings
-  id <- 1:n
+  # if there is accepted NAs in items  
+  # put a label as pseudoitem which will be removed later
+  if ( any(mi < nrank) )  {
+    i <- t(apply(i, 1, function(p) {
+      pi <- length(p[is.na(p)])
+      p[is.na(p)] <- paste0("pseudoitem", 1:pi)
+      p
+    }))
+  }
   
-  # combine items with rankings
-  r <- cbind(id, i, r)
+  # add a very high value if there is accepted NAs in rankings
+  if (any(mi < nrank))  {
+    r[is.na(r)] <- 999999
+  }
   
-  # put rankings into a long format 
-  r <- tidyr::gather(r, 
-                     key = "variable",
-                     value = "value",
-                     names(r)[2:ncol(r)])
+  decoded <- .decode_ranking(i, r)
   
-  # this vector checks which rows are the ranks and which 
-  # are the item name
-  pr <- grepl("PosItem", r[[2]])
-  
-  # create separate vectors and then merge it
-  id <- r[pr,"id"]
-  item <- r[!pr,"value"]
-  rank <- as.numeric(r[pr,"value"])
-  
-  r <- data.frame(id, item, rank, stringsAsFactors = FALSE)
-  
-  names(r) <- c("id","item","rank")
-  
-  # reshape data into wide format
-  r <- tidyr::spread(r, rank, item)
-  
-  # order observations by ids
-  r <- r[order(r[,"id"]), ]
-  
-  # drop id
-  r <- r[ ,-match("id", names(r))]
-  
-  # dataframe into matrix
-  r <- as.matrix(r)
-  
-  return(r)
+  return(decoded)
   
 } 
 

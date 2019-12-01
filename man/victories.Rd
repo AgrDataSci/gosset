@@ -2,17 +2,17 @@
 % Please edit documentation in R/victories.R
 \name{victories}
 \alias{victories}
-\alias{plot.gosset_vtr}
+\alias{plot.gosset_vctr}
 \title{Pairwise victories}
 \usage{
 victories(object)
 
-\method{plot}{gosset_vtr}(x, ...)
+\method{plot}{gosset_vctr}(x, ...)
 }
 \arguments{
 \item{object}{a rankings object of class 'rankings', 'grouped_rankings' or 'paircomp'}
 
-\item{x}{an object of class 'gosset_vtr' for the plotting method. Generates a 'ggplot' object that can be passed to any ggplot2 method}
+\item{x}{an object of class 'gosset_vctr' for the plotting method. Generates a 'ggplot' object that can be passed to any ggplot2 method}
 
 \item{...}{further arguments passed to methods. Not enabled yet}
 }
