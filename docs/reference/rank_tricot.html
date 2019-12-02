@@ -68,7 +68,7 @@ evaluates a set of three randomised technologies from a larger set." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -120,8 +120,8 @@ evaluates a set of three randomised technologies from a larger set.</p>
   <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>items</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>input</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>additional.rank</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>additional.rank</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>
 )</pre>
     
@@ -130,23 +130,23 @@ evaluates a set of three randomised technologies from a larger set.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>a data frame with columns specified by items and input values</p></td>
+      <td><p>a data.frame with columns specified by items and input values</p></td>
     </tr>
     <tr>
       <th>items</th>
-      <td><p>a data frame or index of <code>data</code> for the column(s) containing the item names</p></td>
+      <td><p>a character or numerical vector for indexing the column(s) containing the item names in <code>data</code></p></td>
     </tr>
     <tr>
       <th>input</th>
-      <td><p>a data frame or index of <code>data</code> for the column(s) containing the values to be ranked</p></td>
-    </tr>
-    <tr>
-      <th>additional.rank</th>
-      <td><p>optional, a data frame for the comparisons between tricot items and the local item</p></td>
+      <td><p>a character or numerical vector for indexing the column(s) containing the values in <code>data</code> to be ranked</p></td>
     </tr>
     <tr>
       <th>group</th>
       <td><p>logical, if TRUE return an object of class "grouped_rankings"</p></td>
+    </tr>
+    <tr>
+      <th>additional.rank</th>
+      <td><p>optional, a data frame for the comparisons between tricot items and the local item</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -178,7 +178,7 @@ evaluates a set of three randomised technologies from a larger set.</p>
 
 <span class='co'># convert the tricot rankings from breadwheat data</span>
 <span class='co'># into a object of class 'rankings' from PlackettLuce</span>
-<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_tricot</span>(<span class='no'>breadwheat</span>,
+<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_tricot</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>breadwheat</span>,
                  <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"variety_a"</span>,<span class='st'>"variety_b"</span>,<span class='st'>"variety_c"</span>),
                  <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"overall_best"</span>,<span class='st'>"overall_worst"</span>))
 
@@ -193,8 +193,8 @@ evaluates a set of three randomised technologies from a larger set.</p>
 <span class='co'># first build rankings with only tricot items</span>
 <span class='co'># and return an object of class 'rankings'</span>
 <span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_tricot</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beans</span>,
-                    <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>),
-                    <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>4</span>:<span class='fl'>5</span>))
+                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>),
+                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>4</span>:<span class='fl'>5</span>))
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>R</span>)</div><div class='output co'>#&gt; [1] "PM2 Don Rey &gt; SJC 730-79 &gt; BRT 103-182"  
 #&gt; [2] "INTA Centro Sur &gt; INTA Sequia &gt; INTA ..."
 #&gt; [3] "INTA Ferroso &gt; INTA Matagalpa &gt; BRT  ..."
@@ -207,10 +207,10 @@ evaluates a set of three randomised technologies from a larger set.</p>
 <span class='co'># each of the 3 varieties are compared separately with the local item</span>
 <span class='co'># and return an object of class grouped_rankings</span>
 <span class='no'>G</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_tricot</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beans</span>,
-                    <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>),
-                    <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>4</span>:<span class='fl'>5</span>),
-                    <span class='kw'>additional.rank</span> <span class='kw'>=</span> <span class='no'>beans</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>6</span>:<span class='fl'>8</span>)],
-                    <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>),
+                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>4</span>:<span class='fl'>5</span>),
+                 <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+                 <span class='kw'>additional.rank</span> <span class='kw'>=</span> <span class='no'>beans</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>6</span>:<span class='fl'>8</span>)])
 
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>G</span>)</div><div class='output co'>#&gt;                                                 1 
 #&gt;  "PM2 Don Rey &gt; SJ ..., Local &gt; BRT 103-182, ..." 

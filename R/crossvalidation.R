@@ -1,6 +1,7 @@
 #' Cross-validation 
 #'
-#' Methods for measuring the performance of a predictive model on sets of test data. 
+#' Methods for measuring the performance of a predictive model on sets of test data in
+#' BradleyTerry, glm, gnm or PlackettLuce models. 
 #'
 #' @param formula an object of class "formula" (or one that can be coerced to that class):
 #' a symbolic description of the model to be fitted,
@@ -14,7 +15,7 @@
 #' 'foldsize', weighted mean by the size in each fold; 
 #' 'stouffer' weighted through Z-test. See references 
 #' @param seed The seed for random number generation. If NULL (the default), gosset will set the seed randomly
-#' @param ... additional arguments passed to methods
+#' @param ... additional arguments passed the methods of the chosen model
 #' @return The cross-validation goodness-of-fit estimates, which are:
 #' \item{AIC}{Akaike Information Criterion}
 #' \item{deviance}{Model deviance}
@@ -22,8 +23,8 @@
 #' \item{MaxLik}{Maximum likelihood pseudo R-squared}
 #' \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
 #' \item{Agresti}{Agresti pseudo R-squared}
-#' @seealso \code{\link[gnm]{gnm}}, \code{\link[PlackettLuce]{pltree}}, 
-#' \code{\link[psychotree]{bttree}}
+#' @seealso \code{\link[psychotree]{bttree}}, \code{\link[stats]{glm}}, \code{\link[gnm]{gnm}},
+#' \code{\link[PlackettLuce]{pltree}}
 #' @references 
 #' Agresti A. (2002). Categorical Data Analysis. http://doi.wiley.com/10.1002/0471249688
 #' 
@@ -257,11 +258,7 @@ print.gosset_cv <- function(x, ...) {
   # take length of folds
   N <- length(folds)
   
-  if (is.null(mean.method)) {
-    mean.method <- "stouffer"
-    }
-  
-  # weight of imbalanced folds
+  # Z-test weight mean
   if (mean.method == "stouffer") {
     # take the number of folds
     max_folds <- max(folds)
@@ -284,9 +281,10 @@ print.gosset_cv <- function(x, ...) {
     stouffer <- object * wfold
     
     # sum these values and that is the stouffer mean
-    mean <- sum(stouffer)
+    m <- sum(stouffer)
   }
   
+  # mean weighted by foldsize
   if (mean.method == "foldsize") {
     # make a table of folds and take
     # the number of observations per fold
@@ -294,13 +292,14 @@ print.gosset_cv <- function(x, ...) {
     
     # fold size mean is the product of multiplication of object values by 
     # its number of observations then divided by the total number of observations
-    mean <- sum(object * foldsize) / sum(foldsize)
+    m <- sum(object * foldsize) / sum(foldsize)
   }
   
+  # arithmetic mean 
   if (mean.method == "equal") {
-    mean <- mean(object)
+    m <- mean(object)
   }
   
-  return(mean)
+  return(m)
   
 }

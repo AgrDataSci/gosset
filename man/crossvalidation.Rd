@@ -33,7 +33,7 @@ Options are: 'equal', arithmetic mean;
 
 \item{seed}{The seed for random number generation. If NULL (the default), gosset will set the seed randomly}
 
-\item{...}{additional arguments passed to methods}
+\item{...}{additional arguments passed the methods of the chosen model}
 }
 \value{
 The cross-validation goodness-of-fit estimates, which are:
@@ -45,7 +45,8 @@ The cross-validation goodness-of-fit estimates, which are:
 \item{Agresti}{Agresti pseudo R-squared}
 }
 \description{
-Methods for measuring the performance of a predictive model on sets of test data.
+Methods for measuring the performance of a predictive model on sets of test data in
+BradleyTerry, glm, gnm or PlackettLuce models.
 }
 \examples{
 # Generalized Linear Models
@@ -107,6 +108,6 @@ James G., et al. (2013). An Introduction to Statistical Learning: with Applicati
 Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. https://doi.org/10.1111/j.1420-9101.2005.00917.x.
 }
 \seealso{
-\code{\link[gnm]{gnm}}, \code{\link[PlackettLuce]{pltree}}, 
-\code{\link[psychotree]{bttree}}
+\code{\link[psychotree]{bttree}}, \code{\link[stats]{glm}}, \code{\link[gnm]{gnm}},
+\code{\link[PlackettLuce]{pltree}}
 }

@@ -181,13 +181,14 @@ plot.gosset_agree <- function(x, ...) {
   x <- lapply(x, function(z) {
     ag <- as.vector(t(z[2:4]))
     ty <- as.vector(names(z[2:4]))
-    la <- as.vector(unlist(rep(z[1], 3)))
-    cbind(labels = la, type = ty, agreement = ag)
+    la <- unlist(rep(z[[1]], 3))
+    data.frame(labels = la, 
+               type = ty, 
+               agreement = ag,
+               stringsAsFactors = FALSE)
   })
   
   x <- do.call("rbind", x)
-  
-  x <- as.data.frame(x, stringsAsFactors = FALSE)
   
   # convert type into factor 
   x$type <- factor(x$type,
@@ -196,8 +197,6 @@ plot.gosset_agree <- function(x, ...) {
   # and labels into factor
   x$labels <- factor(x$labels,
                      levels = labels_lv)
-  
-  x$agreement <- as.numeric(x$agreement)
   
   # plot
   p <- 

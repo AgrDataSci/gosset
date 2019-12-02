@@ -131,26 +131,24 @@ test_that("BradleyTerry", {
 })
 
 
-# # print method
-# test_that("print", {
-#   
-#   data("airquality")
-#   
-#   # same seed but different results when not using 'family' argument
-#   cv <- crossvalidation(Temp ~ Wind + Solar.R,
-#                         data = airquality,
-#                         k = 3,
-#                         seed = 123,
-#                         mean.method = "equal",
-#                         family = poisson())
-#   
-#   p <- toString(print(cv))
-#   
-#   p <- !is.null(p)
-#   
-#   expect_equal(p, TRUE)
-# 
-# })
+# print method
+test_that("print", {
+
+  data("airquality")
+
+  # same seed but different results when not using 'family' argument
+  cv <- crossvalidation(Temp ~ Wind + Solar.R,
+                        data = airquality,
+                        k = 3,
+                        seed = 123,
+                        mean.method = "equal",
+                        family = poisson())
+
+  expect_output(
+    message(print(cv))
+  )
+
+})
 
 
 # test errors 
@@ -195,13 +193,13 @@ test_that("drop fold", {
   k <- 5
   f <- sample(rep(1:k, times = ceiling(n / k), length.out = n))
   
-  cv <- crossvalidation(Temp ~ Wind + Solar.R,
-                  data = airquality,
-                  k = k,
-                  folds = f,
-                  drop.folds = c(1,4))
-  
-  expect_equal(is.list(cv), TRUE)
+  expect_output(
+    crossvalidation(Temp ~ Wind + Solar.R,
+                    data = airquality,
+                    k = k,
+                    folds = f,
+                    drop.folds = c(1,4))
+                )
 
 })
 
