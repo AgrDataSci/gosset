@@ -53,7 +53,7 @@ compare[[1]] <- rank_tricot(data = breadwheat,
                             input = c("germination_best","germination_worst"),
                             group = TRUE)
 
-test_that("works wtih grouped_rankings", {
+test_that("works with grouped_rankings", {
   
   a <-
     agreement(G,
@@ -63,6 +63,20 @@ test_that("works wtih grouped_rankings", {
   a <- is.data.frame(a)
   
   expect_equal(a, TRUE)
+  
+})
+
+test_that("plot works", {
+  
+  a <- agreement(G,
+                 compare.to = compare,
+                 labels = NULL)
+  
+  ap <- plot(a)
+  
+  ap <- "ggplot" %in% class(ap)
+  
+  expect_equal(ap, TRUE)
   
 })
 
@@ -76,3 +90,5 @@ test_that("error different class", {
   
   
 })
+
+

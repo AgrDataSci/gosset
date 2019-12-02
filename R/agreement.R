@@ -176,12 +176,19 @@ plot.gosset_agree <- function(x, ...) {
   # force capital letter in type
   names(x) <- c("labels","Kendall","First","Last")
   
-  # put in long format
-  x <- tidyr::gather(x,
-                     key = "type",
-                     value = "agreement",
-                     names(x)[2:ncol(x)])
-
+  # put data in a long format
+  x <- split(x, x$labels)
+  x <- lapply(x, function(z) {
+    ag <- as.vector(t(z[2:4]))
+    ty <- as.vector(names(z[2:4]))
+    la <- as.vector(unlist(rep(z[1], 3)))
+    cbind(labels = la, type = ty, agreement = ag)
+  })
+  
+  x <- do.call("rbind", x)
+  
+  x <- as.data.frame(x, stringsAsFactors = FALSE)
+  
   # convert type into factor 
   x$type <- factor(x$type,
                    levels = c("Kendall","First","Last"))
@@ -189,6 +196,8 @@ plot.gosset_agree <- function(x, ...) {
   # and labels into factor
   x$labels <- factor(x$labels,
                      levels = labels_lv)
+  
+  x$agreement <- as.numeric(x$agreement)
   
   # plot
   p <- 
@@ -202,7 +211,7 @@ plot.gosset_agree <- function(x, ...) {
     ggplot2::geom_bar(
       stat = "identity",
       position = "dodge",
-      col = alpha("gray50", 1),
+      col = "gray50",
       show.legend = FALSE
     ) +
     ggplot2::facet_wrap(. ~ x$type) +
