@@ -1,3 +1,17 @@
+# gosset 0.1-5
+
+# New features
+* `.get_timeseries` now implements the Euclidean method to look for its nearest neighbour in the nasapower output. This optmises the functions and reduce dependencies
+* ranking functions now implements internal processess to decode ranks and reduce dependencies
+
+
+# gosset 0.1-4
+
+## New features
+
+* Function to summarise results from pairwise comparisons, `agreement`, `dominance`, `favourite` and `victories`
+* Increased test coverage
+
 # gosset 0.1-3
 
 * Successfull migration from **ClimMobTools** to **gosset**

@@ -61,16 +61,16 @@ ETo <- function(object, day.one = NULL, span = 150,
   
   # get timespan for the day temperature
   if (dim(object)[2] == 2) {
-    day <- .get_timespan(object, day.one, span, pars = "T2M_MAX")
+    day <- .get_timeseries(object, day.one, span, pars = "T2M_MAX")
   } else {
-    day <- .get_timespan(object[, , 1], day.one, span)
+    day <- .get_timeseries(object[, , 1], day.one, span)
   }
   
   # get timespan for the night temperature
   if (dim(object)[2] == 2) {
-    night <- .get_timespan(object, day.one, span, pars = "T2M_MIN")
+    night <- .get_timeseries(object, day.one, span, pars = "T2M_MIN")
   } else {
-    night <- .get_timespan(object[, , 2], day.one, span)
+    night <- .get_timeseries(object[, , 2], day.one, span)
   }
   
   # calculate Tmean

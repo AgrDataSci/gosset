@@ -4,16 +4,6 @@ library("gosset")
 # load("tests/test_data.rda")
 load("../test_data.rda")
 
-test_that("accepts data = null", {
-  
-  fav <- favourite(items = triadic[,c(1:3)],
-                   input = triadic[,c(4:5)])
-  
-  
-  expect_equal(is.data.frame(fav), TRUE)
-
-})
-
 test_that("accepts indexed items and input", {
   
   fav <- favourite(data = triadic,

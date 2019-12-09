@@ -25,13 +25,12 @@
 favourite <- function(data = NULL, items = NULL, 
                       input = NULL, reorder = TRUE){
   
-  # check data
-  args <- .check_data(data = data,
-                      items = items, 
-                      input = input)
   
-  # take decoded rankings
-  args[["full.output"]] <- TRUE
+  # check data
+  args <- list(data = data,
+               items = items,
+               input = input,
+               full.output = TRUE)
   
   dataR <- do.call("rank_tricot", args)  
 
@@ -123,6 +122,11 @@ favorite <- function(...){
 #' @export
 plot.gosset_fvrt <- function(x, ...) {
   
+  # order 
+  player_levels <- rev(.player_order(x, "items", "fav_score"))
+  
+  x$items <- factor(x$items, levels = player_levels)
+  
   p <- ggplot2::ggplot(data = x, 
                        ggplot2::aes(y = x$fav_score, 
                                     fill = x$fav_score, 
@@ -136,7 +140,7 @@ plot.gosset_fvrt <- function(x, ...) {
                                   mid = "#FFFFFF",
                                   high = "#0571B0",
                                   limits = c(-100, 100)) +
-    labs(x = "Items", y = "")
+    ggplot2::labs(x = "Items", y = "")
   
   return(p)
 }

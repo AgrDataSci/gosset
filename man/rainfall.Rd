@@ -4,13 +4,7 @@
 \alias{rainfall}
 \title{Rainfall indices}
 \usage{
-rainfall(
-  object,
-  day.one = NULL,
-  span = 150,
-  index = c("MLDS", "MLWS", "R10mm", "R20mm", "SDII", "Rx1day", "Rx5day", "Rtotal"),
-  ...
-)
+rainfall(object, day.one = NULL, span = 150, index = NULL, ...)
 }
 \arguments{
 \item{object}{a numeric vector of geographic coordinates (lonlat) or
@@ -23,7 +17,7 @@ When lonlat is used, the function makes a call to
 
 \item{span}{an integer or a vector with integers for the duration of the timespan to be captured}
 
-\item{index}{optional, a character or a vector with characters for the indices to be computed. 
+\item{index}{character or a vector with characters for the indices to be computed. 
 All indices are given by default}
 
 \item{...}{additional arguments passed to methods}

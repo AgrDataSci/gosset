@@ -54,15 +54,19 @@
 #'          
 #' @export
 rainfall <- function(object, day.one = NULL, span = 150,
-                     index = c("MLDS","MLWS","R10mm","R20mm","SDII","Rx1day","Rx5day","Rtotal"), 
+                     index = NULL, 
                      ...)
 {
   
+  if (is.null(index)) {
+    index <- c("MLDS","MLWS","R10mm","R20mm","SDII","Rx1day","Rx5day","Rtotal")
+  }
+  
   # get timespan
   if (dim(object)[2] == 2) {
-    r <- .get_timespan(object, day.one, span, pars = "PRECTOT", ...)
+    r <- .get_timeseries(object, day.one, span, pars = "PRECTOT", ...)
   } else {
-    r <- .get_timespan(object, day.one, span, ...)
+    r <- .get_timeseries(object, day.one, span, ...)
   }
   
   n <- nrow(r)

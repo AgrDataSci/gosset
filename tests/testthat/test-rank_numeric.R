@@ -26,9 +26,10 @@ test_that("long and ascending ok", {
                     items = 2,
                     input = 3,
                     id = 1,
-                    ascending = TRUE)
+                    ascending = TRUE,
+                    group = TRUE)
   
-  R <- R[1:length(R),, as.rankings = FALSE]
+  R <- R[1:length(R),, as.grouped_rankings = FALSE]
   
   Ras <- t(apply(default_true, 1, function(x) rank(x)))
   
@@ -36,15 +37,27 @@ test_that("long and ascending ok", {
   
 })
 
-test_that("wide and group ok", {
+test_that("wide ok", {
   
-  R <- rank_numeric(items = default_wide[[1]],
-                    input = default_wide[[2]],
+  df <- do.call(cbind, default_wide)
+  
+  R <- rank_numeric(data = df,
+                    items = c(1:5),
+                    input = c(6:10),
                     group = TRUE)
-
+  
   R <- R[1:length(R),, as.grouped_rankings = FALSE]
   
   expect_equal(!any(R == default_wide_true), FALSE)
+  
+})
+
+
+test_that("null data", {
+  
+  expect_error(rank_numeric(items = default_wide[[1]],
+                             input = default_wide[[2]],
+                             group = TRUE))
   
 })
 

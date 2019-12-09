@@ -10,7 +10,7 @@
 #' (\url{https://power.larc.nasa.gov/})
 #' @param day.one a vector of class 'Date' for the starting date to capture the environmental data
 #' @param span an integer or a vector with integers for the duration of the timespan to be captured
-#' @param index optional, a character or a vector with characters for the indices to be computed. 
+#' @param index character or a vector with characters for the indices to be computed. 
 #' All indices are given by default
 #' @param ... additional arguments passed to methods
 #' @return A dataframe with selected indices. Options are:
@@ -55,16 +55,16 @@ temperature <- function(object, day.one = NULL, span = 150,
   
   # get timespan for the day temperature
   if (dim(object)[2] == 2) {
-    day <- .get_timespan(object, day.one, span, pars = "T2M_MAX", ...)
+    day <- .get_timeseries(object, day.one, span, pars = "T2M_MAX", ...)
   } else {
-    day <- .get_timespan(object[, , 1], day.one, span, ...)
+    day <- .get_timeseries(object[, , 1], day.one, span, ...)
   }
   
   # get timespan for the night temperature
   if (dim(object)[2] == 2) {
-    night <- .get_timespan(object, day.one, span, pars = "T2M_MIN", ...)
+    night <- .get_timeseries(object, day.one, span, pars = "T2M_MIN", ...)
   } else {
-    night <- .get_timespan(object[, , 2], day.one, span, ...)
+    night <- .get_timeseries(object[, , 2], day.one, span, ...)
   }
   
   n <- nrow(day)

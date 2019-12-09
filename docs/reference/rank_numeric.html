@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
 
@@ -191,7 +191,7 @@
                   <span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
                   <span class='kw'>grouped.rankings</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='co'>######################</span>
+<span class='co'>#---------------------------####-------------</span>
 
 <span class='co'># Rankings with 5 items randomly assigned</span>
 
@@ -205,9 +205,10 @@
   <span class='no'>i</span>[<span class='no'>s</span>,] <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])
   <span class='no'>r</span>[<span class='no'>s</span>,] <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>)
 }
-
-<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_numeric</span>(<span class='kw'>items</span> <span class='kw'>=</span> <span class='no'>i</span>,
-                  <span class='kw'>input</span> <span class='kw'>=</span> <span class='no'>r</span>)</div></pre>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>cbind</a></span>(<span class='no'>i</span>, <span class='no'>r</span>)
+<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_numeric</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>,
+                  <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>),
+                  <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>6</span>:<span class='fl'>10</span>))</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

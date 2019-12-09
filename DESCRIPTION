@@ -1,16 +1,17 @@
 Package: gosset
 Type: Package
 Title: Modelling Metadata and Experimental Citizen Science
-Version: 0.1-4
+Version: 0.1-5
 Authors@R: c(person("Kaue", "de Sousa", 
         email = "kaue.desousa@inn.no", role = c("aut", "cre"),
         comment = c(ORCID = "0000-0002-7571-7845")),
-        person("Jacob", "van Etten", role = c("aut", "ctb"),
+        person("Jacob", "van Etten", role = c("aut", "ctb","ths"),
         comment = c(ORCID = "0000-0001-7554-2558")),
         person("Sam", "Dumble", role = c("aut", "ctb")),
         person("Nicolas", "Greliche", role = c("aut", "ctb")),
         person("Jonathan", "Steinke", role = c("aut", "ctb"),
-        comment = c(ORCID = "0000-0001-5742-702X")))
+        comment = c(ORCID = "0000-0001-5742-702X")), 
+        person("Svein", "Solberg", role = c("ths")))
 Maintainer: Kaue de Sousa <kaue.desousa@inn.no>
 URL: https://agrobioinfoservices.github.io/gosset/
 BugReports: https://github.com/agrobioinfoservices/gosset/issues
@@ -30,7 +31,6 @@ Imports:
     psychotree, 
     psychotools, 
     qvcalc,
-    raster,
     stats, 
     tibble, 
     tidyr,
@@ -41,5 +41,5 @@ Suggests:
     rmarkdown,
     testthat
 Language: en-GB
-RoxygenNote: 7.0.0
+RoxygenNote: 7.0.2
 VignetteBuilder: knitr

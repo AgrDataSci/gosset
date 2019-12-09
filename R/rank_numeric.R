@@ -37,8 +37,8 @@
 #'                   id = 1,
 #'                   grouped.rankings = TRUE)
 #' 
-#' ######################
-#' 
+#' #---------------------------####-------------
+#'  
 #' # Rankings with 5 items randomly assigned
 #' 
 #' i <- as.data.frame(matrix(NA, nrow = 10, ncol = 5))
@@ -51,9 +51,10 @@
 #'   i[s,] <- sample(LETTERS[1:5])
 #'   r[s,] <- sample(1:5)
 #' }
-#' 
-#' R <- rank_numeric(items = i,
-#'                   input = r)
+#' data <- cbind(i, r)
+#' R <- rank_numeric(data = data,
+#'                   items = c(1:5),
+#'                   input = c(6:10))
 #'  
 #' @import tibble
 #' @importFrom tidyr gather spread
@@ -62,22 +63,19 @@ rank_numeric <- function(data = NULL, items = NULL,
                     input = NULL, id = NULL, 
                     group = FALSE, ascending = FALSE, ...) {
   
+  
+  # keep only target columns in data
   if (is.null(data)) {
-    data <- cbind(items, input)
-    items <- names(items)
-    input <- names(input)
+    stop("argument 'data' is missing with no default")
   }
   
   if (!is.data.frame(data)){
     data <- data.frame(data, stringsAsFactors = FALSE)
   }
   
-  if (is.null(items)) {
-    stop("argument 'items' is missing with no default \n")
-  }
-  
-  if (is.null(input)) {
-    stop("argument 'input' is missing with no default \n")
+  # if tibble put it as data.frame
+  if (.is_tibble(data)) {
+    data <- as.data.frame(data, stringsAsFactors = FALSE)
   }
   
   # get nrow in object
@@ -95,7 +93,7 @@ rank_numeric <- function(data = NULL, items = NULL,
   # make sure that input are numeric
   data[input] <- lapply(data[input], as.numeric)
   
-  r <- .pivot_default(id, i = items, r = data[input], ascending)
+  r <- .pivot_default(id = id, i = items, r = data[input], ascending)
   
   # make a PlackettLuce rankings
   R <- PlackettLuce::as.rankings(r)
@@ -216,6 +214,7 @@ rank_numeric <- function(data = NULL, items = NULL,
   
 } 
 
+
 # compute a ascending rank 
 .asc_rank <- function(object){
   
@@ -232,7 +231,7 @@ rank_numeric <- function(data = NULL, items = NULL,
   })
   
   object <- do.call("rbind", object)
-
+  
   return(object)
   
 }

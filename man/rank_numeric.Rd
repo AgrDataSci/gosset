@@ -64,8 +64,8 @@ R <- rank_numeric(df,
                   id = 1,
                   grouped.rankings = TRUE)
 
-######################
-
+#---------------------------####-------------
+ 
 # Rankings with 5 items randomly assigned
 
 i <- as.data.frame(matrix(NA, nrow = 10, ncol = 5))
@@ -78,9 +78,10 @@ for(s in 1:10) {
   i[s,] <- sample(LETTERS[1:5])
   r[s,] <- sample(1:5)
 }
-
-R <- rank_numeric(items = i,
-                  input = r)
+data <- cbind(i, r)
+R <- rank_numeric(data = data,
+                  items = c(1:5),
+                  input = c(6:10))
  
 }
 \seealso{

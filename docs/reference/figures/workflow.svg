@@ -15,7 +15,10 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="workflow.svg">
+   sodipodi:docname="workflow.svg"
+   inkscape:export-filename="C:\Users\kaued\Dropbox (Bioversity CR)\Rcode\gosset\man\figures\workflow.png"
+   inkscape:export-xdpi="500"
+   inkscape:export-ydpi="500">
   <defs
      id="defs2">
     <clipPath
@@ -1511,14 +1514,14 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="225.36734"
-     inkscape:cy="207.95162"
+     inkscape:zoom="0.7"
+     inkscape:cx="452.46037"
+     inkscape:cy="280.41555"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1280"
-     inkscape:window-height="961"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
@@ -1530,7 +1533,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1546,7 +1549,9 @@
        width="160"
        style="fill:#f9f9f9;fill-opacity:1;stroke-width:1.60584855"
        y="-200.65433"
-       x="137.09694" />
+       x="137.09694"
+       inkscape:export-xdpi="500"
+       inkscape:export-ydpi="500" />
     <path
        id="path2-6"
        d="m 133.01848,215.58169 -5.0071,-5.00703 -5.00709,5.00703 1.58875,1.58875 2.90625,-2.90631 c 1.01436,4.61004 -1.39126,9.43773 -5.90092,11.30576 -3.23052,1.33817 -6.8467,0.90291 -9.67308,-1.16411 l -1.32627,1.81359 c 1.65722,1.21191 3.60894,1.99193 5.64411,2.25553 0.51463,0.0667 1.03189,0.0998 1.54904,0.0998 1.59274,0 3.18166,-0.31421 4.66598,-0.92904 3.00545,-1.24488 5.34619,-3.58562 6.59107,-6.59107 0.7133,-1.72204 1.01706,-3.54412 0.91298,-5.35164 l 1.46748,1.46753 z"
