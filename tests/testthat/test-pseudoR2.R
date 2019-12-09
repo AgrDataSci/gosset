@@ -43,7 +43,9 @@ test_that("default works", {
 
 
 test_that("bttree works", {
+  
   library("psychotree")
+  
   pc <- rank_paircomp(G)
   
   df <- data.frame(x = rep(1, 6), y = rep(1, 6))

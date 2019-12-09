@@ -31,46 +31,18 @@
 #' @export
 pseudoR2 <- function(object, ...) {
   
-  cl <- class(object)[[1]]
+  UseMethod("pseudoR2")
   
-  if (cl == "pltree") {
-    pr2 <- .pseudoR2_pltree(object, ...)
-  }
-  
-  if (cl == "bttree") {
-    pr2 <- .pseudoR2_bttree(object, ...)
-  }
-  
-  if (cl != "pltree" & cl != "bttree") {
-    pr2 <- .pseudoR2_default(object, ...)
-  }
-  
-  return(pr2)
 }
 
-# I've tried to do this as S3 method but returns a error in 
-# CRAN checks
-# checking S3 generic/method consistency ... WARNING
-# See section 'Generic functions and methods' in the 'Writing R
-# Extensions' manual.
-# pseudoR2 <- function(object, ...){
-#   
-#   UseMethod("pseudoR2")
-#   
-# }
-# @export
-# pseudoR2.default <- function(object, newdata = NULL){
-# @method pseudoR2 pltree
-# @export
-# pseudoR2.pltree <- function(object, newdata = NULL){
-# @method pseudoR2 bttree
-# @export
-# pseudoR2.bttree <- function(object, newdata = NULL){
-
-
-# default method to calculate pseudoR2 
-# applies to glm, lm, gnm
-.pseudoR2_default <- function(object, newdata = NULL) {
+#' @rdname pseudoR2
+#' @export
+pseudoR2.default <- function(object, ...){
+  
+  dots <- list(...)
+  
+  newdata <- dots[["newdata"]]
+  
   # update the model as a null model
   # model without covariates
   mod_null <- update(object, ~ 1)
@@ -110,10 +82,17 @@ pseudoR2 <- function(object, ...) {
   pR2 <- .getpseudoR2(LLNull, LL, n)
   
   return(pR2)
+  
 }
 
-# method pseudoR2 for pltree objects
-.pseudoR2_pltree <- function(object, newdata = NULL) {
+#' @rdname pseudoR2
+#' @export
+#' @method pseudoR2 pltree
+pseudoR2.pltree <- function(object, ...){
+  
+  dots <- list(...)
+  
+  newdata <- dots[["newdata"]]
   
   # identify the name of response variable
   Y <- all.vars(formula(object))[1]
@@ -159,8 +138,15 @@ pseudoR2 <- function(object, ...) {
   
 }
 
-# method pseudoR2 for bttree objects
-.pseudoR2_bttree <- function(object, newdata = NULL) {
+#' @rdname pseudoR2
+#' @export
+#' @method pseudoR2 bttree
+pseudoR2.bttree <- function(object, ...){
+  
+  dots <- list(...)
+  
+  newdata <- dots[["newdata"]]
+  
   # get the response variable
   Y <- all.vars(formula(object))[1]
   
@@ -209,6 +195,7 @@ pseudoR2 <- function(object, ...) {
   return(pR2)
   
 }
+
 
 # Compute pseudo R squared
 .getpseudoR2 <- function(LLNull, LL, n) {

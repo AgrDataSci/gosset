@@ -2,9 +2,18 @@
 % Please edit documentation in R/pseudoR2.R
 \name{pseudoR2}
 \alias{pseudoR2}
+\alias{pseudoR2.default}
+\alias{pseudoR2.pltree}
+\alias{pseudoR2.bttree}
 \title{Pseudo R-squared}
 \usage{
 pseudoR2(object, ...)
+
+\method{pseudoR2}{default}(object, ...)
+
+\method{pseudoR2}{pltree}(object, ...)
+
+\method{pseudoR2}{bttree}(object, ...)
 }
 \arguments{
 \item{object}{a fitted model object}
