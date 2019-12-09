@@ -2,16 +2,31 @@
 % Please edit documentation in R/kendallTau.R
 \name{kendallTau}
 \alias{kendallTau}
+\alias{kendallTau.default}
+\alias{kendallTau.matrix}
+\alias{kendallTau.data.frame}
+\alias{kendallTau.rankings}
+\alias{kendallTau.grouped_rankings}
 \title{Kendall rank correlation coefficient}
 \usage{
-kendallTau(x, y, null.rm = TRUE)
+kendallTau(x, y, ...)
+
+\method{kendallTau}{default}(x, y, ...)
+
+\method{kendallTau}{matrix}(x, y, ...)
+
+\method{kendallTau}{data.frame}(x, y, ...)
+
+\method{kendallTau}{rankings}(x, y, ...)
+
+\method{kendallTau}{grouped_rankings}(x, y, ...)
 }
 \arguments{
-\item{x}{a matrix with rankings or model coefficients with same dimensions of \code{y}}
+\item{x}{an object with rankings or model coefficients with same dimensions of \code{y}}
 
-\item{y}{a matrix with rankings or model coefficients with same dimensions of \code{x}}
+\item{y}{an object with rankings or model coefficients with same dimensions of \code{x}}
 
-\item{null.rm}{logical, to remove zeros from matrix \code{x} and \code{y}}
+\item{...}{further arguments afecting the Kendall tau produced. See details}
 }
 \value{
 The Kendall correlation coefficient and the Effective N, which 
@@ -19,10 +34,16 @@ is the equivalent N needed if all items were compared to all items.
 Can be used for significance testing.
 }
 \description{
-Compute Kendall rank correlation coefficient between two matrices. Is coefficient 
+Compute Kendall rank correlation coefficient between two objects. Kendall is a coefficient 
 used in statistics to measure the ordinal association between two measured quantities.
 A tau test is a non-parametric hypothesis test for statistical dependence based 
-on the tau coefficient.
+on the tau coefficient. The 'kendallTau' function applies the "kendall" method from 
+'stats::cor' with some previous treatment in the data, such as converting floating numbers
+into ranks (from the higher being the first and negative being the last) 
+and the possibility to remove zeros from incomplete ranks
+}
+\details{
+null.rm logical, to remove zeros from \code{x} and \code{y}
 }
 \examples{
 
@@ -46,6 +67,10 @@ mod <- pltree(G ~ 1, data = G)
 preds <- predict(mod)
 
 k <- kendallTau(R, preds)
+
+# also applies to a single observation in the matrix
+
+k <- kendallTau(R[1,], preds[1,])
 
 }
 \references{

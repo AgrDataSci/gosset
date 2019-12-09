@@ -1,8 +1,11 @@
 # gosset 0.1-5
 
-# New features
-* `.get_timeseries` now implements the Euclidean method to look for its nearest neighbour in the nasapower output. This optmises the functions and reduce dependencies
+##  New features
+
+* `.get_timeseries` now implements the Euclidean method to search for its nearest neighbour in the nasapower output. This optmises the function and reduce dependencies
 * ranking functions now implements internal processess to decode ranks and reduce dependencies
+* `pseudoR2` as a S3 method for objects of class "glm", "gnm", "bttree" and "pltree"
+* `kendallTau` as S3 method for objects of class "numeric", "matrix", "data.frame", "rankings", "grouped_rankings"
 
 
 # gosset 0.1-4

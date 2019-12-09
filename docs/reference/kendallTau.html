@@ -32,10 +32,13 @@
 
 <meta property="og:title" content="Kendall rank correlation coefficient — kendallTau" />
 
-<meta property="og:description" content="Compute Kendall rank correlation coefficient between two matrices. Is coefficient 
+<meta property="og:description" content="Compute Kendall rank correlation coefficient between two objects. Kendall is a coefficient 
 used in statistics to measure the ordinal association between two measured quantities.
 A tau test is a non-parametric hypothesis test for statistical dependence based 
-on the tau coefficient." />
+on the tau coefficient. The 'kendallTau' function applies the &quot;kendall&quot; method from 
+'stats::cor' with some previous treatment in the data, such as converting floating numbers
+into ranks (from the higher being the first and negative being the last) 
+and the possibility to remove zeros from incomplete ranks" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -109,29 +112,47 @@ on the tau coefficient." />
 
     <div class="ref-description">
     
-    <p>Compute Kendall rank correlation coefficient between two matrices. Is coefficient 
+    <p>Compute Kendall rank correlation coefficient between two objects. Kendall is a coefficient 
 used in statistics to measure the ordinal association between two measured quantities.
 A tau test is a non-parametric hypothesis test for statistical dependence based 
-on the tau coefficient.</p>
+on the tau coefficient. The 'kendallTau' function applies the "kendall" method from 
+'stats::cor' with some previous treatment in the data, such as converting floating numbers
+into ranks (from the higher being the first and negative being the last) 
+and the possibility to remove zeros from incomplete ranks</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>kendallTau</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>null.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>kendallTau</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>kendallTau</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for matrix</span>
+<span class='fu'>kendallTau</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for data.frame</span>
+<span class='fu'>kendallTau</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for rankings</span>
+<span class='fu'>kendallTau</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for grouped_rankings</span>
+<span class='fu'>kendallTau</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a matrix with rankings or model coefficients with same dimensions of <code>y</code></p></td>
+      <td><p>an object with rankings or model coefficients with same dimensions of <code>y</code></p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>a matrix with rankings or model coefficients with same dimensions of <code>x</code></p></td>
+      <td><p>an object with rankings or model coefficients with same dimensions of <code>x</code></p></td>
     </tr>
     <tr>
-      <th>null.rm</th>
-      <td><p>logical, to remove zeros from matrix <code>x</code> and <code>y</code></p></td>
+      <th>...</th>
+      <td><p>further arguments afecting the Kendall tau produced. See details</p></td>
     </tr>
     </table>
     
@@ -140,6 +161,10 @@ on the tau coefficient.</p>
     <p>The Kendall correlation coefficient and the Effective N, which 
 is the equivalent N needed if all items were compared to all items. 
 Can be used for significance testing.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>null.rm logical, to remove zeros from <code>x</code> and <code>y</code></p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -151,7 +176,7 @@ Can be used for significance testing.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='co'># check the correlation between observed rankings </span>
 <span class='co'># and the predicted rankings from PlackettLuce</span>
 
@@ -171,7 +196,13 @@ Can be used for significance testing.</p>
 
 <span class='no'>preds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>mod</span>)
 
-<span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'>kendallTau</span>(<span class='no'>R</span>, <span class='no'>preds</span>)</div></pre>
+<span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'>kendallTau</span>(<span class='no'>R</span>, <span class='no'>preds</span>)
+
+<span class='co'># also applies to a single observation in the matrix</span>
+
+<span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'>kendallTau</span>(<span class='no'>R</span>[<span class='fl'>1</span>,], <span class='no'>preds</span>[<span class='fl'>1</span>,])
+
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -179,6 +210,8 @@ Can be used for significance testing.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#references">References</a></li>
 
@@ -192,7 +225,7 @@ Can be used for significance testing.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kaue de Sousa, Jacob van Etten, Sam Dumble, Nicolas Greliche, Jonathan Steinke.</p>
+  <p>Developed by Kaue de Sousa, Jacob van Etten, Sam Dumble, Nicolas Greliche, Jonathan Steinke, Svein Solberg.</p>
 </div>
 
 <div class="pkgdown">

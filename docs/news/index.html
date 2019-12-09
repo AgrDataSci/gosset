@@ -104,6 +104,19 @@
     <div id="gosset-0-1-5" class="section level1">
 <h1 class="page-header">
 <a href="#gosset-0-1-5" class="anchor"></a>gosset 0.1-5</h1>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>.get_timeseries</code> now implements the Euclidean method to search for its nearest neighbour in the nasapower output. This optmises the function and reduce dependencies</li>
+<li>ranking functions now implements internal processess to decode ranks and reduce dependencies</li>
+<li>
+<code>pseudoR2</code> as a S3 method for objects of class “glm”, “gnm”, “bttree” and “pltree”</li>
+<li>
+<code>kendallTau</code> as S3 method for objects of class “numeric”, “matrix”, “data.frame”, “rankings”, “grouped_rankings”</li>
+</ul>
+</div>
 </div>
     <div id="gosset-0-1-4" class="section level1">
 <h1 class="page-header">
@@ -192,7 +205,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kaue de Sousa, Jacob van Etten, Sam Dumble, Nicolas Greliche, Jonathan Steinke.</p>
+  <p>Developed by Kaue de Sousa, Jacob van Etten, Sam Dumble, Nicolas Greliche, Jonathan Steinke, Svein Solberg.</p>
 </div>
 
 <div class="pkgdown">

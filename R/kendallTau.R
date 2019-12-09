@@ -1,17 +1,25 @@
 #' Kendall rank correlation coefficient
 #' 
-#' Compute Kendall rank correlation coefficient between two matrices. Is coefficient 
+#' Compute Kendall rank correlation coefficient between two objects. Kendall is a coefficient 
 #' used in statistics to measure the ordinal association between two measured quantities.
 #' A tau test is a non-parametric hypothesis test for statistical dependence based 
-#' on the tau coefficient.
+#' on the tau coefficient. The 'kendallTau' function applies the "kendall" method from 
+#' 'stats::cor' with some previous treatment in the data, such as converting floating numbers
+#' into ranks (from the higher being the first and negative being the last) 
+#' and the possibility to remove zeros from incomplete ranks
 #' 
-#' @param x a matrix with rankings or model coefficients with same dimensions of \code{y}
-#' @param y a matrix with rankings or model coefficients with same dimensions of \code{x}
-#' @param null.rm logical, to remove zeros from matrix \code{x} and \code{y} 
+#' @param x an object with rankings or model coefficients with same dimensions of \code{y}
+#' @param y an object with rankings or model coefficients with same dimensions of \code{x}
+#' @param ... further arguments afecting the Kendall tau produced. See details 
+#' @details 
+#' 
+#' null.rm logical, to remove zeros from \code{x} and \code{y} 
+#' 
 #' @return The Kendall correlation coefficient and the Effective N, which 
 #' is the equivalent N needed if all items were compared to all items. 
 #' Can be used for significance testing.
 #' @references 
+#' 
 #' Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. https://doi.org/10.1093/biomet/30.1-2.81.
 #' 
 #' @examples
@@ -37,82 +45,184 @@
 #' 
 #' k <- kendallTau(R, preds)
 #' 
+#' # also applies to a single observation in the matrix
+#' 
+#' k <- kendallTau(R[1,], preds[1,])
+#' 
 #' @seealso \code{\link[stats]{cor}}
 #' @export
-kendallTau <- function(x, y, null.rm = TRUE){
+kendallTau<- function(x, y, ...){
+  
+  UseMethod("kendallTau")
+  
+}
+
+#' @rdname kendallTau
+#' @export
+kendallTau.default <- function(x, y, ...){
+  
+  
+  kt <- .get_kendall(x, y, ...)
+  
+  # Extract the values from the vector
+  N <- kt[2]
+  
+  # Effective N is the equivalent N needed if all were compared to all
+  # N_comparisons = ((N_effective - 1) * N_effective) / 2
+  # This is used for significance testing later
+  N_effective <- 0.5 + sqrt(0.25 + 2 * sum(N)) 
+  
+  kt[2] <- N_effective
+  
+  names(kt) <- c("kendallTau", "N_effective")
+  
+  kt <- t(as.data.frame(kt))
+  
+  
+  kt <- tibble::as_tibble(kt)
+  
+  return(kt)
+  
+}
+
+#' @rdname kendallTau
+#' @method kendallTau matrix
+#' @export
+kendallTau.matrix <- function(x, y, ...){
   
   nc <- ncol(x)
+  
+  kt <- apply(cbind(x, y), 1, function(K){
     
-  # Function bellow produces a matrix with two rows
-  # First row: Kendall tau value for that row
-  # Second row: how many pairs entered the comparison as a weight
-  # To make the predicted probability of winning match the ranks (1 = best), 
-  # we take the negative probability
-  tau_N <- apply(cbind(x, y), 1, function(X) {
-                   
-                   obr <- X[1:nc]
-                   prr <- X[(nc + 1):(2 * nc)]
-                   
-                   keep <- !is.na(obr) & !is.na(prr)
-                   
-                   # if TRUE, remove zeros in both rankings
-                   if (null.rm) {
-                     
-                     keep <- obr != 0 & prr != 0 & keep
-                     
-                   }
-                   
-                   obr <- obr[keep]
-                   
-                   prr <- prr[keep]
-                   
-                   # if any decimal in x or y transform it to integer rankings
-                   # decimals will be computed as descending rankings
-                   # where the highest values are the "best" 
-                   # negative values are placed as least positions
-                   
-                   if (any(.is_decimal(c(obr, prr)))) {
-                     
-                     obr <- .rank_decimal(obr)$rank
-                     
-                     prr <- .rank_decimal(prr)$rank
-                     
-                   }
-              
-                   tau_cor <- stats::cor(prr, 
-                                         obr, 
-                                         method = "kendall",
-                                         use = "pairwise.complete.obs")
-                   
-                   n <- sum(obr > 0, na.rm = TRUE)
-                   
-                   weight <- n * (n - 1) / 2
-                   
-                   return(c(tau_cor, weight))
-                   
-                 }
-  )
+    X <- K[1:nc]
+    Y <- K[(nc + 1):(nc * 2)]
+    
+    .get_kendall(X, Y, ...)
+    
+  })
   
   # Extract the values from the matrix
-  tau <- tau_N[1,]
-  N <- tau_N[2,]
+  tau <- kt[1,]
+  N <- kt[2,]
   
-  # N are very small per observer, so simple averaging will have very little bias
-  # No need for z transformation at this stage
-  # And z tranformation would always give -Inf or Inf with N=2
   tau_average <- sum(tau * N) / sum(N)
   
   # Effective N is the equivalent N needed if all were compared to all
   # N_comparisons = ((N_effective - 1) * N_effective) / 2
   # This is used for significance testing later
-  N_effective <- 0.5 + sqrt(.25 + 2 * sum(N)) 
+  N_effective <- 0.5 + sqrt(0.25 + 2 * sum(N)) 
   
-  result <- t(as.matrix(c(tau_average, N_effective)))
+  kt <- c(tau_average, N_effective)
   
-  dimnames(result)[[2]] <- c("kendallTau", "N_effective")
+  names(kt) <- c("kendallTau", "N_effective")
   
-  result <- tibble::as_tibble(result)
+  kt <- t(as.data.frame(kt))
+  
+  kt <- tibble::as_tibble(kt)
+  
+  return(kt)
+  
+}
+
+
+#' @rdname kendallTau
+#' @method kendallTau data.frame
+#' @export
+kendallTau.data.frame <- function(x, y, ...){
+  
+  kendallTau.matrix(x, y, ...)
+
+}
+
+#' @rdname kendallTau
+#' @method kendallTau rankings
+#' @export
+kendallTau.rankings <- function(x, y, ...){
+  
+  X <- x[1:nrow(x), , as.rankings = FALSE]
+  
+  Y <- y[1:nrow(y), , as.rankings = FALSE]
+  
+  kendallTau.matrix(X, Y, ...)
+  
+}
+
+
+#' @rdname kendallTau
+#' @method kendallTau grouped_rankings
+#' @export
+kendallTau.grouped_rankings <- function(x, y, ...){
+  
+  X <- x[1:length(x), , as.grouped_rankings = FALSE]
+  
+  Y <- y[1:length(y), , as.grouped_rankings = FALSE]
+  
+  kendallTau.matrix(X, Y, ...)
+  
+}
+
+
+# Kendall tau for a vector
+# 
+# Applies the "kendall" method from stats::cor with some 
+# previous treatment in the data, such as converting floating number into 
+# ranks (from the higher being the first and negative being the last) 
+# and removing zeros from incomplete ranks
+#
+# @param x a object of class numeric 
+# @param y a object of class numeric 
+# @param null.rm logical, to remove zeros from \code{x} and \code{y} 
+# @return The Kendall correlation coefficient and the Effective N
+# @examples
+# p1 <- c(1,2,3,4,5,6,7)
+# p2 <- c(1,2,0,3,5,7,6)
+# 
+# .get_kendall(p1, p2,  null.rm = TRUE)
+# .get_kendall(p1, p2, null.rm = FALSE)
+.get_kendall <- function(x, y, null.rm = TRUE) {
+  
+  keep <- !is.na(x) & !is.na(y)
+  
+  # if TRUE, remove zeros in both rankings
+  if (null.rm) {
+    
+    keep <- x != 0 & y != 0 & keep
+    
+  }
+  
+  x <- x[keep]
+  
+  y <- y[keep]
+  
+  # if any decimal in x or y transform it to integer rankings
+  # decimals will be computed as descending rankings
+  # where the highest values are the "best" 
+  # negative values are placed as least positions
+  if (any(.is_decimal(x))) {
+    
+    x <- .rank_decimal(x)$rank
+    
+  }
+  
+  if(any(.is_decimal(y))) {
+    
+    y <- .rank_decimal(y)$rank
+  
+  }
+  
+  tau_cor <- stats::cor(x, 
+                        y, 
+                        method = "kendall",
+                        use = "pairwise.complete.obs")
+  
+  n <- length(x)
+  
+  weight <- n * (n - 1) / 2
+  
+  result <- c(tau_cor, weight)
   
   return(result)
   
+  
 }
+

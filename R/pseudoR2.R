@@ -86,8 +86,8 @@ pseudoR2.default <- function(object, ...){
 }
 
 #' @rdname pseudoR2
-#' @export
 #' @method pseudoR2 pltree
+#' @export
 pseudoR2.pltree <- function(object, ...){
   
   dots <- list(...)
@@ -139,8 +139,8 @@ pseudoR2.pltree <- function(object, ...){
 }
 
 #' @rdname pseudoR2
-#' @export
 #' @method pseudoR2 bttree
+#' @export
 pseudoR2.bttree <- function(object, ...){
   
   dots <- list(...)
