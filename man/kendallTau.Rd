@@ -7,6 +7,7 @@
 \alias{kendallTau.data.frame}
 \alias{kendallTau.rankings}
 \alias{kendallTau.grouped_rankings}
+\alias{kendallTau.paircomp}
 \title{Kendall rank correlation coefficient}
 \usage{
 kendallTau(x, y, ...)
@@ -20,6 +21,8 @@ kendallTau(x, y, ...)
 \method{kendallTau}{rankings}(x, y, ...)
 
 \method{kendallTau}{grouped_rankings}(x, y, ...)
+
+\method{kendallTau}{paircomp}(x, y, ...)
 }
 \arguments{
 \item{x}{an object with rankings or model coefficients with same dimensions of \code{y}}

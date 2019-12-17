@@ -43,10 +43,11 @@ The cross-validation goodness-of-fit estimates, which are:
 \item{MaxLik}{Maximum likelihood pseudo R-squared}
 \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
 \item{Agresti}{Agresti pseudo R-squared}
+\item{kendallTau}{the Kendall correlation coefficient, only for Plackett-Luce models}
 }
 \description{
 Methods for measuring the performance of a predictive model on sets of test data in
-BradleyTerry, glm, gnm or PlackettLuce models.
+Bradley-Terry, Generalized Linear, Generalized Nonlinear or Plackett-Luce models.
 }
 \examples{
 # Generalized Linear Models
@@ -61,7 +62,7 @@ cv <- crossvalidation(Temp ~ Wind + Solar.R,
                 
 
 \donttest{
-# PlackettLuce Model
+# Plackett-Luce Model
 # beans data from PlackettLuce
 library("PlackettLuce")
 data("beans", package = "PlackettLuce")
@@ -86,7 +87,7 @@ cv <- crossvalidation(G ~ maxTN,
 
 ########################################
 
-# BradleyTerry Model
+# Bradley-Terry Model
 library("psychotree")
 # Germany's Next Topmodel 2007 data from psychotree
 data("Topmodel2007", package = "psychotree")

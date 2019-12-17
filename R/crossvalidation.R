@@ -1,7 +1,7 @@
 #' Cross-validation 
 #'
 #' Methods for measuring the performance of a predictive model on sets of test data in
-#' BradleyTerry, glm, gnm or PlackettLuce models. 
+#' Bradley-Terry, Generalized Linear, Generalized Nonlinear or Plackett-Luce models. 
 #'
 #' @param formula an object of class "formula" (or one that can be coerced to that class):
 #' a symbolic description of the model to be fitted,
@@ -23,6 +23,7 @@
 #' \item{MaxLik}{Maximum likelihood pseudo R-squared}
 #' \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
 #' \item{Agresti}{Agresti pseudo R-squared}
+#' \item{kendallTau}{the Kendall correlation coefficient, only for Plackett-Luce models}
 #' @seealso \code{\link[psychotree]{bttree}}, \code{\link[stats]{glm}}, \code{\link[gnm]{gnm}},
 #' \code{\link[PlackettLuce]{pltree}}
 #' @references 
@@ -46,7 +47,7 @@
 #'                 
 #' 
 #' \donttest{
-#' # PlackettLuce Model
+#' # Plackett-Luce Model
 #' # beans data from PlackettLuce
 #' library("PlackettLuce")
 #' data("beans", package = "PlackettLuce")
@@ -71,7 +72,7 @@
 #' 
 #' ########################################
 #' 
-#' # BradleyTerry Model
+#' # Bradley-Terry Model
 #' library("psychotree")
 #' # Germany's Next Topmodel 2007 data from psychotree
 #' data("Topmodel2007", package = "psychotree")
@@ -114,7 +115,7 @@ crossvalidation <- function(formula,
     set.seed(seed)
     
     folds <- sample(rep(1:k, times = ceiling(n / k), length.out = n))
-  
+    
   }
   
   if (length(folds) != n) {
@@ -170,67 +171,63 @@ crossvalidation <- function(formula,
     k <- length(unique(folds))
     drop <- match("drop.folds", names(dots))
     dots <- dots[-drop]
-
+    
   }
   
   # fit the models
   mod <- lapply(train, function(X) {
+    
+    args <- list(formula = formula, data = X)
+    
+    args <- c(args, dots)
+    
+    try(do.call(model, args))
+    
+  })
+  
+  # get goodness-of-fit estimates from models
+  gof <- .get_estimators(model = mod, test_data = test)
+
+  estimators <- gof[[1]]
+  
+  # if model is pltree take the kendall cor 
+  if (model == "pltree") {
+    
+    R_pl <- all.vars(formula)[[1]]
+    
+    R_pl <- lapply(test, function(x) {
+      x <- x[, R_pl]
       
-      args <- list(formula = formula, data = X)
-      
-      args <- c(args, dots)
-      
-      try(do.call(model, args))
+      x[1:length(x), , as.grouped_rankings = FALSE]
       
     })
-  
-  # take models from training data to compute deviance, pseudo R-squared
-  # and the predictions of the test part of the data
-  aic <- mapply(function(X, Y) {
-    try(AIC(X, newdata = Y), silent = TRUE)
-  }, X = mod, Y = test[])
-  
-  aic <- as.numeric(aic)
-  
-  Deviance <- mapply(function(X, Y) {
-    try(deviance(X, newdata = Y), silent = TRUE)
-  }, X = mod, Y = test[])
-  
-  Deviance <- as.numeric(Deviance)
-  
-  logLik <- Deviance / -2
-  
-  pR2 <- t(mapply(function(X) {
-    try(pseudoR2(X), silent = TRUE)
-  }, X = mod))
-  
-  pR2 <- matrix(unlist(pR2), 
-                ncol = 5, 
-                nrow = k, 
-                dimnames = list(1:k, dimnames(pR2)[[2]]))
-  
-  # no need to keep null logLik
-  pR2 <- pR2[, -c(1,2)]
-  
-  estimators <- cbind(data.frame(AIC = aic, 
-                                 deviance = Deviance, 
-                                 logLik = logLik),
-                      pR2)
+    
+    preds <- gof[[2]]
+    
+    KT <- mapply(function(X, Y) {
+        try(kendallTau(X, Y)[[1]], silent = TRUE)
+      }, X = R_pl, Y = preds)
+      
+      KT <- as.numeric(KT)
+      
+      estimators$kendallTau <- KT
+      
+  }
   
   # estimators are then averaged weighted by 
   # number of predicted cases using selected mean method
   means <- apply(estimators, 2, function(x) {
-      .mean_crossvalidation(object = x, 
-                            folds = folds, 
-                            mean.method = mean.method)
-    })
+    .mean_crossvalidation(object = x, 
+                          folds = folds, 
+                          mean.method = mean.method)
+  })
   
   # means and estimates as tibble
   means <- tibble::as_tibble(t(means))
-
+  
   estimators <- tibble::as_tibble(estimators)
   
-
+  
   result <- list(coeffs = means,
                  raw = list(call = deparse(formula, width.cutoff = 500),
                             estimators = estimators,
@@ -240,6 +237,60 @@ crossvalidation <- function(formula,
   
   class(result) <- c("gosset_cv", class(result))
   return(result)
+}
+
+
+# Get estimators from model parameters
+# 
+# @param model a list with models
+# @param test_data a dist with data.frames to test model
+# @return The model goodness-of-fit estimators
+# data("airquality")
+# mod <- glm(Temp ~ Wind, Solar.R, data = airquality, family = poisson())
+# test <- airquality[1:10, ]
+# .get_estimators(list(model), list(test))
+.get_estimators <- function(model, test_data) {
+  
+  # take models from training data to compute deviance, pseudo R-squared
+  # and the predictions of the test part of the data
+  aic <- mapply(function(X, Y) {
+    try(AIC(X, newdata = Y), silent = TRUE)
+  }, X = model, Y = test_data[])
+  
+  aic <- as.numeric(aic)
+  
+  Deviance <- mapply(function(X, Y) {
+    try(deviance(X, newdata = Y), silent = TRUE)
+  }, X = model, Y = test_data[])
+  
+  Deviance <- as.numeric(Deviance)
+  
+  pR2 <- t(mapply(function(X, Y) {
+    try(pseudoR2(X), silent = TRUE)
+  }, X = model, Y = test_data[]))
+  
+  pR2 <- matrix(as.numeric(unlist(pR2)),
+                ncol = 5,
+                nrow = length(model),
+                dimnames = list(1:length(model),
+                                dimnames(pR2)[[2]]))
+  
+  # and the predictions
+  preds <-  mapply(function(X, Y) {
+    try(predict(X, newdata = Y), silent = TRUE)
+  }, X = model, Y = test_data[])
+  
+  gof <- cbind(data.frame(AIC = aic, 
+                          deviance = Deviance), 
+               pR2)
+  
+  
+  estimators <- list(goodness_of_fit = gof,
+                     predictions = preds)
+  
+  
+  return(estimators)
+  
 }
 
 #' @method print gosset_cv

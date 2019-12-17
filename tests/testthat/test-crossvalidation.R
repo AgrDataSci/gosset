@@ -79,7 +79,7 @@ test_that("PlackettLuce", {
   
   cvtest <- sum(unlist(cv$coeffs) == unlist(cv2$coeffs))
   
-  expect_equal(cvtest, 0)
+  expect_equal(cvtest, 2)
   
 })
 
@@ -126,7 +126,7 @@ test_that("BradleyTerry", {
   
   cvtest <- sum(unlist(cv$coeffs) == unlist(cv2$coeffs))
   
-  expect_equal(cvtest, 0)
+  expect_equal(cvtest, 1)
   
 })
 

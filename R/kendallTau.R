@@ -50,6 +50,7 @@
 #' k <- kendallTau(R[1,], preds[1,])
 #' 
 #' @seealso \code{\link[stats]{cor}}
+#' 
 #' @export
 kendallTau<- function(x, y, ...){
   
@@ -156,6 +157,23 @@ kendallTau.grouped_rankings <- function(x, y, ...){
   X <- x[1:length(x), , as.grouped_rankings = FALSE]
   
   Y <- y[1:length(y), , as.grouped_rankings = FALSE]
+  
+  kendallTau.matrix(X, Y, ...)
+  
+}
+
+#' @rdname kendallTau
+#' @method kendallTau paircomp
+#' @export
+kendallTau.paircomp <- function(x, y, ...) {
+  
+  x <- PlackettLuce::as.grouped_rankings(x)
+  
+  X <- x[1:length(x), as.grouped_rankings = FALSE]
+  
+  y <- PlackettLuce::as.grouped_rankings(y)
+  
+  Y <- y[1:length(y), as.grouped_rankings = FALSE]
   
   kendallTau.matrix(X, Y, ...)
   
