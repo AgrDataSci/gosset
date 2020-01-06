@@ -9,14 +9,17 @@
 #' data from NASA POWER (\url{https://power.larc.nasa.gov/})
 #' @inheritParams temperature
 #' @return A dataframe with rainfall indices:
-#' \item{MLDS}{maximum length of consecutive dry days (r <  1 mm)}
-#' \item{MLWS}{maximum length of consecutive wet days (r >= 1 mm)}
-#' \item{R10mm}{number of heavy precipitation days (10 >= r < 20 mm)}
-#' \item{R20mm}{number of very heavy precipitation days (r >= 20) }
-#' \item{SDII}{simple daily intensity index (mean of wet days / total rainfall)}
-#' \item{Rx1day}{maximum 1-day rainfall (mm)}
-#' \item{Rx5day}{maximum 5-day rainfall (mm) }
-#' \item{Rtotal}{total rainfall (mm) in wet days (R >= 1)}
+#' \item{MLDS}{maximum length of consecutive dry day, rain < 1 mm (days)}
+#' \item{MLWS}{maximum length of consecutive wet days, rain >= 1 mm (days)}
+#' \item{R10mm}{number of heavy precipitation days 10 >= rain < 20 mm (days)}
+#' \item{R20mm}{number of very heavy precipitation days rain >= 20 (days)}
+#' \item{Rx1day}{maximum 1-day precipitation (mm)}
+#' \item{Rx5day}{maximum 5-day precipitation (mm)}
+#' \item{R95p}{total precipitation when rain > 95th percentile (mm)}
+#' \item{R99p}{total precipitation when rain > 99th percentile (mm)}
+#' \item{Rtotal}{total precipitation (mm) in wet days, rain >= 1 (mm)}
+#' \item{SDII}{simple daily intensity index, total precipitation divided by the
+#'  number of wet days (mm/days)}
 #' @family climatology functions
 #' @references 
 #' Aguilar E., et al. (2005). Journal of Geophysical Research, 
@@ -65,8 +68,8 @@ rainfall <- function(object, day.one = NULL, span = 150,
                      ...)
 {
   
-  index <- c("MLDS","MLWS","R10mm","R20mm",
-             "SDII","Rx1day","Rx5day","Rtotal")
+  index <- c("MLDS","MLWS","R10mm","R20mm","Rx1day",
+             "Rx5day","R95p","R99p","Rtotal","SDII")
   
   # get timespan
   if (dim(object)[2] == 2) {
@@ -77,124 +80,292 @@ rainfall <- function(object, day.one = NULL, span = 150,
   
   n <- nrow(r)
   
-  ind <- tibble::as_tibble(matrix(nrow = n, 
-                                  ncol = length(index), 
-                                  dimnames = list(1:n, index)))
+  # split r by rows
+  r <- split(r, 1:nrow(r))
   
-  # maximum length of consecutive dry days (< 1 mm)
-  if ("MLDS" %in% index) {
-    ind["MLDS"]   <- .dryspell(r)
-  }
-  # maximum length of consecutive wet days
-  if ("MLWS" %in% index) {
-    ind["MLWS"]   <- .wetspell(r)
-  }
-  # days with rainfall between 10-15 mm
-  if ("R10mm" %in% index) {
-    ind["R10mm"]  <- apply(r, 1, function(x) {
-      sum(x >= 10 & x < 20, na.rm = TRUE)
-    })
-  }
-  # days with rainfall > 20 mm
-  if ("R20mm" %in% index) {
-    ind["R20mm"]  <- apply(r, 1, function(x) {
-      sum(x >= 20, na.rm = TRUE)
-    })
-  }
-  # simple rainfall intensity index
-  if ("SDII" %in% index) {
-    ind["SDII"] <- apply(r, 1, function(x) {
-      sum(x, na.rm = TRUE) / sum(x >= 1, na.rm = TRUE)
-    })
-  }
-  # maximum 1-day rainfall
-  if ("Rx1day" %in% index) {
-    ind["Rx1day"] <- apply(r, 1, function(x) {
-      max(x, na.rm = TRUE)
-    })
-  }
-  # maximum consecutive 5-day precipitation
-  if ("Rx5day" %in% index) {
-    ind["Rx5day"] <- .rx5day(r)
-  }
-  # total rainfall (mm) in wet days (r >= 1)
-  if ("Rtotal" %in% index) {
-    ind["Rtotal"] <- apply(r, 1, function(x) {
-      sum(x[as.vector(x >= 1)], na.rm = TRUE)
-    })
-  }
+  ind <- lapply(r, function(x) {
+    
+    x <- as.vector(as.matrix(x))
+    
+    x <- data.frame(.dryspell(x),
+           .wetspell(x),
+           .r_ten_mm(x),
+           .r_twenty_mm(x),
+           .r_one_day(x),
+           .r_five_day(x),
+           .very_wet_days(x),
+           .extrem_wet_days(x),
+           .r_total(x),
+           .sdii(x))
+    
+  })
   
-  ind[is.na(ind)] <- 0
+  
+  ind <- do.call("rbind", ind)
+  
+  names(ind) <- index
+  
+  ind <- tibble::as_tibble(ind)
   
   return(ind)
 }
 
 
-# compute Rx5day rainfall index
-.rx5day <- function(object)
-{
-  # this look for the maximum sum of rain in
-  # consecutive 5 days
-  l <- ncol(object)
-  Y <- apply(object, 1, function(Y){
-    r5day <- NULL
-    for(i in 1:(l-4)){
-      r5day <- cbind(r5day, sum(Y[i:(i+4)], na.rm = TRUE))}
-    return(max(r5day, na.rm = TRUE))
-  })
-  return(Y)
-}
-
-# compute the maximum length of consecutive dry days
+#' Maximum length of consecutive dry days
+#' @param object numeric vector
+#' @return the MLDS index, which is the maximum length of consecutive dry days
+#' precipitation < 1 mm
+#' @examples
+#' set.seed(12)
+#' r <- runif(20, 0, 9)
+#' r[c(1,4,9:12,17)] <- 0
+#' chirps:::.dryspell(r)
+#' @noRd
 .dryspell <- function(object)
 {
   # the function rle is applied
   # which looks for the sequencies of numbers
   # in this case, zeros (0)
   # take the maximum sequency
-  f <- apply(object, 1, function(Y){
-    # first all values < 1 are converted to zero (0)
-    Y <- ifelse(Y < 1, 0, Y)
-    # get the lengths of each sequency of zeros (0)
-    keep <- rle(Y)$values
-    keep <- keep == 0
-    Y <- rle(Y)$lengths[keep]
-    # if there is no value (empty()) then set as zero
-    if (length(Y) == 0) {
-      Y <- 0
-    }
-    # if there is values, take the maximum sequecy
-    if (length(Y) != 0) {
-      Y <- max(Y, na.rm = TRUE)
-    }
-    return(Y)
-  }  )
-  return(f)
+  # first all values < 1 are converted to zero (0)
+  ds <- ifelse(object < 1, 0, object)
+  
+  # get the lengths of each sequency of zeros (0)
+  keep <- rle(ds)$values
+  
+  keep <- keep == 0
+  
+  ds <- rle(ds)$lengths[keep]
+  
+  # if there is no value (empty()) then set as zero
+  # which means there is no dry spell
+  if (length(ds) == 0) {
+    ds <- 0
+  }
+  
+  # if there is values, take the maximum sequecy
+  if (length(ds) != 0) {
+    ds <- max(ds, na.rm = TRUE)
+  }
+  
+  return(ds)
+  
 }
 
-# compute the maximum length of consecutive wet days
+#' Maximum length of consecutive wet days
+#' @param object numeric vector
+#' @return the MLWS index, which is the maximum length of consecutive wet days
+#' precipitation > 1 mm
+#' @examples
+#' set.seed(12)
+#' r <- runif(20, 0, 9)
+#' r[c(1,4,9:11)] <- 0.1
+#' chirps:::.wetspell(r)
+#' @noRd
 .wetspell <- function(object)
 {
   # the function rle is applied
   # which looks for the sequencies of zeros
   # take the maximum sequency
-  f <- apply(object, 1, function(Y){
-    # first all values >= 1 are converted to zero (0)
-    # no precipitation (r < 1) is converted to two (2)
-    Y <- ifelse(Y >= 1, 0, 2)
-    # get the lengths of each sequency of zeros (0)
-    keep <- rle(Y)$values
-    keep <- keep == 0
-    Y <- rle(Y)$lengths[keep]
-    # if there is no value (empty()) then set as zero
-    if (length(Y) == 0) {
-      Y <- 0
-    }
-    # if there is values, take the maximum sequecy
-    if (length(Y) != 0) {
-      Y <- max(Y, na.rm = TRUE)
-    }
-    return(Y)
-  }  )
-  return(f)
+  # first all values >= 1 are converted to zero (0)
+  # no precipitation (r < 1) is converted to two (2)
+  ws <- ifelse(object >= 1, 0, 2)
+  
+  # get the lengths of each sequency of zeros (0)
+  keep <- rle(ws)$values
+  
+  keep <- keep == 0
+  
+  ws <- rle(ws)$lengths[keep]
+  
+  # if there is no value (empty()) then set as zero
+  if (length(ws) == 0) {
+    ws <- 0
+  }
+  # if there is values, take the maximum sequecy
+  if (length(ws) != 0) {
+    ws <- max(ws, na.rm = TRUE)
+  }
+  
+  return(ws)
+}
+
+#' Heavy precipitation days (10 >= r < 20 mm)
+#' @param object numeric vector
+#' @return the R10mm index, which is number of heavy precipitation days (10 >= r
+#'  < 20 mm)
+#' @examples
+#' set.seed(12)
+#' r <- runif(20, 0, 12)
+#' r[c(1,4,9:11)] <- 0.1
+#' chirps:::.r_ten_mm(r)
+#' @noRd
+.r_ten_mm <- function(object) {
+  
+  rt <- sum(object >= 10 & object < 20, na.rm = TRUE)
+  
+  return(rt)
+  
+}
+
+#' Very heavy precipitation days (r >= 20)
+#' @param object numeric vector
+#' @return the R20mm index, which is number of very heavy precipitation days (r
+#'  >= 20)
+#' @examples
+#' set.seed(12)
+#' r <- runif(20, 10, 23)
+#' r[c(1,4,9:11)] <- 0.1
+#' chirps:::.r_twenty_mm(r)
+#' @noRd
+.r_twenty_mm <- function(object) {
+  
+  rtw <- sum(object >= 20, na.rm = TRUE)
+  
+  return(rtw)
+  
+}
+
+#' Simple rainfall intensity index
+#' @param object numeric vector
+#' @return the SDII index, which is the simple daily intensity 
+#' index total precipitation divided by the number of wet days (r >= 1.0mm)
+#' @examples
+#' set.seed(12)
+#' r <- runif(20, 0, 9)
+#'
+#' r[c(1,4,9:11)] <- 0.1
+#'
+#' .sdii(r)
+#'
+#' chirps:::.sdii(rep(0.1, 9))
+#' @noRd
+.sdii <- function(object) {
+  
+  # total precipitation
+  tp <- sum(object, na.rm = TRUE)
+  
+  # number of wet days
+  wd <- length(object[object >= 1])
+  
+  #if both zero, then return 0
+  if (wd == 0) {
+    si <- 0L
+  }else{
+    si <- tp / wd
+  }
+  
+  return(si)
+  
+}
+
+#' Compute Rx5day rainfall index
+#' @param object numeric vector
+#' @return the Rx5day index, which is the maximun sum 
+#' of rain in consecutive 5 days
+#' @examples
+#' set.seed(12)
+#' r <- runif(20, 0, 9)
+#' r[c(1,4,9:12,17)] <- 0
+#' chirps:::.r_five_day(r)
+#' @noRd
+.r_five_day <- function(object)
+{
+  # this look for the maximum sum of rain in
+  # consecutive 5 days
+  l <- length(object)
+  
+  r5day <- NULL
+  
+  for (i in 1:(l-4)){
+    
+    r5day <- cbind(r5day, sum(object[i:(i + 4)], na.rm = TRUE))
+    
+  }
+  
+  r5day <- max(r5day, na.rm = TRUE)
+  
+  return(r5day)
+  
+}
+
+#' Maximum 1-day rainfall
+#' @param object numeric vector
+#' @return the Rx1day index, which is the 1-day rainfall
+#' @examples
+#' set.seed(12)
+#' r <- runif(20, 0, 9)
+#' r[c(1,4,9:12,17)] <- 0
+#' chirps:::.r_one_day(r)
+#' @noRd
+.r_one_day <- function(object) {
+  
+  ro <- max(object, na.rm = TRUE)
+  
+  return(ro)
+  
+}
+
+#' Total rainfall (mm) in wet days (r >= 1)
+#' @param object numeric vector
+#' @return the Rtotal index, which is sum of rainfall (mm) in wet days (r >= 1)
+#' @examples
+#' set.seed(12)
+#' r <- runif(20, 0, 9)
+#' r[c(1,4,9:12,17)] <- 0
+#' chirps:::.r_total(r)
+#' @noRd
+.r_total <- function(object) {
+  
+  rt <- object[object >= 1]
+  
+  rt <- sum(object, na.rm = TRUE)
+  
+  return(rt)
+  
+}
+
+
+#' Very wet days
+#' @param object numeric vector
+#' @return the R95p index, annual total PRCP when rain > 95th percentile
+#' @examples
+#' set.seed(12)
+#' r <- runif(20, 0, 9)
+#' r[c(1,4,9:12,17)] <- 0
+#' chirps:::.very_wet_days(r)
+#' @noRd
+.very_wet_days <- function(object) {
+  
+  q <- stats::quantile(object, probs = seq(0, 1, 0.05), na.rm = TRUE)
+  q <- q["95%"]
+  
+  vwd <- object[object > q]
+  
+  vwd <- sum(vwd, na.rm = TRUE)
+  
+  return(vwd)
+  
+}
+
+#' Very wet days
+#' @param object numeric vector
+#' @return the R95p index, annual total PRCP when rain > 95th percentile
+#' @examples
+#' set.seed(12)
+#' r <- runif(20, 0, 9)
+#' r[c(1,4,9:12,17)] <- 0
+#' chirps:::.extrem_wet_days(r)
+#' @noRd
+.extrem_wet_days <- function(object) {
+  
+  q <- stats::quantile(object, probs = seq(0, 1, 0.01), na.rm = TRUE)
+  q <- q["99%"]
+  
+  vwd <- object[object > q]
+  
+  vwd <- sum(vwd, na.rm = TRUE)
+  
+  return(vwd)
+  
 }

@@ -8,7 +8,7 @@ MLDS <- c(rep(9, 2), rep(10, 8))
 MLWS <- c(rep(1, 2), rep(0, 8))
 
 test_that("dry equal", {
-  
+  skip_on_cran()
   r <- rainfall(object = rain, 
                 day.one = d,
                 span = 10)
@@ -19,7 +19,7 @@ test_that("dry equal", {
 })
 
 test_that("moist equal", {
-  
+  skip_on_cran()
   r <- rainfall(object = rain, 
                 day.one = d,
                 span = 10)
@@ -30,7 +30,7 @@ test_that("moist equal", {
 })
 
 test_that("nasapower works", {
-  
+  skip_on_cran()
   r <- suppressWarnings(
     rainfall(object = lonlat, 
                 day.one = d,

@@ -1,20 +1,23 @@
 #' Cross-validation 
 #'
-#' Methods for measuring the performance of a predictive model on sets of test data in
-#' Bradley-Terry, Generalized Linear, Generalized Nonlinear or Plackett-Luce models. 
+#' Methods for measuring the performance of a predictive model on sets of 
+#' test data in Bradley-Terry, Generalized Linear, Generalized Nonlinear 
+#' or Plackett-Luce models. 
 #'
-#' @param formula an object of class "formula" (or one that can be coerced to that class):
-#' a symbolic description of the model to be fitted,
+#' @param formula an object of class "formula" (or one that can be 
+#' coerced to that class): a symbolic description of the model to be fitted,
 #' of the form \eqn{y ~ x1 + ... + xn}
 #' @param data a data frame (or object coercible by as.data.frame to a data frame)
 #' containing the variables in the model
 #' @param k an integer for the number of bins in the cross-validation
 #' @param folds an optional vector specifying the folds in the cross-validation
-#' @param mean.method a character for the method to calculate the mean of cross-validation estimators. 
+#' @param mean.method a character for the method to calculate the mean of 
+#' cross-validation estimators. 
 #' Options are: 'equal', arithmetic mean; 
 #' 'foldsize', weighted mean by the size in each fold; 
 #' 'stouffer' weighted through Z-test. See references 
-#' @param seed The seed for random number generation. If NULL (the default), gosset will set the seed randomly
+#' @param seed The seed for random number generation. If NULL (the default), 
+#' gosset will set the seed randomly
 #' @param ... additional arguments passed the methods of the chosen model
 #' @return The cross-validation goodness-of-fit estimates, which are:
 #' \item{AIC}{Akaike Information Criterion}
@@ -24,16 +27,23 @@
 #' \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
 #' \item{Agresti}{Agresti pseudo R-squared}
 #' \item{kendallTau}{the Kendall correlation coefficient, only for Plackett-Luce models}
-#' @seealso \code{\link[psychotree]{bttree}}, \code{\link[stats]{glm}}, \code{\link[gnm]{gnm}},
+#' @seealso \code{\link[psychotree]{bttree}}, 
+#' \code{\link[stats]{glm}}, 
+#' \code{\link[gnm]{gnm}},
 #' \code{\link[PlackettLuce]{pltree}}
 #' @references 
-#' Agresti A. (2002). Categorical Data Analysis. http://doi.wiley.com/10.1002/0471249688
+#' Agresti A. (2002). Categorical Data Analysis. 
+#' http://doi.wiley.com/10.1002/0471249688
 #' 
-#' Elder J. F. (2003). Journal of Computational and Graphical Statistics, 12(4), 853–864. https://doi.org/10.1198/1061860032733.
+#' Elder J. F. (2003). Journal of Computational and Graphical Statistics, 12(4), 853–864.
+#' https://doi.org/10.1198/1061860032733.
 #' 
-#' James G., et al. (2013). An Introduction to Statistical Learning: with Applications in R. https://doi.org/10.1007/978-1-4614-7138-7
+#' James G., et al. (2013). An Introduction to Statistical Learning: with Applications in R.
+#' https://doi.org/10.1007/978-1-4614-7138-7
 #' 
-#' Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. https://doi.org/10.1111/j.1420-9101.2005.00917.x.
+#' Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. 
+#' https://doi.org/10.1111/j.1420-9101.2005.00917.x.
+#' 
 #' @examples
 #' # Generalized Linear Models
 #' 
@@ -240,15 +250,16 @@ crossvalidation <- function(formula,
 }
 
 
-# Get estimators from model parameters
-# 
-# @param model a list with models
-# @param test_data a dist with data.frames to test model
-# @return The model goodness-of-fit estimators
-# data("airquality")
-# mod <- glm(Temp ~ Wind, Solar.R, data = airquality, family = poisson())
-# test <- airquality[1:10, ]
-# .get_estimators(list(model), list(test))
+#' Get estimators from model parameters
+#' 
+#' @param model a list with models
+#' @param test_data a dist with data.frames to test model
+#' @return The model goodness-of-fit estimators
+#' data("airquality")
+#' mod <- glm(Temp ~ Wind, Solar.R, data = airquality, family = poisson())
+#' test <- airquality[1:10, ]
+#' .get_estimators(list(model), list(test))
+#' @noRd
 .get_estimators <- function(model, test_data) {
   
   # take models from training data to compute deviance, pseudo R-squared

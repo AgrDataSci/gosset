@@ -10,7 +10,7 @@ e <- c(4.752054,4.897989,4.659525,3.947859,4.535946,
 
 
 test_that("equal", {
-  
+  skip_on_cran()
   ev <- suppressWarnings(
     ETo(temp,
         day.one = d, 
@@ -25,6 +25,7 @@ test_that("equal", {
 })
 
 test_that("error", {
+  skip_on_cran()
   expect_error(
     ETo(temp,
         day.one = c(1:10), 
@@ -35,6 +36,7 @@ test_that("error", {
 
 
 test_that("nasapower works", {
+  skip_on_cran()
   r <- suppressWarnings(
     ETo(object = lonlat, 
              day.one = d,
@@ -49,7 +51,7 @@ test_that("nasapower works", {
 
 
 test_that("daytime hours", {
-  
+  skip_on_cran()
   r <- ETo(temp,
            day.one = d, 
            span = 10)
@@ -61,7 +63,7 @@ test_that("daytime hours", {
 
 
 test_that("accept a tibble", {
-  
+  skip_on_cran()
   coord <- as.data.frame(lonlat)
   coord <- tibble::as_tibble(coord)
   

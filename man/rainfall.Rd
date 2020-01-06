@@ -23,14 +23,17 @@ of the timespan to be captured}
 }
 \value{
 A dataframe with rainfall indices:
-\item{MLDS}{maximum length of consecutive dry days (r <  1 mm)}
-\item{MLWS}{maximum length of consecutive wet days (r >= 1 mm)}
-\item{R10mm}{number of heavy precipitation days (10 >= r < 20 mm)}
-\item{R20mm}{number of very heavy precipitation days (r >= 20) }
-\item{SDII}{simple daily intensity index (mean of wet days / total rainfall)}
-\item{Rx1day}{maximum 1-day rainfall (mm)}
-\item{Rx5day}{maximum 5-day rainfall (mm) }
-\item{Rtotal}{total rainfall (mm) in wet days (R >= 1)}
+\item{MLDS}{maximum length of consecutive dry day, rain < 1 mm (days)}
+\item{MLWS}{maximum length of consecutive wet days, rain >= 1 mm (days)}
+\item{R10mm}{number of heavy precipitation days 10 >= rain < 20 mm (days)}
+\item{R20mm}{number of very heavy precipitation days rain >= 20 (days)}
+\item{Rx1day}{maximum 1-day precipitation (mm)}
+\item{Rx5day}{maximum 5-day precipitation (mm)}
+\item{R95p}{total precipitation when rain > 95th percentile (mm)}
+\item{R99p}{total precipitation when rain > 99th percentile (mm)}
+\item{Rtotal}{total precipitation (mm) in wet days, rain >= 1 (mm)}
+\item{SDII}{simple daily intensity index, total precipitation divided by the
+ number of wet days (mm/days)}
 }
 \description{
 Compute rainfall indices over a timespan

@@ -15,8 +15,8 @@ crossvalidation(
 )
 }
 \arguments{
-\item{formula}{an object of class "formula" (or one that can be coerced to that class):
-a symbolic description of the model to be fitted,
+\item{formula}{an object of class "formula" (or one that can be 
+coerced to that class): a symbolic description of the model to be fitted,
 of the form \eqn{y ~ x1 + ... + xn}}
 
 \item{data}{a data frame (or object coercible by as.data.frame to a data frame)
@@ -26,12 +26,14 @@ containing the variables in the model}
 
 \item{folds}{an optional vector specifying the folds in the cross-validation}
 
-\item{mean.method}{a character for the method to calculate the mean of cross-validation estimators. 
+\item{mean.method}{a character for the method to calculate the mean of 
+cross-validation estimators. 
 Options are: 'equal', arithmetic mean; 
 'foldsize', weighted mean by the size in each fold; 
 'stouffer' weighted through Z-test. See references}
 
-\item{seed}{The seed for random number generation. If NULL (the default), gosset will set the seed randomly}
+\item{seed}{The seed for random number generation. If NULL (the default), 
+gosset will set the seed randomly}
 
 \item{...}{additional arguments passed the methods of the chosen model}
 }
@@ -46,8 +48,9 @@ The cross-validation goodness-of-fit estimates, which are:
 \item{kendallTau}{the Kendall correlation coefficient, only for Plackett-Luce models}
 }
 \description{
-Methods for measuring the performance of a predictive model on sets of test data in
-Bradley-Terry, Generalized Linear, Generalized Nonlinear or Plackett-Luce models.
+Methods for measuring the performance of a predictive model on sets of 
+test data in Bradley-Terry, Generalized Linear, Generalized Nonlinear 
+or Plackett-Luce models.
 }
 \examples{
 # Generalized Linear Models
@@ -100,15 +103,21 @@ cv <- crossvalidation(preference ~ .,
                 
 }
 \references{
-Agresti A. (2002). Categorical Data Analysis. http://doi.wiley.com/10.1002/0471249688
+Agresti A. (2002). Categorical Data Analysis. 
+http://doi.wiley.com/10.1002/0471249688
 
-Elder J. F. (2003). Journal of Computational and Graphical Statistics, 12(4), 853–864. https://doi.org/10.1198/1061860032733.
+Elder J. F. (2003). Journal of Computational and Graphical Statistics, 12(4), 853–864.
+https://doi.org/10.1198/1061860032733.
 
-James G., et al. (2013). An Introduction to Statistical Learning: with Applications in R. https://doi.org/10.1007/978-1-4614-7138-7
+James G., et al. (2013). An Introduction to Statistical Learning: with Applications in R.
+https://doi.org/10.1007/978-1-4614-7138-7
 
-Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. https://doi.org/10.1111/j.1420-9101.2005.00917.x.
+Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. 
+https://doi.org/10.1111/j.1420-9101.2005.00917.x.
 }
 \seealso{
-\code{\link[psychotree]{bttree}}, \code{\link[stats]{glm}}, \code{\link[gnm]{gnm}},
+\code{\link[psychotree]{bttree}}, 
+\code{\link[stats]{glm}}, 
+\code{\link[gnm]{gnm}},
 \code{\link[PlackettLuce]{pltree}}
 }

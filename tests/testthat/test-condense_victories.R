@@ -1,4 +1,8 @@
-context("test-dominance")
+context("test-vitories")
+
+library("gosset")
+# load("tests/test_data.rda")
+load("../test_data.rda")
 
 data("breadwheat", package = "gosset")
 
@@ -8,11 +12,11 @@ R <- rank_tricot(data = breadwheat,
 
 test_that("return a data.frame", {
   
-  pref <- dominance(R)
+  pref <- recap_victories(R)
   
   pref <- dim(pref)
   
-  pref <- any(pref != c(240, 4)) 
+  pref <- any(pref != c(240,5)) 
   
   expect_equal(pref, FALSE)
   
@@ -21,7 +25,7 @@ test_that("return a data.frame", {
 
 test_that("plot works", {
   
-  pref <- dominance(R)
+  pref <- recap_victories(R)
   
   pref <- plot(pref)
   
