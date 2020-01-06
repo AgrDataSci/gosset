@@ -1,7 +1,8 @@
 #' Evapotranspiration
 #' 
-#' Compute evapotranspiration using the Blaney-Criddle method. A theoretical method used 
-#' when no measured data on pan evaporation are available locally. 
+#' Compute evapotranspiration using the Blaney-Criddle method. A 
+#' theoretical method used when no measured data on pan evaporation 
+#' are available locally. 
 #' 
 #' @inheritParams temperature
 #' @param lat a vector for the latitude (in Decimal degrees)
@@ -10,8 +11,11 @@
 #' representing the mean daily percentage of annual daytime hours 
 #' for different latitudes
 #' @return The evapotranspiration in mm/day
+#' @family climatology functions
 #' @references
-#' Brouwer C. & Heibloem M. (1986). Irrigation water management: Irrigation water needs. Food and Agriculture Organization of The United Nations, Rome, Italy. http://www.fao.org/3/S2022E/s2022e00.htm
+#' Brouwer C. & Heibloem M. (1986). Irrigation water management: 
+#' Irrigation water needs. Food and Agriculture Organization of The 
+#' United Nations, Rome, Italy. http://www.fao.org/3/S2022E/s2022e00.htm
 #' 
 #' @examples
 #' \donttest{

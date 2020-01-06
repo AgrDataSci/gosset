@@ -9,18 +9,21 @@ GDD(object, day.one = NULL, degree.days = NULL, base = 10, span = 150, ...)
 \arguments{
 \item{object}{a numeric vector of geographic coordinates (lonlat) or
 an array with two dimensions containing the temperature data;
-1st dimension contains the day temperature and 2nd dimension the night temperature.
-When lonlat is used, the function makes a call to
-\code{nasapower::get_power} to fetch and concatenate environmental data from NASA POWER
-(\url{https://power.larc.nasa.gov/})}
+1st dimension contains the day temperature and 2nd dimension the night
+temperature. When lonlat is used, the function makes a call to
+\code{nasapower::get_power()} to fetch and concatenate environmental
+data from NASA POWER (\url{https://power.larc.nasa.gov/})}
 
-\item{day.one}{a vector of class 'Date' for the starting date to capture the environmental data}
+\item{day.one}{a vector of class 'Date' for the starting date to 
+capture the environmental data}
 
-\item{degree.days}{an integer for the degree days required by the crop (look at the physiology of the focal crop)}
+\item{degree.days}{an integer for the degree days required by the crop 
+(look at the physiology of the focal crop)}
 
 \item{base}{an integer for the base temperature.}
 
-\item{span}{an integer or a vector with integers for the duration of the timespan to be captured}
+\item{span}{an integer or a vector with integers for the duration 
+of the timespan to be captured}
 
 \item{...}{additional arguments passed to methods}
 }
@@ -29,9 +32,10 @@ The number of days required to reach the growing degree days.
 }
 \description{
 Compute number of days required to reach Growing degree-days.
-Is a heuristic tool in phenology. Growing degree-days are a measure of heat accumulation 
-used to predict plant and animal development rates. Growing degree-days are calculated by 
-taking the integral of warmth above a base temperature.
+Is a heuristic tool in phenology. Growing degree-days are a measure of
+heat accumulation used to predict plant and animal development rates.
+Growing degree-days are calculated by taking the integral of warmth above 
+a base temperature.
 }
 \examples{
 \donttest{
@@ -58,5 +62,13 @@ GDD(lonlat,
     
 }
 \references{
-Prentice I. C., et al. (1992) Journal of Biogeography, 19(2), 117. https://doi.org/10.2307/2845499.
+Prentice I. C., et al. (1992) Journal of Biogeography, 19(2), 117. 
+https://doi.org/10.2307/2845499.
 }
+\seealso{
+Other climatology functions: 
+\code{\link{ETo}()},
+\code{\link{rainfall}()},
+\code{\link{temperature}()}
+}
+\concept{climatology functions}

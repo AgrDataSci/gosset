@@ -8,21 +8,32 @@
 
 <title>Cross-validation — crossvalidation • gosset</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,13 +41,13 @@
 
 
 
-<meta property="og:title" content="Cross-validation — crossvalidation" />
 
+<meta property="og:title" content="Cross-validation — crossvalidation" />
 <meta property="og:description" content="Methods for measuring the performance of a predictive model on sets of test data in
 Bradley-Terry, Generalized Linear, Generalized Nonlinear or Plackett-Luce models." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -48,6 +59,7 @@ Bradley-Terry, Generalized Linear, Generalized Nonlinear or Plackett-Luce models
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -66,7 +78,7 @@ Bradley-Terry, Generalized Linear, Generalized Nonlinear or Plackett-Luce models
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
 
@@ -74,7 +86,7 @@ Bradley-Terry, Generalized Linear, Generalized Nonlinear or Plackett-Luce models
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -85,7 +97,6 @@ Bradley-Terry, Generalized Linear, Generalized Nonlinear or Plackett-Luce models
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -95,6 +106,7 @@ Bradley-Terry, Generalized Linear, Generalized Nonlinear or Plackett-Luce models
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -106,10 +118,8 @@ Bradley-Terry, Generalized Linear, Generalized Nonlinear or Plackett-Luce models
     </div>
 
     <div class="ref-description">
-    
     <p>Methods for measuring the performance of a predictive model on sets of test data in
 Bradley-Terry, Generalized Linear, Generalized Nonlinear or Plackett-Luce models.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>crossvalidation</span>(
@@ -121,7 +131,7 @@ Bradley-Terry, Generalized Linear, Generalized Nonlinear or Plackett-Luce models
   <span class='kw'>seed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>
 )</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -138,7 +148,7 @@ containing the variables in the model</p></td>
     </tr>
     <tr>
       <th>k</th>
-      <td><p>an integer for the number of splits in the cross-validation</p></td>
+      <td><p>an integer for the number of bins in the cross-validation</p></td>
     </tr>
     <tr>
       <th>folds</th>
@@ -160,7 +170,7 @@ Options are: 'equal', arithmetic mean;
       <td><p>additional arguments passed the methods of the chosen model</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The cross-validation goodness-of-fit estimates, which are:</p>
@@ -172,50 +182,46 @@ Options are: 'equal', arithmetic mean;
 <dt>Agresti</dt><dd><p>Agresti pseudo R-squared</p></dd>
 <dt>kendallTau</dt><dd><p>the Kendall correlation coefficient, only for Plackett-Luce models</p></dd>
 
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Agresti A. (2002). Categorical Data Analysis. http://doi.wiley.com/10.1002/0471249688</p>
 <p>Elder J. F. (2003). Journal of Computational and Graphical Statistics, 12(4), 853–864. https://doi.org/10.1198/1061860032733.</p>
 <p>James G., et al. (2013). An Introduction to Statistical Learning: with Applications in R. https://doi.org/10.1007/978-1-4614-7138-7</p>
 <p>Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. https://doi.org/10.1111/j.1420-9101.2005.00917.x.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/psychotree/topics/bttree'>bttree</a></code>, <code><a href='https://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></code>, <code><a href='https://www.rdocumentation.org/packages/gnm/topics/gnm'>gnm</a></code>,
-<code><a href='https://www.rdocumentation.org/packages/PlackettLuce/topics/pltree'>pltree</a></code></p></div>
-    
+    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/psychotree/man/bttree.html'>bttree</a></code>, <code><a href='https://rdrr.io/r/stats/glm.html'>glm</a></code>, <code><a href='https://rdrr.io/pkg/gnm/man/gnm.html'>gnm</a></code>,
+<code><a href='https://rdrr.io/pkg/PlackettLuce/man/pltree.html'>pltree</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># Generalized Linear Models</span>
+    <pre class="examples"><span class='co'># Generalized Linear Models</span>
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='st'>"airquality"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"airquality"</span>)
 
 <span class='no'>cv</span> <span class='kw'>&lt;-</span> <span class='fu'>crossvalidation</span>(<span class='no'>Temp</span> ~ <span class='no'>Wind</span> + <span class='no'>Solar.R</span>,
                       <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>airquality</span>,
                       <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>3</span>,
                       <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>999</span>,
-                      <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>poisson</a></span>())
+                      <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>poisson</a></span>())
 
 
-<span class='co'># }</span><span class='co'># NOT RUN {</span>
+<span class='co'># \donttest{</span>
 <span class='co'># Plackett-Luce Model</span>
 <span class='co'># beans data from PlackettLuce</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"PlackettLuce"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='st'>"beans"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"PlackettLuce"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"PlackettLuce"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"beans"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"PlackettLuce"</span>)
 
 <span class='no'>G</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rank_tricot.html'>rank_tricot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beans</span>,
-                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>),
-                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>4</span>:<span class='fl'>5</span>),
-                 <span class='kw'>additional.rank</span> <span class='kw'>=</span> <span class='no'>beans</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>6</span>:<span class='fl'>8</span>)],
+                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>),
+                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>:<span class='fl'>5</span>),
+                 <span class='kw'>additional.rank</span> <span class='kw'>=</span> <span class='no'>beans</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>:<span class='fl'>8</span>)],
                  <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='no'>beans</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>cbind</a></span>(<span class='no'>G</span>, <span class='no'>beans</span>)
+<span class='no'>beans</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>G</span>, <span class='no'>beans</span>)
 
 <span class='co'># take seasons as bins</span>
-<span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/length'>length</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unique'>unique</a></span>(<span class='no'>beans</span>$<span class='no'>season</span>))
-<span class='no'>folds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/integer'>as.integer</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>as.factor</a></span>(<span class='no'>beans</span>$<span class='no'>season</span>))
+<span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='no'>beans</span>$<span class='no'>season</span>))
+<span class='no'>folds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='no'>beans</span>$<span class='no'>season</span>))
 
 <span class='no'>cv</span> <span class='kw'>&lt;-</span> <span class='fu'>crossvalidation</span>(<span class='no'>G</span> ~ <span class='no'>maxTN</span>,
                       <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beans</span>,
@@ -226,35 +232,29 @@ Options are: 'equal', arithmetic mean;
 <span class='co'>########################################</span>
 
 <span class='co'># Bradley-Terry Model</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"psychotree"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"psychotree"</span>)
 <span class='co'># Germany's Next Topmodel 2007 data from psychotree</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='st'>"Topmodel2007"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"psychotree"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"Topmodel2007"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"psychotree"</span>)
 
 <span class='no'>cv</span> <span class='kw'>&lt;-</span> <span class='fu'>crossvalidation</span>(<span class='no'>preference</span> ~ <span class='no'>.</span>,
                       <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>Topmodel2007</span>,
                       <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>5</span>)
 
-<span class='co'># }</span># NOT RUN {
-                
-# }
-</pre>
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#references">References</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -262,13 +262,16 @@ Options are: 'equal', arithmetic mean;
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

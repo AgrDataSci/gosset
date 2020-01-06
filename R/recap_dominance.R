@@ -1,23 +1,26 @@
 #' Pairwise player dominance
 #' 
-#' Summarise player dominance from pairwise comparisons
+#' Methods to summarise player dominance from pairwise comparisons
 #' 
-#' @param object a rankings object of class 'rankings', 'grouped_rankings' or 'paircomp'
-#' @param x an object of class 'gosset_dmnc' for the plotting method. Generates a 'ggplot' object that can be passed to any ggplot2 method
+#' @param object a rankings object of class 'rankings', 'grouped_rankings'
+#'  or 'paircomp'
+#' @param x an object of class 'gosset_dmnc' for the plotting method. 
+#' Generates a 'ggplot' object that can be passed to any ggplot2 method
 #' @param ... further arguments passed to methods. Not enabled yet
 #' @return A data.frame with summary of dominance from pairwise comparisons: 
 #' \item{player1}{the first player in the comparison}
 #' \item{player2}{the second player in the comparison}
 #' \item{ncontest}{number of contests between player1 and player2}
 #' \item{dominance}{relative dominance of player1 on player2}
+#' @family recap functions
 #' @examples 
 #' # breadwheat data
 #' 
 #' data("breadwheat", package = "gosset")
-#' 
+#'  
 #' R <- rank_tricot(data = breadwheat,
-#'                  items = c(1:3),
-#'                  input = c(18:19))
+#'                  items = c("variety_a", "variety_b", "variety_c"),
+#'                  input = c("overall_best", "overall_worst"))
 #' 
 #' d <- dominance(R)
 #' 
@@ -30,15 +33,15 @@
 #' data("beans", package = "PlackettLuce")
 #' 
 #' R <- rank_tricot(data = beans,
-#'                  items = c(1:3),
-#'                  input = c(4:5),
-#'                  additional.rank = beans[c(6:8)])
+#'                  items = c("variety_a", "variety_b", "variety_c"),
+#'                  input = c("best", "worst"),
+#'                  additional.rank = beans[, c("var_a", "var_b", "var_c")])
 #' 
-#' d <- dominance(R)
+#' d <- recap_dominance(R)
 #' 
 #'  
 #' @export
-dominance <- function(object){
+recap_dominance <- function(object){
 
   # get binomial rankings
   bin <- rank_binomial(object)
@@ -72,7 +75,7 @@ dominance <- function(object){
 }
 
 
-#' @rdname dominance
+#' @rdname recap_dominance
 #' @method plot gosset_dmnc
 #' @export
 plot.gosset_dmnc <- function(x, ...) {

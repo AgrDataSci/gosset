@@ -1,16 +1,20 @@
 #' Growing degree-days
 #' 
 #' Compute number of days required to reach Growing degree-days.
-#' Is a heuristic tool in phenology. Growing degree-days are a measure of heat accumulation 
-#' used to predict plant and animal development rates. Growing degree-days are calculated by 
-#' taking the integral of warmth above a base temperature.
+#' Is a heuristic tool in phenology. Growing degree-days are a measure of
+#' heat accumulation used to predict plant and animal development rates.
+#' Growing degree-days are calculated by taking the integral of warmth above 
+#' a base temperature.
 #' 
-#' @param degree.days an integer for the degree days required by the crop (look at the physiology of the focal crop)
+#' @param degree.days an integer for the degree days required by the crop 
+#' (look at the physiology of the focal crop)
 #' @param base an integer for the base temperature.
 #' @inheritParams temperature
 #' @return The number of days required to reach the growing degree days.
+#' @family climatology functions
 #' @references 
-#' Prentice I. C., et al. (1992) Journal of Biogeography, 19(2), 117. https://doi.org/10.2307/2845499.
+#' Prentice I. C., et al. (1992) Journal of Biogeography, 19(2), 117. 
+#' https://doi.org/10.2307/2845499.
 #' 
 #' @examples
 #' \donttest{

@@ -6,7 +6,8 @@
 #' @param id a data frame or index of \code{data} indicating the ids for "long" \code{data}
 #' @param ascending logical, to compute rankings from lower to higher values
 #' @param ... additional arguments passed to methods
-#' @return a PlackettLuce "rankings" object, which is a matrix of dense rankings 
+#' @return a PlackettLuce "rankings" object, which is a matrix of dense rankings
+#' @family rank functions 
 #' @seealso \code{\link[PlackettLuce]{rankings}} 
 #' @examples
 #' # A matrix with 10 rankings of 5 items (A, B, C, D, E)

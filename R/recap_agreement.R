@@ -1,19 +1,25 @@
-#' Agreement between ranks
+#' Agreement between rankings
 #' 
 #' Summarise the concordance between one or more caracteristics from a baseline
 #' ranking
 #' 
-#' @param baseline an object of class 'rankings' or 'grouped_rankings' that serves as baseline for comparing the other characteristics
-#' @param compare.to a list of objects of same class and dimensions of \code{baseline} to be compared
+#' @param baseline an object of class 'rankings' or 'grouped_rankings' 
+#' that serves as baseline for comparing the other characteristics
+#' @param compare.to a list of objects of same class and dimensions of 
+#' \code{baseline} to be compared
 #' @param labels a character to specify the name of compared chacteristics
-#' @param x object of class 'gosset_agree' for the plotting method. Generates a 'ggplot' object that can be passed to any ggplot2 method
+#' @param x object of class 'gosset_agree' for the plotting method. 
+#' Generates a 'ggplot' object that can be passed to any ggplot2 method
 #' @param ... further arguments passed to methods. Not enabled yet
 #' @return A data.frame with summary of agreement:
 #' \item{labels}{the labels for each characteristic}
 #' \item{kendall}{relative Kendall rank correlation coefficient}
-#' \item{first}{relative agreement of the first item in the baseline being ranked first in compare.to}
-#' \item{last}{relative agreement of the last item in the baseline being ranked last in compare.to}
+#' \item{first}{relative agreement of the first item in the baseline being 
+#' ranked first in compare.to}
+#' \item{last}{relative agreement of the last item in the baseline being 
+#' ranked last in compare.to}
 #' @seealso \code{\link{kendallTau}} 
+#' @family recap functions
 #' @examples 
 #' # from the breadwheat data
 #' # Compare the overall performance against 
@@ -21,9 +27,9 @@
 #' 
 #' data("breadwheat", package = "gosset")
 #' 
-#' R <- rank_tricot(data = breadwheat,
-#'                  items = c(1:3),
-#'                  input = c(18:19))
+#' R <- recap_favourite(data = breadwheat,
+#'                       items = c("variety_a", "variety_b", "variety_c"),
+#'                       input = c("overall_best", "overall_worst"))
 #' 
 #' 
 #' compare <- list()
@@ -44,13 +50,13 @@
 #' 
 #' labels <- c("Germination", "Grain quality", "Yield")
 #' 
-#' 
-#' agreement(R, 
-#'           compare.to = compare, 
-#'           labels = labels)
+#'  
+#' recap_agreement(R,
+#'                 compare.to = compare,
+#'                 labels = labels)
 #'  
 #' @export
-agreement <- function(baseline, compare.to, labels = NULL){
+recap_agreement <- function(baseline, compare.to, labels = NULL){
 
   B <- baseline
   CC <- compare.to
@@ -165,7 +171,7 @@ agreement <- function(baseline, compare.to, labels = NULL){
 
 
 
-#' @rdname agreement
+#' @rdname recap_agreement
 #' @method plot gosset_agree
 #' @export
 plot.gosset_agree <- function(x, ...) {

@@ -45,4 +45,10 @@ Turner H. & Firth D. (2012). Journal of Statistical Software, 48(9), 1–21. htt
 }
 \seealso{
 \code{\link[BradleyTerry2]{BTm}}
+
+Other rank functions: 
+\code{\link{rank_numeric}()},
+\code{\link{rank_paircomp}()},
+\code{\link{rank_tricot}()}
 }
+\concept{rank functions}

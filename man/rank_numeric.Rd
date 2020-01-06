@@ -17,9 +17,11 @@ rank_numeric(
 \arguments{
 \item{data}{a data.frame with columns specified by items and input values}
 
-\item{items}{a character or numerical vector for indexing the column(s) containing the item names in \code{data}}
+\item{items}{a character or numerical vector for indexing the column(s) 
+containing the item names in \code{data}}
 
-\item{input}{a character or numerical vector for indexing the column(s) containing the values in \code{data} to be ranked}
+\item{input}{a character or numerical vector for indexing the column(s) 
+containing the values in \code{data} to be ranked}
 
 \item{id}{a data frame or index of \code{data} indicating the ids for "long" \code{data}}
 
@@ -86,4 +88,10 @@ R <- rank_numeric(data = data,
 }
 \seealso{
 \code{\link[PlackettLuce]{rankings}}
+
+Other rank functions: 
+\code{\link{rank_binomial}()},
+\code{\link{rank_paircomp}()},
+\code{\link{rank_tricot}()}
 }
+\concept{rank functions}

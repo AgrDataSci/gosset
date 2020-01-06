@@ -9,14 +9,16 @@ ETo(object, day.one = NULL, span = 150, lat = NULL, Kc = 1, p = NULL)
 \arguments{
 \item{object}{a numeric vector of geographic coordinates (lonlat) or
 an array with two dimensions containing the temperature data;
-1st dimension contains the day temperature and 2nd dimension the night temperature.
-When lonlat is used, the function makes a call to
-\code{nasapower::get_power} to fetch and concatenate environmental data from NASA POWER
-(\url{https://power.larc.nasa.gov/})}
+1st dimension contains the day temperature and 2nd dimension the night
+temperature. When lonlat is used, the function makes a call to
+\code{nasapower::get_power()} to fetch and concatenate environmental
+data from NASA POWER (\url{https://power.larc.nasa.gov/})}
 
-\item{day.one}{a vector of class 'Date' for the starting date to capture the environmental data}
+\item{day.one}{a vector of class 'Date' for the starting date to 
+capture the environmental data}
 
-\item{span}{an integer or a vector with integers for the duration of the timespan to be captured}
+\item{span}{an integer or a vector with integers for the duration 
+of the timespan to be captured}
 
 \item{lat}{a vector for the latitude (in Decimal degrees)}
 
@@ -30,8 +32,9 @@ for different latitudes}
 The evapotranspiration in mm/day
 }
 \description{
-Compute evapotranspiration using the Blaney-Criddle method. A theoretical method used 
-when no measured data on pan evaporation are available locally.
+Compute evapotranspiration using the Blaney-Criddle method. A 
+theoretical method used when no measured data on pan evaporation 
+are available locally.
 }
 \examples{
 \donttest{
@@ -56,5 +59,14 @@ e <- ETo(lonlat,
 
 }
 \references{
-Brouwer C. & Heibloem M. (1986). Irrigation water management: Irrigation water needs. Food and Agriculture Organization of The United Nations, Rome, Italy. http://www.fao.org/3/S2022E/s2022e00.htm
+Brouwer C. & Heibloem M. (1986). Irrigation water management: 
+Irrigation water needs. Food and Agriculture Organization of The 
+United Nations, Rome, Italy. http://www.fao.org/3/S2022E/s2022e00.htm
 }
+\seealso{
+Other climatology functions: 
+\code{\link{GDD}()},
+\code{\link{rainfall}()},
+\code{\link{temperature}()}
+}
+\concept{climatology functions}

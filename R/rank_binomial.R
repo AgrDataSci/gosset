@@ -10,6 +10,7 @@
 #' \item{player2}{a factor with n levels (same as player1) for the second player in the contests}
 #' \item{win1}{number of times player1 wins against player2}
 #' \item{win2}{number of times player2 wins against player1}
+#' @family rank functions
 #' @seealso \code{\link[BradleyTerry2]{BTm}}
 #' @references 
 #' Turner H. & Firth D. (2012). Journal of Statistical Software, 48(9), 1–21. http://dx.doi.org/10.18637/jss.v048.i09

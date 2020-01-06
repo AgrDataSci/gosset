@@ -1,16 +1,22 @@
-# Time series environmental data
-# 
-# Concatenate time series environmental data
-# 
-# @param object a numeric vector of geographic coordinates (lonlat) or
-# a matrix with environmental data from other sources. When lonlat is used, the function makes a call to
-# \code{nasapower} to fetch and combine enviromental data from NASA POWER (\url{https://power.larc.nasa.gov/})
-# @param day.one a vector of class 'Date' for the starting date to capture the environmental data
-# @param span an integer or a vector with integers for the duration of the time series to be captured
-# @param days.before optional, an integer for the number of days before start.date to be included in the timespan
-# @param ... additional arguments passed to \code{\link[nasapower]{get_power}}
-# @return a data frame of time series environmental data for the chosen period
-# @import nasapower
+#' Time series environmental data
+#' 
+#' Concatenate time series environmental data
+#' 
+#' @param object a numeric vector of geographic coordinates (lonlat) or
+#' a matrix with environmental data from other sources. When lonlat is used,
+#'  the function makes a call to \code{nasapower} to fetch and combine enviromental 
+#'  data from NASA POWER (\url{https://power.larc.nasa.gov/})
+#' @param day.one a vector of class 'Date' for the starting date to capture the
+#' environmental data
+#' @param span an integer or a vector with integers for the duration of the time 
+#' series to be captured
+#' @param days.before optional, an integer for the number of days before 
+#' start.date to be included in the timespan
+#' @param ... additional arguments passed to \code{\link[nasapower]{get_power}}
+#' @return a data frame of time series environmental data for the chosen period
+#' @family climatology functions
+#' @import nasapower
+#' @noRd
 .get_timeseries <- function(object, day.one = NULL,
                             span = 150, days.before = 0, ...)
 {
