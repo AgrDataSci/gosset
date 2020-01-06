@@ -1,0 +1,347 @@
+{
+  "@context": ["https://doi.org/10.5063/schema/codemeta-2.0", "http://schema.org"],
+  "@type": "SoftwareSourceCode",
+  "identifier": "gosset",
+  "description": "Toolkit for a workflow on modelling metadata and experimental citizen science data, from collating data of different sources, model sellection and visualisation. The package is named after W.S. Gosset aka 'Student', a pioneer of modern statistics in small sample experimental design and analysis.",
+  "name": "gosset: Modelling Metadata and Experimental Citizen Science",
+  "codeRepository": "https://agrobioinfoservices.github.io/gosset/",
+  "issueTracker": "https://github.com/agrobioinfoservices/gosset/issues",
+  "license": "https://spdx.org/licenses/GPL-3.0",
+  "version": "0.1.6",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "R",
+    "version": "3.5.3",
+    "url": "https://r-project.org"
+  },
+  "runtimePlatform": "R version 3.5.3 (2019-03-11)",
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Kaue",
+      "familyName": "de Sousa",
+      "email": "kaue.desousa@inn.no",
+      "@id": "https://orcid.org/0000-0002-7571-7845"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Jacob",
+      "familyName": "van Etten",
+      "@id": "https://orcid.org/0000-0001-7554-2558"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Sam",
+      "familyName": "Dumble"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Nicolas",
+      "familyName": "Greliche"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Jonathan",
+      "familyName": "Steinke",
+      "@id": "https://orcid.org/0000-0001-5742-702X"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Svein",
+      "familyName": "Solberg",
+      "@id": "https://orcid.org/0000-0002-4491-4483"
+    }
+  ],
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Sam",
+      "familyName": "Dumble"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Nicolas",
+      "familyName": "Greliche"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Jonathan",
+      "familyName": "Steinke",
+      "@id": "https://orcid.org/0000-0001-5742-702X"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Jacob",
+      "familyName": "van Etten",
+      "@id": "https://orcid.org/0000-0001-7554-2558"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Svein",
+      "familyName": "Solberg",
+      "@id": "https://orcid.org/0000-0002-4491-4483"
+    }
+  ],
+  "copyrightHolder": {},
+  "funder": {},
+  "maintainer": [
+    {
+      "@type": "Person",
+      "givenName": "Kaue",
+      "familyName": "de Sousa",
+      "email": "kaue.desousa@inn.no",
+      "@id": "https://orcid.org/0000-0002-7571-7845"
+    }
+  ],
+  "softwareSuggestions": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "ClimMobTools",
+      "name": "ClimMobTools",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ClimMobTools"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "knitr",
+      "name": "knitr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=knitr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rmarkdown",
+      "name": "rmarkdown",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "testthat",
+      "name": "testthat",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=testthat"
+    }
+  ],
+  "softwareRequirements": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 2.10"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "BradleyTerry2",
+      "name": "BradleyTerry2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=BradleyTerry2"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "gnm",
+      "name": "gnm",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=gnm"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "ggplot2",
+      "name": "ggplot2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggplot2"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "methods",
+      "name": "methods"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "nasapower",
+      "name": "nasapower",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=nasapower"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "partykit",
+      "name": "partykit",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=partykit"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "PlackettLuce",
+      "name": "PlackettLuce",
+      "version": ">= 0.2-8",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=PlackettLuce"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "psychotree",
+      "name": "psychotree",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=psychotree"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "psychotools",
+      "name": "psychotools",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=psychotools"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "qvcalc",
+      "name": "qvcalc",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=qvcalc"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "stats",
+      "name": "stats"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "tibble",
+      "name": "tibble",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tibble"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "tidyr",
+      "name": "tidyr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tidyr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "utils",
+      "name": "utils"
+    }
+  ],
+  "citation": [
+    {
+      "@type": "SoftwareSourceCode",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Kaue",
+          "familyName": "de Sousa",
+          "email": "kaue.desousa@inn.no",
+          "@id": "https://orcid.org/0000-0002-7571-7845"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Jacob",
+          "familyName": "van Etten",
+          "@id": "https://orcid.org/0000-0001-7554-2558"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Sam",
+          "familyName": "Dumble"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Nicolas",
+          "familyName": "Greliche"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Jonathan",
+          "familyName": "Steinke",
+          "@id": "https://orcid.org/0000-0001-5742-702X"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Svein",
+          "familyName": "Solberg",
+          "@id": "https://orcid.org/0000-0002-4491-4483"
+        }
+      ],
+      "name": "gosset: Modelling Metadata and Experimental Citizen Science",
+      "url": "https://agrobioinfoservices.github.io/gosset/",
+      "description": "R package version 0.1-6"
+    }
+  ]
+}

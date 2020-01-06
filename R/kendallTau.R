@@ -180,23 +180,24 @@ kendallTau.paircomp <- function(x, y, ...) {
 }
 
 
-# Kendall tau for a vector
-# 
-# Applies the "kendall" method from stats::cor with some 
-# previous treatment in the data, such as converting floating number into 
-# ranks (from the higher being the first and negative being the last) 
-# and removing zeros from incomplete ranks
-#
-# @param x a object of class numeric 
-# @param y a object of class numeric 
-# @param null.rm logical, to remove zeros from \code{x} and \code{y} 
-# @return The Kendall correlation coefficient and the Effective N
-# @examples
-# p1 <- c(1,2,3,4,5,6,7)
-# p2 <- c(1,2,0,3,5,7,6)
-# 
-# .get_kendall(p1, p2,  null.rm = TRUE)
-# .get_kendall(p1, p2, null.rm = FALSE)
+#' Kendall tau for a vector
+#' 
+#' Applies the "kendall" method from stats::cor with some 
+#' previous treatment in the data, such as converting floating number into 
+#' ranks (from the higher being the first and negative being the last) 
+#' and removing zeros from incomplete ranks
+#'
+#' @param x a object of class numeric 
+#' @param y a object of class numeric 
+#' @param null.rm logical, to remove zeros from \code{x} and \code{y} 
+#' @return The Kendall correlation coefficient and the Effective N
+#' @examples
+#' p1 <- c(1,2,3,4,5,6,7)
+#' p2 <- c(1,2,0,3,5,7,6)
+#' 
+#' .get_kendall(p1, p2,  null.rm = TRUE)
+#' .get_kendall(p1, p2, null.rm = FALSE)
+#' @noRd
 .get_kendall <- function(x, y, null.rm = TRUE) {
   
   keep <- !is.na(x) & !is.na(y)

@@ -1,46 +1,52 @@
-# gosset 0.1-5
+gosset 0.1.5 (2020-01-03)
+=========================
 
-##  New features
+### NEW FEATURES
 
-* `.get_timeseries` now implements the Euclidean method to search for its nearest neighbour in the nasapower output. This optmises the function and reduce dependencies
+* `.get_timeseries()` now implements the Euclidean method to search for its nearest neighbour in the nasapower output. This optmises the function and reduce dependencies
 * ranking functions now implements internal processess to decode ranks and reduce dependencies
-* `pseudoR2` as a S3 method for objects of class "glm", "gnm", "bttree" and "pltree"
-* `kendallTau` as S3 method for objects of class "numeric", "matrix", "data.frame", "rankings", "grouped_rankings"
+* `pseudoR2()` as a S3 method for objects of class "glm", "gnm", "bttree" and "pltree"
+* `kendallTau()` as S3 method for objects of class "numeric", "matrix", "data.frame", "rankings", "grouped_rankings"
 
 
-# gosset 0.1-4
+gosset 0.1.4 (2019-12-01)
+=========================
 
-## New features
+### NEW FEATURES
 
-* Function to summarise results from pairwise comparisons, `agreement`, `dominance`, `favourite` and `victories`
+* Function to summarise results from pairwise comparisons, `agreement()`, `dominance()`, `favourite()` and `victories()`
 * Increased test coverage
 
-# gosset 0.1-3
+gosset 0.1.3 (2019-11-15)
+=========================
 
 * Successfull migration from **ClimMobTools** to **gosset**
 
-# gosset 0.1-2
+gosset 0.1.2 (2019-10-21)
+=========================
 
-## New features
+### NEW FEATURES
 
 * Migrating functions from **ClimMobTools** to **gosset**
 
-## Changes in behaviour
+### CHANGES IN BEHAVIOUR
 
-* `predict` method for crossvalidation and `rank_decimal` deprecated.
-* `rank_numeric` and `rank_tricot ` replaces `rank_PL`. NO warning message added.
+* `predict()` method for crossvalidation and `rank_decimal()` deprecated
+* `rank_numeric()` and `rank_tricot()` replaces `rank_PL()`. NO warning message added
 
-# gosset 0.1-1
+gosset 0.1.1 (2019-08-21)
+=========================
 
-## New features
+### NEW FEATURES
 
-* `predict` method for crossvalidation objects.
-* `pseudoR2` for object of class "pltree" extracts null loglik from PlackettLuce.
-* replace `to_rankings` by `rank_PL`. Warning message added
-* replace `num2rank` by `rank_decimal`. No warning message added
-* replace `to_paircomp` by `rank_paircomp`. No warning message added
+* `predict()` method for crossvalidation objects
+* `pseudoR2()` for object of class "pltree" extracts null loglik from PlackettLuce
+* replace `to_rankings()` by `rank_PL()`. Warning message added
+* replace `num2rank()` by `rank_decimal()`. No warning message added
+* replace `to_paircomp()` by `rank_paircomp()`. No warning message added
 
 
-# gosset 0.1-0
+gosset 0.1.0 (2019-03-05)
+=========================
 
 * GitHub-only release of prototype package.

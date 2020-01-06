@@ -33,3 +33,5 @@ vignettes/*.tex
 *.utf8.md
 *.knit.md
 .Rproj.user
+
+dev/

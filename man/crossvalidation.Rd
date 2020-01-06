@@ -22,7 +22,7 @@ of the form \eqn{y ~ x1 + ... + xn}}
 \item{data}{a data frame (or object coercible by as.data.frame to a data frame)
 containing the variables in the model}
 
-\item{k}{an integer for the number of splits in the cross-validation}
+\item{k}{an integer for the number of bins in the cross-validation}
 
 \item{folds}{an optional vector specifying the folds in the cross-validation}
 

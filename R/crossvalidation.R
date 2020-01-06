@@ -8,7 +8,7 @@
 #' of the form \eqn{y ~ x1 + ... + xn}
 #' @param data a data frame (or object coercible by as.data.frame to a data frame)
 #' containing the variables in the model
-#' @param k an integer for the number of splits in the cross-validation
+#' @param k an integer for the number of bins in the cross-validation
 #' @param folds an optional vector specifying the folds in the cross-validation
 #' @param mean.method a character for the method to calculate the mean of cross-validation estimators. 
 #' Options are: 'equal', arithmetic mean; 
