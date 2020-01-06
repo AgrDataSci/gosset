@@ -8,7 +8,7 @@ R <- rank_tricot(data = breadwheat,
 
 test_that("return a data.frame", {
   
-  pref <- recap_dominance(R)
+  pref <- condense_dominance(R)
   
   pref <- dim(pref)
   
@@ -21,7 +21,7 @@ test_that("return a data.frame", {
 
 test_that("plot works", {
   
-  pref <- recap_dominance(R)
+  pref <- condense_dominance(R)
   
   pref <- plot(pref)
   

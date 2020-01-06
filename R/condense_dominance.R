@@ -12,7 +12,7 @@
 #' \item{player2}{the second player in the comparison}
 #' \item{ncontest}{number of contests between player1 and player2}
 #' \item{dominance}{relative dominance of player1 on player2}
-#' @family recap functions
+#' @family condense functions
 #' @examples 
 #' # breadwheat data
 #' 
@@ -22,7 +22,7 @@
 #'                  items = c("variety_a", "variety_b", "variety_c"),
 #'                  input = c("overall_best", "overall_worst"))
 #' 
-#' d <- dominance(R)
+#' d <- condense_dominance(R)
 #' 
 #' p <- plot(d)
 #' 
@@ -37,11 +37,11 @@
 #'                  input = c("best", "worst"),
 #'                  additional.rank = beans[, c("var_a", "var_b", "var_c")])
 #' 
-#' d <- recap_dominance(R)
+#' d <- condense_dominance(R)
 #' 
 #'  
 #' @export
-recap_dominance <- function(object){
+condense_dominance <- function(object){
 
   # get binomial rankings
   bin <- rank_binomial(object)
@@ -75,7 +75,7 @@ recap_dominance <- function(object){
 }
 
 
-#' @rdname recap_dominance
+#' @rdname condense_dominance
 #' @method plot gosset_dmnc
 #' @export
 plot.gosset_dmnc <- function(x, ...) {

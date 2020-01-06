@@ -1,4 +1,4 @@
-context("test-recap_agreement")
+context("test-condense_agreement")
 
 library("gosset")
 data("breadwheat", package = "gosset")
@@ -29,7 +29,7 @@ labels <- c("Germination", "Grain quality", "Yield")
 test_that("works with class rankings ", {
   
   a <-
-    recap_agreement(R,
+    condense_agreement(R,
               compare.to = compare,
               labels = labels)
   
@@ -56,7 +56,7 @@ compare[[1]] <- rank_tricot(data = breadwheat,
 test_that("works with grouped_rankings", {
   
   a <-
-    recap_agreement(G,
+    condense_agreement(G,
               compare.to = compare,
               labels = NULL)
   
@@ -68,7 +68,7 @@ test_that("works with grouped_rankings", {
 
 test_that("plot works", {
   
-  a <- recap_agreement(G,
+  a <- condense_agreement(G,
                  compare.to = compare,
                  labels = NULL)
   
@@ -84,7 +84,7 @@ test_that("plot works", {
 
 test_that("error different class", {
   
-  expect_error(recap_agreement(R,
+  expect_error(condense_agreement(R,
                                compare.to = compare,
                                labels = NULL))
   

@@ -1,4 +1,4 @@
-context("test-favourite")
+context("test-condense_favourite")
 
 library("gosset")
 # load("tests/test_data.rda")
@@ -6,7 +6,7 @@ load("../test_data.rda")
 
 test_that("accepts indexed items and input", {
   
-  fav <- recap_favourite(data = triadic,
+  fav <- condense_favourite(data = triadic,
                    items = c(1:3),
                    input = c(4:5),
                    reorder = FALSE)
@@ -19,7 +19,7 @@ test_that("accepts indexed items and input", {
 
 test_that("accepts named items and input", {
   
-  fav <- recap_favourite(data = triadic,
+  fav <- condense_favourite(data = triadic,
                    items = c("item_A","item_B","item_C"),
                    input = c("best","worst"))
   
@@ -31,7 +31,7 @@ test_that("accepts named items and input", {
 
 test_that("accepts 4 or more comparisons", {
   
-  fav <- recap_favourite(data = tetra,
+  fav <- condense_favourite(data = tetra,
                    items = c(1:5),
                    input = c(6:10))
   
@@ -43,7 +43,7 @@ test_that("accepts 4 or more comparisons", {
 
 test_that("alias works", {
   
-  fav <- recap_favorite(data = tetra,
+  fav <- condense_favorite(data = tetra,
                   items = c(1:5),
                   input = c(6:10))
   
@@ -54,7 +54,7 @@ test_that("alias works", {
 
 test_that("plot works", {
   
-  fav <- recap_favorite(data = tetra,
+  fav <- condense_favorite(data = tetra,
                   items = c(1:5),
                   input = c(6:10))
   

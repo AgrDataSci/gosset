@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.7</span>
       </span>
     </div>
 
@@ -120,13 +120,7 @@
     <p>Compute temperature indices over a timespan</p>
     </div>
 
-    <pre class="usage"><span class='fu'>temperature</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>day.one</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>span</span> <span class='kw'>=</span> <span class='fl'>150</span>,
-  <span class='kw'>index</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"maxDT"</span>, <span class='st'>"minDT"</span>, <span class='st'>"maxNT"</span>, <span class='st'>"minNT"</span>, <span class='st'>"SU"</span>, <span class='st'>"TR"</span>, <span class='st'>"DTR"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>temperature</span>(<span class='no'>object</span>, <span class='kw'>day.one</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>span</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -135,23 +129,20 @@
       <th>object</th>
       <td><p>a numeric vector of geographic coordinates (lonlat) or
 an array with two dimensions containing the temperature data;
-1st dimension contains the day temperature and 2nd dimension the night temperature.
-When lonlat is used, the function makes a call to
-<code><a href='https://docs.ropensci.org/nasapower/reference/get_power.html'>nasapower::get_power</a></code> to fetch and concatenate environmental data from NASA POWER
-(<a href='https://power.larc.nasa.gov/'>https://power.larc.nasa.gov/</a>)</p></td>
+1st dimension contains the day temperature and 2nd dimension the night
+temperature. When lonlat is used, the function makes a call to
+<code><a href='https://docs.ropensci.org/nasapower/reference/get_power.html'>nasapower::get_power()</a></code> to fetch and concatenate environmental
+data from NASA POWER (<a href='https://power.larc.nasa.gov/'>https://power.larc.nasa.gov/</a>)</p></td>
     </tr>
     <tr>
       <th>day.one</th>
-      <td><p>a vector of class 'Date' for the starting date to capture the environmental data</p></td>
+      <td><p>a vector of class 'Date' for the starting date to 
+capture the environmental data</p></td>
     </tr>
     <tr>
       <th>span</th>
-      <td><p>an integer or a vector with integers for the duration of the timespan to be captured</p></td>
-    </tr>
-    <tr>
-      <th>index</th>
-      <td><p>character or a vector with characters for the indices to be computed. 
-All indices are given by default</p></td>
+      <td><p>an integer or a vector with integers for the duration 
+of the timespan to be captured</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -161,20 +152,36 @@ All indices are given by default</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe with selected indices. Options are:</p>
+    <p>A dataframe with temperature indices:</p>
 <dt>maxDT</dt><dd><p>maximun day temperature (degree Celsius)</p></dd>
 <dt>minDT</dt><dd><p>minimum day temperature (degree Celsius)</p></dd>
 <dt>maxNT</dt><dd><p>maximun night temperature (degree Celsius)</p></dd>
 <dt>minNT</dt><dd><p>minimum night temperature (degree Celsius)</p></dd>
-<dt>DTR</dt><dd><p>diurnal temperature range (mean difference between DT and NT (degree Celsius))</p></dd>
-<dt>SU</dt><dd><p>summer days, number of days with maximum temperature &gt; 30 (degree Celsius)</p></dd>
-<dt>TR</dt><dd><p>tropical nights, number of nights with maximum temperature &gt; 25 (degree Celsius)</p></dd>
+<dt>DTR</dt><dd><p>diurnal temperature range (mean difference between DT 
+and NT (degree Celsius))</p></dd>
+<dt>SU</dt><dd><p>summer days, number of days with maximum temperature &gt; 
+30 (degree Celsius)</p></dd>
+<dt>TR</dt><dd><p>tropical nights, number of nights with maximum 
+temperature &gt; 25 (degree Celsius)</p></dd>
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Aguilar E., et al. (2005). Journal of Geophysical Research, 110(D23), D23107. https://doi.org/10.1029/2005JD006119.</p>
-<p>Kehel Z., et al. (2016). Identifying Climate Patterns during the Crop-Growing Cycle from 30 Years of CIMMYT Elite Spring Wheat International Yield Trials. In: Applied Mathematics and Omics to Assess Crop Genetic Resources for Climate Change Adaptive Traits (eds Bari A., Damania A. B., Mackay M., Dayanandan S.), pp. 151–174. CRC Press.</p>
-<p>Sparks A. H. (2018). Journal of Open Source Software, 3(30), 1035. https://doi.org/10.21105/joss.01035.</p>
+    <p>Aguilar E., et al. (2005). Journal of Geophysical Research, 
+110(D23), D23107. https://doi.org/10.1029/2005JD006119.</p>
+<p>Kehel Z., et al. (2016). Identifying Climate Patterns during 
+the Crop-Growing Cycle from 30 Years of CIMMYT Elite Spring 
+Wheat International Yield Trials. In: Applied Mathematics and 
+Omics to Assess Crop Genetic Resources for Climate Change Adaptive 
+Traits (eds Bari A., Damania A. B., Mackay M., Dayanandan S.), 
+pp. 151–174. CRC Press.</p>
+<p>Sparks A. H. (2018). Journal of Open Source Software, 3(30), 1035. 
+https://doi.org/10.21105/joss.01035.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other climatology functions: 
+<code><a href='ETo.html'>ETo</a>()</code>,
+<code><a href='GDD.html'>GDD</a>()</code>,
+<code><a href='rainfall.html'>rainfall</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># \donttest{</span>
@@ -202,6 +209,7 @@ All indices are given by default</p></td>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#references">References</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

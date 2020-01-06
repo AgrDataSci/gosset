@@ -34,8 +34,7 @@ test_that("nasapower works", {
   r <- suppressWarnings(
     rainfall(object = lonlat, 
                 day.one = d,
-                span = 25,
-                index = "SDII")
+                span = 25)
   )
   
   r <- as.vector(apply(r, 1, is.na))

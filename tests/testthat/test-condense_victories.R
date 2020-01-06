@@ -1,4 +1,4 @@
-context("test-vitories")
+context("test-condense_vitories")
 
 library("gosset")
 # load("tests/test_data.rda")
@@ -12,7 +12,7 @@ R <- rank_tricot(data = breadwheat,
 
 test_that("return a data.frame", {
   
-  pref <- recap_victories(R)
+  pref <- condense_victories(R)
   
   pref <- dim(pref)
   
@@ -25,7 +25,7 @@ test_that("return a data.frame", {
 
 test_that("plot works", {
   
-  pref <- recap_victories(R)
+  pref <- condense_victories(R)
   
   pref <- plot(pref)
   

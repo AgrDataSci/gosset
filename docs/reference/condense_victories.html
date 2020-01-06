@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Growing degree-days — GDD • gosset</title>
+<title>Pairwise victories — condense_victories • gosset</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,12 +42,8 @@
 
 
 
-<meta property="og:title" content="Growing degree-days — GDD" />
-<meta property="og:description" content="Compute number of days required to reach Growing degree-days.
-Is a heuristic tool in phenology. Growing degree-days are a measure of
-heat accumulation used to predict plant and animal development rates.
-Growing degree-days are calculated by taking the integral of warmth above 
-a base temperature." />
+<meta property="og:title" content="Pairwise victories — condense_victories" />
+<meta property="og:description" content="Summarise victories from pairwise comparisons" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -115,101 +111,87 @@ a base temperature." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Growing degree-days</h1>
+    <h1>Pairwise victories</h1>
     
-    <div class="hidden name"><code>GDD.Rd</code></div>
+    <div class="hidden name"><code>condense_victories.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Compute number of days required to reach Growing degree-days.
-Is a heuristic tool in phenology. Growing degree-days are a measure of
-heat accumulation used to predict plant and animal development rates.
-Growing degree-days are calculated by taking the integral of warmth above 
-a base temperature.</p>
+    <p>Summarise victories from pairwise comparisons</p>
     </div>
 
-    <pre class="usage"><span class='fu'>GDD</span>(<span class='no'>object</span>, <span class='kw'>day.one</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>degree.days</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>span</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>condense_victories</span>(<span class='no'>object</span>)
+
+<span class='co'># S3 method for gosset_vctr</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>a numeric vector of geographic coordinates (lonlat) or
-an array with two dimensions containing the temperature data;
-1st dimension contains the day temperature and 2nd dimension the night
-temperature. When lonlat is used, the function makes a call to
-<code><a href='https://docs.ropensci.org/nasapower/reference/get_power.html'>nasapower::get_power()</a></code> to fetch and concatenate environmental
-data from NASA POWER (<a href='https://power.larc.nasa.gov/'>https://power.larc.nasa.gov/</a>)</p></td>
+      <td><p>a rankings object of class 'rankings', 'grouped_rankings' 
+or 'paircomp'</p></td>
     </tr>
     <tr>
-      <th>day.one</th>
-      <td><p>a vector of class 'Date' for the starting date to 
-capture the environmental data</p></td>
-    </tr>
-    <tr>
-      <th>degree.days</th>
-      <td><p>an integer for the degree days required by the crop 
-(look at the physiology of the focal crop)</p></td>
-    </tr>
-    <tr>
-      <th>base</th>
-      <td><p>an integer for the base temperature.</p></td>
-    </tr>
-    <tr>
-      <th>span</th>
-      <td><p>an integer or a vector with integers for the duration 
-of the timespan to be captured</p></td>
+      <th>x</th>
+      <td><p>an object of class 'gosset_vctr' for the plotting method. 
+Generates a 'ggplot' object that can be passed to any ggplot2 method</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments passed to methods</p></td>
+      <td><p>further arguments passed to methods. Not enabled yet</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The number of days required to reach the growing degree days.</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+    <p>A data.frame with summary of victories from pairwise comparisons:</p>
+<dt>player1</dt><dd><p>the first player in the comparison</p></dd>
+<dt>player2</dt><dd><p>the second player in the comparison</p></dd>
+<dt>win</dt><dd><p>times player1 wins against player2</p></dd>
+<dt>ncontest</dt><dd><p>number of contests between player1 and player2</p></dd>
+<dt>victories</dt><dd><p>relative number of times player1 wins against player2</p></dd>
 
-    <p>Prentice I. C., et al. (1992) Journal of Biogeography, 19(2), 117. 
-https://doi.org/10.2307/2845499.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other climatology functions: 
-<code><a href='ETo.html'>ETo</a>()</code>,
-<code><a href='rainfall.html'>rainfall</a>()</code>,
-<code><a href='temperature.html'>temperature</a>()</code></p></div>
+    <div class='dont-index'><p>Other condense functions: 
+<code><a href='condense_agreement.html'>condense_agreement</a>()</code>,
+<code><a href='condense_dominance.html'>condense_dominance</a>()</code>,
+<code><a href='condense_favourite.html'>condense_favourite</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># \donttest{</span>
+    <pre class="examples"><span class='co'># breadwheat data</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"gosset"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"nasapower"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"breadwheat"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"gosset"</span>)
 
-<span class='co'># random geographic locations around bbox(11, 12, 55, 58)</span>
-<span class='no'>lonlat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>lon</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>, <span class='fl'>11</span>, <span class='fl'>12</span>),
-                     <span class='kw'>lat</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>, <span class='fl'>55</span>, <span class='fl'>58</span>))
+<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rank_tricot.html'>rank_tricot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>breadwheat</span>,
+                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"variety_a"</span>, <span class='st'>"variety_b"</span>, <span class='st'>"variety_c"</span>),
+                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"overall_best"</span>, <span class='st'>"overall_worst"</span>))
 
-<span class='co'># random planting dates around 2018-05-15 and 2018-05-20</span>
-<span class='no'>pdates</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>, <span class='fl'>17666</span>, <span class='fl'>17670</span>))
-<span class='no'>pdates</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span>(<span class='no'>pdates</span>, <span class='kw'>origin</span> <span class='kw'>=</span> <span class='st'>"1970-01-01"</span>)
 
-<span class='co'># Calculate the days required for the plants in these plots to reach the</span>
-<span class='co'># maturity. The crop requires ~1800 degree days for it.</span>
+<span class='no'>v</span> <span class='kw'>&lt;-</span> <span class='fu'>condense_victories</span>(<span class='no'>R</span>)
 
-<span class='fu'>GDD</span>(<span class='no'>lonlat</span>,
-    <span class='kw'>day.one</span> <span class='kw'>=</span> <span class='no'>pdates</span>,
-    <span class='kw'>degree.days</span> <span class='kw'>=</span> <span class='fl'>1800</span>,
-    <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>5</span>)
-<span class='co'># }</span></pre>
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>v</span>)
+
+<span class='co'># beans data where each observer compares 3 varieties</span>
+<span class='co'># randomly distributed</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"PlackettLuce"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"beans"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"PlackettLuce"</span>)
+
+<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rank_tricot.html'>rank_tricot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beans</span>,
+                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"variety_a"</span>, <span class='st'>"variety_b"</span>, <span class='st'>"variety_c"</span>),
+                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"best"</span>, <span class='st'>"worst"</span>),
+                 <span class='kw'>additional.rank</span> <span class='kw'>=</span> <span class='no'>beans</span>[, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"var_a"</span>, <span class='st'>"var_b"</span>, <span class='st'>"var_c"</span>)])
+
+<span class='no'>v</span> <span class='kw'>&lt;-</span> <span class='fu'>condense_victories</span>(<span class='no'>R</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#references">References</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

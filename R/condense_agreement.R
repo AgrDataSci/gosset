@@ -19,17 +19,17 @@
 #' \item{last}{relative agreement of the last item in the baseline being 
 #' ranked last in compare.to}
 #' @seealso \code{\link{kendallTau}} 
-#' @family recap functions
+#' @family condense functions
 #' @examples 
 #' # from the breadwheat data
-#' # Compare the overall performance against 
+#' # Compare the overall performance against
 #' # rankings on germination, grain quality and yield
 #' 
 #' data("breadwheat", package = "gosset")
-#' 
-#' R <- recap_favourite(data = breadwheat,
-#'                       items = c("variety_a", "variety_b", "variety_c"),
-#'                       input = c("overall_best", "overall_worst"))
+#'  
+#' R <- rank_tricot(data = breadwheat,
+#'                  items = c("variety_a", "variety_b", "variety_c"),
+#'                  input = c("overall_best", "overall_worst"))
 #' 
 #' 
 #' compare <- list()
@@ -50,13 +50,13 @@
 #' 
 #' labels <- c("Germination", "Grain quality", "Yield")
 #' 
-#'  
-#' recap_agreement(R,
-#'                 compare.to = compare,
-#'                 labels = labels)
+#' 
+#' condense_agreement(R,
+#'                    compare.to = compare,
+#'                    labels = labels)
 #'  
 #' @export
-recap_agreement <- function(baseline, compare.to, labels = NULL){
+condense_agreement <- function(baseline, compare.to, labels = NULL){
 
   B <- baseline
   CC <- compare.to
@@ -171,7 +171,7 @@ recap_agreement <- function(baseline, compare.to, labels = NULL){
 
 
 
-#' @rdname recap_agreement
+#' @rdname condense_agreement
 #' @method plot gosset_agree
 #' @export
 plot.gosset_agree <- function(x, ...) {

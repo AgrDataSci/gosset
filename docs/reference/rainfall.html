@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.7</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@
     <p>Compute rainfall indices over a timespan</p>
     </div>
 
-    <pre class="usage"><span class='fu'>rainfall</span>(<span class='no'>object</span>, <span class='kw'>day.one</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>span</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>rainfall</span>(<span class='no'>object</span>, <span class='kw'>day.one</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>span</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -130,21 +130,18 @@
       <td><p>a numeric vector of geographic coordinates (lonlat) or
 a matrix containing the precipitation data.
 When lonlat is used, the function makes a call to
-<code><a href='https://docs.ropensci.org/nasapower/reference/get_power.html'>nasapower::get_power</a></code> to fetch and concatenate environmental data from NASA POWER
-(<a href='https://power.larc.nasa.gov/'>https://power.larc.nasa.gov/</a>)</p></td>
+<code><a href='https://docs.ropensci.org/nasapower/reference/get_power.html'>nasapower::get_power</a></code> to fetch and concatenate environmental 
+data from NASA POWER (<a href='https://power.larc.nasa.gov/'>https://power.larc.nasa.gov/</a>)</p></td>
     </tr>
     <tr>
       <th>day.one</th>
-      <td><p>a vector of class 'Date' for the starting date to capture the environmental data</p></td>
+      <td><p>a vector of class 'Date' for the starting date to 
+capture the environmental data</p></td>
     </tr>
     <tr>
       <th>span</th>
-      <td><p>an integer or a vector with integers for the duration of the timespan to be captured</p></td>
-    </tr>
-    <tr>
-      <th>index</th>
-      <td><p>character or a vector with characters for the indices to be computed. 
-All indices are given by default</p></td>
+      <td><p>an integer or a vector with integers for the duration 
+of the timespan to be captured</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -154,21 +151,37 @@ All indices are given by default</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe with selected indices. Options are:</p>
-<dt>MLDS</dt><dd><p>maximum length of consecutive dry days (r &lt;  1 mm)</p></dd>
-<dt>MLWS</dt><dd><p>maximum length of consecutive wet days (r &gt;= 1 mm)</p></dd>
-<dt>R10mm</dt><dd><p>number of heavy precipitation days (10 &gt;= r &lt; 20 mm)</p></dd>
-<dt>R20mm</dt><dd><p>number of very heavy precipitation days (r &gt;= 20)</p></dd>
-<dt>SDII</dt><dd><p>simple daily intensity index (mean of wet days / total rainfall)</p></dd>
-<dt>Rx1day</dt><dd><p>maximum 1-day rainfall (mm)</p></dd>
-<dt>Rx5day</dt><dd><p>maximum 5-day rainfall (mm)</p></dd>
-<dt>Rtotal</dt><dd><p>total rainfall (mm) in wet days (R &gt;= 1)</p></dd>
+    <p>A dataframe with rainfall indices:</p>
+<dt>MLDS</dt><dd><p>maximum length of consecutive dry day, rain &lt; 1 mm (days)</p></dd>
+<dt>MLWS</dt><dd><p>maximum length of consecutive wet days, rain &gt;= 1 mm (days)</p></dd>
+<dt>R10mm</dt><dd><p>number of heavy precipitation days 10 &gt;= rain &lt; 20 mm (days)</p></dd>
+<dt>R20mm</dt><dd><p>number of very heavy precipitation days rain &gt;= 20 (days)</p></dd>
+<dt>Rx1day</dt><dd><p>maximum 1-day precipitation (mm)</p></dd>
+<dt>Rx5day</dt><dd><p>maximum 5-day precipitation (mm)</p></dd>
+<dt>R95p</dt><dd><p>total precipitation when rain &gt; 95th percentile (mm)</p></dd>
+<dt>R99p</dt><dd><p>total precipitation when rain &gt; 99th percentile (mm)</p></dd>
+<dt>Rtotal</dt><dd><p>total precipitation (mm) in wet days, rain &gt;= 1 (mm)</p></dd>
+<dt>SDII</dt><dd><p>simple daily intensity index, total precipitation divided by the
+ number of wet days (mm/days)</p></dd>
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Aguilar E., et al. (2005). Journal of Geophysical Research, 110(D23), D23107. https://doi.org/10.1029/2005JD006119.</p>
-<p>Kehel Z., et al. (2016). Identifying Climate Patterns during the Crop-Growing Cycle from 30 Years of CIMMYT Elite Spring Wheat International Yield Trials. In: Applied Mathematics and Omics to Assess Crop Genetic Resources for Climate Change Adaptive Traits (eds Bari A., Damania A. B., Mackay M., Dayanandan S.), pp. 151–174. CRC Press.</p>
-<p>Sparks A. H. (2018). Journal of Open Source Software, 3(30), 1035. https://doi.org/10.21105/joss.01035.</p>
+    <p>Aguilar E., et al. (2005). Journal of Geophysical Research, 
+110(D23), D23107. https://doi.org/10.1029/2005JD006119.</p>
+<p>Kehel Z., et al. (2016). Identifying Climate Patterns during the 
+Crop-Growing Cycle from 30 Years of CIMMYT Elite Spring Wheat 
+International Yield Trials. In: Applied Mathematics and Omics to 
+Assess Crop Genetic Resources for Climate Change Adaptive Traits 
+(eds Bari A., Damania A. B., Mackay M., Dayanandan S.), 
+pp. 151–174. CRC Press.</p>
+<p>Sparks A. H. (2018). Journal of Open Source Software, 3(30), 1035. 
+https://doi.org/10.21105/joss.01035.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other climatology functions: 
+<code><a href='ETo.html'>ETo</a>()</code>,
+<code><a href='GDD.html'>GDD</a>()</code>,
+<code><a href='temperature.html'>temperature</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># \donttest{</span>
@@ -204,6 +217,7 @@ All indices are given by default</p></td>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#references">References</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

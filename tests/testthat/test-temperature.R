@@ -35,8 +35,7 @@ test_that("nasapower works", {
   r <- suppressWarnings(
     temperature(object = lonlat, 
                    day.one = d,
-                   span = 25,
-                   index = "maxDT")
+                   span = 25)
   )
   
   r <- as.vector(apply(r, 1, is.na))

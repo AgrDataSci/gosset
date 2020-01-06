@@ -43,8 +43,9 @@
 
 
 <meta property="og:title" content="Evapotranspiration — ETo" />
-<meta property="og:description" content="Compute evapotranspiration using the Blaney-Criddle method. A theoretical method used 
-when no measured data on pan evaporation are available locally." />
+<meta property="og:description" content="Compute evapotranspiration using the Blaney-Criddle method. A 
+theoretical method used when no measured data on pan evaporation 
+are available locally." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -78,7 +79,7 @@ when no measured data on pan evaporation are available locally." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.7</span>
       </span>
     </div>
 
@@ -118,8 +119,9 @@ when no measured data on pan evaporation are available locally." />
     </div>
 
     <div class="ref-description">
-    <p>Compute evapotranspiration using the Blaney-Criddle method. A theoretical method used 
-when no measured data on pan evaporation are available locally.</p>
+    <p>Compute evapotranspiration using the Blaney-Criddle method. A 
+theoretical method used when no measured data on pan evaporation 
+are available locally.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ETo</span>(<span class='no'>object</span>, <span class='kw'>day.one</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>span</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='kw'>lat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>Kc</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
@@ -131,18 +133,20 @@ when no measured data on pan evaporation are available locally.</p>
       <th>object</th>
       <td><p>a numeric vector of geographic coordinates (lonlat) or
 an array with two dimensions containing the temperature data;
-1st dimension contains the day temperature and 2nd dimension the night temperature.
-When lonlat is used, the function makes a call to
-<code><a href='https://docs.ropensci.org/nasapower/reference/get_power.html'>nasapower::get_power</a></code> to fetch and concatenate environmental data from NASA POWER
-(<a href='https://power.larc.nasa.gov/'>https://power.larc.nasa.gov/</a>)</p></td>
+1st dimension contains the day temperature and 2nd dimension the night
+temperature. When lonlat is used, the function makes a call to
+<code><a href='https://docs.ropensci.org/nasapower/reference/get_power.html'>nasapower::get_power()</a></code> to fetch and concatenate environmental
+data from NASA POWER (<a href='https://power.larc.nasa.gov/'>https://power.larc.nasa.gov/</a>)</p></td>
     </tr>
     <tr>
       <th>day.one</th>
-      <td><p>a vector of class 'Date' for the starting date to capture the environmental data</p></td>
+      <td><p>a vector of class 'Date' for the starting date to 
+capture the environmental data</p></td>
     </tr>
     <tr>
       <th>span</th>
-      <td><p>an integer or a vector with integers for the duration of the timespan to be captured</p></td>
+      <td><p>an integer or a vector with integers for the duration 
+of the timespan to be captured</p></td>
     </tr>
     <tr>
       <th>lat</th>
@@ -165,7 +169,15 @@ for different latitudes</p></td>
     <p>The evapotranspiration in mm/day</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Brouwer C. &amp; Heibloem M. (1986). Irrigation water management: Irrigation water needs. Food and Agriculture Organization of The United Nations, Rome, Italy. http://www.fao.org/3/S2022E/s2022e00.htm</p>
+    <p>Brouwer C. &amp; Heibloem M. (1986). Irrigation water management: 
+Irrigation water needs. Food and Agriculture Organization of The 
+United Nations, Rome, Italy. http://www.fao.org/3/S2022E/s2022e00.htm</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other climatology functions: 
+<code><a href='GDD.html'>GDD</a>()</code>,
+<code><a href='rainfall.html'>rainfall</a>()</code>,
+<code><a href='temperature.html'>temperature</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># \donttest{</span>
@@ -194,6 +206,7 @@ for different latitudes</p></td>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#references">References</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
