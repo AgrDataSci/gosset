@@ -20,10 +20,14 @@
 #' \item{Rtotal}{total precipitation (mm) in wet days, rain >= 1 (mm)}
 #' \item{SDII}{simple daily intensity index, total precipitation divided by the
 #'  number of wet days (mm/days)}
+#'  
+#'  When \var{timeseries} = \code{TRUE}, an id is created, 
+#'  which is the index for the rownames of the provided \var{object}.
+#'  
 #' @family climatology functions
 #' @references 
 #' Aguilar E., et al. (2005). Journal of Geophysical Research, 
-#' 110(D23), D23107. https://doi.org/10.1029/2005JD006119.
+#' 110(D23), D23107. \cr\url{https://doi.org/10.1029/2005JD006119}
 #' 
 #' Kehel Z., et al. (2016). Identifying Climate Patterns during the 
 #' Crop-Growing Cycle from 30 Years of CIMMYT Elite Spring Wheat 
@@ -33,7 +37,7 @@
 #' pp. 151–174. CRC Press.
 #' 
 #' Sparks A. H. (2018). Journal of Open Source Software, 3(30), 1035. 
-#' https://doi.org/10.21105/joss.01035.
+#' \cr\url{https://doi.org/10.21105/joss.01035}
 #' 
 #' @examples
 #' \donttest{
@@ -42,11 +46,13 @@
 #' library("nasapower")
 #' 
 #' # random geographic locations around bbox(11, 12, 55, 58)
-#' lonlat <- data.frame(lon = runif(10, 11, 12),
-#'                      lat = runif(10, 55, 58))
+#' set.seed(123)
+#' lonlat <- data.frame(lon = runif(3, 11, 12),
+#'                      lat = runif(3, 55, 58))
 #' 
 #' # random planting dates around 2018-05-15 and 2018-05-20
-#' pdates <- as.integer(runif(10, 17666, 17670))
+#' set.seet(321)
+#' pdates <- as.integer(runif(3, 17666, 17670))
 #' pdates <- as.Date(pdates, origin = "1970-01-01")
 #' 
 #' # calculate rainfall for the first 50 days after planting
@@ -60,11 +66,19 @@
 #'          day.one = pdates,
 #'          span = 50,
 #'          days.before = 15)
-#' 
+#'          
+#' # rainfall indices over a timeseries          
+#' rainfall(lonlat,
+#'          day.one = pdates,
+#'          span = 50,
+#'          timeseries = TRUE,
+#'          intervals = 7)
 #' }       
 #'          
 #' @export
-rainfall <- function(object, day.one = NULL, span = 150, 
+rainfall <- function(object, day.one = NULL, 
+                     span = 150, timeseries = FALSE,
+                     intervals = 5,
                      ...)
 {
   
@@ -80,30 +94,117 @@ rainfall <- function(object, day.one = NULL, span = 150,
   
   n <- nrow(r)
   
-  # split r by rows
-  r <- split(r, 1:nrow(r))
-  
-  ind <- lapply(r, function(x) {
+  if (timeseries) {
     
-    x <- as.vector(as.matrix(x))
+    # it might happen that when bins are not well distributed across dates
+    # in that case the last values are dropped
+    # for example, divide the periods of 7 days in a time series of 53 days
+    # in that case, the last four observations are dropped to fit in a vector of
+    # length == 49 (the maximum integer from dividing days/intervals)
+    # organise bins, ids and dates
+    bins <- floor(ncol(r)/intervals)
     
-    x <- data.frame(.dryspell(x),
-                    .wetspell(x),
-                    .r_ten_mm(x),
-                    .r_twenty_mm(x),
-                    .r_one_day(x),
-                    .r_five_day(x),
-                    .very_wet_days(x),
-                    .extrem_wet_days(x),
-                    .r_total(x),
-                    .sdii(x))
+    bins <- rep(1:bins, each = intervals, length.out = NA)
     
-  })
+    # ids are the row names in r
+    ids <- rownames(r)
+    
+    # dates are the first day for each bin
+    dates <- NULL
+    # for diffent day.one a loop is required to take the
+    # sequence of days and the first day in each bin
+    for (i in seq_along(day.one)) {
+
+      d <- day.one[[i]]:(day.one[[i]] + (span - 1))
+
+      d <- d[1:length(bins)]
+      
+      d <- d[!duplicated(bins)]
+
+      d <- rep(d, each = length(index))
+
+      dates <- c(dates, d)
+
+
+    }
+
+    dates <- as.Date(dates, origin = "1970-01-01")
+    
+    # transpose and keep values until the end of bins
+    rr <- t(r)
+    
+    # keep data within the lenght of bins
+    rr <- as.data.frame(rr[1:length(bins), ])
+    
+    # split by ids
+    rr <- split(rr, bins)
+    
+    # calculate indices
+    ind <- lapply(rr, function(x) {
+      
+      x <- apply(x, 2, function(y) {
+        
+        c(.dryspell(y),
+          .wetspell(y),
+          .r_ten_mm(y),
+          .r_twenty_mm(y),
+          .r_one_day(y),
+          .r_five_day(y),
+          .very_wet_days(y),
+          .extrem_wet_days(y),
+          .r_total(y),
+          .sdii(y))
+        
+      })
+      
+      x <- data.frame(id    = rep(ids, each = length(index)),
+                      index = rep(index, n), 
+                      value = as.vector(x))  
+      
+      })
+    
+    ind <- do.call("rbind", ind)
+    
+    ind$id <- as.integer(ind$id)
+    
+    ind$index <- as.character(ind$index)
+    
+    ind <- ind[order(ind$id), ]
+    
+    ind$dates <- dates
+    
+    
+  } 
   
-  
-  ind <- do.call("rbind", ind)
-  
-  names(ind) <- index
+  # if no time series required then
+  if (!timeseries) {
+    
+    # split r by rows
+    r <- split(r, 1:nrow(r))
+    
+    ind <- lapply(r, function(x) {
+      
+      x <- as.vector(as.matrix(x))
+      
+      x <- data.frame(.dryspell(x),
+                      .wetspell(x),
+                      .r_ten_mm(x),
+                      .r_twenty_mm(x),
+                      .r_one_day(x),
+                      .r_five_day(x),
+                      .very_wet_days(x),
+                      .extrem_wet_days(x),
+                      .r_total(x),
+                      .sdii(x))
+      
+    })
+    
+    
+    ind <- do.call("rbind", ind)
+    
+    names(ind) <- index
+    
+  }
   
   ind <- tibble::as_tibble(ind)
   

@@ -14,8 +14,8 @@ temperature. When lonlat is used, the function makes a call to
 \code{nasapower::get_power()} to fetch and concatenate environmental
 data from NASA POWER (\url{https://power.larc.nasa.gov/})}
 
-\item{day.one}{a vector of class 'Date' for the starting date to 
-capture the environmental data}
+\item{day.one}{a vector of class \code{Date} for the starting date to 
+capture the environmental data.}
 
 \item{degree.days}{an integer for the degree days required by the crop 
 (look at the physiology of the focal crop)}

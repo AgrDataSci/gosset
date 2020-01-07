@@ -4,7 +4,14 @@
 \alias{temperature}
 \title{Temperature indices}
 \usage{
-temperature(object, day.one = NULL, span = 150, ...)
+temperature(
+  object,
+  day.one = NULL,
+  span = 150,
+  timeseries = FALSE,
+  intervals = 5,
+  ...
+)
 }
 \arguments{
 \item{object}{a numeric vector of geographic coordinates (lonlat) or
@@ -14,11 +21,17 @@ temperature. When lonlat is used, the function makes a call to
 \code{nasapower::get_power()} to fetch and concatenate environmental
 data from NASA POWER (\url{https://power.larc.nasa.gov/})}
 
-\item{day.one}{a vector of class 'Date' for the starting date to 
-capture the environmental data}
+\item{day.one}{a vector of class \code{Date} for the starting date to 
+capture the environmental data.}
 
 \item{span}{an integer or a vector with integers for the duration 
 of the timespan to be captured}
+
+\item{timeseries}{logical, \code{FALSE} for a single point time series
+observation or \code{TRUE} for a time series based on \var{intervals}}
+
+\item{intervals}{integer no lower than 5, for the days intervals when
+\var{timeseries} = \code{TRUE}}
 
 \item{...}{additional arguments passed to methods}
 }
@@ -60,7 +73,7 @@ temperature(lonlat,
 }
 \references{
 Aguilar E., et al. (2005). Journal of Geophysical Research, 
-110(D23), D23107. https://doi.org/10.1029/2005JD006119.
+110(D23), D23107. \cr\url{https://doi.org/10.1029/2005JD006119}
 
 Kehel Z., et al. (2016). Identifying Climate Patterns during 
 the Crop-Growing Cycle from 30 Years of CIMMYT Elite Spring 
@@ -70,7 +83,7 @@ Traits (eds Bari A., Damania A. B., Mackay M., Dayanandan S.),
 pp. 151–174. CRC Press.
 
 Sparks A. H. (2018). Journal of Open Source Software, 3(30), 1035. 
-https://doi.org/10.21105/joss.01035.
+\cr\url{https://doi.org/10.21105/joss.01035}
 }
 \seealso{
 Other climatology functions: 

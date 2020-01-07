@@ -8,10 +8,14 @@
 #' temperature. When lonlat is used, the function makes a call to
 #' \code{nasapower::get_power()} to fetch and concatenate environmental
 #' data from NASA POWER (\url{https://power.larc.nasa.gov/})
-#' @param day.one a vector of class 'Date' for the starting date to 
-#' capture the environmental data
+#' @param day.one a vector of class \code{Date} for the starting date to 
+#' capture the environmental data.
 #' @param span an integer or a vector with integers for the duration 
 #' of the timespan to be captured
+#' @param timeseries logical, \code{FALSE} for a single point time series
+#'  observation or \code{TRUE} for a time series based on \var{intervals}
+#' @param intervals integer no lower than 5, for the days intervals when
+#'  \var{timeseries} = \code{TRUE}
 #' @param ... additional arguments passed to methods
 #' @return A dataframe with temperature indices:
 #' \item{maxDT}{maximun day temperature (degree Celsius)}
@@ -27,7 +31,7 @@
 #' @family climatology functions
 #' @references 
 #' Aguilar E., et al. (2005). Journal of Geophysical Research, 
-#' 110(D23), D23107. https://doi.org/10.1029/2005JD006119.
+#' 110(D23), D23107. \cr\url{https://doi.org/10.1029/2005JD006119}
 #' 
 #' Kehel Z., et al. (2016). Identifying Climate Patterns during 
 #' the Crop-Growing Cycle from 30 Years of CIMMYT Elite Spring 
@@ -37,7 +41,7 @@
 #' pp. 151–174. CRC Press.
 #' 
 #' Sparks A. H. (2018). Journal of Open Source Software, 3(30), 1035. 
-#' https://doi.org/10.21105/joss.01035.
+#' \cr\url{https://doi.org/10.21105/joss.01035}
 #' 
 #' @examples
 #' \donttest{
@@ -59,10 +63,11 @@
 #'             span = 40)
 #' }
 #' @export
-temperature <- function(object, day.one = NULL, span = 150,
+temperature <- function(object, day.one = NULL, 
+                        span = 150, timeseries = FALSE,
+                        intervals = 5,
                         ...)
 {
-  
   index <- c("maxDT","minDT","maxNT","minNT","DTR","SU","TR")
   
   # get timespan for the day temperature
