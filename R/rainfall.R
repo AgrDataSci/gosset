@@ -45,29 +45,29 @@
 #' library("gosset")
 #' library("nasapower")
 #' 
-#' # random geographic locations around bbox(11, 12, 55, 58)
+#' # random points within bbox(11, 12, 55, 58)
 #' set.seed(123)
 #' lonlat <- data.frame(lon = runif(3, 11, 12),
 #'                      lat = runif(3, 55, 58))
 #' 
-#' # random planting dates around 2018-05-15 and 2018-05-20
+#' # random dates within 2018-05-15 and 2018-05-20
 #' set.seet(321)
 #' pdates <- as.integer(runif(3, 17666, 17670))
 #' pdates <- as.Date(pdates, origin = "1970-01-01")
 #' 
-#' # calculate rainfall for the first 50 days after planting
+#' # calculate rainfall for the first 50 days after day.one
 #' rainfall(lonlat,
 #'          day.one = pdates,
 #'          span = 50)
 #' 
 #' 
-#' # include the first 15 days before planting (residual precipitation)
+#' # include the first 15 days before day.one (residual precipitation)
 #' rainfall(lonlat,
 #'          day.one = pdates,
 #'          span = 50,
 #'          days.before = 15)
 #'          
-#' # rainfall indices over a timeseries          
+#' # rainfall indices over a time series          
 #' rainfall(lonlat,
 #'          day.one = pdates,
 #'          span = 50,
@@ -173,6 +173,8 @@ rainfall <- function(object, day.one = NULL,
     
     ind$dates <- dates
     
+    ind <- ind[, c("id", "dates", "index", "value")]
+    
     
   } 
   
@@ -244,7 +246,7 @@ rainfall <- function(object, day.one = NULL,
     ds <- 0
   }
   
-  # if there is values, take the maximum sequecy
+  # if there is values, take the maximum sequency
   if (length(ds) != 0) {
     ds <- max(ds, na.rm = TRUE)
   }

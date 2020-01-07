@@ -21,7 +21,7 @@ When lonlat is used, the function makes a call to
 data from NASA POWER (\url{https://power.larc.nasa.gov/})}
 
 \item{day.one}{a vector of class \code{Date} for the starting date to 
-capture the environmental data.}
+capture the environmental data}
 
 \item{span}{an integer or a vector with integers for the duration 
 of the timespan to be captured}
@@ -60,29 +60,29 @@ Compute rainfall indices over a timespan
 library("gosset")
 library("nasapower")
 
-# random geographic locations around bbox(11, 12, 55, 58)
+# random points within bbox(11, 12, 55, 58)
 set.seed(123)
 lonlat <- data.frame(lon = runif(3, 11, 12),
                      lat = runif(3, 55, 58))
 
-# random planting dates around 2018-05-15 and 2018-05-20
+# random dates within 2018-05-15 and 2018-05-20
 set.seet(321)
 pdates <- as.integer(runif(3, 17666, 17670))
 pdates <- as.Date(pdates, origin = "1970-01-01")
 
-# calculate rainfall for the first 50 days after planting
+# calculate rainfall for the first 50 days after day.one
 rainfall(lonlat,
          day.one = pdates,
          span = 50)
 
 
-# include the first 15 days before planting (residual precipitation)
+# include the first 15 days before day.one (residual precipitation)
 rainfall(lonlat,
          day.one = pdates,
          span = 50,
          days.before = 15)
          
-# rainfall indices over a timeseries          
+# rainfall indices over a time series          
 rainfall(lonlat,
          day.one = pdates,
          span = 50,

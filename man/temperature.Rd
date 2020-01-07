@@ -22,7 +22,7 @@ temperature. When lonlat is used, the function makes a call to
 data from NASA POWER (\url{https://power.larc.nasa.gov/})}
 
 \item{day.one}{a vector of class \code{Date} for the starting date to 
-capture the environmental data.}
+capture the environmental data}
 
 \item{span}{an integer or a vector with integers for the duration 
 of the timespan to be captured}
@@ -46,29 +46,43 @@ and NT (degree Celsius)) }
 \item{SU}{summer days, number of days with maximum temperature > 
 30 (degree Celsius)}
 \item{TR}{tropical nights, number of nights with maximum 
-temperature > 25 (degree Celsius) }
+temperature > 25 (degree Celsius)}
+\item{CFD}{consecutive frosty days, number of days with temperature 
+bellow 0 degree Celsius}
+
+ When \var{timeseries} = \code{TRUE}, an id is created, 
+ which is the index for the rownames of the provided \var{object}.
 }
 \description{
 Compute temperature indices over a timespan
 }
 \examples{
 \donttest{
-
+ 
 library("gosset")
 library("nasapower")
 
-# random geographic locations around bbox(11, 12, 55, 58)
-lonlat <- data.frame(lon = runif(10, 11, 12),
-                     lat = runif(10, 55, 58))
+# random points within bbox(11, 12, 55, 58)
+set.seed(123)
+lonlat <- data.frame(lon = runif(3, 11, 12),
+                     lat = runif(3, 55, 58))
 
-# random planting dates around 2018-05-15 and 2018-05-20
-pdates <- as.integer(runif(10, 17666, 17670))
+# random dates within 2018-05-15 and 2018-05-2
+set.seed(321)
+pdates <- as.integer(runif(3, 17666, 17670))
 pdates <- as.Date(pdates, origin = "1970-01-01")
 
-# get temperature indices for the first 40 days
+# get temperature indices for 40 days after day.one
 temperature(lonlat,
             day.one = pdates,
             span = 40)
+
+# get temperature indices over a time series
+temperature(lonlat,
+            day.one = pdates,
+            span = 40,
+            timeseries = TRUE,
+            intervals = 5)
 }
 }
 \references{
