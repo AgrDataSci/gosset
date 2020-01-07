@@ -88,15 +88,15 @@ rainfall <- function(object, day.one = NULL, span = 150,
     x <- as.vector(as.matrix(x))
     
     x <- data.frame(.dryspell(x),
-           .wetspell(x),
-           .r_ten_mm(x),
-           .r_twenty_mm(x),
-           .r_one_day(x),
-           .r_five_day(x),
-           .very_wet_days(x),
-           .extrem_wet_days(x),
-           .r_total(x),
-           .sdii(x))
+                    .wetspell(x),
+                    .r_ten_mm(x),
+                    .r_twenty_mm(x),
+                    .r_one_day(x),
+                    .r_five_day(x),
+                    .very_wet_days(x),
+                    .extrem_wet_days(x),
+                    .r_total(x),
+                    .sdii(x))
     
   })
   

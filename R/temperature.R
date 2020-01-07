@@ -63,7 +63,7 @@ temperature <- function(object, day.one = NULL, span = 150,
                         ...)
 {
   
-  index <- c("maxDT","minDT","maxNT","minNT","SU","TR","DTR")
+  index <- c("maxDT","minDT","maxNT","minNT","DTR","SU","TR")
   
   # get timespan for the day temperature
   if (dim(object)[2] == 2) {
@@ -81,57 +81,115 @@ temperature <- function(object, day.one = NULL, span = 150,
   
   n <- nrow(day)
   
-  ind <- tibble::as_tibble(matrix(nrow = n, 
-                                  ncol = length(index), 
-                                  dimnames = list(1:n, index)))
+  day <- split(day, 1:n)
   
-  # maximun day temperature (degree Celsius)
-  if ("maxDT" %in% index) {
-    ind["maxDT"] <- apply(day, 1, function(x) {
-      max(x, na.rm = TRUE)
-    })
-  }
-  # minimum day temperature (degree Celsius)
-  if ("minDT" %in% index) {
-    ind["minDT"] <- apply(day, 1, function(x) {
-      min(x, na.rm = TRUE)
-    })
-  }
-  # maximum night temperature (degree Celsius)
-  if ("maxNT" %in% index) {
-    ind["maxNT"] <-
-      apply(night, 1, function(x) {
-        max(x, na.rm = TRUE)
-      })
-  }
-  # minimum night temperature (degree Celsius)
-  if ("minNT" %in% index) {
-    ind["minNT"] <-
-      apply(night, 1, function(x) {
-        min(x, na.rm = TRUE)
-      })
-  }
-  # diurnal temperature range, mean difference between DT and NT (degree Celsius)
-  if ("DTR" %in% index) {
-    ind["DTR"] <-
-      apply((day - night), 1, function(x) {
-        mean(x, na.rm = TRUE)
-      })
-  }
-  # summer days, number of days with maximum temperature > 30 C
-  if ("SU" %in% index) {
-    ind["SU"] <- apply(day, 1, function(x) {
-      sum(x > 30, na.rm = TRUE)
-    })
-  }
-  # tropical nights, number of nights with maximum temperature > 25 C
-  if ("TR" %in% index) {
-    ind["TR"] <-
-      apply(night, 1, function(x) {
-        sum(x > 25, na.rm = TRUE)
-      })
-  }
+  night <- split(night, 1:n)
+  
+  ind <- mapply(function(X, Y) {
+    
+    x <- as.vector(as.matrix(X))
+    y <- as.vector(as.matrix(Y))
+    
+    x <- data.frame(maxDT = .max_temperature(x),
+                    minDT = .min_temperature(x),
+                    maxNT = .max_temperature(y),
+                    minNT = .min_temperature(y),
+                    DTR   = .temperature_range(x, y),
+                    SU    = .summer_days(x),
+                    TR    = .tropical_nights(y))
+    
+  }, X = day, Y = night)
+  
+  ind <- matrix(unlist(ind), 
+                nrow = n, 
+                ncol = length(index), 
+                byrow = TRUE)
+  
+  ind <- tibble::as_tibble(ind)
+  
+  names(ind) <- index
   
   return(ind)
   
 }
+
+
+#' Maximum temperature
+#' 
+#' @param x a numeric vector
+#' @return the maximum temperature 
+#' @examples 
+#' set.seed(123)
+#' temp <- runif(10, 25, 34)
+#' .max_temperature(day)
+#' @noRd
+.max_temperature <- function(x) {
+  max(x, na.rm = TRUE)
+}
+
+#' Minimum temperature
+#'  
+#' @param x a numeric vector
+#' @return the minimum temperature 
+#' @examples 
+#' set.seed(123)
+#' temp <- runif(10, 25, 34)
+#' .min_temperature(day)
+#' @noRd
+.min_temperature <- function(x) {
+  min(x, na.rm = TRUE)
+}
+
+#' Diurnal temperature range
+#' 
+#' Compute mean mean difference between day and night
+#' temperature (degree Celsius)
+#' 
+#' @param x a numeric vector
+#' @param y a numeric vector
+#' @return the diurnal temperature range 
+#' @examples 
+#' set.seed(123)
+#' day <- runif(10, 25, 34)
+#' 
+#' set.seed(321)
+#' night <- runif(10, 21, 30)
+#' 
+#' .temperature_range(day, night)
+#' @noRd
+.temperature_range <- function(x, y) {
+  dtr <- x - y
+  mean(dtr, na.rm = TRUE)
+}
+
+#' Summer days
+#' 
+#' Compute number of days with maximum temperature > 30 C
+#' 
+#' @param x a numeric vector
+#' @return the summer days index
+#' @examples 
+#' x <- c(30, NA, 31, 32, 34)
+#' .summer_days(x)
+#' @noRd
+.summer_days <- function(x) {
+  x <- x > 30
+  sum(x, na.rm = TRUE)
+}
+
+#' Tropical days
+#' 
+#' Compute number of nights with maximum temperature > 25 C
+#' 
+#' @param x a numeric vector
+#' @return the summer days index
+#' @examples 
+#' x <- c(22, NA, 23, 26, 27, 21)
+#' .tropical_nights(x)
+#' @noRd
+.tropical_nights <- function(x) {
+  x <- x > 25
+  sum(x, na.rm = TRUE)
+}
+
+
