@@ -7,7 +7,11 @@ gosset 0.1.7 (2020-01-06)
 
 ### CHANGES IN BEHAVIOUR
 
-* Rename functions `agreement()`, `dominance()`, `favourite()`, and `victories()` with the tag `recap` and add it into recap functions
+* Rename functions `agreement()`, `dominance()`, `favourite()`, and `victories()` with the tag `summarise` and add it into summarise functions. No warking message provided. New functions are `summarise_agreement()`, `summarise_dominance()`, `summarise_favourite()`, and `summarise_victories()`
+
+* Argument 'index' is removed from `rainfall()` and `temperature()`, 
+all indices are given by default.
+
 
 
 gosset 0.1.6 (2019-01-10)

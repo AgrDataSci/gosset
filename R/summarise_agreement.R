@@ -19,7 +19,7 @@
 #' \item{last}{relative agreement of the last item in the baseline being 
 #' ranked last in compare.to}
 #' @seealso \code{\link{kendallTau}} 
-#' @family condense functions
+#' @family summarise functions
 #' @examples 
 #' # from the breadwheat data
 #' # Compare the overall performance against
@@ -51,12 +51,12 @@
 #' labels <- c("Germination", "Grain quality", "Yield")
 #' 
 #' 
-#' condense_agreement(R,
-#'                    compare.to = compare,
-#'                    labels = labels)
+#' summarise_agreement(R,
+#'                     compare.to = compare,
+#'                     labels = labels)
 #'  
 #' @export
-condense_agreement <- function(baseline, compare.to, labels = NULL){
+summarise_agreement <- function(baseline, compare.to, labels = NULL){
 
   B <- baseline
   CC <- compare.to
@@ -171,7 +171,7 @@ condense_agreement <- function(baseline, compare.to, labels = NULL){
 
 
 
-#' @rdname condense_agreement
+#' @rdname summarise_agreement
 #' @method plot gosset_agree
 #' @export
 plot.gosset_agree <- function(x, ...) {

@@ -1,4 +1,4 @@
-context("test-dominance")
+context("test-summarise_dominance")
 
 data("breadwheat", package = "gosset")
 
@@ -8,7 +8,7 @@ R <- rank_tricot(data = breadwheat,
 
 test_that("return a data.frame", {
   
-  pref <- condense_dominance(R)
+  pref <- summarise_dominance(R)
   
   pref <- dim(pref)
   
@@ -21,7 +21,7 @@ test_that("return a data.frame", {
 
 test_that("plot works", {
   
-  pref <- condense_dominance(R)
+  pref <- summarise_dominance(R)
   
   pref <- plot(pref)
   

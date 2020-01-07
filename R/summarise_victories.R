@@ -13,7 +13,7 @@
 #' \item{win}{times player1 wins against player2}
 #' \item{ncontest}{number of contests between player1 and player2}
 #' \item{victories}{relative number of times player1 wins against player2}
-#' @family condense functions
+#' @family summarise functions
 #' @examples 
 #' # breadwheat data
 #' 
@@ -24,7 +24,7 @@
 #'                  input = c("overall_best", "overall_worst"))
 #' 
 #' 
-#' v <- condense_victories(R)
+#' v <- summarise_victories(R)
 #' 
 #' p <- plot(v)
 #' 
@@ -39,11 +39,11 @@
 #'                  input = c("best", "worst"),
 #'                  additional.rank = beans[, c("var_a", "var_b", "var_c")])
 #' 
-#' v <- condense_victories(R)
+#' v <- summarise_victories(R)
 #' 
 #'  
 #' @export
-condense_victories <- function(object){
+summarise_victories <- function(object){
 
   # get binomial rankings
   bin <- rank_binomial(object)
@@ -75,7 +75,7 @@ condense_victories <- function(object){
 }
 
 
-#' @rdname condense_victories
+#' @rdname summarise_victories
 #' @method plot gosset_vctr
 #' @export
 plot.gosset_vctr <- function(x, ...) {

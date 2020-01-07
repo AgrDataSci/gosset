@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • gosset</title>
+<title>Favourability scores — summarise_favourite • gosset</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Favourability scores — summarise_favourite" />
+<meta property="og:description" content="Summarise favourability scores from tricot data" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -63,7 +64,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -108,150 +109,91 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Favourability scores</h1>
+    
+    <div class="hidden name"><code>summarise_favourite.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Summarise favourability scores from tricot data</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>summarise_favourite</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>items</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>input</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>reorder</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="akaike_weights.html">akaike_weights()</a></code> </p>
-        </td>
-        <td><p>Akaike weights</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="breadwheat.html">breadwheat</a></code> </p>
-        </td>
-        <td><p>Preferred bread wheat varieties</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="crossvalidation.html">crossvalidation()</a></code> </p>
-        </td>
-        <td><p>Cross-validation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ETo.html">ETo()</a></code> </p>
-        </td>
-        <td><p>Evapotranspiration</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="GDD.html">GDD()</a></code> </p>
-        </td>
-        <td><p>Growing degree-days</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="kendallTau.html">kendallTau()</a></code> </p>
-        </td>
-        <td><p>Kendall rank correlation coefficient</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot_nodes.html">plot_nodes()</a></code> </p>
-        </td>
-        <td><p>Plot nodes from recursive partitioning trees</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pseudoR2.html">pseudoR2()</a></code> </p>
-        </td>
-        <td><p>Pseudo R-squared</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rainfall.html">rainfall()</a></code> </p>
-        </td>
-        <td><p>Rainfall indices</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rank_binomial.html">rank_binomial()</a></code> </p>
-        </td>
-        <td><p>Binary rankings from pairwise contests</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rank_numeric.html">rank_numeric()</a></code> </p>
-        </td>
-        <td><p>Plackett-Luce rankings from numeric values</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rank_paircomp.html">rank_paircomp()</a></code> </p>
-        </td>
-        <td><p>Pairwise comparison rankings</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rank_tricot.html">rank_tricot()</a></code> </p>
-        </td>
-        <td><p>Build Plackett-Luce rankings from tricot dataset</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="summarise_agreement.html">summarise_agreement()</a></code> <code><a href="summarise_agreement.html">plot(<i>&lt;gosset_agree&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Agreement between rankings</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="summarise_dominance.html">summarise_dominance()</a></code> <code><a href="summarise_dominance.html">plot(<i>&lt;gosset_dmnc&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Pairwise player dominance</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="summarise_favourite.html">summarise_favourite()</a></code> <code><a href="summarise_favourite.html">plot(<i>&lt;gosset_fvrt&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Favourability scores</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="summarise_victories.html">summarise_victories()</a></code> <code><a href="summarise_victories.html">plot(<i>&lt;gosset_vctr&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Pairwise victories</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="temperature.html">temperature()</a></code> </p>
-        </td>
-        <td><p>Temperature indices</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="worst_regret.html">worst_regret()</a></code> </p>
-        </td>
-        <td><p>Worst regret in regret-based models from recursive partitioning trees</p></td>
-      </tr>
-    </tbody>
+<span class='co'># S3 method for gosset_fvrt</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>a data.frame with columns specified by items and input values</p></td>
+    </tr>
+    <tr>
+      <th>items</th>
+      <td><p>a character or numerical vector for indexing the column(s) 
+containing the item names in <code>data</code></p></td>
+    </tr>
+    <tr>
+      <th>input</th>
+      <td><p>a character or numerical vector for indexing the column(s) 
+containing the values in <code>data</code> to be ranked</p></td>
+    </tr>
+    <tr>
+      <th>reorder</th>
+      <td><p>logical, if items should be reordered from higher 
+favourability score to least favourability score</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>an object of class 'gosset_fvrt' for the plotting method. 
+Generates a 'ggplot' object that can be passed to any ggplot2 method</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments passed to methods. See details</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A data.frame with the descriptive statistics:</p>
+<dt>N</dt><dd><p>number of times the given item was evaluated</p></dd>
+<dt>best</dt><dd><p>relative number of times (in percentage) the given item was
+ ranked as first</p></dd>
+<dt>worst</dt><dd><p>relative number of times (in percentage) the given item was 
+ranked as worst</p></dd>
+<dt>wins</dt><dd><p>relative number of times (in percentage) the given item wins 
+against the others</p></dd>
+<dt>fav_score</dt><dd><p>the favourability score, which is the difference between 
+best and worst performance</p></dd>
+
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other summarise functions: 
+<code><a href='summarise_agreement.html'>summarise_agreement</a>()</code>,
+<code><a href='summarise_dominance.html'>summarise_dominance</a>()</code>,
+<code><a href='summarise_victories.html'>summarise_victories</a>()</code></p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"breadwheat"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"gosset"</span>)
+
+<span class='no'>fv</span> <span class='kw'>&lt;-</span> <span class='fu'>summarise_favourite</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>breadwheat</span>,
+                      <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"variety_a"</span>, <span class='st'>"variety_b"</span>, <span class='st'>"variety_c"</span>),
+                      <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"overall_best"</span>, <span class='st'>"overall_worst"</span>))</pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
+
   </div>
 </div>
 

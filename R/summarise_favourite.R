@@ -7,7 +7,7 @@
 #' favourability score to least favourability score
 #' @param x an object of class 'gosset_fvrt' for the plotting method. 
 #' Generates a 'ggplot' object that can be passed to any ggplot2 method
-#' @aliases condense_favorite
+#' @aliases summarise_favorite
 #' @return A data.frame with the descriptive statistics:
 #' \item{N}{number of times the given item was evaluated}
 #' \item{best}{relative number of times (in percentage) the given item was
@@ -18,18 +18,18 @@
 #' against the others}
 #' \item{fav_score}{the favourability score, which is the difference between 
 #' best and worst performance}
-#' @family condense functions
+#' @family summarise functions
 #' @examples
 #' data("breadwheat", package = "gosset")
 #'  
-#' fv <- condense_favourite(data = breadwheat,
+#' fv <- summarise_favourite(data = breadwheat,
 #'                       items = c("variety_a", "variety_b", "variety_c"),
 #'                       input = c("overall_best", "overall_worst"))
 #' 
 #'  
 #' @import ggplot2
 #' @export
-condense_favourite <- function(data = NULL, items = NULL, 
+summarise_favourite <- function(data = NULL, items = NULL, 
                       input = NULL, reorder = TRUE){
   
   
@@ -116,15 +116,15 @@ condense_favourite <- function(data = NULL, items = NULL,
 
 }
 
-#' @inheritParams condense_favourite
+#' @inheritParams summarise_favourite
 #' @export
-condense_favorite <- function(...){
+summarise_favorite <- function(...){
   
-  condense_favourite(...)
+  summarise_favourite(...)
   
 }
 
-#' @rdname condense_favourite
+#' @rdname summarise_favourite
 #' @method plot gosset_fvrt
 #' @export
 plot.gosset_fvrt <- function(x, ...) {
