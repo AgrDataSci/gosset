@@ -49,7 +49,7 @@ test_that("timeseries", {
   
   dt <- all.equal(maxDT, x)
   
-  expect_equal(nt, TRUE)
+  expect_equal(dt, TRUE)
 })
 
 test_that("nasapower works", {
