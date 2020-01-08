@@ -171,9 +171,9 @@ rainfall <- function(object, day.one = NULL,
     
     ind <- ind[order(ind$id), ]
     
-    ind$dates <- dates
+    ind$date <- dates
     
-    ind <- ind[, c("id", "dates", "index", "value")]
+    ind <- ind[, c("id", "date", "index", "value")]
     
     
   } 

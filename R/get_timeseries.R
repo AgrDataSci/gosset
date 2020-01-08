@@ -162,12 +162,19 @@
   
   # make a tibble
   if (n != 1) {
+    
+    dimnames(Y)[[2]] <- paste0("day", 1:ncol(Y))
+    
     Y <- tibble::as_tibble(Y[, 1:maxspan])
+    
   } else {
+    
     Y <- tibble::as_tibble(t(Y[, 1:maxspan]))
+    
+    names(Y) <- paste0("day", 1:ncol(Y))
   }
   
-  names(Y) <- paste0("day", 1:ncol(Y))
+  
   
   return(Y)
   

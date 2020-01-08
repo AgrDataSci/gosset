@@ -35,10 +35,8 @@ The **gosset** package provides the toolkit for a workflow on modelling metadata
 The development version can be installed via
 
 ```r
-
 library("devtools")
 devtools::install_github("agrobioinfoservices/gosset", build_vignettes = TRUE)
-
 ```    
 
 ## Example
@@ -49,9 +47,7 @@ devtools::install_github("agrobioinfoservices/gosset", build_vignettes = TRUE)
 The full functionality of **gosset** is illustrated in the package vignette. The vignette can be found on the [package website](https://agrobioinfoservices.github.io/gosset/) or from within `R` once the package has been installed, e.g. via 
 
 ```r
-
 vignette("Overview", package = "gosset")
-
 ```
 
 

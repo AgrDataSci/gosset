@@ -88,16 +88,28 @@ temperature <- function(object, day.one = NULL,
   
   # get timespan for the day temperature
   if (dim(object)[2] == 2) {
-    day <- .get_timeseries(object, day.one, span, pars = "T2M_MAX", ...)
+    day <- .get_timeseries(object = object, 
+                           day.one = day.one, 
+                           span = span, 
+                           pars = "T2M_MAX",
+                           ...)
   } else {
-    day <- .get_timeseries(object[, , 1], day.one, span, ...)
+    day <- .get_timeseries(object = object[ , ,1], 
+                           day.one = day.one, 
+                           span = span)
   }
   
   # get timespan for the night temperature
   if (dim(object)[2] == 2) {
-    night <- .get_timeseries(object, day.one, span, pars = "T2M_MIN", ...)
+    night <- .get_timeseries(object = object, 
+                             day.one = day.one, 
+                             span = span, 
+                             pars = "T2M_MIN",
+                             ...)
   } else {
-    night <- .get_timeseries(object[, , 2], day.one, span, ...)
+    night <- .get_timeseries(object = object[ , ,2], 
+                             day.one = day.one, 
+                             span = span)
   }
   
   n <- nrow(day)
@@ -190,11 +202,11 @@ temperature <- function(object, day.one = NULL,
     
     ind <- ind[order(ind$id), ]
     
-    ind$dates <- dates
+    ind$date <- dates
     
     ind <- tibble::as_tibble(ind)
     
-    ind <- ind[, c("id", "dates", "index", "value")]
+    ind <- ind[, c("id", "date", "index", "value")]
     
   } 
   
@@ -216,7 +228,8 @@ temperature <- function(object, day.one = NULL,
                       minNT = .min_temperature(y),
                       DTR   = .temperature_range(x, y),
                       SU    = .summer_days(x),
-                      TR    = .tropical_nights(y))
+                      TR    = .tropical_nights(y),
+                      CFD   = .frosty_days(y))
       
     }, X = day, Y = night)
     
@@ -225,9 +238,11 @@ temperature <- function(object, day.one = NULL,
                   ncol = length(index), 
                   byrow = TRUE)
     
+    dimnames(ind)[[2]] <- index
+    
     ind <- tibble::as_tibble(ind)
     
-    names(ind) <- index
+    
     
   }
   
