@@ -10,11 +10,13 @@ Status](https://ci.appveyor.com/api/projects/status/github/agrobioinfoservices/g
 [![Build
 Status](https://travis-ci.org/agrobioinfoservices/gosset.svg?branch=master)](https://travis-ci.org/agrobioinfoservices/gosset)
 [![codecov](https://codecov.io/gh/agrobioinfoservices/gosset/master.svg)](https://codecov.io/github/agrobioinfoservices/gosset?branch=master)
-[![Project Status: Active – The project has reached a stable, usable
+[![Project Status: Active â€“ The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![GPLv3
 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.r-project.org/Licenses/GPL-3)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
 # *gosset*: Modelling Metadata and Experimental Citizen Science <img align="right" src="man/figures/logo.png">
@@ -32,7 +34,6 @@ small sample experimental design and analysis.
 The development version can be installed via
 
 ``` r
-
 library("devtools")
 devtools::install_github("agrobioinfoservices/gosset", build_vignettes = TRUE)
 ```
@@ -47,7 +48,6 @@ website](https://agrobioinfoservices.github.io/gosset/) or from within
 `R` once the package has been installed, e.g. via
 
 ``` r
-
 vignette("Overview", package = "gosset")
 ```
 
