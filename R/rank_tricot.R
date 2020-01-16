@@ -66,7 +66,7 @@
 #' 
 #' head(G)
 #' 
-#' @import PlackettLuce
+#' @importFrom PlackettLuce as.rankings group
 #' @export
 rank_tricot <- function(data = NULL, items = NULL, 
                         input = NULL, group = FALSE, 

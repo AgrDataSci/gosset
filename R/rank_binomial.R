@@ -28,10 +28,12 @@
 #'               2, 1, 1, 0,
 #'               1, 0, 3, 2), nrow = 6, byrow = TRUE)
 #' colnames(R) <- c("apple", "banana", "orange", "pear")
-#' R <- PlackettLuce::as.rankings(R)
+#' 
+#' R <- as.rankings(R)
 #' 
 #' R <- rank_binomial(R)
 #' }
+#' @importFrom tibble as_tibble
 #' @export
 rank_binomial <- function(object, drop.null = FALSE) 
 {

@@ -30,8 +30,11 @@
 #' # plot nodes
 #' p <- plot_nodes(mod)
 #' 
-#' @import qvcalc
-#' @import ggplot2
+#' @importFrom partykit nodeids
+#' @importFrom psychotools itempar
+#' @importFrom qvcalc qvcalc
+#' @importFrom ggplot2 ggplot aes geom_vline geom_point geom_errorbar scale_x_continuous 
+#' theme_bw labs theme element_text element_blank element_rect element_line
 #' @export
 plot_nodes <- function(object, labels = NULL, ...){
   

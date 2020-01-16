@@ -97,6 +97,7 @@
 #' }
 #'                 
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
+#' @importFrom stats model.frame model.response runif
 #' @export
 crossvalidation <- function(formula, 
                             data, 
@@ -118,7 +119,7 @@ crossvalidation <- function(formula,
     
     # check if a seed is provided
     if (is.null(seed)) {
-      seed <- as.integer(runif(1, 0, 10000))
+      seed <- as.integer(stats::runif(1, 0, 10000))
     }
     
     set.seed(seed)
@@ -146,9 +147,9 @@ crossvalidation <- function(formula,
   # create a model frame 
   environment(formula) <- parent.frame()
   
-  data <- model.frame(formula, data)
+  data <- stats::model.frame(formula, data)
   
-  Y <- model.response(data)
+  Y <- stats::model.response(data)
   
   # define the most suitable model based on the 
   # class of the response variable

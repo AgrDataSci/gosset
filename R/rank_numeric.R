@@ -38,7 +38,8 @@
 #'                   id = 1,
 #'                   grouped.rankings = TRUE)
 #' 
-#' #---------------------------####-------------
+#' #..............................................
+#' #..............................................
 #'  
 #' # Rankings with 5 items randomly assigned
 #' 
@@ -57,8 +58,9 @@
 #'                   items = c(1:5),
 #'                   input = c(6:10))
 #'  
-#' @import tibble
+#' @importFrom tibble tibble
 #' @importFrom tidyr gather spread
+#' @importFrom PlackettLuce as.rankings group
 #' @export
 rank_numeric <- function(data = NULL, items = NULL,
                     input = NULL, id = NULL, 

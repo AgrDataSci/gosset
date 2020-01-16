@@ -55,6 +55,10 @@
 #'                     compare.to = compare,
 #'                     labels = labels)
 #'  
+#' @importFrom methods addNextMethod asMethodDefinition assignClassDef
+#' @importFrom ggplot2 ggplot aes geom_bar facet_wrap coord_flip geom_text scale_y_continuous 
+#' theme element_text labs
+#' @importFrom tibble tibble
 #' @export
 summarise_agreement <- function(baseline, compare.to, labels = NULL){
 

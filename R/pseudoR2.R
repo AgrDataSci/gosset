@@ -34,7 +34,7 @@
 #'
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom PlackettLuce PlackettLuce as.grouped_rankings
-#' @importFrom stats deviance formula predict update
+#' @importFrom stats deviance formula na.omit predict update
 #' @importFrom tibble tibble
 #' @export
 pseudoR2 <- function(object, ...) {
@@ -232,7 +232,7 @@ pseudoR2.bttree <- function(object, ...){
   
   LL <- apply(object, 1, function(x) {
     # Put coefficients in the right order
-    v <- as.vector(na.omit(coeff[order(x, na.last = NA)]))
+    v <- as.vector(stats::na.omit(coeff[order(x, na.last = NA)]))
     l <- 0
     # From Hunter MM(2004) The Annals of Statistics, Vol. 32, 
     # No. 1, 384-406, page 397

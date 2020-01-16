@@ -77,6 +77,7 @@
 #'             timeseries = TRUE,
 #'             intervals = 5)
 #' }
+#' @importFrom tibble as_tibble
 #' @export
 temperature <- function(object, day.one = NULL, 
                         span = 150, timeseries = FALSE,

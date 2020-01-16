@@ -1,7 +1,7 @@
 Package: gosset
 Type: Package
 Title: Modelling Metadata and Experimental Citizen Science
-Version: 0.1.7
+Version: 0.1.8
 Authors@R: c(person("Kaue", "de Sousa", 
         email = "kaue.desousa@inn.no", role = c("aut", "cre"),
         comment = c(ORCID = "0000-0002-7571-7845")),
@@ -26,14 +26,11 @@ Encoding: UTF-8
 LazyData: true
 Depends: R (>= 2.10)
 Imports: 
-    BradleyTerry2, 
-    gnm, 
     ggplot2,
     methods,
     nasapower,
-    partykit, 
+    partykit,
     PlackettLuce (>= 0.2-8), 
-    psychotree, 
     psychotools, 
     qvcalc,
     stats, 
@@ -41,8 +38,11 @@ Imports:
     tidyr,
     utils
 Suggests: 
+    BradleyTerry2,
     ClimMobTools,
+    gnm,
     knitr,
+    psychotree,
     rmarkdown,
     testthat
 Language: en-GB

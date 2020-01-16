@@ -43,11 +43,12 @@
 
 
 <meta property="og:title" content="Kendall rank correlation coefficient — kendallTau" />
-<meta property="og:description" content="Compute Kendall rank correlation coefficient between two objects. Kendall is a coefficient 
-used in statistics to measure the ordinal association between two measured quantities.
-A tau test is a non-parametric hypothesis test for statistical dependence based 
-on the tau coefficient. The 'kendallTau' function applies the &quot;kendall&quot; method from 
-'stats::cor' with some previous treatment in the data, such as converting floating numbers
+<meta property="og:description" content="Compute Kendall rank correlation coefficient between two objects. 
+Kendall is a coefficient used in statistics to measure the ordinal 
+association between two measured quantities. A tau test is a non-parametric 
+hypothesis test for statistical dependence based on the tau coefficient.
+The 'kendallTau' function applies the &quot;kendall&quot; method from 'stats::cor' 
+with some previous treatment in the data, such as converting floating numbers
 into ranks (from the higher being the first and negative being the last) 
 and the possibility to remove zeros from incomplete ranks" />
 <meta property="og:image" content="/logo.png" />
@@ -83,7 +84,7 @@ and the possibility to remove zeros from incomplete ranks" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.8</span>
       </span>
     </div>
 
@@ -123,11 +124,12 @@ and the possibility to remove zeros from incomplete ranks" />
     </div>
 
     <div class="ref-description">
-    <p>Compute Kendall rank correlation coefficient between two objects. Kendall is a coefficient 
-used in statistics to measure the ordinal association between two measured quantities.
-A tau test is a non-parametric hypothesis test for statistical dependence based 
-on the tau coefficient. The 'kendallTau' function applies the "kendall" method from 
-'stats::cor' with some previous treatment in the data, such as converting floating numbers
+    <p>Compute Kendall rank correlation coefficient between two objects. 
+Kendall is a coefficient used in statistics to measure the ordinal 
+association between two measured quantities. A tau test is a non-parametric 
+hypothesis test for statistical dependence based on the tau coefficient.
+The 'kendallTau' function applies the "kendall" method from 'stats::cor' 
+with some previous treatment in the data, such as converting floating numbers
 into ranks (from the higher being the first and negative being the last) 
 and the possibility to remove zeros from incomplete ranks</p>
     </div>
@@ -157,11 +159,13 @@ and the possibility to remove zeros from incomplete ranks</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>an object with rankings or model coefficients with same dimensions of <code>y</code></p></td>
+      <td><p>an object with rankings or model coefficients 
+with same dimensions of <code>y</code></p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>an object with rankings or model coefficients with same dimensions of <code>x</code></p></td>
+      <td><p>an object with rankings or model coefficients 
+with same dimensions of <code>x</code></p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -179,7 +183,8 @@ Can be used for significance testing.</p>
     <p>null.rm logical, to remove zeros from <code>x</code> and <code>y</code></p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. https://doi.org/10.1093/biomet/30.1-2.81.</p>
+    <p>Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. 
+https://doi.org/10.1093/biomet/30.1-2.81.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/r/stats/cor.html'>cor</a></code></p></div>

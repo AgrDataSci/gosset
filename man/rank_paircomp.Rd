@@ -49,7 +49,6 @@ R <- rank_tricot(breadwheat,
 
 PC <- rank_paircomp(R)
 
-
 }
 \references{
 Strobl C., Wickelmaier F. & Zeileis A. (2011). 

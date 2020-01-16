@@ -45,7 +45,8 @@
 #' 
 #' PC <- rank_paircomp(R)
 #' 
-#' 
+#' @importFrom psychotools paircomp
+#' @importFrom utils combn
 #' @export
 rank_paircomp <- function(object){
   
@@ -95,7 +96,15 @@ rank_paircomp <- function(object){
   return(pair)
 }
 
-# make pairwise comparisons of items
+#' Make pairwise comparisons of items
+#' 
+#' @param x vector source for combinations
+#' @param m integer for the number of elements to choose
+#' @examples 
+#' x <- LETTERS[1:5]
+#' .combn2(x, 2)
+#' 
+#' @noRd
 .combn2 <- function(x, m)
 {
   cc <- utils::combn(rev(x), m)

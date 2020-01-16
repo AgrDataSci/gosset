@@ -39,6 +39,10 @@
 #' worst_regret(mod)
 #' 
 #' 
+#' @importFrom partykit nodeids
+#' @importFrom psychotools itempar
+#' @importFrom qvcalc qvcalc.itempar
+#' @importFrom tibble as_tibble
 #' @export
 worst_regret <- function(object, ...){
   

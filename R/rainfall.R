@@ -75,6 +75,8 @@
 #'          intervals = 7)
 #' }       
 #'          
+#' @importFrom tibble as_tibble
+#' @importFrom stats quantile
 #' @export
 rainfall <- function(object, day.one = NULL, 
                      span = 150, timeseries = FALSE,

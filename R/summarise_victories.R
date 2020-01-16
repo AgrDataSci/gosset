@@ -42,6 +42,7 @@
 #' v <- summarise_victories(R)
 #' 
 #'  
+#' @importFrom ggplot2 ggplot geom_bar aes facet_wrap coord_flip scale_fill_gradient2 scale_y_continuous labs
 #' @export
 summarise_victories <- function(object){
 

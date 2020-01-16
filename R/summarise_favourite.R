@@ -27,7 +27,9 @@
 #'                       input = c("overall_best", "overall_worst"))
 #' 
 #'  
-#' @import ggplot2
+#' @importFrom methods addNextMethod asMethodDefinition assignClassDef
+#' @importFrom ggplot2 ggplot aes geom_hline geom_bar coord_flip scale_y_continuous scale_fill_gradient2 labs
+#' @importFrom tibble tibble
 #' @export
 summarise_favourite <- function(data = NULL, items = NULL, 
                       input = NULL, reorder = TRUE){
