@@ -66,17 +66,17 @@
                            ceiling(max(object[,1])), 
                            ceiling(max(object[,2]))))
     
-    # check distance between lims
-    # nasapower accepts a max of 4.5
-    area <- c((lims[3] - lims[1]), 
-              (lims[4] - lims[2]))
-    
-    largearea <- any(area > 4.5)
-    
-    if (largearea) {
-      stop("nasapower supports a maximum area of 4.5 x 4.5 degrees, yours is ", 
-           paste(area, collapse = " x "))
-    }
+    # # check distance between lims
+    # # nasapower accepts a max of 4.5
+    # area <- c((lims[3] - lims[1]), 
+    #           (lims[4] - lims[2]))
+    # 
+    # largearea <- any(area > 4.5)
+    # 
+    # if (largearea) {
+    #   stop("nasapower supports a maximum area of 4.5 x 4.5 degrees, yours is ", 
+    #        paste(area, collapse = " x "))
+    # }
     
     # get NASA POWER
     info <- nasapower::get_power(community = "AG",
