@@ -54,6 +54,7 @@ or Plackett-Luce models.
 }
 \examples{
 # Generalized Linear Models
+require("gnm")
 
 data("airquality")
 
@@ -66,8 +67,9 @@ cv <- crossvalidation(Temp ~ Wind + Solar.R,
 
 \donttest{
 # Plackett-Luce Model
+require("PlackettLuce")
+
 # beans data from PlackettLuce
-library("PlackettLuce")
 data("beans", package = "PlackettLuce")
 
 G <- rank_tricot(data = beans,
@@ -91,7 +93,8 @@ cv <- crossvalidation(G ~ maxTN,
 ########################################
 
 # Bradley-Terry Model
-library("psychotree")
+require("psychotree")
+
 # Germany's Next Topmodel 2007 data from psychotree
 data("Topmodel2007", package = "psychotree")
 

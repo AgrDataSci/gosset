@@ -38,7 +38,8 @@
 #'     degree.days = 1800,
 #'     base = 5)
 #'}
-#'     
+#'
+#' @importFrom tibble tibble
 #' @export
 GDD <- function(object, day.one = NULL, degree.days = NULL,
                 base = 10, span = 150, ...)

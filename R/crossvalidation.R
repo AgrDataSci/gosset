@@ -46,6 +46,7 @@
 #' 
 #' @examples
 #' # Generalized Linear Models
+#' require("gnm")
 #' 
 #' data("airquality")
 #' 
@@ -58,8 +59,9 @@
 #' 
 #' \donttest{
 #' # Plackett-Luce Model
+#' require("PlackettLuce")
+#' 
 #' # beans data from PlackettLuce
-#' library("PlackettLuce")
 #' data("beans", package = "PlackettLuce")
 #' 
 #' G <- rank_tricot(data = beans,
@@ -83,7 +85,8 @@
 #' ########################################
 #' 
 #' # Bradley-Terry Model
-#' library("psychotree")
+#' require("psychotree")
+#' 
 #' # Germany's Next Topmodel 2007 data from psychotree
 #' data("Topmodel2007", package = "psychotree")
 #' 
@@ -93,11 +96,7 @@
 #'                 
 #' }
 #'                 
-#' @import partykit
-#' @import psychotools
-#' @import psychotree
-#' @import PlackettLuce
-#' @import gnm
+#' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @export
 crossvalidation <- function(formula, 
                             data, 
@@ -155,9 +154,21 @@ crossvalidation <- function(formula,
   # class of the response variable
   model <- "gnm"
   
-  if (.is_grouped_rankings(Y)) {model <- "pltree"}
+  if (.is_grouped_rankings(Y)) {
+    
+    model <- "pltree"
+    
+    message("Using Plackett-Luce model\n")
+    
+  }
   
-  if (.is_paircomp(Y)) {model <- "bttree"}
+  if (.is_paircomp(Y)) {
+    
+    model <- "bttree"
+    
+    message("Using Bradley-Terry model\n")
+    
+  }
   
   # split data into lists with training and test set
   train <- list()
@@ -170,20 +181,7 @@ crossvalidation <- function(formula,
     test[[i]] <- data[folds == i  ,]
   }
   
-  # drop folds
-  drop.folds <- dots[["drop.folds"]] 
-  if(!is.null(drop.folds)) {
-    cat("Folds ", paste(drop.folds, collapse = ", "),
-        "are excluded from modelling exercise\n")
-    train <- train[-drop.folds]
-    test  <- test[-drop.folds]
-    folds <- folds[!folds %in% drop.folds]
-    k <- length(unique(folds))
-    drop <- match("drop.folds", names(dots))
-    dots <- dots[-drop]
-    
-  }
-  
+
   # fit the models
   mod <- lapply(train, function(X) {
     
@@ -206,6 +204,7 @@ crossvalidation <- function(formula,
     R_pl <- all.vars(formula)[[1]]
     
     R_pl <- lapply(test, function(x) {
+      
       x <- x[, R_pl]
       
       x[1:length(x), , as.grouped_rankings = FALSE]
@@ -215,7 +214,9 @@ crossvalidation <- function(formula,
     preds <- gof[[2]]
     
     KT <- mapply(function(X, Y) {
+      
         try(kendallTau(X, Y)[[1]], silent = TRUE)
+      
       }, X = R_pl, Y = preds)
       
       KT <- as.numeric(KT)
@@ -343,7 +344,7 @@ print.gosset_cv <- function(x, ...) {
     stouffer <- object * wfold
     
     # sum these values and that is the stouffer mean
-    m <- sum(stouffer)
+    m <- sum(stouffer, na.rm = TRUE)
   }
   
   # mean weighted by foldsize
@@ -354,12 +355,12 @@ print.gosset_cv <- function(x, ...) {
     
     # fold size mean is the product of multiplication of object values by 
     # its number of observations then divided by the total number of observations
-    m <- sum(object * foldsize) / sum(foldsize)
+    m <- sum(object * foldsize, na.rm = TRUE) / sum(foldsize)
   }
   
   # arithmetic mean 
   if (mean.method == "equal") {
-    m <- mean(object)
+    m <- mean(object, na.rm = TRUE)
   }
   
   return(m)
