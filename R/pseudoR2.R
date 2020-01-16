@@ -15,9 +15,13 @@
 #' \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
 #' \item{Agresti}{Agresti pseudo R-squared}
 #' @references 
-#' Agresti A. (2002). Categorical Data Analysis. John Wiley & Sons, Inc., Hoboken, NJ, USA. http://doi.wiley.com/10.1002/0471249688
 #' 
-#' Hunter D. R. (2004). The Annals of Statistics, 32(1), 384–406. http://www.jstor.org/stable/3448514
+#' Agresti A. (2002). Categorical Data Analysis. John Wiley & Sons, Inc., 
+#' Hoboken, NJ, USA. http://doi.wiley.com/10.1002/0471249688
+#' 
+#' Hunter D. R. (2004). The Annals of Statistics, 32(1), 384–406. 
+#' http://www.jstor.org/stable/3448514
+#' 
 #' @examples
 #'
 #' data("airquality")
@@ -28,6 +32,10 @@
 #'
 #' pseudoR2(mod)
 #'
+#' @importFrom methods addNextMethod asMethodDefinition assignClassDef
+#' @importFrom PlackettLuce PlackettLuce as.grouped_rankings
+#' @importFrom stats deviance formula predict update
+#' @importFrom tibble tibble
 #' @export
 pseudoR2 <- function(object, ...) {
   
@@ -45,37 +53,37 @@ pseudoR2.default <- function(object, ...){
   
   # update the model as a null model
   # model without covariates
-  mod_null <- update(object, ~ 1)
+  mod_null <- stats::update(object, ~ 1)
   
   # pseudo R squared
   if (is.null(newdata)) {
     # get the logLik of the null model
-    LLNull <- deviance(mod_null)[1] / -2
+    LLNull <- stats::deviance(mod_null)[1] / -2
     
     # get the logLik of the original model
-    LL <- deviance(object)[1] / -2
+    LL <- stats::deviance(object)[1] / -2
     
     # number of observations in the original model
     # to avoid issues with the structure of different model aproaches
     # we get the number of rows of a prediction matrix which will
     # have the same dimensions as the response variable
-    n <- nrow(as.matrix(predict(object)))
+    n <- nrow(as.matrix(stats::predict(object)))
   }
   
   # pseudo R squared on a validation sample
   if (!is.null(newdata)) {
     # get the null logLik using the validation sample
-    LLNull <- deviance(mod_null, newdata = newdata) / -2
+    LLNull <- stats::deviance(mod_null, newdata = newdata) / -2
     
     # get the logLik using the training model and
     # the validation set
-    LL <- deviance(object, newdata = newdata) / -2
+    LL <- stats::deviance(object, newdata = newdata) / -2
     
     # number of observations in the original model
     # to avoid issues with the structure of different model aproaches
     # we get the number of rows of a prediction matrix which will
     # have the same dimensions as the response variable
-    n <- nrow(as.matrix(predict(object, newdata = newdata)))
+    n <- nrow(as.matrix(stats::predict(object, newdata = newdata)))
     
   }
   
@@ -95,12 +103,12 @@ pseudoR2.pltree <- function(object, ...){
   newdata <- dots[["newdata"]]
   
   # identify the name of response variable
-  Y <- all.vars(formula(object))[1]
+  Y <- all.vars(stats::formula(object))[1]
   
   # pR2 in a fit sample
   if (is.null(newdata)) {
     #logLik of object
-    LL <- deviance(object)[1] / -2
+    LL <- stats::deviance(object)[1] / -2
     
     # observed rankings
     R <- object[[1]]$data
@@ -116,7 +124,7 @@ pseudoR2.pltree <- function(object, ...){
   # pR2 on a validation sample
   if (!is.null(newdata)) {
     # predicted logLik on newdata using object
-    LL <- deviance(object, newdata = newdata) / -2
+    LL <- stats::deviance(object, newdata = newdata) / -2
     
     # observed rankings on newdata
     R <- newdata[, Y]
@@ -148,7 +156,7 @@ pseudoR2.bttree <- function(object, ...){
   newdata <- dots[["newdata"]]
   
   # get the response variable
-  Y <- all.vars(formula(object))[1]
+  Y <- all.vars(stats::formula(object))[1]
   
   if (is.null(newdata)) {
     #logLik of object
@@ -170,7 +178,7 @@ pseudoR2.bttree <- function(object, ...){
   
   if (!is.null(newdata)) {
     # predicted logLik on newdata using object
-    LL <- deviance(object, newdata = newdata) / -2
+    LL <- stats::deviance(object, newdata = newdata) / -2
     
     # observed rankings on newdata
     R <- newdata[, Y]
@@ -196,8 +204,56 @@ pseudoR2.bttree <- function(object, ...){
   
 }
 
+#' Compute log likelihood of a null ranking model
+#' 
+#' @param object a matrix with rankings
+#' @return the null log likelihood
+#' @examples 
+#' R <- matrix(c(1, 2, NA, NA,
+#'               4, 1, 2, 3,
+#'               2, 1, 1, 1,
+#'               1, 2, 3, NA,
+#'               2, 1, 1, NA,
+#'               1, NA, 3, 2), 
+#'             nrow = 6, byrow = TRUE)
+#' 
+#' .logLikNull(R)
+#' @noRd
+.logLikNull <- function(object) {
+  
+  dimo <- dim(object)
+  
+  if(is.null(dimo)){
+    object <- as.matrix(t(object))
+  }
+  # This function assumes that all coefficients
+  # are equal to get a true null estimates
+  coeff <- rep(0, dim(object)[[2]])
+  
+  LL <- apply(object, 1, function(x) {
+    # Put coefficients in the right order
+    v <- as.vector(na.omit(coeff[order(x, na.last = NA)]))
+    l <- 0
+    # From Hunter MM(2004) The Annals of Statistics, Vol. 32, 
+    # No. 1, 384-406, page 397
+    for (i in seq_along(v[-1])) {
+      l <- l + v[i] - log(sum(exp(v[(i):(length(v))])))
+    }
+    return(l)
+    
+  })
+  
+  sum(LL)
+  
+}
 
-# Compute pseudo R squared
+#' Compute pseudo R squared
+#'  
+#' @param LLNull numeric, the null log likelihood
+#' @param LL numeric, the log likelihood
+#' @param n integer, the number of observations 
+#' @return the pseudo R squared
+#' @noRd 
 .getpseudoR2 <- function(LLNull, LL, n) {
   # minus two times the logLik
   g2 <- ((LLNull - LL) * -2)
@@ -219,34 +275,5 @@ pseudoR2.bttree <- function(object, ...){
   )
   
   return(result)
-  
-}
-
-# Compute log likelihood of a null ranking model
-.logLikNull <- function(object) {
-  
-  dimo <- dim(object)
-  
-  if(is.null(dimo)){
-    object <- as.matrix(t(object))
-  }
-  # This function assumes that all coefficients
-  # are equal to get a true null estimates
-  coeff <- rep(0, dim(object)[[2]])
-  
-  LL <- apply(object, 1, function(x) {
-    # Put coefficients in the right order
-    v <- as.vector(na.omit(coeff[order(x, na.last = NA)]))
-    l <- 0
-    # From Hunter MM(2004) The Annals of Statistics, Vol. 32, 
-    # No. 1, 384-406, page 397
-    for (i in 1:(length(v) - 1))
-      l <- l + v[i] - log(sum(exp(v[(i):(length(v))])))
-    
-    return(l)
-    
-  })
-  
-  sum(LL)
   
 }

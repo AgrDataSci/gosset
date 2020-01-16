@@ -15,7 +15,8 @@
 #' @param ... additional arguments passed to \code{\link[nasapower]{get_power}}
 #' @return a data frame of time series environmental data for the chosen period
 #' @family climatology functions
-#' @import nasapower
+#' @importFrom nasapower get_power
+#' @importFrom tibble as_tibble
 #' @noRd
 .get_timeseries <- function(object, day.one = NULL,
                             span = 150, days.before = 0, ...)

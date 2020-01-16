@@ -144,8 +144,10 @@
 #' .rank_decimal(c(0.2, -1.2, 2.3, 0.2, 0.4, -3.3))
 #' 
 #' # with id
-# .rank_decimal(c(0.2, -1.2, 2.3, 0.2, 0.4, -3.3),
-#               id = c(1,1,1,2,2,2))
+#' .rank_decimal(c(0.2, -1.2, 2.3, 0.2, 0.4, -3.3),
+#'               id = c(1,1,1,2,2,2))
+#'
+#' @importFrom tibble as_tibble
 #' @noRd
 .rank_decimal <- function(object, id = NULL, bindwith = NULL){
   

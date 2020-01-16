@@ -47,7 +47,9 @@ pseudoR2(mod)
 
 }
 \references{
-Agresti A. (2002). Categorical Data Analysis. John Wiley & Sons, Inc., Hoboken, NJ, USA. http://doi.wiley.com/10.1002/0471249688
+Agresti A. (2002). Categorical Data Analysis. John Wiley & Sons, Inc., 
+Hoboken, NJ, USA. http://doi.wiley.com/10.1002/0471249688
 
-Hunter D. R. (2004). The Annals of Statistics, 32(1), 384–406. http://www.jstor.org/stable/3448514
+Hunter D. R. (2004). The Annals of Statistics, 32(1), 384–406. 
+http://www.jstor.org/stable/3448514
 }

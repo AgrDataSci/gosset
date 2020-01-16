@@ -25,9 +25,11 @@ kendallTau(x, y, ...)
 \method{kendallTau}{paircomp}(x, y, ...)
 }
 \arguments{
-\item{x}{an object with rankings or model coefficients with same dimensions of \code{y}}
+\item{x}{an object with rankings or model coefficients 
+with same dimensions of \code{y}}
 
-\item{y}{an object with rankings or model coefficients with same dimensions of \code{x}}
+\item{y}{an object with rankings or model coefficients 
+with same dimensions of \code{x}}
 
 \item{...}{further arguments afecting the Kendall tau produced. See details}
 }
@@ -37,11 +39,12 @@ is the equivalent N needed if all items were compared to all items.
 Can be used for significance testing.
 }
 \description{
-Compute Kendall rank correlation coefficient between two objects. Kendall is a coefficient 
-used in statistics to measure the ordinal association between two measured quantities.
-A tau test is a non-parametric hypothesis test for statistical dependence based 
-on the tau coefficient. The 'kendallTau' function applies the "kendall" method from 
-'stats::cor' with some previous treatment in the data, such as converting floating numbers
+Compute Kendall rank correlation coefficient between two objects. 
+Kendall is a coefficient used in statistics to measure the ordinal 
+association between two measured quantities. A tau test is a non-parametric 
+hypothesis test for statistical dependence based on the tau coefficient.
+The 'kendallTau' function applies the "kendall" method from 'stats::cor' 
+with some previous treatment in the data, such as converting floating numbers
 into ranks (from the higher being the first and negative being the last) 
 and the possibility to remove zeros from incomplete ranks
 }
@@ -77,7 +80,8 @@ k <- kendallTau(R[1,], preds[1,])
 
 }
 \references{
-Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. https://doi.org/10.1093/biomet/30.1-2.81.
+Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. 
+https://doi.org/10.1093/biomet/30.1-2.81.
 }
 \seealso{
 \code{\link[stats]{cor}}

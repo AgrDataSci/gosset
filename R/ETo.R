@@ -38,6 +38,7 @@
 #'          lat = lonlat[["lat"]])
 #' }
 #' 
+#' @importFrom tibble tibble
 #' @export
 ETo <- function(object, day.one = NULL, span = 150, 
                 lat = NULL, Kc = 1, p = NULL){
@@ -83,7 +84,9 @@ ETo <- function(object, day.one = NULL, span = 150,
   # evapotranspiration
   eto <- p * (0.46 * Tmean + 8) * Kc
   
-  return(tibble::tibble(ETo = eto))
+  result <- tibble::tibble(ETo = eto)
+  
+  return(result)
   
 }
 

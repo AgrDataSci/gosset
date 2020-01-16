@@ -1,15 +1,18 @@
 #' Kendall rank correlation coefficient
 #' 
-#' Compute Kendall rank correlation coefficient between two objects. Kendall is a coefficient 
-#' used in statistics to measure the ordinal association between two measured quantities.
-#' A tau test is a non-parametric hypothesis test for statistical dependence based 
-#' on the tau coefficient. The 'kendallTau' function applies the "kendall" method from 
-#' 'stats::cor' with some previous treatment in the data, such as converting floating numbers
+#' Compute Kendall rank correlation coefficient between two objects. 
+#' Kendall is a coefficient used in statistics to measure the ordinal 
+#' association between two measured quantities. A tau test is a non-parametric 
+#' hypothesis test for statistical dependence based on the tau coefficient.
+#' The 'kendallTau' function applies the "kendall" method from 'stats::cor' 
+#' with some previous treatment in the data, such as converting floating numbers
 #' into ranks (from the higher being the first and negative being the last) 
 #' and the possibility to remove zeros from incomplete ranks
 #' 
-#' @param x an object with rankings or model coefficients with same dimensions of \code{y}
-#' @param y an object with rankings or model coefficients with same dimensions of \code{x}
+#' @param x an object with rankings or model coefficients 
+#'  with same dimensions of \code{y}
+#' @param y an object with rankings or model coefficients 
+#'  with same dimensions of \code{x}
 #' @param ... further arguments afecting the Kendall tau produced. See details 
 #' @details 
 #' 
@@ -20,7 +23,8 @@
 #' Can be used for significance testing.
 #' @references 
 #' 
-#' Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. https://doi.org/10.1093/biomet/30.1-2.81.
+#' Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. 
+#' https://doi.org/10.1093/biomet/30.1-2.81.
 #' 
 #' @examples
 #' 
@@ -51,6 +55,10 @@
 #' 
 #' @seealso \code{\link[stats]{cor}}
 #' 
+#' @importFrom methods addNextMethod asMethodDefinition assignClassDef
+#' @importFrom stats cor
+#' @importFrom tibble as_tibble
+#' @importFrom PlackettLuce as.grouped_rankings
 #' @export
 kendallTau<- function(x, y, ...){
   

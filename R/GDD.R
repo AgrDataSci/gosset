@@ -80,6 +80,8 @@ GDD <- function(object, day.one = NULL, degree.days = NULL,
     return(i)
   })
   
-  return(tibble::tibble(GDD = Y))
+  result <- tibble::tibble(GDD = Y)
+  
+  return(result)
 }
 
