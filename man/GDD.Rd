@@ -59,7 +59,7 @@ GDD(lonlat,
     degree.days = 1800,
     base = 5)
 }
-    
+
 }
 \references{
 Prentice I. C., et al. (1992) Journal of Biogeography, 19(2), 117. 

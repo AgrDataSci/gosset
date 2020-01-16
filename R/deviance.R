@@ -2,33 +2,57 @@
 # code adpeted from PlackettLuce repository
 # Turner et al (2018)
 #' @method AIC bttree
-#' @import stats 
+#' @importFrom methods addNextMethod asMethodDefinition assignClassDef
+#' @importFrom stats AIC coef formula logLik model.response model.weights
+#' @importFrom partykit nodeids predict.modelparty
+#' @importFrom psychotools btmodel estfun.btmodel itempar
 #' @export
 AIC.bttree <- function(object, newdata = NULL, ...) {
+  
   if (is.null(newdata)) {
     return(NextMethod(object, ...))
   }
+  
   # create model.frame from newdata
-  response <- as.character(formula(object)[[2]])
-  if (!response %in% colnames(newdata))
+  response <- as.character(stats::formula(object)[[2]])
+  
+  if (!response %in% colnames(newdata)) {
     stop("`newdata` must include response")
+  }
+  
   f <- stats::formula(object)
+  
   environment(f) <- parent.frame()
-  newdata <- model.frame(f, data = newdata, ...)
+  
+  newdata <- stats::model.frame(f, data = newdata, ...)
+  
   # predict node for each grouped ranking
   node <- partykit::predict.modelparty(object,
                                        newdata = newdata,
                                        type = "node")
+  
   # set up to refit models based on newdata
   cf <- psychotools::itempar(object)
-  if (is.null(dim(cf))) cf <- t(as.matrix(cf))
+  
+  if (is.null(dim(cf))) { 
+    cf <- t(as.matrix(cf))
+  }
+  
   nodes <- partykit::nodeids(object, terminal = TRUE)
+  
   dots <- object$info$dots
+  
   G <- stats::model.response(newdata)
+  
   w <- stats::model.weights(newdata)
-  if (is.null(w)) w <- rep.int(1, length(G))
+  
+  if (is.null(w)) {
+    w <- rep.int(1, length(G))
+  }
+  
   LL <- df <- numeric(length(nodes))
-  for (i in seq_along(nodes)){
+  
+  for (i in seq_along(nodes)) {
     # fit model with coef fixed to get logLik
     # suppress warning due to fixing maxit
     id <- node == nodes[i]
@@ -44,7 +68,7 @@ AIC.bttree <- function(object, newdata = NULL, ...) {
   }
   # compute AIC based on total log likelihood of data
   # and df of original model fit
-  -2 * sum(LL) + 2 * attr(logLik(object), "df")
+  -2 * sum(LL) + 2 * attr(stats::logLik(object), "df")
 }
 
 
@@ -56,29 +80,51 @@ AIC.bttree <- function(object, newdata = NULL, ...) {
 #' @method deviance bttree
 #' @export
 deviance.bttree <- function(object, newdata = NULL, ...) {
+  
   if (is.null(newdata)) {
     return(NextMethod(object, ...))
   }
+  
   # create model.frame from newdata
+  
   response <- as.character(formula(object)[[2]])
-  if (!response %in% colnames(newdata))
+  
+  if (!response %in% colnames(newdata)) {
     stop("`newdata` must include response")
+  }
+  
   f <- stats::formula(object)
+  
   environment(f) <- parent.frame()
-  newdata <- model.frame(f, data = newdata, ...)
+  
+  newdata <- stats::model.frame(f, data = newdata, ...)
+  
   # predict node for each grouped ranking
   node <- partykit::predict.modelparty(object,
                                        newdata = newdata,
                                        type = "node")
+  
   # set up to refit models based on newdata
   cf <- psychotools::itempar(object)
-  if (is.null(dim(cf))) cf <- t(as.matrix(cf))
+  
+  if (is.null(dim(cf))) { 
+    cf <- t(as.matrix(cf))
+  }
+  
   nodes <- partykit::nodeids(object, terminal = TRUE)
+  
   dots <- object$info$dots
+  
   G <- stats::model.response(newdata)
+  
   w <- stats::model.weights(newdata)
-  if (is.null(w)) w <- rep.int(1, length(G))
+  
+  if (is.null(w)) {
+    w <- rep.int(1, length(G))
+  }
+  
   LL <- df <- numeric(length(nodes))
+  
   for (i in seq_along(nodes)){
     # fit model with coef fixed to get logLik
     # suppress warning due to fixing maxit
@@ -106,15 +152,24 @@ deviance.bttree <- function(object, newdata = NULL, ...) {
 .btfit <- function(y, x = NULL, start = NULL, weights = NULL, offset = NULL,
                    cluster = NULL, ..., estfun = FALSE, object = FALSE)
 {
-  if(!(is.null(x) || NCOL(x) == 0L)) warning("x not used")
-  if(!is.null(offset)) warning("offset not used")
+  
+  if (!(is.null(x) || NCOL(x) == 0L)) {
+    warning("x not used")
+  }
+  
+  if(!is.null(offset)) {
+    warning("offset not used")
+  }
+  
   rval <- psychotools::btmodel(y, weights = weights, ..., vcov = object)
+  
   rval <- list(
     coefficients = rval$coefficients,
     objfun = -rval$loglik,
-    estfun = if(estfun) psychotools::estfun.btmodel(rval) else NULL,
-    object = if(object) rval else NULL
+    estfun = if (estfun) psychotools::estfun.btmodel(rval) else NULL,
+    object = if (object) rval else NULL
   )
+  
   return(rval)
 }
 
@@ -124,13 +179,17 @@ deviance.bttree <- function(object, newdata = NULL, ...) {
 #' @method deviance pltree
 #' @export
 deviance.pltree <- function(object, newdata = NULL, ...) {
+  
   if (is.null(newdata)) {
     return(NextMethod(object, ...))
   }
+  
   # get AIC from model object 
   aic <- stats::AIC(object, newdata = newdata)
+  
   # get degrees of freedom
   df <- attr(stats::logLik(object), "df")
+  
   # and the deviance 
   aic - (2 * df)
 }
@@ -141,6 +200,7 @@ deviance.pltree <- function(object, newdata = NULL, ...) {
 #' @method AIC gnm
 #' @export
 AIC.gnm <- function(object, newdata = NULL, ...) {
+  
   if (is.null(newdata)) {
     return(NextMethod(object, ...))
   }
@@ -156,6 +216,7 @@ AIC.gnm <- function(object, newdata = NULL, ...) {
 #' @method deviance gnm
 #' @export
 deviance.gnm <- function(object, newdata = NULL, ...) {
+  
   if (is.null(newdata)) {
     return(NextMethod(object, ...))
   }
@@ -163,10 +224,10 @@ deviance.gnm <- function(object, newdata = NULL, ...) {
   result <- .refit_glm(object = object, newdata = newdata)
   
   # take the AIC
-  aic <- AIC(result)
+  aic <- stats::AIC(result)
   
   # and the degree of freedom
-  df <- attr(logLik(result), "df")
+  df <- attr(stats::logLik(result), "df")
   
   # remove the degrees of freedom in AIC 
   # and return the deviance
@@ -181,6 +242,7 @@ deviance.gnm <- function(object, newdata = NULL, ...) {
 #' @method AIC glm
 #' @export
 AIC.glm <- function(object, newdata = NULL, ...) {
+  
   if (is.null(newdata)) {
     return(NextMethod(object, ...))
   }
@@ -196,6 +258,7 @@ AIC.glm <- function(object, newdata = NULL, ...) {
 #' @method deviance glm
 #' @export
 deviance.glm <- function(object, newdata = NULL, ...) {
+  
   if (is.null(newdata)) {
     return(NextMethod(object, ...))
   }
@@ -203,10 +266,10 @@ deviance.glm <- function(object, newdata = NULL, ...) {
   result <- .refit_glm(object = object, newdata = newdata)
   
   # take the AIC
-  aic <- AIC(result)
+  aic <- stats::AIC(result)
   
   # and the degree of freedom
-  df <- attr(logLik(result), "df")
+  df <- attr(stats::logLik(result), "df")
   
   # remove the degrees of freedom in AIC 
   # and return the deviance
@@ -221,6 +284,7 @@ deviance.glm <- function(object, newdata = NULL, ...) {
 #' @method AIC lm
 #' @export
 AIC.lm <- function(object, newdata = NULL, ...) {
+  
   if (is.null(newdata)) {
     return(NextMethod(object, ...))
   }
@@ -236,6 +300,7 @@ AIC.lm <- function(object, newdata = NULL, ...) {
 #' @method deviance lm
 #' @export
 deviance.lm <- function(object, newdata = NULL, ...) {
+  
   if (is.null(newdata)) {
     return(NextMethod(object, ...))
   }
@@ -243,10 +308,10 @@ deviance.lm <- function(object, newdata = NULL, ...) {
   result <- .refit_glm(object = object, newdata = newdata)
   
   # take the AIC
-  aic <- AIC(result)
+  aic <- stats::AIC(result)
   
   # and the degree of freedom
-  df <- attr(logLik(result), "df")
+  df <- attr(stats::logLik(result), "df")
   
   # remove the degrees of freedom in AIC 
   # and return the deviance
@@ -258,6 +323,7 @@ deviance.lm <- function(object, newdata = NULL, ...) {
 
 # add function refit 
 .refit_glm <- function(object, newdata = NULL) {
+  
   # get the full call with all arguments 
   args <- as.list(object$call)[-1]
   
@@ -273,5 +339,5 @@ deviance.lm <- function(object, newdata = NULL, ...) {
             contrainTo = stats::coef(object))
   
   # make the call to gnm using the arguments defined above
-  m <- do.call(gnm::gnm, args)
+  m <- do.call("gnm", args)
 }

@@ -1,6 +1,9 @@
 context("test-crossvalidation")
 
 library("gosset")
+library("PlackettLuce")
+library("psychotree")
+library("gnm")
 
 
 # tests here covers:
@@ -182,24 +185,3 @@ test_that("invalid fold length", {
                     folds =  f)
   )
 })
-
-
-# folds different length
-test_that("drop fold", {
-  
-  data("airquality")
-  
-  n <- nrow(airquality)
-  k <- 5
-  f <- sample(rep(1:k, times = ceiling(n / k), length.out = n))
-  
-  expect_output(
-    crossvalidation(Temp ~ Wind + Solar.R,
-                    data = airquality,
-                    k = k,
-                    folds = f,
-                    drop.folds = c(1,4))
-                )
-
-})
-

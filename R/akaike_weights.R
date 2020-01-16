@@ -37,6 +37,7 @@
 #' # the higher the better
 #' names(models[which.max(aw$akaike_weights)])
 #' 
+#' @importFrom tibble tibble
 #' @export 
 akaike_weights <- function(object){
 
