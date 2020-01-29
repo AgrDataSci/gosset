@@ -9,10 +9,8 @@
 #' into ranks (from the higher being the first and negative being the last) 
 #' and the possibility to remove zeros from incomplete ranks
 #' 
-#' @param x an object with rankings or model coefficients 
-#'  with same dimensions of \code{y}
-#' @param y an object with rankings or model coefficients 
-#'  with same dimensions of \code{x}
+#' @param x a numeric vector, matrix or data frame
+#' @param y a vector, matrix or data frame with compatible dimensions to \code{x}
 #' @param ... further arguments afecting the Kendall tau produced. See details 
 #' @details 
 #' 
@@ -203,7 +201,7 @@ kendallTau.paircomp <- function(x, y, ...) {
 #' p1 <- c(1,2,3,4,5,6,7)
 #' p2 <- c(1,2,0,3,5,7,6)
 #' 
-#' .get_kendall(p1, p2,  null.rm = TRUE)
+#' .get_kendall(p1, p2, null.rm = TRUE)
 #' .get_kendall(p1, p2, null.rm = FALSE)
 #' @noRd
 .get_kendall <- function(x, y, null.rm = TRUE) {

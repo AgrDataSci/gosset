@@ -46,7 +46,7 @@
 summarise_dominance <- function(object){
 
   # get binomial rankings
-  bin <- rank_binomial(object)
+  bin <- rank_binomial(object, drop.null = TRUE)
   
   # factors into character
   bin[1:2] <- lapply(bin[1:2], as.character)

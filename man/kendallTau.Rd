@@ -25,11 +25,9 @@ kendallTau(x, y, ...)
 \method{kendallTau}{paircomp}(x, y, ...)
 }
 \arguments{
-\item{x}{an object with rankings or model coefficients 
-with same dimensions of \code{y}}
+\item{x}{a numeric vector, matrix or data frame}
 
-\item{y}{an object with rankings or model coefficients 
-with same dimensions of \code{x}}
+\item{y}{a vector, matrix or data frame with compatible dimensions to \code{x}}
 
 \item{...}{further arguments afecting the Kendall tau produced. See details}
 }
