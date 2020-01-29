@@ -186,6 +186,10 @@ plot.gosset_agree <- function(x, ...) {
   # force capital letter in type
   names(x) <- c("labels","Kendall","First","Last")
   
+  # keep <- !is.na(x$Kendall) & !is.na(x$First) & !is.na(x$Last)
+  # 
+  # x <- x[keep, ]
+  
   # put data in a long format
   x <- split(x, x$labels)
   x <- lapply(x, function(z) {
