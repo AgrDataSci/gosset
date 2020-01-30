@@ -5,6 +5,7 @@ inst/doc
 
 # Session Data files
 .RData
+.DS_Store
 
 # Example code in package build process
 *-Ex.R

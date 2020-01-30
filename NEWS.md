@@ -5,6 +5,11 @@ gosset 0.1.8 (2020-01-16)
 
 * Write documentation in good practice. Avoid calling the entire package but specific functions.
 
+### CHANGES IN BEHAVIOUR
+
+* argument "ascending" in `rank_numeric()` in restricted to floating point numbers. Integer values are ranked as provided by input.
+
+
 
 gosset 0.1.7 (2020-01-06)
 =========================

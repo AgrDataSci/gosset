@@ -27,7 +27,7 @@ containing the values in \code{data} to be ranked}
 
 \item{group}{logical, if TRUE return an object of class "grouped_rankings"}
 
-\item{ascending}{logical, to compute rankings from lower to higher values}
+\item{ascending}{logical, only for floating point numbers, to compute rankings from lower to higher values}
 
 \item{...}{additional arguments passed to methods}
 }

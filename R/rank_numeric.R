@@ -4,7 +4,7 @@
 #'
 #' @inheritParams rank_tricot
 #' @param id a data frame or index of \code{data} indicating the ids for "long" \code{data}
-#' @param ascending logical, to compute rankings from lower to higher values
+#' @param ascending logical, only for floating point numbers, to compute rankings from lower to higher values 
 #' @param ... additional arguments passed to methods
 #' @return a PlackettLuce "rankings" object, which is a matrix of dense rankings
 #' @family rank functions 
@@ -63,22 +63,18 @@
 #' @importFrom PlackettLuce as.rankings group
 #' @export
 rank_numeric <- function(data = NULL, items = NULL,
-                    input = NULL, id = NULL, 
-                    group = FALSE, ascending = FALSE, ...) {
+                         input = NULL, id = NULL, 
+                         group = FALSE, ascending = FALSE, 
+                         ...) {
   
   
   # keep only target columns in data
   if (is.null(data)) {
-    stop("argument 'data' is missing with no default")
+    stop("argument 'data' is missing with no default \n")
   }
   
-  if (!is.data.frame(data)){
+  if (class(data)[1] != "data.frame") {
     data <- data.frame(data, stringsAsFactors = FALSE)
-  }
-  
-  # if tibble put it as data.frame
-  if (.is_tibble(data)) {
-    data <- as.data.frame(data, stringsAsFactors = FALSE)
   }
   
   # get nrow in object
@@ -87,39 +83,18 @@ rank_numeric <- function(data = NULL, items = NULL,
   # get the items in data
   items <- data[items]
   
-  if(is.null(id)){
-    id <- tibble::tibble(id = rownames(data))
-  }else{
-    id <- data[id]
+  if (is.null(id)) {
+    id <- data.frame(id = rownames(data))
+  } else {
+    id <- data[, id]
   }
   
   # make sure that input are numeric
   data[input] <- lapply(data[input], as.numeric)
   
-  r <- .pivot_default(id = id, i = items, r = data[input], ascending)
+  r <- data[input]
   
-  # make a PlackettLuce rankings
-  R <- PlackettLuce::as.rankings(r)
-  
-  # and a PlackettLuce grouped_rankings
-  n <- nrow(R)
-  G <- PlackettLuce::group(R, index = seq_len(n))
-    
-  
-  
-  # return a grouped_rankings if required
-  if (group) {
-    R <- G
-  }
-  
-  return(R)
-  
-}
-
-# organise numbered rankings
-.pivot_default <- function(id, i, r, ascending){
-  
-  # fix names in r data
+  # fix names in r
   names(r) <- paste0("PosItem", 1:ncol(r))
   
   # get the number of possible rankings
@@ -130,9 +105,9 @@ rank_numeric <- function(data = NULL, items = NULL,
     
     # if there is any NA in items
     # add a pseudo-item which will be removed later
-    if (sum(is.na(i)) > 0)  {
+    if (sum(is.na(items)) > 0)  {
       for (p in seq_len(nrank)) {
-        i[is.na(i[p]), p] <- paste0("pseudoitem", p)
+        items[is.na(items[p]), p] <- paste0("pseudoitem", p)
       }
     }
     
@@ -142,7 +117,7 @@ rank_numeric <- function(data = NULL, items = NULL,
     }
     
     # combine items with rankings
-    r <- cbind(id, i, r)
+    r <- cbind(id, items, r)
     
     # put rankings into a long format 
     r <- tidyr::gather(r, 
@@ -172,7 +147,7 @@ rank_numeric <- function(data = NULL, items = NULL,
   # if is in long format then
   if (nrank == 1) {
     # combine vectors
-    r <- cbind(id, i, r)
+    r <- cbind(id, items, r)
     names(r) <- c("id","item","rank")
   }
   
@@ -180,7 +155,7 @@ rank_numeric <- function(data = NULL, items = NULL,
   # then we group it by ids and convert it 
   # into integer ranks
   # the highest value is the best item
-  # negative values are permited
+  # negative values are allowed
   # they are added in the last place
   if (any(.is_decimal(r[["rank"]]))) {
     
@@ -188,15 +163,14 @@ rank_numeric <- function(data = NULL, items = NULL,
     
     names(r)[3] <- "item"
     
-  }
-  
-  # if the rankings are required to be ascending 
-  if (ascending) {
+    # if the rankings are required to be ascending 
+    if (ascending) {
+      
+      r <- .asc_rank(r)
+      
+    }
     
-    r <- .asc_rank(r)
-    
   }
-  
   
   # reshape data into wide format
   r <- tidyr::spread(r, item, rank)
@@ -206,19 +180,45 @@ rank_numeric <- function(data = NULL, items = NULL,
   
   # arrange observations by ids
   r <- r[order(r$id), ]
-
+  
   # drop id
   r <- r[ ,-match("id", names(r))]
   
   # dataframe into matrix
   r <- as.matrix(r)
   
-  return(r)
   
-} 
+  # make a PlackettLuce rankings
+  R <- PlackettLuce::as.rankings(r)
+  
+  # and a PlackettLuce grouped_rankings
+  n <- nrow(R)
+  G <- PlackettLuce::group(R, index = seq_len(n))
+    
+  # return a grouped_rankings if required
+  if (group) {
+    R <- G
+  }
+  
+  return(R)
+  
+}
 
-
-# compute a ascending rank 
+#' Compute an ascending rank
+#' @param object a data.frame internaly formated by rank_numeric
+#' @return the object with rankings in the ascending order, 
+#' meaning that lower is better
+#' @examples 
+#' set.seed(123)
+#' r <- data.frame(id = rep(1:3, each = 4),
+#'                 items = rep(LETTERS[1:4], times = 3),
+#'                 rank = as.numeric(runif(12, 1, 3)),
+#'                 stringsAsFactors = FALSE)
+#' 
+#' r <- gosset:::.rank_decimal(r$rank, id = r$id, bindwith = r$item)
+#' 
+#' r <- gosset:::.asc_rank(r)
+#' @noRd
 .asc_rank <- function(object){
   
   object <- split(object, object$id)
@@ -239,5 +239,56 @@ rank_numeric <- function(data = NULL, items = NULL,
   
 }
 
+#' Rank decimal numbers
+#' @param object a vector with floating point numbers
+#' @param id optional, a vector with ids to group values
+#' @param bindwith optional, a data.frame to cbind with ranked values
+#' @return A data frame with ranked floating point numbers
+#' @examples 
+#' # without id
+#' .rank_decimal(c(0.2, -1.2, 2.3, 0.2, 0.4, -3.3))
+#' 
+#' # with id
+#' .rank_decimal(c(0.2, -1.2, 2.3, 0.2, 0.4, -3.3),
+#'               id = c(1,1,1,2,2,2))
+#'
+#' @importFrom tibble as_tibble
+#' @noRd
+.rank_decimal <- function(object, id = NULL, bindwith = NULL){
+  
+  isdf <- is.data.frame(object)
+  
+  if (!isdf) {
+    object <- as.data.frame(object)
+    names(object) <- "rank"
+  }
+  
+  if (!is.null(bindwith)) {
+    object <- cbind(object, bindwith)
+  }
+  
+  if(is.null(id)) {
+    id <- rep(1, nrow(object))
+  }
+  
+  object <- cbind(id = id, object)
+  
+  object <- split(object, id)
+  
+  object <- lapply(object, function(x) {
+    x$rank <- rank((x$rank - 1) * -1, na.last = "keep")
+    return(x)
+  })
+  
+  object <- do.call("rbind", object)
+  
+  object <- tibble::as_tibble(object) 
+  
+  object[,c("id","rank")] <- lapply(object[,c("id","rank")], 
+                                    as.integer)
+  
+  return(object)
+  
+}
 
 

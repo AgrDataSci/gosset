@@ -133,60 +133,6 @@
   
 }
 
-
-#' Rank decimal numbers
-#' @param object a vector with floating point numbers
-#' @param id optional, a vector with ids to group values
-#' @param bindwith optional, a data.frame to cbind with ranked values
-#' @return A data frame with ranked floating point numbers
-#' @examples 
-#' # without id
-#' .rank_decimal(c(0.2, -1.2, 2.3, 0.2, 0.4, -3.3))
-#' 
-#' # with id
-#' .rank_decimal(c(0.2, -1.2, 2.3, 0.2, 0.4, -3.3),
-#'               id = c(1,1,1,2,2,2))
-#'
-#' @importFrom tibble as_tibble
-#' @noRd
-.rank_decimal <- function(object, id = NULL, bindwith = NULL){
-  
-  isdf <- is.data.frame(object)
-  
-  if (!isdf) {
-    object <- as.data.frame(object)
-    names(object) <- "rank"
-  }
-  
-  if (!is.null(bindwith)) {
-    object <- cbind(object, bindwith)
-  }
-  
-  if(is.null(id)) {
-    id <- rep(1, nrow(object))
-  }
-  
-  object <- cbind(id = id, object)
-  
-  object <- split(object, id)
-  
-  object <- lapply(object, function(x) {
-    x$rank <- rank((x$rank - 1) * -1, na.last = "keep")
-    return(x)
-  })
-  
-  object <- do.call("rbind", object)
-  
-  object <- tibble::as_tibble(object) 
-  
-  object[,c("id","rank")] <- lapply(object[,c("id","rank")], 
-                                    as.integer)
-  
-  return(object)
-  
-}
-
-
 #' Sort order of players based on their performance in contests
 #' @param data an object with player based values
 #' @param split a character or index of 'data' to indicate the 
