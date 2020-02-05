@@ -99,12 +99,10 @@ summarise_agreement <- function(baseline, compare.to, labels = NULL){
   # number of rows 
   n <- nrow(B)
   
-  
   # calculate Kendall correlation
   Kendall <- lapply(CC, function(x) {
     kendallTau(x, B)[[1]]
   })
-  
   
   # take the first ranked item in B
   B_first <- apply(B, 1, function(x) {

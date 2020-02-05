@@ -35,7 +35,7 @@ summarise_favourite <- function(data = NULL, items = NULL,
                       input = NULL, reorder = TRUE){
   
   
-  # check data
+  # set args for to organise the rankings
   args <- list(data = data,
                items = items,
                input = input,
@@ -52,7 +52,7 @@ summarise_favourite <- function(data = NULL, items = NULL,
   firstR <- dataR[, 1]
   
   # item ranked as last (worst)
-  lastR <- dataR[,ncol(dataR)]
+  lastR <- dataR[, ncol(dataR)]
   
   
   # run over items to check the number of times it is ranked
@@ -67,7 +67,7 @@ summarise_favourite <- function(data = NULL, items = NULL,
   for (i in seq_along(itemnames)) {
     # check the row where item i is present
     inrow_i <- apply(X, 1, function(x) {
-      y <- any(x == itemnames[i])
+      y <- any(x == itemnames[i], na.rm = TRUE)
       as.integer(y)
     })
     
@@ -89,19 +89,21 @@ summarise_favourite <- function(data = NULL, items = NULL,
   
   # compute
   # best performance
-  best_per <- 100 * colSums(wins) / colSums(inrow)
+  best_per <- 100 * colSums(wins, na.rm = TRUE) / colSums(inrow, na.rm = TRUE)
   
   # worst performance
-  worst_per <- 100 * colSums(losses) / colSums(inrow)
+  worst_per <- 100 * colSums(losses, na.rm = TRUE) / colSums(inrow, na.rm = TRUE)
   
   # times it wins
-  wins <- ((2 * colSums(wins)) + colSums(inrow - wins - losses)) / (2 * colSums(inrow))
+  wins <- ((2 * colSums(wins, na.rm = TRUE)) + 
+             colSums(inrow - wins - losses, na.rm = TRUE)) / 
+    (2 * colSums(inrow, na.rm = TRUE))
   
   # favourability score
   fav_score <- best_per - worst_per
   
   sumstats <- tibble::tibble(items = itemnames,
-                             N = colSums(inrow),
+                             N = colSums(inrow, na.rm = TRUE),
                              best =  best_per,
                              worst = worst_per,
                              wins = wins,

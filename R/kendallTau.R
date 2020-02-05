@@ -112,7 +112,7 @@ kendallTau.matrix <- function(x, y, ...){
   tau <- kt[1,]
   N <- kt[2,]
   
-  tau_average <- sum(tau * N) / sum(N)
+  tau_average <- sum(tau * N, na.rm = TRUE) / sum(N)
   
   # Effective N is the equivalent N needed if all were compared to all
   # N_comparisons = ((N_effective - 1) * N_effective) / 2
