@@ -5,7 +5,6 @@
 ^README\.md$
 ^README\.Rmd$
 ^readme\.bib$
-^LICENSE
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^codecov\.yml$
