@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -114,6 +114,20 @@
       
     </div>
 
+    <div id="gosset-019-2020-02-08" class="section level1">
+<h1 class="page-header">
+<a href="#gosset-019-2020-02-08" class="anchor"></a>gosset 0.1.9 (2020-02-08)</h1>
+<div id="changes-in-behaviour" class="section level3">
+<h3 class="hasAnchor">
+<a href="#changes-in-behaviour" class="anchor"></a>CHANGES IN BEHAVIOUR</h3>
+<ul>
+<li>Functions <code>rainfall()</code>, <code>temperature()</code>, <code>ETo()</code> and <code>GDD()</code> migrates to <strong>rclimate</strong>
+</li>
+<li>Change license to MIT</li>
+<li>Change logo</li>
+</ul>
+</div>
+</div>
     <div id="gosset-018-2020-01-16" class="section level1">
 <h1 class="page-header">
 <a href="#gosset-018-2020-01-16" class="anchor"></a>gosset 0.1.8 (2020-01-16)</h1>
@@ -124,9 +138,9 @@
 <li>Write documentation in good practice. Avoid calling the entire package but specific functions.</li>
 </ul>
 </div>
-<div id="changes-in-behaviour" class="section level3">
+<div id="changes-in-behaviour-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#changes-in-behaviour" class="anchor"></a>CHANGES IN BEHAVIOUR</h3>
+<a href="#changes-in-behaviour-1" class="anchor"></a>CHANGES IN BEHAVIOUR</h3>
 <ul>
 <li>argument “ascending” in <code><a href="../reference/rank_numeric.html">rank_numeric()</a></code> in restricted to floating point numbers. Integer values are ranked as provided by input.</li>
 </ul>
@@ -141,15 +155,15 @@
 <ul>
 <li>Classify main functions into families</li>
 <li>
-<code><a href="../reference/rainfall.html">rainfall()</a></code> and <code><a href="../reference/temperature.html">temperature()</a></code> now allows for time series indices</li>
+<code>rainfall()</code> and <code>temperature()</code> now allows for time series indices</li>
 </ul>
 </div>
-<div id="changes-in-behaviour-1" class="section level3">
+<div id="changes-in-behaviour-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#changes-in-behaviour-1" class="anchor"></a>CHANGES IN BEHAVIOUR</h3>
+<a href="#changes-in-behaviour-2" class="anchor"></a>CHANGES IN BEHAVIOUR</h3>
 <ul>
 <li><p>Rename functions <code>agreement()</code>, <code>dominance()</code>, <code>favourite()</code>, and <code>victories()</code> with the tag <code>summarise</code> and add it into summarise functions. No warking message provided. New functions are <code><a href="../reference/summarise_agreement.html">summarise_agreement()</a></code>, <code><a href="../reference/summarise_dominance.html">summarise_dominance()</a></code>, <code><a href="../reference/summarise_favourite.html">summarise_favourite()</a></code>, and <code><a href="../reference/summarise_victories.html">summarise_victories()</a></code></p></li>
-<li><p>Argument ‘index’ is removed from <code><a href="../reference/rainfall.html">rainfall()</a></code> and <code><a href="../reference/temperature.html">temperature()</a></code>, all indices are given by default</p></li>
+<li><p>Argument ‘index’ is removed from <code>rainfall()</code> and <code>temperature()</code>, all indices are given by default</p></li>
 </ul>
 </div>
 </div>
@@ -202,9 +216,9 @@
 </li>
 </ul>
 </div>
-<div id="changes-in-behaviour-2" class="section level3">
+<div id="changes-in-behaviour-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#changes-in-behaviour-2" class="anchor"></a>CHANGES IN BEHAVIOUR</h3>
+<a href="#changes-in-behaviour-3" class="anchor"></a>CHANGES IN BEHAVIOUR</h3>
 <ul>
 <li>
 <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> method for crossvalidation and <code>rank_decimal()</code> deprecated</li>
@@ -243,6 +257,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#gosset-019-2020-02-08">0.1.9</a></li>
         <li><a href="#gosset-018-2020-01-16">0.1.8</a></li>
         <li><a href="#gosset-017-2020-01-06">0.1.7</a></li>
         <li><a href="#gosset-016-2019-01-10">0.1.6</a></li>

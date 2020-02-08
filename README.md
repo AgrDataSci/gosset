@@ -10,11 +10,6 @@ Status](https://ci.appveyor.com/api/projects/status/github/agrobioinfoservices/g
 [![Build
 Status](https://travis-ci.org/agrobioinfoservices/gosset.svg?branch=master)](https://travis-ci.org/agrobioinfoservices/gosset)
 [![codecov](https://codecov.io/gh/agrobioinfoservices/gosset/master.svg)](https://codecov.io/github/agrobioinfoservices/gosset?branch=master)
-[![Project Status: Active â€“ The project has reached a stable, usable
-state and is being actively
-developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![GPLv3
-license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.r-project.org/Licenses/GPL-3)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
@@ -45,7 +40,7 @@ devtools::install_github("agrobioinfoservices/gosset", build_vignettes = TRUE)
 The full functionality of **gosset** is illustrated in the package
 vignette. The vignette can be found on the [package
 website](https://agrobioinfoservices.github.io/gosset/) or from within
-`R` once the package has been installed, e.g. via
+`R` once the package has been installed, e.g. via
 
 ``` r
 vignette("Overview", package = "gosset")
@@ -56,7 +51,7 @@ vignette("Overview", package = "gosset")
   - Please [report any issues or
     bugs](https://github.com/agrobioinfoservices/gosset/issues).
 
-  - License: GPL-3
+  - License: MIT
 
   - Get citation information for *gosset* in R by typing
     `citation(package = "gosset")`.
