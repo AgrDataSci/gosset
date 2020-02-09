@@ -5,19 +5,19 @@
   ],
   "@type": "SoftwareSourceCode",
   "identifier": "gosset",
-  "description": "Toolkit for a workflow on modelling metadata and experimental \n    citizen science data, from collating data of different sources, model \n    sellection and visualisation. The package is named after W.S. Gosset \n    aka 'Student', a pioneer of modern statistics in small sample experimental \n    design and analysis.",
-  "name": "gosset: Modelling Metadata and Experimental Citizen Science",
+  "description": "Collating data from different sources is like solving a jigsaw puzzle. \n    The gosset package provides the toolkit for a workflow to analyse metadata and \n    experimental citizen science data, from collating data of different sources to \n    model sellection and visualisation. The package is named after W.S. Gosset aka \n    ‘Student’, a pioneer of modern statistics in small sample experimental design \n    and analysis.",
+  "name": "gosset: Modelling Metadata and Crowdsourcing Citizen Science",
   "codeRepository": "https://agrobioinfoservices.github.io/gosset/",
   "issueTracker": "https://github.com/agrobioinfoservices/gosset/issues",
-  "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.1.7",
+  "license": "https://spdx.org/licenses/MIT",
+  "version": "0.1.9",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
-    "version": "3.5.3",
+    "version": "3.6.2",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 3.5.3 (2019-03-11)",
+  "runtimePlatform": "R version 3.6.2 (2019-12-12)",
   "author": [
     {
       "@type": "Person",
@@ -47,12 +47,6 @@
       "givenName": "Jonathan",
       "familyName": "Steinke",
       "@id": "https://orcid.org/0000-0001-5742-702X"
-    },
-    {
-      "@type": "Person",
-      "givenName": "Svein",
-      "familyName": "Solberg",
-      "@id": "https://orcid.org/0000-0002-4491-4483"
     }
   ],
   "contributor": [
@@ -83,6 +77,18 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
+      "identifier": "BradleyTerry2",
+      "name": "BradleyTerry2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=BradleyTerry2"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "ClimMobTools",
       "name": "ClimMobTools",
       "provider": {
@@ -95,6 +101,18 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "gnm",
+      "name": "gnm",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=gnm"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "knitr",
       "name": "knitr",
       "provider": {
@@ -104,6 +122,18 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=knitr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "psychotree",
+      "name": "psychotree",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=psychotree"
     },
     {
       "@type": "SoftwareApplication",
@@ -139,30 +169,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "BradleyTerry2",
-      "name": "BradleyTerry2",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=BradleyTerry2"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "gnm",
-      "name": "gnm",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=gnm"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "ggplot2",
       "name": "ggplot2",
       "provider": {
@@ -177,18 +183,6 @@
       "@type": "SoftwareApplication",
       "identifier": "methods",
       "name": "methods"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "nasapower",
-      "name": "nasapower",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=nasapower"
     },
     {
       "@type": "SoftwareApplication",
@@ -214,18 +208,6 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=PlackettLuce"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "psychotree",
-      "name": "psychotree",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=psychotree"
     },
     {
       "@type": "SoftwareApplication",
@@ -288,7 +270,11 @@
   ],
   "releaseNotes": "https://github.com/agrobioinfoservices/gosset/blob/master/NEWS.md",
   "readme": "https://github.com/agrobioinfoservices/gosset/blob/master/README.md",
-  "fileSize": "491.92KB",
-  "contIntegration": ["https://ci.appveyor.com/project/kauedesousa/gosset", "https://travis-ci.org/agrobioinfoservices/gosset", "https://codecov.io/github/agrobioinfoservices/gosset?branch=master"],
+  "fileSize": "409.982KB",
+  "contIntegration": [
+    "https://ci.appveyor.com/project/kauedesousa/gosset",
+    "https://travis-ci.org/agrobioinfoservices/gosset",
+    "https://codecov.io/github/agrobioinfoservices/gosset?branch=master"
+  ],
   "developmentStatus": "https://www.repostatus.org/#active"
 }

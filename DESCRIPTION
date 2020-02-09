@@ -1,6 +1,6 @@
 Package: gosset
 Type: Package
-Title: Modelling Metadata and Experimental Citizen Science
+Title: Modelling Metadata and Crowdsourcing Citizen Science
 Version: 0.1.9
 Authors@R: c(person("Kaue", "de Sousa", 
         email = "kaue.desousa@inn.no", role = c("aut", "cre"),
@@ -16,11 +16,12 @@ Authors@R: c(person("Kaue", "de Sousa",
 Maintainer: Kaue de Sousa <kaue.desousa@inn.no>
 URL: https://agrobioinfoservices.github.io/gosset/
 BugReports: https://github.com/agrobioinfoservices/gosset/issues
-Description: Toolkit for a workflow on modelling metadata and experimental 
-    citizen science data, from collating data of different sources, model 
-    sellection and visualisation. The package is named after W.S. Gosset 
-    aka 'Student', a pioneer of modern statistics in small sample experimental 
-    design and analysis.
+Description: Collating data from different sources is like solving a jigsaw puzzle. 
+    The gosset package provides the toolkit for a workflow to analyse metadata and 
+    experimental citizen science data, from collating data of different sources to 
+    model sellection and visualisation. The package is named after W.S. Gosset aka 
+    ‘Student’, a pioneer of modern statistics in small sample experimental design 
+    and analysis.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

@@ -154,7 +154,7 @@ diversification strategies.</p>
 <p>Bleichrodt H. &amp; Wakker P. P. (2015). The Economic Journal, 125(583), 493–532. https://doi.org/10.1111/ecoj.12200.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples">
+    <pre class="examples"><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"PlackettLuce"</span>)
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"breadwheat"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"gosset"</span>)
 
@@ -173,7 +173,27 @@ diversification strategies.</p>
 <span class='co'># fit a pltree model using geographic data</span>
 <span class='no'>mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/PlackettLuce/man/pltree.html'>pltree</a></span>(<span class='no'>G</span> ~ <span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mydata</span>)
 
-<span class='fu'>worst_regret</span>(<span class='no'>mod</span>)</pre>
+<span class='fu'>worst_regret</span>(<span class='no'>mod</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 16 x 3</span><span>
+#&gt;    items     win_probs worst_regret
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> K9107        0.363         0    
+#&gt; </span><span style='color: #555555;'> 2</span><span> CSW18        0.198         0.196
+#&gt; </span><span style='color: #555555;'> 3</span><span> PBW343       0.176         0.273
+#&gt; </span><span style='color: #555555;'> 4</span><span> DBW17        0.060</span><span style='text-decoration: underline;'>6</span><span>        0.303
+#&gt; </span><span style='color: #555555;'> 5</span><span> HD2985       0.036</span><span style='text-decoration: underline;'>9</span><span>        0.327
+#&gt; </span><span style='color: #555555;'> 6</span><span> DPW621-50    0.034</span><span style='text-decoration: underline;'>1</span><span>        0.338
+#&gt; </span><span style='color: #555555;'> 7</span><span> HD2932       0.021</span><span style='text-decoration: underline;'>4</span><span>        0.342
+#&gt; </span><span style='color: #555555;'> 8</span><span> RAJ4120      0.012</span><span style='text-decoration: underline;'>8</span><span>        0.350
+#&gt; </span><span style='color: #555555;'> 9</span><span> PBW550       0.014</span><span style='text-decoration: underline;'>0</span><span>        0.351
+#&gt; </span><span style='color: #555555;'>10</span><span> HP1633       0.012</span><span style='text-decoration: underline;'>2</span><span>        0.352
+#&gt; </span><span style='color: #555555;'>11</span><span> HW2045       0.011</span><span style='text-decoration: underline;'>7</span><span>        0.353
+#&gt; </span><span style='color: #555555;'>12</span><span> HD2824       0.011</span><span style='text-decoration: underline;'>2</span><span>        0.353
+#&gt; </span><span style='color: #555555;'>13</span><span> HI1563       0.011</span><span style='text-decoration: underline;'>1</span><span>        0.354
+#&gt; </span><span style='color: #555555;'>14</span><span> PBW502       0.014</span><span style='text-decoration: underline;'>2</span><span>        0.355
+#&gt; </span><span style='color: #555555;'>15</span><span> WR544        0.012</span><span style='text-decoration: underline;'>2</span><span>        0.361
+#&gt; </span><span style='color: #555555;'>16</span><span> K0307        0.011</span><span style='text-decoration: underline;'>1</span><span>        0.363</div><div class='input'>
+
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
