@@ -6,26 +6,17 @@
 \alias{plot.gosset_fvrt}
 \title{Favourability scores}
 \usage{
-summarise_favourite(data = NULL, items = NULL, input = NULL, reorder = TRUE)
+summarise_favourite(object, ...)
 
 \method{plot}{gosset_fvrt}(x, ...)
 }
 \arguments{
-\item{data}{a data.frame with columns specified by items and input values}
+\item{object}{a rankings object of class 'rankings' or 'grouped_rankings'}
 
-\item{items}{a character or numerical vector for indexing the column(s) 
-containing the item names in \code{data}}
-
-\item{input}{a character or numerical vector for indexing the column(s) 
-containing the values in \code{data} to be ranked}
-
-\item{reorder}{logical, if items should be reordered from higher 
-favourability score to least favourability score}
+\item{...}{further arguments passed to methods. Not enabled yet}
 
 \item{x}{an object of class 'gosset_fvrt' for the plotting method. 
 Generates a 'ggplot' object that can be passed to any ggplot2 method}
-
-\item{...}{additional arguments passed to methods. See details}
 }
 \value{
 A data.frame with the descriptive statistics:
@@ -44,12 +35,15 @@ Summarise favourability scores from tricot data
 }
 \examples{
 data("breadwheat", package = "gosset")
- 
-fv <- summarise_favourite(data = breadwheat,
-                      items = c("variety_a", "variety_b", "variety_c"),
-                      input = c("overall_best", "overall_worst"))
 
- 
+R <- rank_tricot(data = breadwheat,
+                 items = c("variety_a", "variety_b", "variety_c"),
+                 input = c("overall_best", "overall_worst"))
+
+fav <- summarise_favorite(R)
+
+fav
+
 }
 \seealso{
 Other summarise functions: 

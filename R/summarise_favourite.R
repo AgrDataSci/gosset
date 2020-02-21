@@ -2,11 +2,10 @@
 #'
 #' Summarise favourability scores from tricot data
 #' 
-#' @inheritParams rank_tricot
-#' @param reorder logical, if items should be reordered from higher 
-#' favourability score to least favourability score
+#' @param object a rankings object of class 'rankings' or 'grouped_rankings'
 #' @param x an object of class 'gosset_fvrt' for the plotting method. 
 #' Generates a 'ggplot' object that can be passed to any ggplot2 method
+#' @param ... further arguments passed to methods. Not enabled yet
 #' @aliases summarise_favorite
 #' @return A data.frame with the descriptive statistics:
 #' \item{N}{number of times the given item was evaluated}
@@ -21,98 +20,85 @@
 #' @family summarise functions
 #' @examples
 #' data("breadwheat", package = "gosset")
-#'  
-#' fv <- summarise_favourite(data = breadwheat,
-#'                       items = c("variety_a", "variety_b", "variety_c"),
-#'                       input = c("overall_best", "overall_worst"))
 #' 
-#'  
+#' R <- rank_tricot(data = breadwheat,
+#'                  items = c("variety_a", "variety_b", "variety_c"),
+#'                  input = c("overall_best", "overall_worst"))
+#' 
+#' fav <- summarise_favorite(R)
+#' 
+#' fav
+#' 
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
-#' @importFrom ggplot2 ggplot aes geom_hline geom_bar coord_flip scale_y_continuous scale_fill_gradient2 labs
+#' @importFrom ggplot2 ggplot aes geom_hline geom_bar coord_flip scale_y_continuous 
+#'  scale_fill_gradient2 labs
 #' @importFrom tibble tibble
 #' @export
-summarise_favourite <- function(data = NULL, items = NULL, 
-                      input = NULL, reorder = TRUE){
+summarise_favourite <- function(object, ...){
   
-  
-  # set args for to organise the rankings
-  args <- list(data = data,
-               items = items,
-               input = input,
-               full.output = TRUE)
-  
-  dataR <- do.call("rank_tricot", args)  
-
-  dataR <- dataR[[3]]
-  
-  # get names of tested items
-  itemnames <- sort(unique(as.vector(dataR)))
-  
-  # items ranked as first (best)
-  firstR <- dataR[, 1]
-  
-  # item ranked as last (worst)
-  lastR <- dataR[, ncol(dataR)]
-  
-  
-  # run over items to check the number of times it is ranked
-  # as first and last 
-  inrow <- NULL
-  wins <- NULL
-  losses <- NULL
-  
-  # get data.frame with randomised items
-  X <- args$data[, args$items]
-  
-  for (i in seq_along(itemnames)) {
-    # check the row where item i is present
-    inrow_i <- apply(X, 1, function(x) {
-      y <- any(x == itemnames[i], na.rm = TRUE)
-      as.integer(y)
-    })
-    
-    # put it into a single matrix
-    inrow <- cbind(inrow, inrow_i)
-    
-    # check where item i is ranked as first (best)
-    wins <- cbind(wins, ifelse(firstR == itemnames[i], 1, 0))
-    
-    # check where item i is ranked as last (worst)
-    losses <- cbind(losses, ifelse(lastR == itemnames[i], 1, 0))
-    
+  if (.is_grouped_rankings(object)) {
+    dataR <- object[1:length(object), , as.grouped_rankings = FALSE]
   }
   
-  # name matrixes
-  colnames(inrow)  <- paste("n", 1:(length(itemnames)), sep = "")
-  colnames(wins)   <- paste("b", 1:(length(itemnames)), sep = "")
-  colnames(losses) <- paste("w", 1:(length(itemnames)), sep = "")
+  if (.is_rankings(object)) {
+    dataR <- object[1:length(object), , as.rankings = FALSE]
+  }
   
-  # compute
-  # best performance
-  best_per <- 100 * colSums(wins, na.rm = TRUE) / colSums(inrow, na.rm = TRUE)
+  # get names of tested items
+  itemnames <- dimnames(dataR)[[2]]
+  n <- dim(dataR)[[1]]
   
-  # worst performance
-  worst_per <- 100 * colSums(losses, na.rm = TRUE) / colSums(inrow, na.rm = TRUE)
+  # items ranked as first (best)
+  firstR <- apply(dataR, 1, function(x){
+    x <- x[x != 0]
+    names(x)[which.min(x)]
+  })
+  
+  firstR <- table(firstR)
+  
+  # item ranked as last (worst)
+  lastR <- apply(dataR, 1, function(x){
+    x <- x[x != 0]
+    names(x)[which.max(x)]
+  })
+  
+  lastR <- table(lastR)
+
+  dataR <- as.data.frame(as.vector(unlist(dataR)))
+  dataR$items <- rep(itemnames, each = n)
+  dataR <- dataR[dataR[,1] > 0, ]
+  dataR <- table(dataR$items)
+  
+  dataR <- as.data.frame(dataR,
+                         stringsAsFactors = FALSE)
+  
+  rownames(dataR) <- dataR[,1]
+  
+  dataR$first <- 0
+  dataR[names(firstR), "first"] <- firstR
+  
+  dataR$last <- 0
+  dataR[names(lastR), "last"] <- lastR
+  
+  dataR$best <- (dataR$first / dataR$Freq) * 100
+  
+  dataR$worst <- (dataR$last / dataR$Freq) * 100
   
   # times it wins
-  wins <- ((2 * colSums(wins, na.rm = TRUE)) + 
-             colSums(inrow - wins - losses, na.rm = TRUE)) / 
-    (2 * colSums(inrow, na.rm = TRUE))
+  wins <- rep(0, nrow(dataR))
   
   # favourability score
-  fav_score <- best_per - worst_per
+  fav_score <- dataR$best - dataR$worst
   
-  sumstats <- tibble::tibble(items = itemnames,
-                             N = colSums(inrow, na.rm = TRUE),
-                             best =  best_per,
-                             worst = worst_per,
+  sumstats <- tibble::tibble(items = dataR$Var1,
+                             N = dataR$Freq,
+                             best =  dataR$best,
+                             worst = dataR$worst,
                              wins = wins,
                              fav_score = fav_score)
   
 
-  if (reorder) {
-    sumstats <- sumstats[rev(order(sumstats$fav_score)), ]
-  }
+  sumstats <- sumstats[rev(order(sumstats$fav_score)), ]
   
   class(sumstats) <- c("gosset_fvrt", class(sumstats))
   

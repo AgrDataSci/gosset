@@ -21,7 +21,7 @@
   "author": [
     {
       "@type": "Person",
-      "givenName": "Kaue",
+      "givenName": "Kauê",
       "familyName": "de Sousa",
       "email": "kaue.desousa@inn.no",
       "@id": "https://orcid.org/0000-0002-7571-7845"
@@ -68,7 +68,7 @@
   "maintainer": [
     {
       "@type": "Person",
-      "givenName": "Kaue",
+      "givenName": "Kauê",
       "familyName": "de Sousa",
       "email": "kaue.desousa@inn.no",
       "@id": "https://orcid.org/0000-0002-7571-7845"
@@ -270,7 +270,7 @@
   ],
   "releaseNotes": "https://github.com/agrobioinfoservices/gosset/blob/master/NEWS.md",
   "readme": "https://github.com/agrobioinfoservices/gosset/blob/master/README.md",
-  "fileSize": "409.982KB",
+  "fileSize": "410.832KB",
   "contIntegration": [
     "https://ci.appveyor.com/project/kauedesousa/gosset",
     "https://travis-ci.org/agrobioinfoservices/gosset",

@@ -3,7 +3,7 @@ gosset 0.1.9 (2020-02-08)
 
 ### CHANGES IN BEHAVIOUR
 
-* Functions `rainfall()`, `temperature()`, `ETo()` and `GDD()` migrates to **rclimate**
+* Functions `rainfall()`, `temperature()`, `ETo()` and `GDD()` migrates to **climatrends**
 * Change license to MIT
 * Change logo
 
