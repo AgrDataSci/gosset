@@ -25,6 +25,7 @@ LazyData: true
 Depends: R (>= 3.5.0)
 Imports: 
     abind,
+    BradleyTerry2,
     doParallel,
     foreach,
     ggplot2,
@@ -39,7 +40,6 @@ Imports:
     tidyr,
     utils
 Suggests: 
-    BradleyTerry2,
     ClimMobTools,
     gnm,
     knitr,

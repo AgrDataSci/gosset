@@ -93,4 +93,8 @@ forward(preference ~ .,
 }
 \seealso{
 \code{\link{crossvalidation}}
+
+Other model selection functions: 
+\code{\link{btpermute}()}
 }
+\concept{model selection functions}

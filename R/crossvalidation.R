@@ -17,7 +17,7 @@
 #' Options are: 'equal', arithmetic mean; 
 #' 'foldsize', weighted mean by the size in each fold; 
 #' 'stouffer' weighted through Z-test. See references 
-#' @param seed The seed for random number generation. If NULL (the default), 
+#' @param seed integer, the seed for random number generation. If NULL (the default), 
 #' gosset will set the seed randomly
 #' @param ... additional arguments passed the methods of the chosen model
 #' @return The cross-validation goodness-of-fit estimates, which are:
