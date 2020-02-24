@@ -1,11 +1,11 @@
 #' Favourability scores
 #'
-#' Summarise favourability scores from tricot data
+#' Summarise favourability scores from permutation contests
 #' 
-#' @param object a rankings object of class 'rankings' or 'grouped_rankings'
-#' @param x an object of class 'gosset_fvrt' for the plotting method. 
-#' Generates a 'ggplot' object that can be passed to any ggplot2 method
-#' @param ... further arguments passed to methods. Not enabled yet
+#' @param object an object of class \code{rankings} or \code{grouped_rankings}
+#' @param x an object of class \code{gosset_fvrt} for the plotting method. 
+#' Generates a \code{ggplot} object that can be passed to any \pkg{ggplot2} method
+#' @param ... additional arguments passed to methods. Not enabled yet
 #' @aliases summarise_favorite
 #' @return A data.frame with the descriptive statistics:
 #' \item{N}{number of times the given item was evaluated}
@@ -25,7 +25,7 @@
 #'                  items = c("variety_a", "variety_b", "variety_c"),
 #'                  input = c("overall_best", "overall_worst"))
 #' 
-#' fav <- summarise_favorite(R)
+#' fav <- summarise_favourite(R)
 #' 
 #' fav
 #' 
@@ -72,7 +72,7 @@ summarise_favourite <- function(object, ...){
   dataR <- as.data.frame(dataR,
                          stringsAsFactors = FALSE)
   
-  rownames(dataR) <- dataR[,1]
+  rownames(dataR) <- dataR[, "Var1"]
   
   dataR$first <- 0
   dataR[names(firstR), "first"] <- firstR
@@ -85,8 +85,9 @@ summarise_favourite <- function(object, ...){
   dataR$worst <- (dataR$last / dataR$Freq) * 100
   
   # times it wins
-  wins <- rep(0, nrow(dataR))
-  
+  wins <- 100 - dataR$worst
+    
+    
   # favourability score
   fav_score <- dataR$best - dataR$worst
   

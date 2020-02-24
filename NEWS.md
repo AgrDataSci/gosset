@@ -1,3 +1,11 @@
+gosset 0.2.0 (2020-02-24)
+=========================
+### NEW FEATURES
+* forward selection is added with `forward()`
+
+### IMPROVEMENTS
+* No user visible improvements
+
 gosset 0.1.9 (2020-02-08)
 =========================
 

@@ -1,8 +1,9 @@
 #' Cross-validation 
 #'
 #' Methods for measuring the performance of a predictive model on sets of 
-#' test data in Bradley-Terry, Generalized Linear, Generalized Nonlinear 
-#' or Plackett-Luce models. 
+#' test data in Bradley-Terry model from \pkg{psychotree}, Generalized Linear and 
+#' Generalized Nonlinear models from \pkg{gnm}, and Plackett-Luce model from 
+#' \pkg{PlackettLuce}
 #'
 #' @param formula an object of class "formula" (or one that can be 
 #' coerced to that class): a symbolic description of the model to be fitted,
@@ -28,21 +29,20 @@
 #' \item{Agresti}{Agresti pseudo R-squared}
 #' \item{kendallTau}{the Kendall correlation coefficient, only for Plackett-Luce models}
 #' @seealso \code{\link[psychotree]{bttree}}, 
-#' \code{\link[stats]{glm}}, 
 #' \code{\link[gnm]{gnm}},
 #' \code{\link[PlackettLuce]{pltree}}
 #' @references 
 #' Agresti A. (2002). Categorical Data Analysis. 
-#' http://doi.wiley.com/10.1002/0471249688
+#' \url{http://doi.wiley.com/10.1002/0471249688}
 #' 
 #' Elder J. F. (2003). Journal of Computational and Graphical Statistics, 12(4), 853–864.
-#' https://doi.org/10.1198/1061860032733.
+#' \url{https://doi.org/10.1198/1061860032733}
 #' 
 #' James G., et al. (2013). An Introduction to Statistical Learning: with Applications in R.
-#' https://doi.org/10.1007/978-1-4614-7138-7
+#' \url{https://doi.org/10.1007/978-1-4614-7138-7}
 #' 
 #' Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. 
-#' https://doi.org/10.1111/j.1420-9101.2005.00917.x.
+#' \url{https://doi.org/10.1111/j.1420-9101.2005.00917.x}
 #' 
 #' @examples
 #' # Generalized Linear Models
@@ -238,8 +238,7 @@ crossvalidation <- function(formula,
   means <- tibble::as_tibble(t(means))
   
   estimators <- tibble::as_tibble(estimators)
-  
-  
+
   result <- list(coeffs = means,
                  raw = list(call = deparse(formula, width.cutoff = 500),
                             estimators = estimators,
@@ -247,7 +246,8 @@ crossvalidation <- function(formula,
                             models = mod,
                             data = data))
   
-  class(result) <- c("gosset_cv", class(result))
+  class(result) <- union("gosset_cv", class(result))
+  
   return(result)
 }
 
@@ -321,6 +321,10 @@ print.gosset_cv <- function(x, ...) {
                                   ...){
   # take length of folds
   N <- length(folds)
+  
+  if (is.null(mean.method)) {
+    mean.method <- "stouffer"
+  }
   
   # Z-test weight mean
   if (mean.method == "stouffer") {

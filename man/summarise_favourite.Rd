@@ -11,12 +11,12 @@ summarise_favourite(object, ...)
 \method{plot}{gosset_fvrt}(x, ...)
 }
 \arguments{
-\item{object}{a rankings object of class 'rankings' or 'grouped_rankings'}
+\item{object}{an object of class \code{rankings} or \code{grouped_rankings}}
 
-\item{...}{further arguments passed to methods. Not enabled yet}
+\item{...}{additional arguments passed to methods. Not enabled yet}
 
-\item{x}{an object of class 'gosset_fvrt' for the plotting method. 
-Generates a 'ggplot' object that can be passed to any ggplot2 method}
+\item{x}{an object of class \code{gosset_fvrt} for the plotting method. 
+Generates a \code{ggplot} object that can be passed to any \pkg{ggplot2} method}
 }
 \value{
 A data.frame with the descriptive statistics:
@@ -31,7 +31,7 @@ against the others}
 best and worst performance}
 }
 \description{
-Summarise favourability scores from tricot data
+Summarise favourability scores from permutation contests
 }
 \examples{
 data("breadwheat", package = "gosset")
@@ -40,7 +40,7 @@ R <- rank_tricot(data = breadwheat,
                  items = c("variety_a", "variety_b", "variety_c"),
                  input = c("overall_best", "overall_worst"))
 
-fav <- summarise_favorite(R)
+fav <- summarise_favourite(R)
 
 fav
 

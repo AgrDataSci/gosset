@@ -8,12 +8,10 @@
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-Collating data from different sources is like solving a jigsaw puzzle. 
-    The gosset package provides the toolkit for a workflow to analyse metadata and 
-    experimental citizen science data, from collating data of different sources to 
-    model sellection and visualisation. The package is named after W.S. Gosset aka 
-    ‘Student’, a pioneer of modern statistics in small sample experimental design 
-    and analysis.
+Toolkit for a workflow to analyse metadata and experimental citizen 
+    science data, from collating data of different sources to model sellection and 
+    visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer 
+    of modern statistics in small sample experimental design and analysis.
 }
 \seealso{
 \strong{Useful links:}
