@@ -81,7 +81,7 @@ a similar scale (from 0 to 1), with higher values indicating better model fit." 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -169,18 +169,14 @@ Hoboken, NJ, USA. http://doi.wiley.com/10.1002/0471249688</p>
 http://www.jstor.org/stable/3448514</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
+    <pre class="examples">
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"airquality"</span>)
 
 <span class='no'>mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>Temp</span> ~ <span class='no'>Wind</span> + <span class='no'>Solar.R</span>,
            <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>airquality</span>,
            <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>poisson</a></span>())
 
-<span class='fu'>pseudoR2</span>(<span class='no'>mod</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 5</span><span>
-#&gt;   logLik logLikNull MaxLik CraggUhler Agresti
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>  -</span><span style='color: #BB0000;'>59.1</span><span>      -</span><span style='color: #BB0000;'>89.3</span><span>  0.340      0.481   0.339</div><div class='input'>
-</div></span></pre>
+<span class='fu'>pseudoR2</span>(<span class='no'>mod</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

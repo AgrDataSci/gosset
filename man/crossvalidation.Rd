@@ -33,12 +33,13 @@ Options are: 'equal', arithmetic mean;
 'stouffer' weighted through Z-test. See references}
 
 \item{seed}{integer, the seed for random number generation. If NULL (the default), 
-gosset will set the seed randomly}
+\pkg{gosset} will set the seed randomly}
 
 \item{...}{additional arguments passed the methods of the chosen model}
 }
 \value{
-The cross-validation goodness-of-fit estimates, which are:
+an object of class \code{gosset_cv} with the cross-validation 
+goodness-of-fit estimates, which are:
 \item{AIC}{Akaike Information Criterion}
 \item{deviance}{Model deviance}
 \item{logLik}{Log-Likelihood}
@@ -123,4 +124,9 @@ Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373.
 \code{\link[psychotree]{bttree}}, 
 \code{\link[gnm]{gnm}},
 \code{\link[PlackettLuce]{pltree}}
+
+Other model selection functions: 
+\code{\link{btpermute}()},
+\code{\link{forward}()}
 }
+\concept{model selection functions}

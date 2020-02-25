@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot nodes from recursive partitioning trees — plot_nodes • gosset</title>
+<title>Variable selection with pair comparisons — btpermute • gosset</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Plot nodes from recursive partitioning trees — plot_nodes" />
-<meta property="og:description" content="Make a ggplot2 chart from model-based recursive partitioning trees with quasi-variance" />
+<meta property="og:title" content="Variable selection with pair comparisons — btpermute" />
+<meta property="og:description" content="Permutation method to select variables for pair comparison data" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -111,63 +111,74 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot nodes from recursive partitioning trees</h1>
+    <h1>Variable selection with pair comparisons</h1>
     
-    <div class="hidden name"><code>plot_nodes.Rd</code></div>
+    <div class="hidden name"><code>btpermute.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Make a ggplot2 chart from model-based recursive partitioning trees with quasi-variance</p>
+    <p>Permutation method to select variables for pair comparison data</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_nodes</span>(<span class='no'>object</span>, <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>btpermute</span>(
+  <span class='kw'>contests</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>predictors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>iterations</span> <span class='kw'>=</span> <span class='fl'>15</span>,
+  <span class='kw'>seed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>an object of class modelparty</p></td>
+      <th>contests</th>
+      <td><p>a data frame with pairwise binary contests with these variables
+'id','player1','player2','win1','win2'; the id should match with those found in 
+<code>predictors</code></p></td>
     </tr>
     <tr>
-      <th>labels</th>
-      <td><p>optional, new labels for the axis X in the plot
-by default</p></td>
+      <th>predictors</th>
+      <td><p>a data frame with player predictors with an id 
+that should match with <code>contests</code></p></td>
+    </tr>
+    <tr>
+      <th>iterations</th>
+      <td><p>integer, number of iterations to compute</p></td>
+    </tr>
+    <tr>
+      <th>seed</th>
+      <td><p>integer, the seed for random number generation. If NULL (the default), 
+<span class="pkg">gosset</span> will set the seed randomly</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments passed to ggplot2</p></td>
+      <td><p>additional arguments passed to <span class="pkg">BradleyTerry2</span> methods</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a list of plots with probabilities of winning and 
-intervals based on quasi-standard errors</p>
+    <p>an object of class <code>gosset_btpermute</code> with the final <code><a href='https://rdrr.io/pkg/BradleyTerry2/man/BTm.html'>BTm()</a></code> model,
+selected variables, seeds (random numbers) used and deviances</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/qvcalc/man/qvcalc.html'>qvcalc</a></code> <code><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></code></p></div>
+    <div class='dont-index'><p><code><a href='rank_binomial.html'>rank_binomial</a></code>, <code><a href='https://rdrr.io/pkg/BradleyTerry2/man/BTm.html'>BTm</a></code></p>
+<p>Other model selection functions: 
+<code><a href='crossvalidation.html'>crossvalidation</a>()</code>,
+<code><a href='forward.html'>forward</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples">
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"PlackettLuce"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"qvcalc"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"ggplot2"</span>)
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"BradleyTerry2"</span>)
 
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"breadwheat"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"gosset"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"kenyachoice"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"gosset"</span>)
 
-<span class='no'>G</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rank_tricot.html'>rank_tricot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>breadwheat</span>,
-                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"variety_a"</span>,<span class='st'>"variety_b"</span>,<span class='st'>"variety_c"</span>),
-                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"overall_best"</span>,<span class='st'>"overall_worst"</span>),
-                 <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>mod</span> <span class='kw'>&lt;-</span> <span class='fu'>btpermute</span>(<span class='kw'>contests</span> <span class='kw'>=</span> <span class='no'>kenyachoice</span>$<span class='no'>contests</span>,
+                 <span class='kw'>predictors</span> <span class='kw'>=</span> <span class='no'>kenyachoice</span>$<span class='no'>predictors</span>,
+                 <span class='kw'>iterations</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+                 <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
-<span class='no'>mydata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>G</span>, <span class='no'>breadwheat</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"lon"</span>,<span class='st'>"lat"</span>)])
-
-<span class='co'># fit a pltree model using lon and lat</span>
-<span class='no'>mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/PlackettLuce/man/pltree.html'>pltree</a></span>(<span class='no'>G</span> ~ <span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mydata</span>)
-
-<span class='co'># plot nodes</span>
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>plot_nodes</span>(<span class='no'>mod</span>)</pre>
+<span class='no'>mod</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

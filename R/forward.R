@@ -18,23 +18,24 @@
 #' @param akaike.weights optional, logical object for averaging the goodness-of-fit 
 #'  coefficients with Akaike weights
 #' @inheritParams crossvalidation
-#' @return The cross-validation goodness-of-fit estimates for the best model, 
-#'  which are:
+#' @return an object of class \code{gosset_cv} with the cross-validation 
+#' goodness-of-fit estimates, which are:
 #' \item{AIC}{Akaike Information Criterion}
 #' \item{deviance}{Model deviance}
 #' \item{logLik}{Log-Likelihood}
 #' \item{MaxLik}{Maximum likelihood pseudo R-squared}
 #' \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
 #' \item{Agresti}{Agresti pseudo R-squared}
-#' 
 #' Cross-validation estimates are computed using the fitted models on the validation samples.
-#' 
-#' @seealso \code{\link{crossvalidation}}
-#' 
 #' @examples 
 #'  
-#' require("gnm")
 #' 
+#' require("gnm")
+#' require("foreach")
+#' require("abind")
+#' require("doParallel")
+#' 
+#'  
 #' data("airquality")
 #' 
 #' mod <- forward(Temp ~ .,
@@ -69,7 +70,7 @@
 #' @export
 forward <- function(formula, data, k = NULL, folds = NULL,
                     select.by = NULL, akaike.weights = FALSE,
-                    ncores = NULL, packages = NULL, ...) {
+                    ncores = NULL, packages = NULL, seed = NULL, ...) {
 
   # list of additional arguments
   dots <- list(...)
@@ -88,9 +89,18 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     k <- 10
   }
 
+  # assign folds
   if (is.null(folds)) {
-    folds <- sample(rep(seq_len(k), times = ceiling(n/k), length.out = n),
-                    replace = FALSE)
+    
+    # check if a seed is provided
+    if (is.null(seed)) {
+      seed <- as.integer(stats::runif(1, 0, 10000))
+    }
+    
+    set.seed(seed)
+    
+    folds <- sample(rep(1:k, times = ceiling(n / k), length.out = n))
+    
   }
 
   if (is.null(select.by)) {

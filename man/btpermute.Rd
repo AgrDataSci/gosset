@@ -13,8 +13,9 @@ btpermute(
 )
 }
 \arguments{
-\item{contests}{a data frame with pairwise binary contests with an 
-id that should match with \code{predictors}}
+\item{contests}{a data frame with pairwise binary contests with these variables
+'id','player1','player2','win1','win2'; the id should match with those found in 
+\code{predictors}}
 
 \item{predictors}{a data frame with player predictors with an id 
 that should match with \code{contests}}
@@ -22,33 +23,34 @@ that should match with \code{contests}}
 \item{iterations}{integer, number of iterations to compute}
 
 \item{seed}{integer, the seed for random number generation. If NULL (the default), 
-gosset will set the seed randomly}
+\pkg{gosset} will set the seed randomly}
 
 \item{...}{additional arguments passed to \pkg{BradleyTerry2} methods}
+}
+\value{
+an object of class \code{gosset_btpermute} with the final \code{BTm()} model,
+selected variables, seeds (random numbers) used and deviances
 }
 \description{
 Permutation method to select variables for pair comparison data
 }
 \examples{
-\donttest{  
-data("kenyachoice", package = "gosset")
-
 require("BradleyTerry2")
 
-items <- unique(kenyachoice$contests$Item1)
+data("kenyachoice", package = "gosset")
 
 mod <- btpermute(contests = kenyachoice$contests,
                  predictors = kenyachoice$predictors,
-                 iterations = 15,
+                 iterations = 10,
                  seed = 1)
 
 mod
-}
 }
 \seealso{
 \code{\link{rank_binomial}}, \code{\link[BradleyTerry2]{BTm}}
 
 Other model selection functions: 
+\code{\link{crossvalidation}()},
 \code{\link{forward}()}
 }
 \concept{model selection functions}

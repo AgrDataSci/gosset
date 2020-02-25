@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cross-validation — crossvalidation • gosset</title>
+<title>Forward stepwise regression for model selection — forward • gosset</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,11 +42,10 @@
 
 
 
-<meta property="og:title" content="Cross-validation — crossvalidation" />
-<meta property="og:description" content="Methods for measuring the performance of a predictive model on sets of 
-test data in Bradley-Terry model from psychotree, Generalized Linear and 
-Generalized Nonlinear models from gnm, and Plackett-Luce model from 
-PlackettLuce" />
+<meta property="og:title" content="Forward stepwise regression for model selection — forward" />
+<meta property="og:description" content="Forward selection is a type of stepwise regression which begins with an empty
+ model and adds in variables one by one. In each step one variable is added
+ when it makes a single best improvement to the model." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -114,24 +113,26 @@ PlackettLuce" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Cross-validation</h1>
+    <h1>Forward stepwise regression for model selection</h1>
     
-    <div class="hidden name"><code>crossvalidation.Rd</code></div>
+    <div class="hidden name"><code>forward.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Methods for measuring the performance of a predictive model on sets of 
-test data in Bradley-Terry model from <span class="pkg">psychotree</span>, Generalized Linear and 
-Generalized Nonlinear models from <span class="pkg">gnm</span>, and Plackett-Luce model from 
-<span class="pkg">PlackettLuce</span></p>
+    <p>Forward selection is a type of stepwise regression which begins with an empty
+ model and adds in variables one by one. In each step one variable is added
+ when it makes a single best improvement to the model.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>crossvalidation</span>(
+    <pre class="usage"><span class='fu'>forward</span>(
   <span class='no'>formula</span>,
   <span class='no'>data</span>,
-  <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>k</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>folds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>mean.method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>select.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>akaike.weights</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>packages</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>seed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>
 )</pre>
@@ -141,9 +142,8 @@ Generalized Nonlinear models from <span class="pkg">gnm</span>, and Plackett-Luc
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>formula</th>
-      <td><p>an object of class "formula" (or one that can be 
-coerced to that class): a symbolic description of the model to be fitted,
-of the form \(y ~ x1 + ... + xn\)</p></td>
+      <td><p>a symbolic description of the model, if set as
+\( y ~ . \) all variables in <code>data</code> are used</p></td>
     </tr>
     <tr>
       <th>data</th>
@@ -159,12 +159,26 @@ containing the variables in the model</p></td>
       <td><p>an optional vector specifying the folds in the cross-validation</p></td>
     </tr>
     <tr>
-      <th>mean.method</th>
-      <td><p>a character for the method to calculate the mean of 
-cross-validation estimators. 
-Options are: 'equal', arithmetic mean; 
-'foldsize', weighted mean by the size in each fold; 
-'stouffer' weighted through Z-test. See references</p></td>
+      <th>select.by</th>
+      <td><p>a character for the goodness-of-fit statistical parameter to
+select the models. Set as 'deviance' by default. Check 'Value' for details in outputs 
+and goodness-of-fit options.</p></td>
+    </tr>
+    <tr>
+      <th>akaike.weights</th>
+      <td><p>optional, logical object for averaging the goodness-of-fit 
+coefficients with Akaike weights</p></td>
+    </tr>
+    <tr>
+      <th>ncores</th>
+      <td><p>an integer for the number of cores to be used in the 
+parallel computing. Set as 1 by default (no parallelisation)</p></td>
+    </tr>
+    <tr>
+      <th>packages</th>
+      <td><p>character vector of packages that the parallel tasks depend on. If you use 
+GLM or GNM you should call for <span class="pkg">gnm</span>, for Plackett-Luce, use <span class="pkg">PlackettLuce</span>, for 
+Bradley-Terry, use <span class="pkg">psychotree</span></p></td>
     </tr>
     <tr>
       <th>seed</th>
@@ -187,76 +201,47 @@ goodness-of-fit estimates, which are:</p>
 <dt>MaxLik</dt><dd><p>Maximum likelihood pseudo R-squared</p></dd>
 <dt>CraggUhler</dt><dd><p>Cragg and Uhler's pseudo R-squared</p></dd>
 <dt>Agresti</dt><dd><p>Agresti pseudo R-squared</p></dd>
-<dt>kendallTau</dt><dd><p>the Kendall correlation coefficient, only for Plackett-Luce models</p></dd>
+Cross-validation estimates are computed using the fitted models on the validation samples.
 
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Agresti A. (2002). Categorical Data Analysis. 
-<a href='http://doi.wiley.com/10.1002/0471249688'>http://doi.wiley.com/10.1002/0471249688</a></p>
-<p>Elder J. F. (2003). Journal of Computational and Graphical Statistics, 12(4), 853–864.
-<a href='https://doi.org/10.1198/1061860032733'>https://doi.org/10.1198/1061860032733</a></p>
-<p>James G., et al. (2013). An Introduction to Statistical Learning: with Applications in R.
-<a href='https://doi.org/10.1007/978-1-4614-7138-7'>https://doi.org/10.1007/978-1-4614-7138-7</a></p>
-<p>Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. 
-<a href='https://doi.org/10.1111/j.1420-9101.2005.00917.x'>https://doi.org/10.1111/j.1420-9101.2005.00917.x</a></p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/psychotree/man/bttree.html'>bttree</a></code>, 
-<code><a href='https://rdrr.io/pkg/gnm/man/gnm.html'>gnm</a></code>,
-<code><a href='https://rdrr.io/pkg/PlackettLuce/man/pltree.html'>pltree</a></code></p>
-<p>Other model selection functions: 
+    <div class='dont-index'><p>Other model selection functions: 
 <code><a href='btpermute.html'>btpermute</a>()</code>,
-<code><a href='forward.html'>forward</a>()</code></p></div>
+<code><a href='crossvalidation.html'>crossvalidation</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># Generalized Linear Models</span>
+    <pre class="examples">
+
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"gnm"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"foreach"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"abind"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"doParallel"</span>)
+
 
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"airquality"</span>)
 
-<span class='no'>cv</span> <span class='kw'>&lt;-</span> <span class='fu'>crossvalidation</span>(<span class='no'>Temp</span> ~ <span class='no'>Wind</span> + <span class='no'>Solar.R</span>,
-                      <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>airquality</span>,
-                      <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-                      <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>999</span>,
-                      <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>poisson</a></span>())
-
+<span class='no'>mod</span> <span class='kw'>&lt;-</span> <span class='fu'>forward</span>(<span class='no'>Temp</span> ~ <span class='no'>.</span>,
+               <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>airquality</span>,
+               <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+               <span class='kw'>select.by</span> <span class='kw'>=</span> <span class='st'>"AIC"</span>,
+               <span class='kw'>packages</span> <span class='kw'>=</span> <span class='st'>"gnm"</span>,
+               <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>poisson</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"log"</span>))
 
 <span class='co'># \donttest{</span>
-<span class='co'># Plackett-Luce Model</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"PlackettLuce"</span>)
-
-<span class='co'># beans data from PlackettLuce</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"beans"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"PlackettLuce"</span>)
-
-<span class='no'>G</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rank_tricot.html'>rank_tricot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beans</span>,
-                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>),
-                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>:<span class='fl'>5</span>),
-                 <span class='kw'>additional.rank</span> <span class='kw'>=</span> <span class='no'>beans</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>:<span class='fl'>8</span>)],
-                 <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='no'>beans</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>G</span>, <span class='no'>beans</span>)
-
-<span class='co'># take seasons as bins</span>
-<span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='no'>beans</span>$<span class='no'>season</span>))
-<span class='no'>folds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='no'>beans</span>$<span class='no'>season</span>))
-
-<span class='no'>cv</span> <span class='kw'>&lt;-</span> <span class='fu'>crossvalidation</span>(<span class='no'>G</span> ~ <span class='no'>maxTN</span>,
-                      <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beans</span>,
-                      <span class='kw'>k</span> <span class='kw'>=</span> <span class='no'>k</span>,
-                      <span class='kw'>folds</span> <span class='kw'>=</span> <span class='no'>folds</span>,
-                      <span class='kw'>minsize</span> <span class='kw'>=</span> <span class='fl'>100</span>)
-
-<span class='co'>########################################</span>
-
+<span class='co'>##########################################</span>
 <span class='co'># Bradley-Terry Model</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"psychotree"</span>)
 
 <span class='co'># Germany's Next Topmodel 2007 data from psychotree</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"Topmodel2007"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"psychotree"</span>)
 
-<span class='no'>cv</span> <span class='kw'>&lt;-</span> <span class='fu'>crossvalidation</span>(<span class='no'>preference</span> ~ <span class='no'>.</span>,
-                      <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>Topmodel2007</span>,
-                      <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>5</span>)
+<span class='fu'>forward</span>(<span class='no'>preference</span> ~ <span class='no'>.</span>,
+        <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>Topmodel2007</span>,
+        <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+        <span class='kw'>packages</span> <span class='kw'>=</span> <span class='st'>"psychotree"</span>,
+        <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+        <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.01</span>,
+        <span class='kw'>minsize</span> <span class='kw'>=</span> <span class='fl'>30</span>)
 
 <span class='co'># }</span></pre>
   </div>
@@ -265,7 +250,6 @@ goodness-of-fit estimates, which are:</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#references">References</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

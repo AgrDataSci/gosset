@@ -3,26 +3,27 @@
 #' Permutation method to select variables for pair comparison data
 #' 
 #' @family model selection functions
-#' @param contests a data frame with pairwise binary contests with an 
-#'  id that should match with \code{predictors}
+#' @param contests a data frame with pairwise binary contests with these variables
+#'  'id','player1','player2','win1','win2'; the id should match with those found in 
+#'  \code{predictors}
 #' @param predictors a data frame with player predictors with an id 
 #'  that should match with \code{contests}
 #' @param iterations integer, number of iterations to compute
 #' @param seed integer, the seed for random number generation. If NULL (the default), 
-#' gosset will set the seed randomly
+#' \pkg{gosset} will set the seed randomly
 #' @param ... additional arguments passed to \pkg{BradleyTerry2} methods
+#' @return an object of class \code{gosset_btpermute} with the final \code{BTm()} model,
+#' selected variables, seeds (random numbers) used and deviances 
 #' @seealso \code{\link{rank_binomial}}, \code{\link[BradleyTerry2]{BTm}}
 #' @examples 
-#' \donttest{  
-#' data("kenyachoice", package = "gosset")
-#' 
+#' \donttest{
 #' require("BradleyTerry2")
 #' 
-#' items <- unique(kenyachoice$contests$Item1)
+#' data("kenyachoice", package = "gosset")
 #' 
 #' mod <- btpermute(contests = kenyachoice$contests,
 #'                  predictors = kenyachoice$predictors,
-#'                  iterations = 15,
+#'                  iterations = 10,
 #'                  seed = 1)
 #' 
 #' mod
@@ -74,6 +75,10 @@ btpermute <- function(contests = NULL,
   dat[[1]] <- contests 
   dat[[2]] <- predictors
   dat[[3]] <- as.data.frame(diag(length(items)))
+  
+  # items need to be assigned to the .GlobalEnv
+  # to be processed by BTm
+  assign("items", items, envir = .GlobalEnv)
   
   nvar <- dim(predictors)[[2]]
   
@@ -317,7 +322,9 @@ print.gosset_btpermute <- function(x, ...) {
   cat("Model formula:\n")
   cat(x[["call"]], "\n \n")
   cat("Permutation estimates: \n")
-  print(unlist(x[["model"]][c("aic","deviance",
-                              "null.deviance",
-                              "df.residual","df.null")]))
+  p <- unlist(x[["model"]][c("aic","deviance",
+                             "null.deviance",
+                             "df.residual","df.null")])
+  names(p)[1] <- "AIC"
+  print(p)
 }

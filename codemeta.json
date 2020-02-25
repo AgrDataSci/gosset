@@ -5,12 +5,12 @@
   ],
   "@type": "SoftwareSourceCode",
   "identifier": "gosset",
-  "description": "Collating data from different sources is like solving a jigsaw puzzle. \n    The gosset package provides the toolkit for a workflow to analyse metadata and \n    experimental citizen science data, from collating data of different sources to \n    model sellection and visualisation. The package is named after W.S. Gosset aka \n    ‘Student’, a pioneer of modern statistics in small sample experimental design \n    and analysis.",
-  "name": "gosset: Modelling Metadata and Crowdsourcing Citizen Science",
+  "description": "Toolkit for a workflow to analyse metadata and experimental citizen \n    science data, from collating data of different sources to model sellection and \n    visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer \n    of modern statistics in small sample experimental design and analysis.",
+  "name": "gosset: Modelling Metadata and Crowdsourced Citizen Science",
   "codeRepository": "https://agrobioinfoservices.github.io/gosset/",
   "issueTracker": "https://github.com/agrobioinfoservices/gosset/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.1.9",
+  "version": "0.2.1",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -21,7 +21,7 @@
   "author": [
     {
       "@type": "Person",
-      "givenName": "Kauê",
+      "givenName": "Kaue",
       "familyName": "de Sousa",
       "email": "kaue.desousa@inn.no",
       "@id": "https://orcid.org/0000-0002-7571-7845"
@@ -68,25 +68,13 @@
   "maintainer": [
     {
       "@type": "Person",
-      "givenName": "Kauê",
+      "givenName": "Kaue",
       "familyName": "de Sousa",
       "email": "kaue.desousa@inn.no",
       "@id": "https://orcid.org/0000-0002-7571-7845"
     }
   ],
   "softwareSuggestions": [
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "BradleyTerry2",
-      "name": "BradleyTerry2",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=BradleyTerry2"
-    },
     {
       "@type": "SoftwareApplication",
       "identifier": "ClimMobTools",
@@ -165,7 +153,55 @@
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
-      "version": ">= 2.10"
+      "version": ">= 3.5.0"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "abind",
+      "name": "abind",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=abind"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "BradleyTerry2",
+      "name": "BradleyTerry2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=BradleyTerry2"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "doParallel",
+      "name": "doParallel",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=doParallel"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "foreach",
+      "name": "foreach",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=foreach"
     },
     {
       "@type": "SoftwareApplication",
@@ -195,6 +231,11 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=partykit"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "parallel",
+      "name": "parallel"
     },
     {
       "@type": "SoftwareApplication",
@@ -270,7 +311,7 @@
   ],
   "releaseNotes": "https://github.com/agrobioinfoservices/gosset/blob/master/NEWS.md",
   "readme": "https://github.com/agrobioinfoservices/gosset/blob/master/README.md",
-  "fileSize": "410.832KB",
+  "fileSize": "422.99KB",
   "contIntegration": [
     "https://ci.appveyor.com/project/kauedesousa/gosset",
     "https://travis-ci.org/agrobioinfoservices/gosset",

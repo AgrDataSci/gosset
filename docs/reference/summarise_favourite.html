@@ -43,7 +43,7 @@
 
 
 <meta property="og:title" content="Favourability scores — summarise_favourite" />
-<meta property="og:description" content="Summarise favourability scores from tricot data" />
+<meta property="og:description" content="Summarise favourability scores from permutation contests" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -117,10 +117,10 @@
     </div>
 
     <div class="ref-description">
-    <p>Summarise favourability scores from tricot data</p>
+    <p>Summarise favourability scores from permutation contests</p>
     </div>
 
-    <pre class="usage"><span class='fu'>summarise_favourite</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>items</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>input</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>reorder</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="usage"><span class='fu'>summarise_favourite</span>(<span class='no'>object</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for gosset_fvrt</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
@@ -129,32 +129,17 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>a data.frame with columns specified by items and input values</p></td>
-    </tr>
-    <tr>
-      <th>items</th>
-      <td><p>a character or numerical vector for indexing the column(s) 
-containing the item names in <code>data</code></p></td>
-    </tr>
-    <tr>
-      <th>input</th>
-      <td><p>a character or numerical vector for indexing the column(s) 
-containing the values in <code>data</code> to be ranked</p></td>
-    </tr>
-    <tr>
-      <th>reorder</th>
-      <td><p>logical, if items should be reordered from higher 
-favourability score to least favourability score</p></td>
-    </tr>
-    <tr>
-      <th>x</th>
-      <td><p>an object of class 'gosset_fvrt' for the plotting method. 
-Generates a 'ggplot' object that can be passed to any ggplot2 method</p></td>
+      <th>object</th>
+      <td><p>an object of class <code>rankings</code> or <code>grouped_rankings</code></p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments passed to methods. See details</p></td>
+      <td><p>additional arguments passed to methods. Not enabled yet</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>an object of class <code>gosset_fvrt</code> for the plotting method. 
+Generates a <code>ggplot</code> object that can be passed to any <span class="pkg">ggplot2</span> method</p></td>
     </tr>
     </table>
 
@@ -179,11 +164,15 @@ best and worst performance</p></dd>
 <code><a href='summarise_victories.html'>summarise_victories</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"breadwheat"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"gosset"</span>)
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"breadwheat"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"gosset"</span>)
 
-<span class='no'>fv</span> <span class='kw'>&lt;-</span> <span class='fu'>summarise_favourite</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>breadwheat</span>,
-                      <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"variety_a"</span>, <span class='st'>"variety_b"</span>, <span class='st'>"variety_c"</span>),
-                      <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"overall_best"</span>, <span class='st'>"overall_worst"</span>))</div></pre>
+<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rank_tricot.html'>rank_tricot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>breadwheat</span>,
+                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"variety_a"</span>, <span class='st'>"variety_b"</span>, <span class='st'>"variety_c"</span>),
+                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"overall_best"</span>, <span class='st'>"overall_worst"</span>))
+
+<span class='no'>fav</span> <span class='kw'>&lt;-</span> <span class='fu'>summarise_favourite</span>(<span class='no'>R</span>)
+
+<span class='no'>fav</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

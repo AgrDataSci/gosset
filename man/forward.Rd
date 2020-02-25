@@ -13,6 +13,7 @@ forward(
   akaike.weights = FALSE,
   ncores = NULL,
   packages = NULL,
+  seed = NULL,
   ...
 )
 }
@@ -41,18 +42,20 @@ parallel computing. Set as 1 by default (no parallelisation)}
 GLM or GNM you should call for \pkg{gnm}, for Plackett-Luce, use \pkg{PlackettLuce}, for 
 Bradley-Terry, use \pkg{psychotree}}
 
+\item{seed}{integer, the seed for random number generation. If NULL (the default), 
+\pkg{gosset} will set the seed randomly}
+
 \item{...}{additional arguments passed the methods of the chosen model}
 }
 \value{
-The cross-validation goodness-of-fit estimates for the best model, 
- which are:
+an object of class \code{gosset_cv} with the cross-validation 
+goodness-of-fit estimates, which are:
 \item{AIC}{Akaike Information Criterion}
 \item{deviance}{Model deviance}
 \item{logLik}{Log-Likelihood}
 \item{MaxLik}{Maximum likelihood pseudo R-squared}
 \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
 \item{Agresti}{Agresti pseudo R-squared}
-
 Cross-validation estimates are computed using the fitted models on the validation samples.
 }
 \description{
@@ -62,8 +65,13 @@ Forward selection is a type of stepwise regression which begins with an empty
 }
 \examples{
  
-require("gnm")
 
+require("gnm")
+require("foreach")
+require("abind")
+require("doParallel")
+
+ 
 data("airquality")
 
 mod <- forward(Temp ~ .,
@@ -92,9 +100,8 @@ forward(preference ~ .,
 }
 }
 \seealso{
-\code{\link{crossvalidation}}
-
 Other model selection functions: 
-\code{\link{btpermute}()}
+\code{\link{btpermute}()},
+\code{\link{crossvalidation}()}
 }
 \concept{model selection functions}

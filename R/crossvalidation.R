@@ -5,6 +5,7 @@
 #' Generalized Nonlinear models from \pkg{gnm}, and Plackett-Luce model from 
 #' \pkg{PlackettLuce}
 #'
+#' @family model selection functions
 #' @param formula an object of class "formula" (or one that can be 
 #' coerced to that class): a symbolic description of the model to be fitted,
 #' of the form \eqn{y ~ x1 + ... + xn}
@@ -18,9 +19,10 @@
 #' 'foldsize', weighted mean by the size in each fold; 
 #' 'stouffer' weighted through Z-test. See references 
 #' @param seed integer, the seed for random number generation. If NULL (the default), 
-#' gosset will set the seed randomly
+#' \pkg{gosset} will set the seed randomly
 #' @param ... additional arguments passed the methods of the chosen model
-#' @return The cross-validation goodness-of-fit estimates, which are:
+#' @return an object of class \code{gosset_cv} with the cross-validation 
+#' goodness-of-fit estimates, which are:
 #' \item{AIC}{Akaike Information Criterion}
 #' \item{deviance}{Model deviance}
 #' \item{logLik}{Log-Likelihood}
@@ -310,9 +312,9 @@ crossvalidation <- function(formula,
 #' @export
 print.gosset_cv <- function(x, ...) {
   cat("Model formula:\n")
-  cat(x[[2]][[1]], "\n \n")
+  cat(x[["raw"]][["call"]], "\n \n")
   cat("Cross-validation estimates: \n")
-  print(x[[1]])
+  print(round(unlist(x[["coeffs"]]), 4))
 }
 
 # Compute weighted means in cross-validation
