@@ -5,6 +5,7 @@
 #' Generalized Nonlinear models from \pkg{gnm}, and Plackett-Luce model from 
 #' \pkg{PlackettLuce}
 #'
+#' @author Kauê de Sousa and Jacob van Etten
 #' @family model selection functions
 #' @param formula an object of class "formula" (or one that can be 
 #' coerced to that class): a symbolic description of the model to be fitted,

@@ -2,6 +2,8 @@
 #'
 #' Summarise favourability scores from permutation contests
 #' 
+#' @author Nicolas Greliche, Sam Dumble and Kauê de Sousa
+#' @family summarise functions
 #' @param object an object of class \code{rankings} or \code{grouped_rankings}
 #' @param x an object of class \code{gosset_fvrt} for the plotting method. 
 #' Generates a \code{ggplot} object that can be passed to any \pkg{ggplot2} method
@@ -17,7 +19,6 @@
 #' against the others}
 #' \item{fav_score}{the favourability score, which is the difference between 
 #' best and worst performance}
-#' @family summarise functions
 #' @examples
 #' data("breadwheat", package = "gosset")
 #' 

@@ -104,4 +104,7 @@ Other model selection functions:
 \code{\link{btpermute}()},
 \code{\link{crossvalidation}()}
 }
+\author{
+Kauê de Sousa and Jacob van Etten
+}
 \concept{model selection functions}

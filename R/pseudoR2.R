@@ -6,6 +6,8 @@
 #' 'pseudo R-squared' because they look like 'R-squared' in the sense that they are on 
 #' a similar scale (from 0 to 1), with higher values indicating better model fit.
 #' 
+#' @author Kauê de Sousa and Jacob van Etten
+#' @family goodness-of-fit functions
 #' @param object a fitted model object
 #' @param ... additional arguments affecting the R-squared produced
 #' @return A data frame containing the pseudo R-squared coefficients:

@@ -11,7 +11,8 @@ rank_paircomp(object)
 which is a matrix of dense rankings.}
 }
 \value{
-an object of class "paircomp" which is a matrix of pairwise comparisons
+an object of class "paircomp" which is a matrix 
+ of pairwise comparisons
 }
 \description{
 Pairwise comparisons from a ranking object. Ties are not 
@@ -53,14 +54,23 @@ PC <- rank_paircomp(R)
 \references{
 Strobl C., Wickelmaier F. & Zeileis A. (2011). 
 Journal of Educational and Behavioral Statistics, 36(2), 135–153. 
-https://doi.org/10.3102/1076998609359791.
+\url{https://doi.org/10.3102/1076998609359791}
 }
 \seealso{
-\code{\link[PlackettLuce]{rankings}}, \code{\link[psychotools]{paircomp}}
+\code{\link[PlackettLuce]{rankings}}, 
+\code{\link[psychotools]{paircomp}}
 
 Other rank functions: 
 \code{\link{rank_binomial}()},
 \code{\link{rank_numeric}()},
 \code{\link{rank_tricot}()}
+
+Other rank functions: 
+\code{\link{rank_binomial}()},
+\code{\link{rank_numeric}()},
+\code{\link{rank_tricot}()}
+}
+\author{
+Kauê de Sousa and Jacob van Etten
 }
 \concept{rank functions}

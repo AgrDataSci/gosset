@@ -55,13 +55,15 @@ R <- rank_tricot(data = beans,
                  additional.rank = beans[, c("var_a", "var_b", "var_c")])
 
 v <- summarise_victories(R)
-
- 
+  
 }
 \seealso{
 Other summarise functions: 
 \code{\link{summarise_agreement}()},
 \code{\link{summarise_dominance}()},
 \code{\link{summarise_favourite}()}
+}
+\author{
+Nicolas Greliche, Sam Dumble and Kauê de Sousa
 }
 \concept{summarise functions}

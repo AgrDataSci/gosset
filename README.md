@@ -2,18 +2,18 @@
 # gosset
 
 <!-- badges: start -->
-[![CRAN status](https://www.r-pkg.org/badges/version/gosset)](https://cran.r-project.org/package=gosset)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/agrobioinfoservices/gosset?branch=master&svg=true)](https://ci.appveyor.com/project/kauedesousa/gosset)
-[![Build Status](https://travis-ci.org/agrobioinfoservices/gosset.svg?branch=master)](https://travis-ci.org/agrobioinfoservices/gosset)
+[![CRAN](https://www.r-pkg.org/badges/version/gosset)](https://cran.r-project.org/package=gosset)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/agrobioinfoservices/gosset?branch=master&svg=true)](https://ci.appveyor.com/project/kauedesousa/gosset)
+[![Travis](https://travis-ci.org/agrobioinfoservices/gosset.svg?branch=master)](https://travis-ci.org/agrobioinfoservices/gosset)
 [![codecov](https://codecov.io/gh/agrobioinfoservices/gosset/master.svg)](https://codecov.io/github/agrobioinfoservices/gosset?branch=master)
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
 # *gosset*: Modelling Metadata and Crowdsourcing Citizen Science <img align="right" src="man/figures/logo.png">
 
 ## Overview
 
-Collating data from different sources is like solving a jigsaw puzzle. The **gosset** package provides the toolkit for a workflow to analyse metadata and experimental citizen science data, from collating data of different sources to model sellection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.
+The **gosset** package provides the toolkit and a workflow to analyse metadata and experimental citizen science data, from collating data of different sources to model sellection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.
 
 ## Installation
 

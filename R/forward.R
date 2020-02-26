@@ -4,6 +4,7 @@
 #'  model and adds in variables one by one. In each step one variable is added
 #'  when it makes a single best improvement to the model.
 #'
+#' @author Kauê de Sousa and Jacob van Etten
 #' @family model selection functions
 #' @param formula a symbolic description of the model, if set as   
 #'   \eqn{ y ~ . } all variables in \code{data} are used  

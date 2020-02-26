@@ -1,11 +1,13 @@
 #' Plot nodes from recursive partitioning trees
 #'
-#' Make a ggplot2 chart from model-based recursive partitioning trees with quasi-variance
+#' Make a ggplot2 chart from model-based recursive partitioning
+#' trees with quasi-variance
 #'
-#' @param object an object of class modelparty
+#' @author Kauê de Sousa
+#' @param object an object of class \code{modelparty}
 #' @param labels optional, new labels for the axis X in the plot
 #' by default
-#' @param ... additional arguments passed to ggplot2
+#' @param ... additional arguments passed to \pkg{ggplot2}
 #' @return a list of plots with probabilities of winning and 
 #' intervals based on quasi-standard errors
 #' @seealso \code{\link[qvcalc]{qvcalc}} \code{\link[ggplot2]{ggplot}}

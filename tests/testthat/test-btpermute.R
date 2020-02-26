@@ -11,7 +11,7 @@ test_that("btpermute select", {
   mod <- suppressWarnings(
     btpermute(contests = kenyachoice$contests,
               predictors = kenyachoice$predictors,
-              iterations = 10,
+              n.iterations = 10,
               seed = 1)
     )
 

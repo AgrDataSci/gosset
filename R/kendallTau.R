@@ -9,6 +9,8 @@
 #' into ranks (from the higher being the first and negative being the last) 
 #' and the possibility to remove zeros from incomplete ranks
 #' 
+#' @author Kauê de Sousa and Jacob van Etten
+#' @family goodness-of-fit functions
 #' @param x a numeric vector, matrix or data frame
 #' @param y a vector, matrix or data frame with compatible dimensions to \code{x}
 #' @param ... further arguments afecting the Kendall tau produced. See details 

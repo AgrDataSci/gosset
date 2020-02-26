@@ -129,4 +129,7 @@ Other model selection functions:
 \code{\link{btpermute}()},
 \code{\link{forward}()}
 }
+\author{
+Kauê de Sousa and Jacob van Etten
+}
 \concept{model selection functions}

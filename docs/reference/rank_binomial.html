@@ -43,8 +43,8 @@
 
 
 <meta property="og:title" content="Binary rankings from pairwise contests — rank_binomial" />
-<meta property="og:description" content="Binary comparisons from a ranking object. Ties are not taken into account, 
-then they are added as NA's." />
+<meta property="og:description" content="Binary comparisons from a ranking object. Ties are not 
+taken into account, then they are added as NA's." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -118,8 +118,8 @@ then they are added as NA's." />
     </div>
 
     <div class="ref-description">
-    <p>Binary comparisons from a ranking object. Ties are not taken into account, 
-then they are added as NA's.</p>
+    <p>Binary comparisons from a ranking object. Ties are not 
+taken into account, then they are added as NA's.</p>
     </div>
 
     <pre class="usage"><span class='fu'>rank_binomial</span>(<span class='no'>object</span>, <span class='kw'>drop.null</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
@@ -129,7 +129,8 @@ then they are added as NA's.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>an object of class "rankings", "grouped_rankings" or "paircomp".</p></td>
+      <td><p>an object of class "rankings", "grouped_rankings" 
+or "paircomp".</p></td>
     </tr>
     <tr>
       <th>drop.null</th>
@@ -140,14 +141,18 @@ then they are added as NA's.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A data.frame with binary rank of pairwise contests:</p>
-<dt>player1</dt><dd><p>a factor with n levels for the first player in the contests</p></dd>
-<dt>player2</dt><dd><p>a factor with n levels (same as player1) for the second player in the contests</p></dd>
+<dt>player1</dt><dd><p>a factor with n levels for the first player 
+ in the contests</p></dd>
+<dt>player2</dt><dd><p>a factor with n levels (same as player1) for 
+ the second player in the contests</p></dd>
 <dt>win1</dt><dd><p>number of times player1 wins against player2</p></dd>
 <dt>win2</dt><dd><p>number of times player2 wins against player1</p></dd>
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Turner H. &amp; Firth D. (2012). Journal of Statistical Software, 48(9), 1–21. http://dx.doi.org/10.18637/jss.v048.i09</p>
+    <p>Turner H. &amp; Firth D. (2012). 
+Journal of Statistical Software, 48(9), 1–21. 
+<a href='http://dx.doi.org/10.18637/jss.v048.i09'>http://dx.doi.org/10.18637/jss.v048.i09</a></p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/BradleyTerry2/man/BTm.html'>BTm</a></code></p>
@@ -157,8 +162,7 @@ then they are added as NA's.</p>
 <code><a href='rank_tricot.html'>rank_tricot</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># \donttest{</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"PlackettLuce"</span>)
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"PlackettLuce"</span>)
 
 <span class='co'># a simple matrix with 4 items</span>
 <span class='co'># ties are computed as NA's</span>
@@ -172,8 +176,7 @@ then they are added as NA's.</p>
 
 <span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/PlackettLuce/man/rankings.html'>as.rankings</a></span>(<span class='no'>R</span>)
 
-<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_binomial</span>(<span class='no'>R</span>)
-<span class='co'># }</span></pre>
+<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_binomial</span>(<span class='no'>R</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -185,6 +188,8 @@ then they are added as NA's.</p>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
+    <h2>Author</h2>
+    <p>Kauê de Sousa</p>
   </div>
 </div>
 

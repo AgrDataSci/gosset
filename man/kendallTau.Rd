@@ -83,4 +83,11 @@ https://doi.org/10.1093/biomet/30.1-2.81.
 }
 \seealso{
 \code{\link[stats]{cor}}
+
+Other goodness-of-fit functions: 
+\code{\link{pseudoR2}()}
 }
+\author{
+Kauê de Sousa and Jacob van Etten
+}
+\concept{goodness-of-fit functions}

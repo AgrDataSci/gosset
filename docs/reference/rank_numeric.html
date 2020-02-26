@@ -43,7 +43,7 @@
 
 
 <meta property="og:title" content="Plackett-Luce rankings from numeric values — rank_numeric" />
-<meta property="og:description" content="Group and convert numeric values into Plackett-Luce rankings." />
+<meta property="og:description" content="Group and coerce numeric values into Plackett-Luce rankings." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -117,7 +117,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Group and convert numeric values into Plackett-Luce rankings.</p>
+    <p>Group and coerce numeric values into Plackett-Luce rankings.</p>
     </div>
 
     <pre class="usage"><span class='fu'>rank_numeric</span>(
@@ -149,15 +149,17 @@ containing the values in <code>data</code> to be ranked</p></td>
     </tr>
     <tr>
       <th>id</th>
-      <td><p>a data frame or index of <code>data</code> indicating the ids for "long" <code>data</code></p></td>
+      <td><p>a data frame or index of <code>data</code> indicating the 
+ids for "long" <code>data</code></p></td>
     </tr>
     <tr>
       <th>group</th>
-      <td><p>logical, if TRUE return an object of class "grouped_rankings"</p></td>
+      <td><p>logical, if <code>TRUE</code> return an object of class "grouped_rankings"</p></td>
     </tr>
     <tr>
       <th>ascending</th>
-      <td><p>logical, only for floating point numbers, to compute rankings from lower to higher values</p></td>
+      <td><p>logical, only for floating point numbers, to 
+compute rankings from lower to higher values</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -167,7 +169,8 @@ containing the values in <code>data</code> to be ranked</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a PlackettLuce "rankings" object, which is a matrix of dense rankings</p>
+    <p>a PlackettLuce "rankings" object, which is a matrix 
+ of dense rankings</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/PlackettLuce/man/rankings.html'>rankings</a></code></p>
@@ -234,6 +237,8 @@ containing the values in <code>data</code> to be ranked</p></td>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
+    <h2>Author</h2>
+    <p>Kauê de Sousa</p>
   </div>
 </div>
 

@@ -22,7 +22,7 @@ containing the item names in \code{data}}
 \item{input}{a character or numerical vector for indexing the column(s) 
 containing the values in \code{data} to be ranked}
 
-\item{group}{logical, if TRUE return an object of class "grouped_rankings"}
+\item{group}{logical, if \code{TRUE} return an object of class "grouped_rankings"}
 
 \item{additional.rank}{optional, a data frame for the comparisons between 
 tricot items and the local item}
@@ -37,7 +37,9 @@ Create an object of class "rankings" from tricot data. Tricot stands
 for "triadic comparison of technologies". Is a methodology to carry out 
 large agronomic field experiments allowing the comparison between many 
 alternative technologies, in many different environments. Each participant
-evaluates a set of three randomised technologies from a larger set.
+evaluates a set of three randomised technologies from a larger set. A 
+comparison with a local item can be added as additional rankings with the 
+argument \code{additional.rank}.
 }
 \details{
 full.output: logical, to return a list with a "rankings", 
@@ -85,14 +87,17 @@ head(G)
 }
 \references{
 van Etten J., et al. (2019). Experimental Agriculture, 55(S1), 275–296.
-https://doi.org/10.1017/S0014479716000739.
+\url{https://doi.org/10.1017/S0014479716000739}
 }
 \seealso{
-\code{\link[PlackettLuce]{rankings}}  \code{\link{breadwheat}}
+\code{\link[PlackettLuce]{rankings}}, \code{\link{breadwheat}}
 
 Other rank functions: 
 \code{\link{rank_binomial}()},
 \code{\link{rank_numeric}()},
 \code{\link{rank_paircomp}()}
+}
+\author{
+Kauê de Sousa, with ideas from Heather Turner
 }
 \concept{rank functions}

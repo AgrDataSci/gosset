@@ -7,23 +7,25 @@
 rank_binomial(object, drop.null = FALSE)
 }
 \arguments{
-\item{object}{an object of class "rankings", "grouped_rankings" or "paircomp".}
+\item{object}{an object of class "rankings", "grouped_rankings" 
+or "paircomp".}
 
 \item{drop.null}{logical, an optional argument to remove null contests}
 }
 \value{
 A data.frame with binary rank of pairwise contests:
-\item{player1}{a factor with n levels for the first player in the contests}
-\item{player2}{a factor with n levels (same as player1) for the second player in the contests}
+\item{player1}{a factor with n levels for the first player 
+ in the contests}
+\item{player2}{a factor with n levels (same as player1) for 
+ the second player in the contests}
 \item{win1}{number of times player1 wins against player2}
 \item{win2}{number of times player2 wins against player1}
 }
 \description{
-Binary comparisons from a ranking object. Ties are not taken into account, 
-then they are added as NA's.
+Binary comparisons from a ranking object. Ties are not 
+taken into account, then they are added as NA's.
 }
 \examples{
-\donttest{
 library("PlackettLuce")
 
 # a simple matrix with 4 items
@@ -40,9 +42,10 @@ R <- as.rankings(R)
 
 R <- rank_binomial(R)
 }
-}
 \references{
-Turner H. & Firth D. (2012). Journal of Statistical Software, 48(9), 1–21. http://dx.doi.org/10.18637/jss.v048.i09
+Turner H. & Firth D. (2012). 
+Journal of Statistical Software, 48(9), 1–21. 
+\url{http://dx.doi.org/10.18637/jss.v048.i09}
 }
 \seealso{
 \code{\link[BradleyTerry2]{BTm}}
@@ -51,5 +54,8 @@ Other rank functions:
 \code{\link{rank_numeric}()},
 \code{\link{rank_paircomp}()},
 \code{\link{rank_tricot}()}
+}
+\author{
+Kauê de Sousa
 }
 \concept{rank functions}

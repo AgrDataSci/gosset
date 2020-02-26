@@ -23,19 +23,22 @@ containing the item names in \code{data}}
 \item{input}{a character or numerical vector for indexing the column(s) 
 containing the values in \code{data} to be ranked}
 
-\item{id}{a data frame or index of \code{data} indicating the ids for "long" \code{data}}
+\item{id}{a data frame or index of \code{data} indicating the 
+ids for "long" \code{data}}
 
-\item{group}{logical, if TRUE return an object of class "grouped_rankings"}
+\item{group}{logical, if \code{TRUE} return an object of class "grouped_rankings"}
 
-\item{ascending}{logical, only for floating point numbers, to compute rankings from lower to higher values}
+\item{ascending}{logical, only for floating point numbers, to 
+compute rankings from lower to higher values}
 
 \item{...}{additional arguments passed to methods}
 }
 \value{
-a PlackettLuce "rankings" object, which is a matrix of dense rankings
+a PlackettLuce "rankings" object, which is a matrix 
+ of dense rankings
 }
 \description{
-Group and convert numeric values into Plackett-Luce rankings.
+Group and coerce numeric values into Plackett-Luce rankings.
 }
 \examples{
 # A matrix with 10 rankings of 5 items (A, B, C, D, E)
@@ -94,5 +97,8 @@ Other rank functions:
 \code{\link{rank_binomial}()},
 \code{\link{rank_paircomp}()},
 \code{\link{rank_tricot}()}
+}
+\author{
+Kauê de Sousa
 }
 \concept{rank functions}

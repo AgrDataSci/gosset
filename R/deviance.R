@@ -1,6 +1,6 @@
 # AIC from a Bradley-Terry model
-# code adpeted from PlackettLuce repository
-# Turner et al (2018)
+# code adapted from PlackettLuce repository
+# Turner et al (2020)
 #' @method AIC bttree
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom stats AIC coef formula logLik model.response model.weights
@@ -17,7 +17,7 @@ AIC.bttree <- function(object, newdata = NULL, ...) {
   response <- as.character(stats::formula(object)[[2]])
   
   if (!response %in% colnames(newdata)) {
-    stop("`newdata` must include response")
+    stop("'newdata' must include response")
   }
   
   f <- stats::formula(object)
@@ -75,7 +75,7 @@ AIC.bttree <- function(object, newdata = NULL, ...) {
 # formula logLik model.frame model.response model.weights 
 # deviance from a Bradley-Terry model
 # code adapted from PlackettLuce repository
-# Turner et al (2018)
+# Turner et al (2020)
 # https://github.com/hturner/PlackettLuce/blob/master/R/pltree.R
 #' @method deviance bttree
 #' @export

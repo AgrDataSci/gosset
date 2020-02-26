@@ -3,6 +3,8 @@
 #' Summarise the concordance between one or more caracteristics from a baseline
 #' ranking
 #' 
+#' @author Nicolas Greliche, Sam Dumble and Kauê de Sousa
+#' @family summarise functions
 #' @param baseline an object of class 'rankings' or 'grouped_rankings' 
 #' that serves as baseline for comparing the other characteristics
 #' @param compare.to a list of objects of same class and dimensions of 
@@ -19,7 +21,6 @@
 #' \item{last}{relative agreement of the last item in the baseline being 
 #' ranked last in compare.to}
 #' @seealso \code{\link{kendallTau}} 
-#' @family summarise functions
 #' @examples 
 #' # from the breadwheat data
 #' # Compare the overall performance against
@@ -56,8 +57,8 @@
 #'                     labels = labels)
 #'  
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
-#' @importFrom ggplot2 ggplot aes geom_bar facet_wrap coord_flip geom_text scale_y_continuous 
-#' theme element_text labs
+#' @importFrom ggplot2 ggplot aes geom_bar facet_wrap coord_flip 
+#' geom_text scale_y_continuous theme element_text labs
 #' @importFrom tibble tibble
 #' @export
 summarise_agreement <- function(baseline, compare.to, labels = NULL){

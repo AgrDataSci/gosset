@@ -4,24 +4,27 @@
 #' for "triadic comparison of technologies". Is a methodology to carry out 
 #' large agronomic field experiments allowing the comparison between many 
 #' alternative technologies, in many different environments. Each participant
-#' evaluates a set of three randomised technologies from a larger set. 
+#' evaluates a set of three randomised technologies from a larger set. A 
+#' comparison with a local item can be added as additional rankings with the 
+#' argument \code{additional.rank}.
 #'
+#' @author Kauê de Sousa, with ideas from Heather Turner
+#' @family rank functions
 #' @param data a data.frame with columns specified by items and input values
 #' @param items a character or numerical vector for indexing the column(s) 
 #' containing the item names in \code{data} 
 #' @param input a character or numerical vector for indexing the column(s) 
 #' containing the values in \code{data} to be ranked 
-#' @param group logical, if TRUE return an object of class "grouped_rankings"
+#' @param group logical, if \code{TRUE} return an object of class "grouped_rankings"
 #' @param additional.rank optional, a data frame for the comparisons between 
 #' tricot items and the local item
 #' @param ... additional arguments passed to methods. See details
 #' @return a PlackettLuce "rankings" object, which is a matrix of dense rankings 
-#' @family rank functions
-#' @seealso \code{\link[PlackettLuce]{rankings}}  \code{\link{breadwheat}}
+#' @seealso \code{\link[PlackettLuce]{rankings}}, \code{\link{breadwheat}}
 #' @references 
 #' 
 #' van Etten J., et al. (2019). Experimental Agriculture, 55(S1), 275–296.
-#' https://doi.org/10.1017/S0014479716000739.
+#' \url{https://doi.org/10.1017/S0014479716000739}
 #' 
 #' @details 
 #' full.output: logical, to return a list with a "rankings", 

@@ -7,19 +7,20 @@
 plot_nodes(object, labels = NULL, ...)
 }
 \arguments{
-\item{object}{an object of class modelparty}
+\item{object}{an object of class \code{modelparty}}
 
 \item{labels}{optional, new labels for the axis X in the plot
 by default}
 
-\item{...}{additional arguments passed to ggplot2}
+\item{...}{additional arguments passed to \pkg{ggplot2}}
 }
 \value{
 a list of plots with probabilities of winning and 
 intervals based on quasi-standard errors
 }
 \description{
-Make a ggplot2 chart from model-based recursive partitioning trees with quasi-variance
+Make a ggplot2 chart from model-based recursive partitioning
+trees with quasi-variance
 }
 \examples{
 
@@ -45,4 +46,7 @@ p <- plot_nodes(mod)
 }
 \seealso{
 \code{\link[qvcalc]{qvcalc}} \code{\link[ggplot2]{ggplot}}
+}
+\author{
+Kauê de Sousa
 }

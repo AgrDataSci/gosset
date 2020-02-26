@@ -2,6 +2,8 @@
 #' 
 #' Summarise player dominance from pairwise comparisons
 #' 
+#' @author Nicolas Greliche, Sam Dumble and Kauê de Sousa
+#' @family summarise functions
 #' @param object a rankings object of class 'rankings', 'grouped_rankings'
 #'  or 'paircomp'
 #' @param x an object of class 'gosset_dmnc' for the plotting method. 
@@ -12,7 +14,6 @@
 #' \item{player2}{the second player in the comparison}
 #' \item{ncontest}{number of contests between player1 and player2}
 #' \item{dominance}{relative dominance of player1 on player2}
-#' @family summarise functions
 #' @examples 
 #' # breadwheat data
 #' 
@@ -41,7 +42,8 @@
 #' 
 #'  
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
-#' @importFrom ggplot2 ggplot aes geom_tile geom_tile geom_text scale_x_discrete scale_fill_gradient2 labs
+#' @importFrom ggplot2 ggplot aes geom_tile geom_tile geom_text 
+#'  scale_x_discrete scale_fill_gradient2 labs
 #' @export
 summarise_dominance <- function(object){
 

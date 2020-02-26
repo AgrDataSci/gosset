@@ -80,4 +80,7 @@ Other summarise functions:
 \code{\link{summarise_favourite}()},
 \code{\link{summarise_victories}()}
 }
+\author{
+Nicolas Greliche, Sam Dumble and Kauê de Sousa
+}
 \concept{summarise functions}

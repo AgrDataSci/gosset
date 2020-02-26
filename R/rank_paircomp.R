@@ -3,15 +3,19 @@
 #' Pairwise comparisons from a ranking object. Ties are not 
 #' taken into account, then they are added as NA's.
 #'
+#' @author Kauê de Sousa and Jacob van Etten
+#' @family rank functions
 #' @param object an object of class "rankings" or "grouped_rankings" 
 #' which is a matrix of dense rankings. 
-#' @return an object of class "paircomp" which is a matrix of pairwise comparisons
+#' @return an object of class "paircomp" which is a matrix 
+#'  of pairwise comparisons
 #' @family rank functions
-#' @seealso \code{\link[PlackettLuce]{rankings}}, \code{\link[psychotools]{paircomp}}
+#' @seealso \code{\link[PlackettLuce]{rankings}}, 
+#' \code{\link[psychotools]{paircomp}}
 #' @references 
 #' Strobl C., Wickelmaier F. & Zeileis A. (2011). 
 #' Journal of Educational and Behavioral Statistics, 36(2), 135–153. 
-#' https://doi.org/10.3102/1076998609359791.
+#' \url{https://doi.org/10.3102/1076998609359791}
 #' 
 #' @examples 
 #'  

@@ -7,6 +7,7 @@
 #' and report which one had the best and worst performance considering 
 #' four traits, germination, grain quality, yield and overall performance. 
 #' 
+#' @keywords dataset
 #' @format A data frame with 493 records and 19 variables:
 #' \describe{
 #'     \item{\code{variety_a}}{The name of variety A in the comparison.}

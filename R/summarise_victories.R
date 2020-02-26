@@ -2,6 +2,8 @@
 #' 
 #' Summarise victories from pairwise comparisons
 #' 
+#' @author Nicolas Greliche, Sam Dumble and Kauê de Sousa
+#' @family summarise functions
 #' @param object a rankings object of class 'rankings', 'grouped_rankings' 
 #' or 'paircomp'
 #' @param x an object of class 'gosset_vctr' for the plotting method. 
@@ -13,7 +15,6 @@
 #' \item{win}{times player1 wins against player2}
 #' \item{ncontest}{number of contests between player1 and player2}
 #' \item{victories}{relative number of times player1 wins against player2}
-#' @family summarise functions
 #' @examples 
 #' # breadwheat data
 #' 
@@ -40,9 +41,9 @@
 #'                  additional.rank = beans[, c("var_a", "var_b", "var_c")])
 #' 
 #' v <- summarise_victories(R)
-#' 
-#'  
-#' @importFrom ggplot2 ggplot geom_bar aes facet_wrap coord_flip scale_fill_gradient2 scale_y_continuous labs
+#'   
+#' @importFrom ggplot2 ggplot geom_bar aes facet_wrap coord_flip 
+#'  scale_fill_gradient2 scale_y_continuous labs
 #' @export
 summarise_victories <- function(object){
 

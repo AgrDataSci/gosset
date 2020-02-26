@@ -3,12 +3,16 @@
 #' Akaike weights represent the relative likelihood of a model.  
 #' It can be used in model averaging and selection.
 #' 
+#' @author Kauê de Sousa and Jacob van Etten
 #' @param object a numerical vector with models goodness of fit coefficients 
 #' @return A data frame containing the coefficients:
 #' \item{delta}{the delta overall change in the coefficients}
 #' \item{relative_logLik}{the relative log-likelihood}
 #' \item{akaike_weights}{the Akaike weights}
-#' @references Wagenmakers E. J. & Farrell S. (2004). Psychonomic Bulletin and Review, 11(1), 192–196. https://doi.org/10.3758/BF03206482
+#' @references 
+#' Wagenmakers E. J. & Farrell S. (2004). 
+#' Psychonomic Bulletin and Review, 11(1), 192–196. 
+#' \url{https://doi.org/10.3758/BF03206482}
 #' @examples
 #'  
 #' data("airquality")

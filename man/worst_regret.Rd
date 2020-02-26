@@ -18,10 +18,11 @@ A data frame with probabilities of winning
 \item{worst_regret}{the worst regret index}
 }
 \description{
-Compute a worst regret index from recursive partitioning trees. Regret is an important
-heuristic in the behavioural sciences. Minimizing worst regret (the loss under the worst
-possible outcome) is a criterion that takes a conservative approach to risk analysis in 
-diversification strategies.
+Compute a worst regret index from recursive partitioning trees. 
+Regret is an important heuristic in the behavioural sciences. 
+Minimizing worst regret (the loss under the worst possible 
+outcome) is a criterion that takes a conservative approach 
+to risk analysis in diversification strategies.
 }
 \examples{
 
@@ -48,7 +49,14 @@ worst_regret(mod)
 
 }
 \references{
-Loomes G. & Sugden R. (1982). The Economic Journal, 92(368), 805. https://doi.org/10.2307/2232669.
+Loomes G. & Sugden R. (1982). 
+The Economic Journal, 92(368), 805. 
+\url{https://doi.org/10.2307/2232669}
 
-Bleichrodt H. & Wakker P. P. (2015). The Economic Journal, 125(583), 493–532. https://doi.org/10.1111/ecoj.12200.
+Bleichrodt H. & Wakker P. P. (2015). 
+The Economic Journal, 125(583), 493–532. 
+\url{https://doi.org/10.1111/ecoj.12200}
+}
+\author{
+Jacob van Etten and Kauê de Sousa
 }

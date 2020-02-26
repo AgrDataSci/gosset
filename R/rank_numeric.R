@@ -1,13 +1,17 @@
 #' Plackett-Luce rankings from numeric values
 #'
-#' Group and convert numeric values into Plackett-Luce rankings.
-#'
+#' Group and coerce numeric values into Plackett-Luce rankings.
+#' 
+#' @author Kauê de Sousa
+#' @family rank functions
 #' @inheritParams rank_tricot
-#' @param id a data frame or index of \code{data} indicating the ids for "long" \code{data}
-#' @param ascending logical, only for floating point numbers, to compute rankings from lower to higher values 
+#' @param id a data frame or index of \code{data} indicating the 
+#'  ids for "long" \code{data}
+#' @param ascending logical, only for floating point numbers, to 
+#'  compute rankings from lower to higher values 
 #' @param ... additional arguments passed to methods
-#' @return a PlackettLuce "rankings" object, which is a matrix of dense rankings
-#' @family rank functions 
+#' @return a PlackettLuce "rankings" object, which is a matrix 
+#'  of dense rankings
 #' @seealso \code{\link[PlackettLuce]{rankings}} 
 #' @examples
 #' # A matrix with 10 rankings of 5 items (A, B, C, D, E)
@@ -290,5 +294,3 @@ rank_numeric <- function(data = NULL, items = NULL,
   return(object)
   
 }
-
-
