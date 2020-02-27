@@ -21,10 +21,7 @@ taken into account, then they are added as NA's.
 \examples{
  
 library("PlackettLuce")
-library("psychotools")
 
-# a simple matrix with 4 items
-# ties are computed as NA's
 R <- matrix(c(1, 2, 0, 0,
               4, 1, 2, 3,
               2, 4, 3, 1,
@@ -32,7 +29,7 @@ R <- matrix(c(1, 2, 0, 0,
               2, 1, 1, 0,
               1, 0, 3, 2), nrow = 6, byrow = TRUE)
 colnames(R) <- c("apple", "banana", "orange", "pear")
-R <- PlackettLuce::as.rankings(R)
+R <- as.rankings(R)
 
 PC <- rank_paircomp(R)
 

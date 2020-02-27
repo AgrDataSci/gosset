@@ -4,13 +4,16 @@
 \alias{rank_binomial}
 \title{Binary rankings from pairwise contests}
 \usage{
-rank_binomial(object, drop.null = FALSE)
+rank_binomial(object, drop.null = FALSE, disaggregate = FALSE)
 }
 \arguments{
-\item{object}{an object of class "rankings", "grouped_rankings" 
-or "paircomp".}
+\item{object}{an object of class \code{rankings}, \code{grouped_rankings}
+or \code{paircomp}}
 
 \item{drop.null}{logical, an optional argument to remove null contests}
+
+\item{disaggregate}{logical, if \code{TRUE} binaries are disaggregated 
+by individual contests}
 }
 \value{
 A data.frame with binary rank of pairwise contests:
@@ -28,8 +31,6 @@ taken into account, then they are added as NA's.
 \examples{
 library("PlackettLuce")
 
-# a simple matrix with 4 items
-# ties are computed as NA's
 R <- matrix(c(1, 2, 0, 0,
               4, 1, 2, 3,
               2, 4, 3, 1,
@@ -40,7 +41,10 @@ colnames(R) <- c("apple", "banana", "orange", "pear")
 
 R <- as.rankings(R)
 
-R <- rank_binomial(R)
+rank_binomial(R)
+
+rank_binomial(R, disaggregate = TRUE)
+
 }
 \references{
 Turner H. & Firth D. (2012). 

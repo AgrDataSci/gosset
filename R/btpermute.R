@@ -20,8 +20,8 @@
 #' @family model selection functions
 #' @author Jonathan Steinke and Kauê de Sousa
 #' @param contests a data frame with pairwise binary contests with these variables
-#'  'id','player1','player2','win1','win2'; the id should match with those found in 
-#'  \code{predictors}
+#'  'id','player1','player2','win1','win2'; in that order. The id should match with 
+#'  those found in \code{predictors}
 #' @param predictors a data frame with player predictors with an id 
 #'  that should match with \code{contests}
 #' @param n.iterations integer, number of iterations to compute
@@ -73,6 +73,7 @@ btpermute <- function(contests = NULL,
   }
   
   # change names in contest
+  origContsnames <- names(contests)
   names(contests) <- c("ObsID","Item1","Item2","Win1","Win2")
   
   # check if players are factors
@@ -323,7 +324,11 @@ btpermute <- function(contests = NULL,
   for(i in seq_along(repl)) {
     finalcall <- gsub(paste0("Var",repl[i]), selected[i], finalcall)
   }
+  
+  finalmodel <- stats::as.formula(finalcall)
 
+  names(dat[[2]]) <- names(predictors)
+  
   # fit final model with the selected variables
   PICmodel <- 
     BradleyTerry2::BTm(
@@ -332,9 +337,8 @@ btpermute <- function(contests = NULL,
       player2 = Item2,
       formula = finalmodel,
       refcat = refItem,
-      data = dat,
-      ...
-    )
+      data = dat, 
+      ...)
   
   result <- list(model = PICmodel, 
                  call = finalcall,

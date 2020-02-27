@@ -20,10 +20,7 @@
 #' @examples 
 #'  
 #' library("PlackettLuce")
-#' library("psychotools")
 #' 
-#' # a simple matrix with 4 items
-#' # ties are computed as NA's
 #' R <- matrix(c(1, 2, 0, 0,
 #'               4, 1, 2, 3,
 #'               2, 4, 3, 1,
@@ -31,7 +28,7 @@
 #'               2, 1, 1, 0,
 #'               1, 0, 3, 2), nrow = 6, byrow = TRUE)
 #' colnames(R) <- c("apple", "banana", "orange", "pear")
-#' R <- PlackettLuce::as.rankings(R)
+#' R <- as.rankings(R)
 #' 
 #' PC <- rank_paircomp(R)
 #' 
@@ -98,20 +95,4 @@ rank_paircomp <- function(object){
   pair <- psychotools::paircomp(pair, labels = as.character(items))
   
   return(pair)
-}
-
-#' Make pairwise comparisons of items
-#' 
-#' @param x vector source for combinations
-#' @param m integer for the number of elements to choose
-#' @examples 
-#' x <- LETTERS[1:5]
-#' .combn2(x, 2)
-#' 
-#' @noRd
-.combn2 <- function(x, m)
-{
-  cc <- utils::combn(rev(x), m)
-  cc <- cc[c(2,1), ncol(cc):1]
-  return(cc)    
 }

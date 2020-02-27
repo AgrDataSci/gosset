@@ -246,3 +246,19 @@
   return(index_xy)
   
 }
+
+#' Make pairwise comparisons of items
+#' 
+#' @param x vector source for combinations
+#' @param m integer for the number of elements to choose
+#' @examples 
+#' x <- LETTERS[1:5]
+#' .combn2(x, 2)
+#' 
+#' @noRd
+.combn2 <- function(x, m)
+{
+  cc <- utils::combn(rev(x), m)
+  cc <- cc[c(2,1), ncol(cc):1]
+  return(cc)    
+}
