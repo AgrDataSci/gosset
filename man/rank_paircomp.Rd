@@ -61,11 +61,6 @@ Other rank functions:
 \code{\link{rank_binomial}()},
 \code{\link{rank_numeric}()},
 \code{\link{rank_tricot}()}
-
-Other rank functions: 
-\code{\link{rank_binomial}()},
-\code{\link{rank_numeric}()},
-\code{\link{rank_tricot}()}
 }
 \author{
 Kauê de Sousa and Jacob van Etten

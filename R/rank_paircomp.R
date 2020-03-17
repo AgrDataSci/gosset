@@ -9,7 +9,6 @@
 #' which is a matrix of dense rankings. 
 #' @return an object of class "paircomp" which is a matrix 
 #'  of pairwise comparisons
-#' @family rank functions
 #' @seealso \code{\link[PlackettLuce]{rankings}}, 
 #' \code{\link[psychotools]{paircomp}}
 #' @references 

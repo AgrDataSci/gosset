@@ -4,9 +4,9 @@
 #' 
 #' @author Nicolas Greliche, Sam Dumble and Kauê de Sousa
 #' @family summarise functions
-#' @aliases summarise_favourite
 #' @aliases favorite
 #' @aliases favourite
+#' @aliases summarise_favorite
 #' @param object an object of class \code{rankings} or \code{grouped_rankings}
 #' @param x an object of class \code{gosset_fvrt} for the plotting method. 
 #' Generates a \code{ggplot} object that can be passed to any \pkg{ggplot2} method

@@ -4,6 +4,7 @@
 \alias{summarise_favourite}
 \alias{favorite}
 \alias{favourite}
+\alias{summarise_favorite}
 \alias{plot.gosset_fvrt}
 \title{Favourability scores}
 \usage{
