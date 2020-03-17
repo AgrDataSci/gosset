@@ -4,11 +4,16 @@
 #' 
 #' @author Nicolas Greliche, Sam Dumble and Kauê de Sousa
 #' @family summarise functions
+#' @aliases summarise_favourite
+#' @aliases favorite
+#' @aliases favourite
 #' @param object an object of class \code{rankings} or \code{grouped_rankings}
 #' @param x an object of class \code{gosset_fvrt} for the plotting method. 
 #' Generates a \code{ggplot} object that can be passed to any \pkg{ggplot2} method
-#' @param ... additional arguments passed to methods. Not enabled yet
-#' @aliases summarise_favorite
+#' @param ... additional arguments passed to methods. See details
+#' @details  
+#' \code{minlength} an integer, passed to \code{abbreviate()} to define the
+#'  minimum length of the abbreviations
 #' @return A data.frame with the descriptive statistics:
 #' \item{N}{number of times the given item was evaluated}
 #' \item{best}{relative number of times (in percentage) the given item was
@@ -28,7 +33,7 @@
 #' 
 #' fav <- summarise_favourite(R)
 #' 
-#' fav
+#' plot(fav)
 #' 
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom ggplot2 ggplot aes geom_hline geom_bar coord_flip scale_y_continuous 
@@ -121,19 +126,26 @@ summarise_favorite <- function(...){
 #' @export
 plot.gosset_fvrt <- function(x, ...) {
   
-  # order 
+  # check for large characters and reduce number of characters
+  # creating abbreviantions
+  x$items <- .reduce(x$items, ...)
+  
+  # get order of players based on their performance
   player_levels <- rev(.player_order(x, "items", "fav_score"))
   
   x$items <- factor(x$items, levels = player_levels)
   
+  fav_score <- x$fav_score
+  items <- x$items
+  
   p <- ggplot2::ggplot(data = x, 
-                       ggplot2::aes(y = x$fav_score, 
-                                    fill = x$fav_score, 
-                                    x = x$items))+
-    ggplot2::geom_hline(yintercept = 0)+
-    ggplot2::geom_bar(stat = "identity", col = "black")+
+                       ggplot2::aes(y = fav_score, 
+                                    fill = fav_score, 
+                                    x = items)) +
+    ggplot2::geom_hline(yintercept = 0) +
+    ggplot2::geom_bar(stat = "identity", col = "black") +
     ggplot2::coord_flip() +
-    ggplot2::scale_y_continuous(breaks = seq(-100, 100, by = 20))+
+    ggplot2::scale_y_continuous(breaks = seq(-100, 100, by = 20)) +
     ggplot2::scale_fill_gradient2(name = "Favourability",
                                   low = "#CA0020",
                                   mid = "#FFFFFF",

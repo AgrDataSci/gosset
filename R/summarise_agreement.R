@@ -5,6 +5,7 @@
 #' 
 #' @author Nicolas Greliche, Sam Dumble and Kauê de Sousa
 #' @family summarise functions
+#' @aliases agreement
 #' @param baseline an object of class 'rankings' or 'grouped_rankings' 
 #' that serves as baseline for comparing the other characteristics
 #' @param compare.to a list of objects of same class and dimensions of 
@@ -12,7 +13,7 @@
 #' @param labels a character to specify the name of compared chacteristics
 #' @param x object of class 'gosset_agree' for the plotting method. 
 #' Generates a 'ggplot' object that can be passed to any ggplot2 method
-#' @param ... further arguments passed to methods. Not enabled yet
+#' @param ... additional arguments passed to methods. See details
 #' @return A data.frame with summary of agreement:
 #' \item{labels}{the labels for each characteristic}
 #' \item{kendall}{relative Kendall rank correlation coefficient}
@@ -20,7 +21,10 @@
 #' ranked first in compare.to}
 #' \item{last}{relative agreement of the last item in the baseline being 
 #' ranked last in compare.to}
-#' @seealso \code{\link{kendallTau}} 
+#' @seealso \code{\link{kendallTau}}
+#' @details  
+#' \code{minlength} an integer, passed to \code{abbreviate()} to define the
+#'  minimum length of the abbreviations
 #' @examples 
 #' # from the breadwheat data
 #' # Compare the overall performance against
@@ -51,11 +55,14 @@
 #' 
 #' labels <- c("Germination", "Grain quality", "Yield")
 #' 
-#' 
-#' summarise_agreement(R,
-#'                     compare.to = compare,
-#'                     labels = labels)
 #'  
+#' a <- summarise_agreement(R,
+#'                          compare.to = compare,
+#'                          labels = labels)
+#' 
+#' 
+#' p <- plot(a)
+#' 
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom ggplot2 ggplot aes geom_bar facet_wrap coord_flip 
 #' geom_text scale_y_continuous theme element_text labs
@@ -178,16 +185,12 @@ summarise_agreement <- function(baseline, compare.to, labels = NULL){
 #' @method plot gosset_agree
 #' @export
 plot.gosset_agree <- function(x, ...) {
-
-  # force labels to be in the order as provided by input
+  
+  # coerce labels to be in the order as provided by input
   labels_lv <- x$labels
   
-  # force capital letter in type
+  # coerce capital letter in type
   names(x) <- c("labels","Kendall","First","Last")
-  
-  # keep <- !is.na(x$Kendall) & !is.na(x$First) & !is.na(x$Last)
-  # 
-  # x <- x[keep, ]
   
   # put data in a long format
   x <- split(x, x$labels)
@@ -211,14 +214,18 @@ plot.gosset_agree <- function(x, ...) {
   x$labels <- factor(x$labels,
                      levels = labels_lv)
   
+  agreement <- x$agreement
+  labels <- x$labels
+  type <- x$type
+  
   # plot
   p <- 
   ggplot2::ggplot(x,
                   ggplot2::aes(
-                    y = x$agreement,
-                    x = x$labels,
-                    alpha = x$agreement,
-                    fill = x$type
+                    y = agreement,
+                    x = labels,
+                    alpha = agreement,
+                    fill = type
                   )) +
     ggplot2::geom_bar(
       stat = "identity",
@@ -226,11 +233,11 @@ plot.gosset_agree <- function(x, ...) {
       col = "gray50",
       show.legend = FALSE
     ) +
-    ggplot2::facet_wrap(. ~ x$type) +
+    ggplot2::facet_wrap(. ~ type) +
     ggplot2::coord_flip() +
     ggplot2::geom_text(
-      ggplot2::aes(y = x$agreement / 2,
-                   label = round(x$agreement, 0)),
+      ggplot2::aes(y = agreement / 2,
+                   label = round(agreement, 0)),
       fontface = 2,
       size = 8,
       alpha = 1

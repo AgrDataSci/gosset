@@ -3,12 +3,16 @@
 #' Summarise victories from pairwise comparisons
 #' 
 #' @author Nicolas Greliche, Sam Dumble and Kauê de Sousa
+#' @aliases victories
 #' @family summarise functions
 #' @param object a rankings object of class 'rankings', 'grouped_rankings' 
 #' or 'paircomp'
 #' @param x an object of class 'gosset_vctr' for the plotting method. 
 #' Generates a 'ggplot' object that can be passed to any ggplot2 method
-#' @param ... further arguments passed to methods. Not enabled yet
+#' @param ... additional arguments passed to methods. See details
+#' @details  
+#' \code{minlength} an integer, passed to \code{abbreviate()} to define the
+#'  minimum length of the abbreviations
 #' @return A data.frame with summary of victories from pairwise comparisons: 
 #' \item{player1}{the first player in the comparison}
 #' \item{player2}{the second player in the comparison}
@@ -28,6 +32,9 @@
 #' v <- summarise_victories(R)
 #' 
 #' p <- plot(v)
+#' 
+#' ############################################################
+#' ############################################################
 #' 
 #' # beans data where each observer compares 3 varieties
 #' # randomly distributed
@@ -82,7 +89,12 @@ summarise_victories <- function(object){
 #' @export
 plot.gosset_vctr <- function(x, ...) {
   
-
+  # check for large characters and reduce number of characters
+  # creating abbreviantions
+  red <- .reduce(c(x$player1, x$player2), ...)
+  x$player1 <- red[1:(length(red) / 2)]
+  x$player2 <- red[((length(red) / 2) + 1):length(red)]
+  
   # get order of players based on their performance
   player_levels <- .player_order(x, "player1", "victories")
   
@@ -92,14 +104,18 @@ plot.gosset_vctr <- function(x, ...) {
   
   x$victories <- x$victories * 100
   
+  victories <- x$victories
+  player1 <- x$player1
+  player2 <- x$player2
+  
   p <- 
   ggplot2::ggplot(x) +
-    ggplot2::geom_bar(ggplot2::aes(y = x$victories, 
-                                   x = x$player2,
-                                   fill = x$victories), 
+    ggplot2::geom_bar(ggplot2::aes(y = victories, 
+                                   x = player2,
+                                   fill = victories), 
                       stat = "identity", 
                       col = "black") +
-    ggplot2::facet_wrap(. ~ x$player1,
+    ggplot2::facet_wrap(. ~ player1,
                         scales = "free_y", 
                         ncol = 3) +
     ggplot2::coord_flip() + 

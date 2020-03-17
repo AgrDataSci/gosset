@@ -141,7 +141,6 @@
 #' variable to sort data
 #' @return a character vector with the player order
 #' @examples
-#' library("gosset")
 #' data("breadwheat", package = "gosset")
 #' R <- rank_tricot(data = breadwheat,
 #'                  items = c(1:3),
@@ -262,3 +261,29 @@
   cc <- cc[c(2,1), ncol(cc):1]
   return(cc)    
 }
+
+
+#' Abbreviate characters
+#' 
+#' @param x a vector with characters
+#' @param nchars an integer for the min length of characters allowed in \code{x}
+#' @param ... additional arguments passed to methods
+#' @examples 
+#' muni <- c("New York", "Oslo", "Rio de Janeiro", "Punjab",
+#'           "Sao Jose dos Campos", "Rio Preto da Eva")
+#' 
+#' .reduce(muni)
+#' 
+#' .reduce(muni, minlength = 7)
+#' @noRd
+.reduce <- function(x, nchars = 8, ...){
+  
+  reduc <- nchar(x) > nchars
+  
+  abb <- abbreviate(x[reduc], ...)
+  
+  x[reduc] <- abb
+  
+  return(x)
+}
+

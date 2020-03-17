@@ -78,7 +78,7 @@ ranking" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -151,7 +151,7 @@ Generates a 'ggplot' object that can be passed to any ggplot2 method</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>further arguments passed to methods. Not enabled yet</p></td>
+      <td><p>further arguments passed to methods. See datails</p></td>
     </tr>
     </table>
 
@@ -165,6 +165,10 @@ ranked first in compare.to</p></dd>
 <dt>last</dt><dd><p>relative agreement of the last item in the baseline being 
 ranked last in compare.to</p></dd>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>minlength</code> an integer, passed to <code><a href='https://rdrr.io/r/base/abbreviate.html'>abbreviate()</a></code> to define the
+ minimum length of the abbreviations</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='kendallTau.html'>kendallTau</a></code></p>
@@ -204,15 +208,19 @@ ranked last in compare.to</p></dd>
 <span class='no'>labels</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Germination"</span>, <span class='st'>"Grain quality"</span>, <span class='st'>"Yield"</span>)
 
 
-<span class='fu'>summarise_agreement</span>(<span class='no'>R</span>,
-                    <span class='kw'>compare.to</span> <span class='kw'>=</span> <span class='no'>compare</span>,
-                    <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>labels</span>)</pre>
+<span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='fu'>summarise_agreement</span>(<span class='no'>R</span>,
+                         <span class='kw'>compare.to</span> <span class='kw'>=</span> <span class='no'>compare</span>,
+                         <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>labels</span>)
+
+
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>a</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

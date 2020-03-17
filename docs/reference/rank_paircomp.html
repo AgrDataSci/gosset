@@ -78,7 +78,7 @@ taken into account, then they are added as NA's." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -159,10 +159,7 @@ Journal of Educational and Behavioral Statistics, 36(2), 135–153.
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"PlackettLuce"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"psychotools"</span>)
 
-<span class='co'># a simple matrix with 4 items</span>
-<span class='co'># ties are computed as NA's</span>
 <span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>0</span>, <span class='fl'>0</span>,
               <span class='fl'>4</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>,
               <span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>3</span>, <span class='fl'>1</span>,
@@ -170,7 +167,7 @@ Journal of Educational and Behavioral Statistics, 36(2), 135–153.
               <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>,
               <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>3</span>, <span class='fl'>2</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>R</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"apple"</span>, <span class='st'>"banana"</span>, <span class='st'>"orange"</span>, <span class='st'>"pear"</span>)
-<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>PlackettLuce</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PlackettLuce/man/rankings.html'>as.rankings</a></span>(<span class='no'>R</span>)
+<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/PlackettLuce/man/rankings.html'>as.rankings</a></span>(<span class='no'>R</span>)
 
 <span class='no'>PC</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_paircomp</span>(<span class='no'>R</span>)
 

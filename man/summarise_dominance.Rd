@@ -2,6 +2,7 @@
 % Please edit documentation in R/summarise_dominance.R
 \name{summarise_dominance}
 \alias{summarise_dominance}
+\alias{dominance}
 \alias{plot.gosset_dmnc}
 \title{Pairwise player dominance}
 \usage{
@@ -16,7 +17,7 @@ or 'paircomp'}
 \item{x}{an object of class 'gosset_dmnc' for the plotting method. 
 Generates a 'ggplot' object that can be passed to any ggplot2 method}
 
-\item{...}{further arguments passed to methods. Not enabled yet}
+\item{...}{additional arguments passed to methods. See details}
 }
 \value{
 A data.frame with summary of dominance from pairwise comparisons: 
@@ -27,6 +28,10 @@ A data.frame with summary of dominance from pairwise comparisons:
 }
 \description{
 Summarise player dominance from pairwise comparisons
+}
+\details{
+\code{minlength} an integer, passed to \code{abbreviate()} to define the
+ minimum length of the abbreviations
 }
 \examples{
 # breadwheat data
@@ -40,6 +45,9 @@ R <- rank_tricot(data = breadwheat,
 d <- summarise_dominance(R)
 
 p <- plot(d)
+
+############################################################
+############################################################
 
 # beans data where each observer compares 3 varieties
 # randomly distributed

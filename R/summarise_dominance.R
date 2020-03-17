@@ -4,11 +4,15 @@
 #' 
 #' @author Nicolas Greliche, Sam Dumble and Kauê de Sousa
 #' @family summarise functions
+#' @aliases dominance
 #' @param object a rankings object of class 'rankings', 'grouped_rankings'
 #'  or 'paircomp'
 #' @param x an object of class 'gosset_dmnc' for the plotting method. 
 #' Generates a 'ggplot' object that can be passed to any ggplot2 method
-#' @param ... further arguments passed to methods. Not enabled yet
+#' @param ... additional arguments passed to methods. See details
+#' @details  
+#' \code{minlength} an integer, passed to \code{abbreviate()} to define the
+#'  minimum length of the abbreviations
 #' @return A data.frame with summary of dominance from pairwise comparisons: 
 #' \item{player1}{the first player in the comparison}
 #' \item{player2}{the second player in the comparison}
@@ -26,6 +30,9 @@
 #' d <- summarise_dominance(R)
 #' 
 #' p <- plot(d)
+#' 
+#' ############################################################
+#' ############################################################
 #' 
 #' # beans data where each observer compares 3 varieties
 #' # randomly distributed
@@ -84,6 +91,12 @@ summarise_dominance <- function(object){
 #' @export
 plot.gosset_dmnc <- function(x, ...) {
   
+  # check for large characters and reduce number of characters
+  # creating abbreviantions
+  red <- .reduce(c(x$player1, x$player2), ...)
+  x$player1 <- red[1:(length(red) / 2)]
+  x$player2 <- red[((length(red) / 2) + 1):length(red)]
+  
   # get order of players based on their performance
   player_levels <- .player_order(x, "player1", "dominance")
   
@@ -91,11 +104,15 @@ plot.gosset_dmnc <- function(x, ...) {
   x$player1 <- factor(x$player1, levels = player_levels)
   x$player2 <- factor(x$player2, levels = player_levels)
   
+  player2 <- x$player2
+  player1 <- x$player1
+  dominance <- x$dominance
+  
   p <-   ggplot2::ggplot(x, 
-                         ggplot2::aes(x = x$player2, 
-                                      y = x$player1,
-                                      fill = x$dominance,
-                                      label = round(x$dominance, 0))) +
+                         ggplot2::aes(x = player2, 
+                                      y = player1,
+                                      fill = dominance,
+                                      label = round(dominance, 0))) +
     ggplot2::geom_tile() + 
     ggplot2::geom_text(size = 3, fontface = 2) +
     ggplot2::scale_x_discrete(position = "top")+
@@ -104,7 +121,7 @@ plot.gosset_dmnc <- function(x, ...) {
                                   high =  "#0571B0") +
     ggplot2::labs(x = "Player 2", 
                   y = "Player 1",
-                  fill="Relative dominance of player1")
+                  fill = "Relative dominance of player1")
 
   return(p)
 }

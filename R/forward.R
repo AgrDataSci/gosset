@@ -154,7 +154,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
 
   # add a empty variable to the model
   data$empty_model <- rep(0, times = n)
-  data <- data[,c(Y, exp_var)]
+  data <- data[, c(Y, exp_var)]
 
   # a list to keep the goodness-of-fit coefficients from each step
   coeffs <- list()
@@ -194,7 +194,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
                   )
 
     dimnames(models) <- list(seq_len(fs),
-                             paste0("bin",seq_len(k)),
+                             paste0("bin", seq_len(k)),
                              opt.select)
 
     # take the matrix with selected goodness of fit

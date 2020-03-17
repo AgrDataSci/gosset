@@ -2,6 +2,7 @@
 % Please edit documentation in R/summarise_agreement.R
 \name{summarise_agreement}
 \alias{summarise_agreement}
+\alias{agreement}
 \alias{plot.gosset_agree}
 \title{Agreement between rankings}
 \usage{
@@ -21,7 +22,7 @@ that serves as baseline for comparing the other characteristics}
 \item{x}{object of class 'gosset_agree' for the plotting method. 
 Generates a 'ggplot' object that can be passed to any ggplot2 method}
 
-\item{...}{further arguments passed to methods. Not enabled yet}
+\item{...}{additional arguments passed to methods. See details}
 }
 \value{
 A data.frame with summary of agreement:
@@ -35,6 +36,10 @@ ranked last in compare.to}
 \description{
 Summarise the concordance between one or more caracteristics from a baseline
 ranking
+}
+\details{
+\code{minlength} an integer, passed to \code{abbreviate()} to define the
+ minimum length of the abbreviations
 }
 \examples{
 # from the breadwheat data
@@ -66,11 +71,14 @@ compare[[3]] <- rank_tricot(data = breadwheat,
 
 labels <- c("Germination", "Grain quality", "Yield")
 
-
-summarise_agreement(R,
-                    compare.to = compare,
-                    labels = labels)
  
+a <- summarise_agreement(R,
+                         compare.to = compare,
+                         labels = labels)
+
+
+p <- plot(a)
+
 }
 \seealso{
 \code{\link{kendallTau}}

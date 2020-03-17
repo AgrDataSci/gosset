@@ -1,8 +1,9 @@
-gosset 0.2.1 (2020-02-25)
+gosset 0.2.2 (2020-03-17)
 =========================
 ### NEW FEATURES
 * forward selection is added with `forward()`
 * `btpermute()` is added for model selection with BTm() 
+* abbreviation method in plot methods of summarise_* functions
 
 ### IMPROVEMENTS
 * No user visible improvements

@@ -2,7 +2,8 @@
 % Please edit documentation in R/summarise_favourite.R
 \name{summarise_favourite}
 \alias{summarise_favourite}
-\alias{summarise_favorite}
+\alias{favorite}
+\alias{favourite}
 \alias{plot.gosset_fvrt}
 \title{Favourability scores}
 \usage{
@@ -13,7 +14,7 @@ summarise_favourite(object, ...)
 \arguments{
 \item{object}{an object of class \code{rankings} or \code{grouped_rankings}}
 
-\item{...}{additional arguments passed to methods. Not enabled yet}
+\item{...}{additional arguments passed to methods. See details}
 
 \item{x}{an object of class \code{gosset_fvrt} for the plotting method. 
 Generates a \code{ggplot} object that can be passed to any \pkg{ggplot2} method}
@@ -33,6 +34,10 @@ best and worst performance}
 \description{
 Summarise favourability scores from permutation contests
 }
+\details{
+\code{minlength} an integer, passed to \code{abbreviate()} to define the
+ minimum length of the abbreviations
+}
 \examples{
 data("breadwheat", package = "gosset")
 
@@ -42,7 +47,7 @@ R <- rank_tricot(data = breadwheat,
 
 fav <- summarise_favourite(R)
 
-fav
+plot(fav)
 
 }
 \seealso{
