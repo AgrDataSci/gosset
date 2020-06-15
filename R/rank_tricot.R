@@ -245,7 +245,7 @@ rank_tricot <- function(data = NULL, items = NULL,
   mi <- rowSums(t(apply(i, 1, is.na)))
   mi <- nrank - mi
   if( any(mi <= 1) ) {
-    stop("Cannot handle less than 2 NAs per row in 'items' \n")
+    stop("Cannot handle more than 2 NAs per row in 'items' \n")
   }
   
   # if there is accepted NAs in items  

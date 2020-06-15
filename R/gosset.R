@@ -1,4 +1,4 @@
-#' Modelling Metadata and Crowdsourced Citizen Science
+#' Modelling Metadata and Experimental Citizen Science
 #'
 #' @name gosset
 #' @author Kauê de Sousa and Jacob van Etten and Sam Dumble and 

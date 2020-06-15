@@ -93,7 +93,6 @@ forward(preference ~ .,
         data = Topmodel2007,
         k = 5,
         packages = "psychotree",
-        ncores = 5,
         alpha = 0.01,
         minsize = 30)
   

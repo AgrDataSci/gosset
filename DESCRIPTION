@@ -1,7 +1,7 @@
 Package: gosset
 Type: Package
 Title: Modelling Metadata and Crowdsourced Citizen Science
-Version: 0.2.2
+Version: 0.2.4
 Authors@R: c(person("Kaue", "de Sousa", 
         email = "kaue.desousa@inn.no", role = c("aut", "cre"),
         comment = c(ORCID = "0000-0002-7571-7845")),
@@ -32,7 +32,7 @@ Imports:
     methods,
     partykit,
     parallel,
-    PlackettLuce (>= 0.2-8), 
+    PlackettLuce (>= 0.2-8),
     psychotools, 
     qvcalc,
     stats, 
@@ -43,10 +43,12 @@ Suggests:
     climatrends,
     ClimMobTools,
     gnm,
+    ggparty,
     knitr,
     psychotree,
+    patchwork,
     rmarkdown,
     testthat
 Language: en-GB
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr

@@ -115,5 +115,4 @@ worst_regret <- function(object, ...){
   w <- tibble::as_tibble(w[ ,c(3,1:2)])
 
   return(w)
-
 }

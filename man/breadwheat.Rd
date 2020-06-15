@@ -4,7 +4,8 @@
 \name{breadwheat}
 \alias{breadwheat}
 \title{Preferred bread wheat varieties}
-\format{A data frame with 493 records and 19 variables:
+\format{
+A data frame with 493 records and 19 variables:
 \describe{
     \item{\code{variety_a}}{The name of variety A in the comparison.}
     \item{\code{variety_b}}{The name of variety B in the comparison.}
@@ -33,7 +34,8 @@
     "B" or "C").}
     \item{\code{overall_worst}}{The variety ranked as worst for overall perfomance ("A",
     "B" or "C").}
-}}
+}
+}
 \source{
 The data were provided by Bioversity International \url{https://www.bioversityinternational.org/}, 
 a CGIAR Research Centre, through the ClimMob platform \url{https://climmob.net}.

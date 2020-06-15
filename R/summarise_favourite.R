@@ -143,12 +143,15 @@ plot.gosset_fvrt <- function(x, ...) {
                                     fill = fav_score, 
                                     x = items)) +
     ggplot2::geom_hline(yintercept = 0) +
-    ggplot2::geom_bar(stat = "identity", col = "black") +
+    ggplot2::geom_bar(stat = "identity", 
+                      col = "#000000",
+                      width = 0.7) +
     ggplot2::coord_flip() +
-    ggplot2::scale_y_continuous(breaks = seq(-100, 100, by = 20)) +
+    ggplot2::scale_y_continuous(breaks = seq(-100, 100, by = 20), 
+                                limits = c(-100, 100)) +
     ggplot2::scale_fill_gradient2(name = "Favourability",
                                   low = "#CA0020",
-                                  mid = "#FFFFFF",
+                                  mid = "#f7f7f7",
                                   high = "#0571B0",
                                   limits = c(-100, 100)) +
     ggplot2::labs(x = "Items", y = "")

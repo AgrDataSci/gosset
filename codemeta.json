@@ -10,14 +10,14 @@
   "codeRepository": "https://agrobioinfoservices.github.io/gosset/",
   "issueTracker": "https://github.com/agrobioinfoservices/gosset/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
-    "version": "3.6.2",
+    "version": "4.0.0",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 3.6.2 (2019-12-12)",
+  "runtimePlatform": "R version 4.0.0 (2020-04-24)",
   "author": [
     {
       "@type": "Person",
@@ -113,6 +113,18 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "ggparty",
+      "name": "ggparty",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggparty"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "knitr",
       "name": "knitr",
       "provider": {
@@ -134,6 +146,18 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=psychotree"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "patchwork",
+      "name": "patchwork",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=patchwork"
     },
     {
       "@type": "SoftwareApplication",
@@ -323,7 +347,7 @@
   ],
   "releaseNotes": "https://github.com/agrobioinfoservices/gosset/blob/master/NEWS.md",
   "readme": "https://github.com/agrobioinfoservices/gosset/blob/master/README.md",
-  "fileSize": "426.861KB",
+  "fileSize": "428.697KB",
   "contIntegration": [
     "https://ci.appveyor.com/project/kauedesousa/gosset",
     "https://travis-ci.org/agrobioinfoservices/gosset",

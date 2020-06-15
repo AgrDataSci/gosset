@@ -4,7 +4,7 @@
 \name{gosset}
 \alias{gosset}
 \alias{gosset-package}
-\title{Modelling Metadata and Crowdsourced Citizen Science}
+\title{Modelling Metadata and Experimental Citizen Science}
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 

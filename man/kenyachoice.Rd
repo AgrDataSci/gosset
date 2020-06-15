@@ -3,8 +3,9 @@
 \docType{data}
 \name{kenyachoice}
 \alias{kenyachoice}
-\title{Agricultural and livelihood practices identified by Kenyan farmers}
-\format{A list with two dataframes. \code{kenyachoice[["contests"]]} contains 
+\title{Kenyan farmers’ preferences for agricultural and livelihood practices}
+\format{
+A list with two dataframes. \code{kenyachoice[["contests"]]} contains 
  the pairwise rankings from farmers choices. \code{kenyachoice[["predictors"]]}
  contains the socioeconomic data for each farmer.
  Codes for contests are described:
@@ -18,7 +19,8 @@
  \item{\code{R}}{Mulching}
  \item{\code{T}}{Terracing}
  \item{\code{Z}}{Zai pits}  
- }}
+ }
+}
 \source{
 Steinke, J., et. al. (2019). Household-specific targeting of agricultural advice 
 via mobile phones: Feasibility of a minimum data approach for smallholder context. 
@@ -29,12 +31,11 @@ Computers and Electronics in Agriculture, 162, 991–1000.
 kenyachoice
 }
 \description{
-Farmers were asked to rank 9 different household-level practices 
- according to their interest in receiving more information about them.
- Through a simple ranking experiment, we then determined farmers' 
- individual preferences for information about 9 alternative information
- options \code{kenyachoice[["contests"]]}. Household socioeconomic data was 
- collected to link farmers' preferences with explanatory data 
- \code{kenyachoice[["predictors"]]}.
+Data from a preference experiment in Makueni County, Kenya. Twenty-six 
+ smallholder farmers ordered 9 different livelihood improvement practices
+ by their personal preference. Full rankings were broken down into 
+ multiple pairwise rankings (\code{kenyachoice[["contests"]]}). To each 
+ respondent, a set of nine socio-economic variables is available 
+ (\code{kenyachoice[["predictors"]]}).
 }
 \keyword{dataset}

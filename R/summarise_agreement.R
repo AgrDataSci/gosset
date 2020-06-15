@@ -239,7 +239,6 @@ plot.gosset_agree <- function(x, ...) {
       ggplot2::aes(y = agreement / 2,
                    label = round(agreement, 0)),
       fontface = 2,
-      size = 8,
       alpha = 1
     ) +
     ggplot2::scale_y_continuous(
