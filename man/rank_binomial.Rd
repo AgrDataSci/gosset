@@ -52,7 +52,7 @@ Journal of Statistical Software, 48(9), 1–21.
 \url{http://dx.doi.org/10.18637/jss.v048.i09}
 }
 \seealso{
-\code{\link[BradleyTerry2]{BTm}}
+\code{\link{btpermute}}, \code{\link[BradleyTerry2]{BTm}}
 
 Other rank functions: 
 \code{\link{rank_numeric}()},

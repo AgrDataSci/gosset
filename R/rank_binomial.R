@@ -17,7 +17,7 @@
 #'  the second player in the contests}
 #' \item{win1}{number of times player1 wins against player2}
 #' \item{win2}{number of times player2 wins against player1}
-#' @seealso \code{\link[BradleyTerry2]{BTm}}
+#' @seealso \code{\link{btpermute}}, \code{\link[BradleyTerry2]{BTm}}
 #' @references 
 #' Turner H. & Firth D. (2012). 
 #' Journal of Statistical Software, 48(9), 1–21. 
@@ -40,7 +40,6 @@
 #' 
 #' rank_binomial(R, disaggregate = TRUE)
 #' 
-#' @importFrom tibble as_tibble
 #' @export
 rank_binomial <- function(object, 
                           drop.null = FALSE, 
@@ -140,8 +139,6 @@ rank_binomial <- function(object,
   # add the results into the new dataframe object_bin
   object$player1 <- factor(object$player1, levels = players)
   object$player2 <- factor(object$player2 , levels = players)
-  
-  object <- tibble::as_tibble(object)
   
   return(object)
   

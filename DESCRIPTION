@@ -1,8 +1,8 @@
 Package: gosset
 Type: Package
 Title: Modelling Metadata and Crowdsourced Citizen Science
-Version: 0.2.4
-Authors@R: c(person("Kaue", "de Sousa", 
+Version: 0.2.5
+Authors@R: c(person("Kauê", "de Sousa", 
         email = "kaue.desousa@inn.no", role = c("aut", "cre"),
         comment = c(ORCID = "0000-0002-7571-7845")),
         person("Jacob", "van Etten", role = c("aut", "ths"),

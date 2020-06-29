@@ -23,7 +23,7 @@ containing the item names in \code{data}}
 \item{input}{a character or numerical vector for indexing the column(s) 
 containing the values in \code{data} to be ranked}
 
-\item{id}{a data frame or index of \code{data} indicating the 
+\item{id}{an index of \code{data} indicating the 
 ids for "long" \code{data}}
 
 \item{group}{logical, if \code{TRUE} return an object of class "grouped_rankings"}

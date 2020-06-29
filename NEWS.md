@@ -1,3 +1,10 @@
+gosset 0.2.5 (2020-06-29)
+=========================
+
+### IMPROVEMENTS
+* `rank_numeric()` deals with ids if class characters
+
+
 gosset 0.2.2 (2020-03-17)
 =========================
 ### NEW FEATURES

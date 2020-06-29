@@ -14,11 +14,11 @@ btpermute(
 }
 \arguments{
 \item{contests}{a data frame with pairwise binary contests with these variables
-'id','player1','player2','win1','win2'; in that order. The id should match with 
-those found in \code{predictors}}
+'id','player1','player2','win1','win2'; in that order. The id should be equivalent 
+to the index of each row in \code{predictors}}
 
-\item{predictors}{a data frame with player predictors with an id 
-that should match with \code{contests}}
+\item{predictors}{a data frame with player-specific variables that should match with 
+the ids in \code{contests}}
 
 \item{n.iterations}{integer, number of iterations to compute}
 

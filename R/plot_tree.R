@@ -54,6 +54,7 @@ plot_tree <- function(object, add.letters = FALSE, ...){
   dots <- list(...)
   
   font.size <- dots[["font.size"]]
+  threshold <- dots[["threshold"]]
   
   # get node information
   nodes <- list()
@@ -105,9 +106,14 @@ plot_tree <- function(object, add.letters = FALSE, ...){
   
   coeffs <- do.call("rbind", coeffs)
   
-  if (isTRUE(add.letters)){
+  if (isTRUE(add.letters)) {
+    
+    if (is.null(threshold)) {
+      threshold <- 0.05
+    }
+    
     groups <- try(lapply(nodes, function(x){
-      x <- .multcompPL(x)
+      x <- .multcompPL(x, threshold = threshold)
       x[sort(items), ".group"]
     }), silent = TRUE)
     groups <- unlist(groups)
@@ -128,7 +134,7 @@ plot_tree <- function(object, add.letters = FALSE, ...){
   coeffs$node <- factor(paste0("Node ", coeffs$node, " (n=", coeffs$nobs, ")"),
                         levels = node_lev)
   
-  coeffs$items <- factor(coeffs$items, levels = sort(items))
+  coeffs$items <- factor(coeffs$items, levels = rev(sort(items)))
   
   splitvar <- 0L
   p.value <- 0L
