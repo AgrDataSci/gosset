@@ -87,11 +87,15 @@ rank_numeric <- function(data = NULL, items = NULL,
   # get the items in data
   items <- data[items]
   
+  # if id is not provided then the index of each row in data is taken
+  # otherwise the id is used but first with a check to confirm that it is
+  # an integer, if not an integer then it is converted to factor then integer 
+  # keeping the levels in from the factor
   if (is.null(id)) {
     id <- data.frame(id = rownames(data))
   } else {
     id <- data[, id]
-    if(is.character(id)){
+    if(isFALSE(is.integer(id))){
       message("id was identified as 'character' and was coerced to 'integer'\n")
       id <- as.integer(as.factor(id))
     }
