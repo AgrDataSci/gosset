@@ -96,7 +96,7 @@ rank_numeric <- function(data = NULL, items = NULL,
   } else {
     id <- data[, id]
     if(isFALSE(is.integer(id))){
-      message("id was identified as 'character' and was coerced to 'integer'\n")
+      message("id was identified as '",  class(id) , "' and was coerced to 'integer'\n")
       id <- as.integer(as.factor(id))
     }
   }
