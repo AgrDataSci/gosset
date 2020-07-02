@@ -333,11 +333,19 @@ btpermute <- function(contests = NULL,
                                         collapse = " + "))
   
   
+  # reconstruct the formula to replace the strings Var with the real predictor name
+  # this will make easier to track the model call and re-use in other BTm functions
   repl <- match(selected, origVarnames)
   finalcall <- deparse(finalmodel, width.cutoff = 500)
+  finalcall <- strsplit(finalcall, "[~]")[[1]][-1]
+
   for(i in seq_along(repl)) {
-    finalcall <- gsub(paste0("Var",repl[i]), selected[i], finalcall)
+    finalcall[[i]] <- gsub(paste0("Var",repl[i]), selected[i], finalcall[[i]])
   }
+  
+  finalcall <- paste0(finalcall, collapse = "~ ")
+  
+  finalcall <- paste0("~ ", finalcall)
   
   finalmodel <- stats::as.formula(finalcall)
 
