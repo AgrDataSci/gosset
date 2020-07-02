@@ -74,10 +74,10 @@ btpermute <- function(contests = NULL,
   
   # define/set a seed to ensure reproducibility 
   if (is.null(seed)) {
-    seed <- runif(1, 1, 99999)
+    seed <- as.integer(runif(1, 1, .Machine$integer.max))
   }
   set.seed(seed)
-  seeds <- as.integer(runif(n.iterations, 1, 99999))
+  seeds <- as.integer(runif(n.iterations, 1, .Machine$integer.max))
   
   # contests should be a data.frame with 5 columns
   # if not, then stop
@@ -116,8 +116,8 @@ btpermute <- function(contests = NULL,
   # to be processed by BTm
   #assign("items", items, envir = .GlobalEnv)
   items <<- items
-  Win1 <- contests$Win1
-  Win2 <- contests$Win2
+  Win1  <- contests$Win1
+  Win2  <- contests$Win2
   Item1 <- contests$Item1
   Item2 <- contests$Item2
   
@@ -143,16 +143,16 @@ btpermute <- function(contests = NULL,
   
   # List of formula "extensions" to be added to the
   # BTm models as variables are sequentially added.
-  nperm <- n.iterations + 1
+  nform <- max(seq_along(Vars)) + 1
   
   BTmformula <- as.list(paste0("~ .. + ", 
-                               sprintf("Var%1d", seq_len(nperm)), 
+                               sprintf("Var%1d", seq_len(nform)), 
                                "[ObsID] * items[..]"))
   BTmformula <- lapply(BTmformula, stats::as.formula)
   
   # permutations formulas
   BTmformulaPV <- as.list(paste0("~ .. + ", 
-                                 sprintf("PV%1d", seq_len(nperm)), 
+                                 sprintf("PV%1d", seq_len(nform)), 
                                  "[ObsID] * items[..]"))
   BTmformulaPV <- lapply(BTmformulaPV, stats::as.formula)
   
