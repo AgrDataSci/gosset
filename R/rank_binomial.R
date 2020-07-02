@@ -74,7 +74,7 @@ rank_binomial <- function(object,
   
   if (isTRUE(disaggregate)) {
     
-    n <- dim(R)[[1]]
+    n <- dim(object)[[1]]
     
     # matrix with rankings
     if (.is_rankings(object)) {
