@@ -1,9 +1,11 @@
-gosset 0.2.5 (2020-06-29)
+gosset 0.2.5 (2020-07-02)
 =========================
 
 ### IMPROVEMENTS
 * `rank_numeric()` deals with ids if class characters
 
+###  BUG FIXES
+* Fixed an issue in `rank_binonal()` in assigning the ids when argument `disaggregate = TRUE`
 
 gosset 0.2.2 (2020-03-17)
 =========================

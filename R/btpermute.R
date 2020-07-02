@@ -11,8 +11,9 @@
 #' @param contests a data frame with pairwise binary contests with these variables
 #'  'id','player1','player2','win1','win2'; in that order. The id should be equivalent 
 #'  to the index of each row in \code{predictors}
-#' @param predictors a data frame with player-specific variables that should match with 
-#'  the ids in \code{contests}
+#' @param predictors a data frame with player-specific variables with row indices that 
+#'  should match with the ids in \code{contests}. An id is not required, only the 
+#'  predictor variables, the ids are the index for each row
 #' @param n.iterations integer, number of iterations to compute
 #' @param seed integer, the seed for random number generation. If NULL (the default), 
 #' \pkg{gosset} will set the seed randomly
@@ -93,7 +94,7 @@ btpermute <- function(contests = NULL,
   not_factor <- any(c(!is.factor(contests$Item1), !is.factor(contests$Item2)))
   
   if (isTRUE(not_factor)) {
-    stop("'player1' and 'player2' should be factors with the same levels\n")
+    stop("'player1' and 'player2' should be factors with the same levels \n")
   }
   
   # check if players are factors with same level

@@ -120,6 +120,9 @@ rank_binomial <- function(object,
                          stringsAsFactors = FALSE)
       x$V5 <- ifelse(x$V4 == 0, 1,
                      ifelse(x$V4 == 1, 0, NA))
+      
+      x <- x[!is.na(x$V4), ]
+      
       contests <- rbind(contests, x)
     }
     

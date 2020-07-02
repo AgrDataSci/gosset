@@ -17,8 +17,9 @@ btpermute(
 'id','player1','player2','win1','win2'; in that order. The id should be equivalent 
 to the index of each row in \code{predictors}}
 
-\item{predictors}{a data frame with player-specific variables that should match with 
-the ids in \code{contests}}
+\item{predictors}{a data frame with player-specific variables with row indices that 
+should match with the ids in \code{contests}. An id is not required, only the 
+predictor variables, the ids are the index for each row}
 
 \item{n.iterations}{integer, number of iterations to compute}
 
