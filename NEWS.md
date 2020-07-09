@@ -1,8 +1,9 @@
-gosset 0.2.5 (2020-07-02)
+gosset 0.2.5-1 (2020-07-07)
 =========================
 
 ### IMPROVEMENTS
 * `rank_numeric()` deals with ids of class characters
+* pass ref to `.multicompPL()`
 
 ###  BUG FIXES
 * Fix an issue in `rank_binomial()` in assigning the ids when argument `disaggregate = TRUE`

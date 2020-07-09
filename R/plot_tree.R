@@ -40,7 +40,6 @@
 #' gosset:::plot_tree(tm_tree, add.letters = TRUE)
 #' 
 #' @importFrom partykit nodeids
-#' @importFrom stats pt p.adjust reorder
 #' @importFrom psychotools itempar
 #' @importFrom qvcalc qvcalc
 #' @importFrom ggplot2 ggplot aes geom_vline geom_point geom_errorbar scale_x_continuous 
@@ -48,13 +47,16 @@
 #' @noRd
 plot_tree <- function(object, add.letters = FALSE, ...){
   
-  # Extract ids from terminal nodes
-  node_id <- partykit::nodeids(object, terminal = TRUE)
-  
   dots <- list(...)
   
   font.size <- dots[["font.size"]]
   threshold <- dots[["threshold"]]
+  terms     <- dots[["terms"]]
+  adjust    <- dots[["adjust"]]
+  ref       <- dots[["ref"]]
+
+  # Extract ids from terminal nodes
+  node_id <- partykit::nodeids(object, terminal = TRUE)
   
   # get node information
   nodes <- list()
@@ -93,38 +95,69 @@ plot_tree <- function(object, add.letters = FALSE, ...){
     X$bmax <- ifelse(X$bmax > 1, 0.991, X$bmax)
     
     X$bmin <- ifelse(X$bmin < 0, 0.001, X$bmin)
+    
     return(X)
   })
   
   # Add node information and number of observations
   for (i in seq_along(node_id)) {
+    
     coeffs[[i]] <- within(coeffs[[i]], {
+      
       nobs <- nobs[[i]]
+      
       node <- node_id[i]}
     )
+    
   }
   
   coeffs <- do.call("rbind", coeffs)
   
+  coeffs$id <- paste0(coeffs$node, "_", coeffs$items)
+  
   if (isTRUE(add.letters)) {
     
+    # try to compute the estimates and get the letters
+    # sometimes it doesn't work, if it happens the return 
+    # a message about the issue
     if (is.null(threshold)) {
       threshold <- 0.05
     }
-    
-    groups <- try(lapply(nodes, function(x){
-      x <- .multcompPL(x, threshold = threshold)
-      x[sort(items), ".group"]
-    }), silent = TRUE)
-    groups <- unlist(groups)
-    if (grepl("Error",groups[[1]])) {
-      message("Unable to get letters for the plotting object.",
-              " The issue has likely occurred in qvcalc::qvcalc() \n")
-      groups <- ""
+    if (is.null(ref)) {
+      ref <- 1
     }
-    coeffs <- cbind(coeffs, groups = groups)
-  }else{
+    if (is.null(adjust)) {
+      adjust <- "none"
+    }
+    
+    groups <- tryCatch(
+      {
+        multcompPL(object, 
+                   threshold = threshold,
+                   terms = terms,
+                   adjust = adjust,
+                   ref = ref)
+        
+       }, error = function(cond){
+        message("Unable to get letters for the plotting object.",
+                " The issue has likely occurred in qvcalc::qvcalc() \n")
+        return(NA)
+      }
+    )
+    
+    if (isTRUE(is.na(groups))) {
+      coeffs <- cbind(coeffs, groups = "")
+    }else{
+      groups$id <- paste0(groups$node, "_", groups$term)
+      coeffs <- merge(coeffs, groups[,c("id","group")], by = "id", all.x = TRUE)
+      names(coeffs)[names(coeffs)=="group"] <- "groups"
+    }
+  }
+  
+  if (isFALSE(add.letters)) {
+    
     coeffs$groups <- ""
+    
   }
   
   node_lev <- unique(paste0("Node ", coeffs$node, " (n=", coeffs$nobs, ")"))
@@ -223,79 +256,19 @@ plot_tree <- function(object, add.letters = FALSE, ...){
   return(p)
 }
 
-library("PlackettLuce")
-R <- matrix(c(1, 2, 0, 0,
-              4, 1, 2, 3,
-              2, 1, 1, 1,
-              1, 2, 3, 0,
-              2, 1, 1, 0,
-              1, 0, 3, 2), nrow = 6, byrow = TRUE)
-colnames(R) <- c("apple", "banana", "orange", "pear")
+# library("PlackettLuce")
+# R <- matrix(c(1, 2, 0, 0,
+#               4, 1, 2, 3,
+#               2, 1, 1, 1,
+#               1, 2, 3, 0,
+#               2, 1, 1, 0,
+#               1, 0, 3, 2), nrow = 6, byrow = TRUE)
+# colnames(R) <- c("apple", "banana", "orange", "pear")
+# 
+# # create rankings object
+# R <- as.rankings(R)
+# 
+# # Standard maximum likelihood estimates
+# mod <- PlackettLuce(R, npseudo = 0)
 
-# create rankings object
-R <- as.rankings(R)
 
-# Standard maximum likelihood estimates
-mod <- PlackettLuce(R, npseudo = 0)
-
-
-.multcompPL<-function(mod, terms = NULL, threshold = 0.05, adjust = "none"){
-  
-  #get estimates with quasi-SEs
-  qv1 <- qvcalc::qvcalc(mod)$qvframe
-  
-  #reduce frame to only selected terms if not all comparisons are desired
-  if (!is.null(terms)) {
-    qv1 <- subset(qv1, rownames(qv1) %in% terms)
-    # give error if less than 2 terms can be identified
-    if (nrow(qv1) < 3) {
-      stop("Less than 2 terms selected")
-    }
-  }
-  
-  #set up matrices for all differences and pooled errors
-  diffs <- mat.or.vec(nrow(qv1),nrow(qv1))
-  ses <- mat.or.vec(nrow(qv1),nrow(qv1))
-  
-  for(i in 1:nrow(qv1)){
-    for(j in 1:nrow(qv1)){
-      #get differences and pooled ses
-      diffs[i,j] <- qv1$estimate[i] - qv1$estimate[j]
-      ses[i,j] <- sqrt(qv1$quasiVar[i] + qv1$quasiVar[j])
-    }
-  }
-  
-  #calculate z scores
-  z <- diffs/ses
-  #TO DO: What DF to use to use here? Is it just the resid DF?
-  p <- 2 * (1 - stats::pt(abs(z), mod$df.residual))
-  
-  #adjust p-value if you want to adjust. make sure to only take each p once for adjustment
-  p[upper.tri(p)] <- stats::p.adjust(p[upper.tri(p)], method = adjust)
-  
-  #make sure lower triangular is mirror of upper
-  p[lower.tri(p)] <- t(p)[lower.tri(p)]
-  
-  #set rownames
-  rownames(p) <- colnames(p) <- rownames(qv1)
-  
-  #re-order qv output to ensure letters are produced in a sensible order
-  qv1$term <- stats::reorder(factor(rownames(qv1)), qv1$estimate, mean)
-  qv1 <- qv1[order(qv1$estimate, decreasing = TRUE),]
-  
-  #get mean seperation letter groupings
-  args <- list(formula = estimate ~ term, 
-               x = p, 
-               data = qv1,
-               compare = "<",
-               threshold =  threshold,
-               Letters = letters,
-               reversed = FALSE)
-  
-  let <- do.call("multcompLetters2", args)
-  
-  qv1$.group <- let$Letters
-  
-  return(qv1)
-  
-}
