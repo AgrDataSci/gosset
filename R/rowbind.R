@@ -62,7 +62,7 @@ rowbind.default <- function(x, y, ...){
     
   }
   
-  rownames(dt) <- seq_along(dt[,1])
+  rownames(dt) <- seq_len(dim(dt)[[1]])
   
   return(dt)
   
@@ -118,7 +118,7 @@ rowbind.list <- function(x, ...){
     
   }
   
-  rownames(dt) <- seq_along(dt[,1])
+  rownames(dt) <- seq_len(dim(dt)[[1]])
   
   return(dt)
   
