@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Kenyan farmers’ preferences for agricultural and livelihood practices — kenyachoice • gosset</title>
+<title>Post-hoc analysis of Plackett-Luce models — multcompPL • gosset</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,13 +46,8 @@
 
 
 
-<meta property="og:title" content="Kenyan farmers’ preferences for agricultural and livelihood practices — kenyachoice" />
-<meta property="og:description" content="Data from a preference experiment in Makueni County, Kenya. Twenty-six 
- smallholder farmers ordered 9 different livelihood improvement practices
- by their personal preference. Full rankings were broken down into 
- multiple pairwise rankings (kenyachoice[[&quot;contests&quot;]]). To each 
- respondent, a set of nine socio-economic variables is available 
- (kenyachoice[[&quot;predictors&quot;]])." />
+<meta property="og:title" content="Post-hoc analysis of Plackett-Luce models — multcompPL" />
+<meta property="og:description" content="Post-hoc analysis of Plackett-Luce models" />
 <meta property="og:image" content="/logo.svg" />
 
 
@@ -124,48 +119,63 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Kenyan farmers’ preferences for agricultural and livelihood practices</h1>
-    <small class="dont-index">Source: <a href='https://github.com/agrobioinfoservices/gosset/blob/master/R/kenyachoice.R'><code>R/kenyachoice.R</code></a></small>
-    <div class="hidden name"><code>kenyachoice.Rd</code></div>
+    <h1>Post-hoc analysis of Plackett-Luce models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/agrobioinfoservices/gosset/blob/master/R/multcompPL.R'><code>R/multcompPL.R</code></a></small>
+    <div class="hidden name"><code>multcompPL.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Data from a preference experiment in Makueni County, Kenya. Twenty-six 
- smallholder farmers ordered 9 different livelihood improvement practices
- by their personal preference. Full rankings were broken down into 
- multiple pairwise rankings (<code>kenyachoice[["contests"]]</code>). To each 
- respondent, a set of nine socio-economic variables is available 
- (<code>kenyachoice[["predictors"]]</code>).</p>
+    <p>Post-hoc analysis of Plackett-Luce models</p>
     </div>
 
-    <pre class="usage"><span class='no'>kenyachoice</span></pre>
+    <pre class="usage"><span class='fu'>multcompPL</span>(<span class='no'>mod</span>, <span class='kw'>terms</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='st'>"none"</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>multcompPL</span>(<span class='no'>mod</span>, <span class='kw'>terms</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='st'>"none"</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for pltree</span>
+<span class='fu'>multcompPL</span>(<span class='no'>mod</span>, <span class='kw'>terms</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='st'>"none"</span>, <span class='no'>...</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>mod</th>
+      <td><p>an object of class PlackettLuce</p></td>
+    </tr>
+    <tr>
+      <th>terms</th>
+      <td><p>a vector with the models terms to be used</p></td>
+    </tr>
+    <tr>
+      <th>threshold</th>
+      <td><p>a numeric value, second reference argument to compare</p></td>
+    </tr>
+    <tr>
+      <th>adjust</th>
+      <td><p>p.value correction method, a character string</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments passed to methods in qvcalc</p></td>
+    </tr>
+    </table>
 
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># \donttest{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"psychotree"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"PlackettLuce"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"multcompView"</span>)
 
-    <p>A list with two dataframes. <code>kenyachoice[["contests"]]</code> contains 
- the pairwise rankings from farmers choices. <code>kenyachoice[["predictors"]]</code>
- contains the socioeconomic data for each farmer.
- Codes for contests are described:</p><dl'>
- <dt><code>B</code></dt><dd><p>Opening a business</p></dd>
- <dt><code>D</code></dt><dd><p>Dry planting</p></dd>
- <dt><code>G</code></dt><dd><p>Collective crop marketing</p></dd>
- <dt><code>J</code></dt><dd><p>Finding off-farm job</p></dd>
- <dt><code>M</code></dt><dd><p>Machine tillage</p></dd>
- <dt><code>O</code></dt><dd><p>Renting out traction animals</p></dd>
- <dt><code>R</code></dt><dd><p>Mulching</p></dd>
- <dt><code>T</code></dt><dd><p>Terracing</p></dd>
- <dt><code>Z</code></dt><dd><p>Zai pits</p></dd>  
- 
-</dl>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"Topmodel2007"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"psychotree"</span>)
 
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/PlackettLuce/man/group.html'>as.grouped_rankings</a></span>(<span class='no'>Topmodel2007</span>$<span class='no'>preference</span>)
 
-    <p>Steinke, J., et. al. (2019). Household-specific targeting of agricultural advice 
-via mobile phones: Feasibility of a minimum data approach for smallholder context. 
-Computers and Electronics in Agriculture, 162, 991–1000. 
-<a href='https://doi.org/10.1016/j.compag.2019.05.026'>https://doi.org/10.1016/j.compag.2019.05.026</a></p>
+<span class='no'>plt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/PlackettLuce/man/pltree.html'>pltree</a></span>(<span class='no'>R</span> ~ <span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>Topmodel2007</span>[, -<span class='fl'>1</span>], <span class='kw'>minsize</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>npseudo</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
+<span class='fu'>multcompPL</span>(<span class='no'>plt</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>ref</span> <span class='kw'>=</span> <span class='st'>"Anni"</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
