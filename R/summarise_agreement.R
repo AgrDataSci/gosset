@@ -186,6 +186,34 @@ summarise_agreement <- function(baseline, compare.to, labels = NULL){
 #' @export
 plot.gosset_agree <- function(x, ...) {
   
+  dots <- list(...)
+  
+  scales <- dots[["scales"]]
+  
+  if (is.null(scales)) {
+    scales <- 100
+  }
+  
+  if (scales == 1) {
+    labs <- c(0, 0.25, 0.50, 0.75, 1)
+    brks <- seq(0, 100, by = 25)/100
+    lims <- c(0, 1)
+    rnd <- 2
+    
+    x[c("kendall", "first", "last")] <- 
+      lapply(x[c("kendall", "first", "last")], function(y){
+      y <- y / 100
+    })
+    
+  }
+  
+  if (scales == 100) {
+    labs <- paste0(seq(0, 100, by = 25), "%")
+    brks <- seq(0, 100, by = 25)
+    lims <- c(0, 100)
+    rnd <- 0
+  }
+  
   # coerce labels to be in the order as provided by input
   labels_lv <- x$labels
   
@@ -222,9 +250,8 @@ plot.gosset_agree <- function(x, ...) {
   p <- 
   ggplot2::ggplot(x,
                   ggplot2::aes(
-                    y = agreement,
-                    x = labels,
-                    alpha = agreement,
+                    x = agreement,
+                    y = labels,
                     fill = type
                   )) +
     ggplot2::geom_bar(
@@ -234,17 +261,16 @@ plot.gosset_agree <- function(x, ...) {
       show.legend = FALSE
     ) +
     ggplot2::facet_wrap(. ~ type) +
-    ggplot2::coord_flip() +
     ggplot2::geom_text(
-      ggplot2::aes(y = agreement / 2,
-                   label = round(agreement, 0)),
+      ggplot2::aes(x = agreement / 2,
+                   label = round(agreement, rnd)),
       fontface = 2,
       alpha = 1
     ) +
-    ggplot2::scale_y_continuous(
-      labels = paste0(seq(0, 100, by = 25), "%"),
-      breaks = seq(0, 100, by = 25),
-      limits = c(0, 100)
+    ggplot2::scale_x_continuous(
+      labels = labs,
+      breaks = brks,
+      limits = lims
     ) +
     ggplot2::theme(
       axis.text.y = ggplot2::element_text(size = 15, face = 2),
