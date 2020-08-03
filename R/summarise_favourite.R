@@ -126,9 +126,19 @@ summarise_favorite <- function(...){
 #' @export
 plot.gosset_fvrt <- function(x, ...) {
   
-  # check for large characters and reduce number of characters
-  # creating abbreviantions
-  x$items <- .reduce(x$items, ...)
+  dots <- list(...)
+  
+  abbreviate <- dots[["abbreviate"]]
+  
+  if (is.null(abbreviate)) {
+    abbreviate <- TRUE
+  }
+  
+  if (isTRUE(abbreviate)) {
+    # check for large characters and reduce number of characters
+    # creating abbreviantions
+    x$items <- .reduce(x$items, ...)
+  }
   
   # get order of players based on their performance
   player_levels <- rev(.player_order(x, "items", "fav_score"))

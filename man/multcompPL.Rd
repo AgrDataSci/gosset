@@ -4,6 +4,7 @@
 \alias{multcompPL}
 \alias{multcompPL.default}
 \alias{multcompPL.pltree}
+\alias{plot.multcompPL}
 \title{Post-hoc analysis of Plackett-Luce models}
 \usage{
 multcompPL(mod, terms = NULL, threshold = 0.05, adjust = "none", ...)
@@ -11,6 +12,8 @@ multcompPL(mod, terms = NULL, threshold = 0.05, adjust = "none", ...)
 \method{multcompPL}{default}(mod, terms = NULL, threshold = 0.05, adjust = "none", ...)
 
 \method{multcompPL}{pltree}(mod, terms = NULL, threshold = 0.05, adjust = "none", ...)
+
+\method{plot}{multcompPL}(x, level = 0.95, ...)
 }
 \arguments{
 \item{mod}{an object of class PlackettLuce}
@@ -22,6 +25,8 @@ multcompPL(mod, terms = NULL, threshold = 0.05, adjust = "none", ...)
 \item{adjust}{p.value correction method, a character string}
 
 \item{...}{additional arguments passed to methods in qvcalc}
+
+\item{x}{an object of class 'multcompPL'}
 }
 \description{
 Post-hoc analysis of Plackett-Luce models

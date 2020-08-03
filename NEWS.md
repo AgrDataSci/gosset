@@ -1,10 +1,11 @@
-gosset 0.2.5-3 (2020-07-22)
+gosset 0.2.5-5 (2020-08-03)
 =========================
 
 ### IMPROVEMENTS
 * `rank_numeric()` deals with ids of class characters
 * argument `ref` can be used in `multicompPL()` to select the reference item
-* adjust scale in the `plot()` method for `summarise_agreement()` using the argument scales, where `scales = 100` is to set the scale from 0-100 and `scales = 1` for a scale from 0-1 
+* adjust scale in the `plot()` method for `summarise_agreement()` using the argument scales, where `scales = 100` is to set the scale from 0-100 and `scales = 1` for a scale from 0-1
+* plot method for `multcompPL()`
 
 ###  BUG FIXES
 * Fix an issue in `rank_binomial()` in assigning the ids when argument `disaggregate = TRUE`

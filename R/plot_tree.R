@@ -1,12 +1,12 @@
 #' Plot recursive partitioning trees
 #'
-#' Make a ggplot2 chart from model-based recursive partitioning
-#' trees with quasi-variance
+#' Plot quasi-variance estimates from a model-based 
+#' recursive partitioning tree
 #'
 #' @param object an object of class modelparty
-#' @param add.letters optional
-#' @param ... additional arguments passed to ggplot2
-#' @return an object of class ggplot
+#' @param add.letters logical, if \code{TRUE} add post-hoc letters
+#' @param ... additional arguments passed to methods
+#' @return An object of class ggplot
 #' @seealso \code{\link[qvcalc]{qvcalc}} \code{\link[ggplot2]{ggplot}}
 #' @examples
 #' 
@@ -221,7 +221,7 @@ plot_tree <- function(object, add.letters = FALSE, ...){
                         colour = "#E5E7E9", size = 0.8) +
     geom_text(aes(label = groups),
               size = 2.5,
-              nudge_y = 0.25) +
+              nudge_y = 0.35) +
     ggplot2::geom_point(pch = 21, size = 2, 
                         fill = "black",colour = "black") +
     ggplot2::geom_errorbarh(ggplot2::aes(xmin = bmin,

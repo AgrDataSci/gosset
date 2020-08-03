@@ -5,6 +5,7 @@
 #' @param threshold a numeric value, second reference argument to compare
 #' @param adjust p.value correction method, a character string
 #' @param ... additional arguments passed to methods in qvcalc 
+#' @param x an object of class 'multcompPL' 
 #' @examples 
 #' \donttest{
 #' require("psychotree")
@@ -90,6 +91,8 @@ multcompPL.default <- function(mod, terms = NULL, threshold = 0.05, adjust = "no
   
   row.names(qv1) <- seq_along(qv1$group)
   
+  class(qv1) <- union("multcompPL", class(qv1))
+  
   return(qv1)
   
 }
@@ -124,6 +127,46 @@ multcompPL.pltree <- function(mod, terms = NULL, threshold = 0.05, adjust = "non
   
   row.names(result) <- seq_along(result$group)
   
+  class(result) <- union("multcompPL", class(result))
+  
   return(result)
   
 }
+
+#' @rdname multcompPL
+#' @method plot multcompPL
+#' @export
+plot.multcompPL <- function(x, level = 0.95, ...){
+  
+  x$term <- .reduce(as.character(x$term), ...)
+  
+  estimate <- x$estimate
+  term <- x$term
+  group <- x$group
+  quasiSE <- x$quasiSE
+  
+  p <- ggplot2::ggplot(data = x,
+                       ggplot2::aes(x = estimate, 
+                                    y = term,
+                                    label = group, 
+                                    xmax = estimate + stats::qnorm(1-(1-level)/2) * quasiSE,
+                                    xmin = estimate - stats::qnorm(1-(1-level)/2) * quasiSE)) +
+    ggplot2::geom_point() +
+    ggplot2::geom_errorbar(width = 0.1) +
+    ggplot2::geom_text(vjust = 1.2) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(panel.grid.major = ggplot2::element_blank()) +
+    ggplot2::labs(x = "Estimate", y = "Item")
+  
+  node <- x$node
+  
+  if (isFALSE(is.null(node))) {
+    p <- 
+      p +
+      ggplot2::facet_grid(. ~ node)
+  }
+  
+  return(p)
+  
+}
+
