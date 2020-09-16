@@ -1,7 +1,8 @@
-gosset 0.2.5-5 (2020-08-03)
+gosset 0.2.5.9000 (2020-09-16)
 =========================
 
 ### IMPROVEMENTS
+* add argument qve to skip quasi-variance to plot coefficients in `plot_tree()`
 * `rank_numeric()` deals with ids of class characters
 * argument `ref` can be used in `multicompPL()` to select the reference item
 * adjust scale in the `plot()` method for `summarise_agreement()` using the argument scales, where `scales = 100` is to set the scale from 0-100 and `scales = 1` for a scale from 0-1

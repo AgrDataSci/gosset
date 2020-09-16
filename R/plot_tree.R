@@ -5,6 +5,10 @@
 #'
 #' @param object an object of class modelparty
 #' @param add.letters logical, if \code{TRUE} add post-hoc letters
+#' @param qve logical, if \code{TRUE} plot quasi-variance estimates
+#' @param log logical, if \code{TRUE} log-likelihood coefficients are 
+#'  displayed instead of worth parameters
+#' @param ref optional, character for the reference item when log = \code{TRUE}
 #' @param ... additional arguments passed to methods
 #' @return An object of class ggplot
 #' @seealso \code{\link[qvcalc]{qvcalc}} \code{\link[ggplot2]{ggplot}}
@@ -42,10 +46,12 @@
 #' @importFrom partykit nodeids
 #' @importFrom psychotools itempar
 #' @importFrom qvcalc qvcalc
+#' @importFrom stats coef
 #' @importFrom ggplot2 ggplot aes geom_vline geom_point geom_errorbar scale_x_continuous 
 #' theme_bw labs theme element_text element_blank element_rect element_line facet_grid
 #' @noRd
-plot_tree <- function(object, add.letters = FALSE, ...){
+plot_tree <- function(object, qve = TRUE, 
+                      log = FALSE, ref = NULL, add.letters = FALSE, ...){
   
   dots <- list(...)
   
@@ -53,7 +59,6 @@ plot_tree <- function(object, add.letters = FALSE, ...){
   threshold <- dots[["threshold"]]
   terms     <- dots[["terms"]]
   adjust    <- dots[["adjust"]]
-  ref       <- dots[["ref"]]
 
   # Extract ids from terminal nodes
   node_id <- partykit::nodeids(object, terminal = TRUE)
@@ -64,25 +69,54 @@ plot_tree <- function(object, add.letters = FALSE, ...){
     nodes[[i]] <- object[[ node_id[i] ]]$node$info$object
   }
   
-  # get number of observers in each node
+  # get number of observations in each inner node
   nobs <- list()
   for (i in seq_along(node_id)) {
     nobs[[i]] <- as.integer(object[[ node_id[i] ]]$node$info$nobs) 
   }
   
-  # get item parameters from model
-  coeffs <- lapply(nodes, psychotools::itempar)
+  if (isTRUE(qve)) {
+   
+    # get item parameters from model
+    coeffs <- try(lapply(nodes, psychotools::itempar), silent = TRUE)
+    
+    if (isTRUE("try-error" %in% class(coeffs))) {
+      stop("Unable to compute quasi-variance estimates. Check for errors/warnings in ",
+           "your modelparty object. \n Also, you can try qve = FALSE \n")
+    }
+    
+    # get estimates from item parameters using qvcalc
+    coeffs <- lapply(coeffs, qvcalc::qvcalc)
+    
+    # extract data frames with estimates
+    coeffs <- lapply(coeffs, function(X){
+      df <- X[]$qvframe }
+    )
+    
+    # get item names
+    items <- rownames(coeffs[[1]])
+    
+  }
   
-  # get estimates from item parameters using qvcalc
-  coeffs <- lapply(coeffs, qvcalc::qvcalc)
-  
-  # extract data frames with estimates
-  coeffs <- lapply(coeffs, function(X){
-    df <- X[]$qvframe }
-  )
-  
-  # get item names
-  items <- rownames(coeffs[[1]])
+  if (isFALSE(qve)) {
+    
+    add.letters <- FALSE
+    
+    coeffs <- stats::coef(object, log = log, ref = ref)
+    
+    items <- dimnames(coeffs)[[2]]
+    
+    x <- list()
+    for (i in seq_len(dim(coeffs)[[1]])) {
+      xi <- data.frame(estimate = coeffs[i, ],
+                       quasiSE = 0,
+                       items = items)
+      x[[i]] <- xi
+    }
+    
+    coeffs <- x
+    
+  }
   
   # Add limits in error bars and item names
   coeffs <- lapply(coeffs, function(X){
@@ -92,9 +126,9 @@ plot_tree <- function(object, add.letters = FALSE, ...){
       items <- items
     })
     
-    X$bmax <- ifelse(X$bmax > 1, 0.991, X$bmax)
+    #X$bmax <- ifelse(X$bmax > 1, 0.991, X$bmax)
     
-    X$bmin <- ifelse(X$bmin < 0, 0.001, X$bmin)
+    #X$bmin <- ifelse(X$bmin < 0, 0.001, X$bmin)
     
     return(X)
   })
@@ -205,11 +239,23 @@ plot_tree <- function(object, add.letters = FALSE, ...){
   
   # Get max and min values for the x axis in the plot
   xmax <- round(max(coeffs$bmax, na.rm = TRUE) + 0.01, digits = 4)
-  xmin <- round(min(coeffs$bmin, na.rm = TRUE) - 0.01, digits = 4)
-  xbreaks <- round(c(mean(c(0, xmax)), xmax), 2)
-  xbreaks <- c(0, xbreaks)
-  xlabs <- as.character(xbreaks)
 
+  if(isFALSE(log)) {
+    xmin <- 0
+    xinter <- 1/length(items)
+    xbreaks <- round(c(mean(c(0, xmax)), xmax), 2)
+    xbreaks <- c(0, xbreaks)
+    
+  }else{
+    xinter <- 0
+    xmin <- min(coeffs$bmin, na.rm = TRUE)
+    xbreaks <- round(c(mean(c(xmin, xmax)), xmax), 2)
+    xbreaks <- c(xmin, xbreaks)
+    
+  }
+  
+  xlabs <- as.character(round(xbreaks, 2))
+  
   # Check font size for axis X and Y, and plot title
   s.axis <- 11
   
@@ -217,7 +263,7 @@ plot_tree <- function(object, add.letters = FALSE, ...){
     ggplot2::ggplot(coeffs, 
                     ggplot2::aes(x = estimate, 
                                  y = items)) +
-    ggplot2::geom_vline(xintercept = 1/length(items), 
+    ggplot2::geom_vline(xintercept = xinter, 
                         colour = "#E5E7E9", size = 0.8) +
     geom_text(aes(label = groups),
               size = 2.5,
@@ -227,7 +273,7 @@ plot_tree <- function(object, add.letters = FALSE, ...){
     ggplot2::geom_errorbarh(ggplot2::aes(xmin = bmin,
                                          xmax = bmax),
                             colour="black", height = 0.1) +
-    ggplot2::scale_x_continuous(limits = c(0, xmax),
+    ggplot2::scale_x_continuous(limits = c(xmin, xmax),
                                 breaks = xbreaks,
                                 labels = xlabs) +
     ggplot2::facet_grid(. ~ node) +
