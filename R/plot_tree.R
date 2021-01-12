@@ -59,7 +59,14 @@ plot_tree <- function(object, qve = TRUE,
   threshold <- dots[["threshold"]]
   terms     <- dots[["terms"]]
   adjust    <- dots[["adjust"]]
+  nudge.x   <- dots[["nudge.x"]]
+  nudge.y   <- dots[["nudge.y"]]
+  letter.size <- dots[["letter.size"]]
 
+  if(is.null(nudge.x)) nudge.x <- 0
+  if(is.null(nudge.y)) nudge.y <- 0.35
+  if(is.null(letter.size)) letter.size <- 3
+  
   # Extract ids from terminal nodes
   node_id <- partykit::nodeids(object, terminal = TRUE)
   
@@ -226,9 +233,9 @@ plot_tree <- function(object, qve = TRUE,
         aes(label = ""),
         aes(label = id)),
         line_gpar = list(list(size = 12),
-                         list(size = 8),
-                         list(size = 8),
-                         list(size = 8,
+                         list(size = 10),
+                         list(size = 10),
+                         list(size = 10,
                               col = "black",
                               fontface = "bold",
                               alignment = "center")
@@ -257,7 +264,7 @@ plot_tree <- function(object, qve = TRUE,
   xlabs <- as.character(round(xbreaks, 2))
   
   # Check font size for axis X and Y, and plot title
-  s.axis <- 11
+  s.axis <- 13
   
   p <- 
     ggplot2::ggplot(coeffs, 
@@ -266,8 +273,7 @@ plot_tree <- function(object, qve = TRUE,
     ggplot2::geom_vline(xintercept = xinter, 
                         colour = "#E5E7E9", size = 0.8) +
     geom_text(aes(label = groups),
-              size = 2.5,
-              nudge_y = 0.35) +
+              position = position_nudge(y = nudge.y, x = nudge.x)) +
     ggplot2::geom_point(pch = 21, size = 2, 
                         fill = "black",colour = "black") +
     ggplot2::geom_errorbarh(ggplot2::aes(xmin = bmin,
@@ -287,7 +293,7 @@ plot_tree <- function(object, qve = TRUE,
                                                        hjust = 1, vjust = 0.5, 
                                                        face = "plain",
                                                        colour = "black"),
-                   text = element_text(size = 10),
+                   text = element_text(size = letter.size),
                    strip.background = element_blank(),
                    plot.background = ggplot2::element_blank(),
                    panel.grid.major = ggplot2::element_blank(),
