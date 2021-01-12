@@ -10,7 +10,7 @@
 #'   \eqn{ y ~ . } all variables in \code{data} are used  
 #' @param select.by a character for the goodness-of-fit statistical parameter to
 #' select the models. Set as 'deviance' by default. Check 'Value' for details in outputs 
-#' and goodness-of-fit options.
+#' and goodness-of-fit options
 #' @param ncores an integer for the number of cores to be used in the 
 #'  parallel computing. Set as 1 by default (no parallelisation)
 #' @param packages character vector of packages that the parallel tasks depend on. If you use 
@@ -68,26 +68,15 @@
 #' @importFrom parallel detectCores makeCluster
 #' @importFrom stats as.formula
 #' @export
-forward <- function(formula, data, k = NULL, folds = NULL,
-                    select.by = NULL, akaike.weights = FALSE,
-                    ncores = NULL, packages = NULL, seed = NULL, ...) {
+forward <- function(formula, data, k = 10, folds = NULL,
+                    select.by = "deviance", akaike.weights = FALSE,
+                    ncores = 1, packages = NULL, seed = NULL, ...) {
 
   # list of additional arguments
   dots <- list(...)
   
   # nrow in data
   n <- dim(data)[[1]]
-
-  # number of cores to be used
-  if (is.null(ncores)) {
-    ncores <- 1
-  }
-
-  # check/define folds before starting forward selection
-  # to make sure that all steps will use the same sample
-  if(is.null(k)) {
-    k <- 10
-  }
 
   # assign folds
   if (is.null(folds)) {
@@ -103,10 +92,6 @@ forward <- function(formula, data, k = NULL, folds = NULL,
     
   }
 
-  if (is.null(select.by)) {
-    select.by <- "deviance"
-  }
-
   opt.select <- c("AIC","deviance","logLik",
                   "MaxLik","CraggUhler", "Agresti")
 
@@ -119,8 +104,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   aw <- akaike.weights
 
   # Define initial parameters for forward selection
-  # baseline
-  # if AIC or deviance without akaike.weights
+  # baseline if AIC or deviance without akaike.weights
   # take a very high number
   if (select.by %in% c("AIC","deviance") & isFALSE(aw)) {
     baseline <-  1e+11
@@ -137,6 +121,9 @@ forward <- function(formula, data, k = NULL, folds = NULL,
 
   # number of runs
   counter <- 1
+  
+  # a list to keep the goodness-of-fit coefficients from each step
+  coeffs <- list()
 
   # get the names of explanatory and response variables
   exp_var <- union("empty_model", all.vars(formula)[-1])
@@ -153,10 +140,8 @@ forward <- function(formula, data, k = NULL, folds = NULL,
 
   # add a empty variable to the model
   data$empty_model <- rep(0, times = n)
+  # keep only the response variable and explanatory variables
   data <- data[, c(Y, exp_var)]
-
-  # a list to keep the goodness-of-fit coefficients from each step
-  coeffs <- list()
 
   message("\nCreating ", ncores, " parallel cluster(s) of ", 
           parallel::detectCores(),
@@ -214,11 +199,11 @@ forward <- function(formula, data, k = NULL, folds = NULL,
       # adjust function to the matrix arrangement
       if (nrow(modpar) > 1) {
         modpar <- apply(modpar, 2, function(x) {
-          akaike_weights(x)[[3]]
+          akaike_weights(x)[["akaike_weights"]]
         })
       } else {
         modpar <- apply(modpar, 1, function(x) {
-          akaike_weights(x)[[3]]
+          akaike_weights(x)[["akaike_weights"]]
         })
         # turn it into a matrix again
         modpar <- t(as.matrix(modpar))
@@ -240,7 +225,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
 
     }
 
-    # if FALSE
+    # if models are not selected with Akaike weights E
     # select accordingly to the chosen method
     if (isFALSE(aw)) {
 

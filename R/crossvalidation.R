@@ -320,14 +320,10 @@ print.gosset_cv <- function(x, ...) {
 
 # Compute weighted means in cross-validation
 .mean_crossvalidation <- function(object, folds = NULL, 
-                                  mean.method = NULL, 
+                                  mean.method = "stouffer", 
                                   ...){
   # take length of folds
   N <- length(folds)
-  
-  if (is.null(mean.method)) {
-    mean.method <- "stouffer"
-  }
   
   # Z-test weight mean
   if (mean.method == "stouffer") {

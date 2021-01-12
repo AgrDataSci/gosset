@@ -41,7 +41,6 @@
 #' # the higher the better
 #' names(models[which.max(aw$akaike_weights)])
 #' 
-#' @importFrom tibble tibble
 #' @export 
 akaike_weights <- function(object){
 
@@ -58,9 +57,9 @@ akaike_weights <- function(object){
   weights <- rel_LL / sum_LL
 
   # combine values into a single data.frame
-  result <- tibble::tibble(delta = delta, 
-                           relative_logLik = rel_LL, 
-                           akaike_weights = weights)
+  result <- data.frame(delta = delta, 
+                       relative_logLik = rel_LL, 
+                       akaike_weights = weights)
   
   return(result)
   
