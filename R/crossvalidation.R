@@ -175,7 +175,8 @@ crossvalidation <- function(formula,
   }
   
   # split data into lists with training and test set
-  if(is.vector(folds)){
+  #folds as numeric vector - gosset style
+  if(!is.list(folds)){
   train <- list()
   for (i in 1:k) {
     train[[i]] <- data[folds != i ,]
@@ -187,6 +188,8 @@ crossvalidation <- function(formula,
   }
   
   }
+  
+  #folds as list - caret style
   if(is.list(folds)){
     train <- list()
     for (i in 1:k) {
