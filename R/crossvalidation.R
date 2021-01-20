@@ -13,7 +13,7 @@
 #' @param data a data frame (or object coercible by as.data.frame to a data frame)
 #' containing the variables in the model
 #' @param k an integer for the number of bins in the cross-validation
-#' @param folds an optional vector specifying the folds in the cross-validation
+#' @param folds an optional vector or list specifying the folds in the cross-validation
 #' @param mean.method a character for the method to calculate the mean of 
 #' cross-validation estimators. 
 #' Options are: 'equal', arithmetic mean; 
@@ -131,9 +131,9 @@ crossvalidation <- function(formula,
     
   }
   
-  if (length(folds) != n) {
-    stop("folds and nrow(data) has different length")
-  }
+  # if (length(folds) != n) {
+  #   stop("folds and nrow(data) has different length")
+  # }Temporarily commented to avoid errors
   
   # validate mean.method
   mean.opt <- c("stouffer", "foldsize", "equal")
@@ -175,6 +175,7 @@ crossvalidation <- function(formula,
   }
   
   # split data into lists with training and test set
+  if(is.vector(folds)){
   train <- list()
   for (i in 1:k) {
     train[[i]] <- data[folds != i ,]
@@ -185,14 +186,22 @@ crossvalidation <- function(formula,
     test[[i]] <- data[folds == i  ,]
   }
   
-
+  }
+  if(is.list(folds)){
+    train <- list()
+    for (i in 1:k) {
+      train[[i]] <- data[folds[[i]] ,]
+    }
+    
+    test <- list()
+    for (i in 1:k) {
+      test[[i]] <- data[-folds[[i]]  ,]
+    }
+  }
   # fit the models
   mod <- lapply(train, function(X) {
-    
     args <- list(formula = formula, data = X)
-    
     args <- c(args, dots)
-    
     try(do.call(model, args))
     
   })
