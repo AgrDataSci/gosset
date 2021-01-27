@@ -5,7 +5,7 @@
 #' Generalized Nonlinear models from \pkg{gnm}, and Plackett-Luce model from 
 #' \pkg{PlackettLuce}
 #'
-#' @author Kauê de Sousa and Jacob van Etten
+#' @author Kauê de Sousa, Jacob van Etten and David Brown
 #' @family model selection functions
 #' @param formula an object of class "formula" (or one that can be 
 #' coerced to that class): a symbolic description of the model to be fitted,
@@ -13,7 +13,7 @@
 #' @param data a data frame (or object coercible by as.data.frame to a data frame)
 #' containing the variables in the model
 #' @param k an integer for the number of bins in the cross-validation
-#' @param folds an optional vector or list specifying the folds in the cross-validation
+#' @param folds an optional vector or list of vectors specifying the \var{k}-folds in the cross-validation
 #' @param mean.method a character for the method to calculate the mean of 
 #' cross-validation estimators. 
 #' Options are: 'equal', arithmetic mean; 
@@ -61,6 +61,18 @@
 #'                 
 #' 
 #' \donttest{
+#' # Folds as list 
+#' require("caret")
+#' 
+#' fd <- createFolds(y = airquality$Day, k = 15, list = TRUE, returnTrain = TRUE)
+#'  
+#' crossvalidation(Temp ~ .,
+#'                 data = airquality,
+#'                 folds = fd,
+#'                 family = poisson(link = "log"))
+#' 
+#' ########################################
+#'   
 #' # Plackett-Luce Model
 #' require("PlackettLuce")
 #' 
@@ -104,7 +116,7 @@
 #' @export
 crossvalidation <- function(formula, 
                             data, 
-                            k = 10,
+                            k = NULL,
                             folds = NULL, 
                             mean.method = NULL,
                             seed = NULL,
@@ -122,7 +134,11 @@ crossvalidation <- function(formula,
     
     # check if a seed is provided
     if (is.null(seed)) {
-      seed <- as.integer(stats::runif(1, 0, 10000))
+      seed <- as.integer(stats::runif(1, 0, 1000000))
+    }
+    
+    if (is.null(k)) {
+      stop("\nargument 'k' is missing with no default\n")
     }
     
     set.seed(seed)
@@ -130,10 +146,6 @@ crossvalidation <- function(formula,
     folds <- sample(rep(1:k, times = ceiling(n / k), length.out = n))
     
   }
-  
-  # if (length(folds) != n) {
-  #   stop("folds and nrow(data) has different length")
-  # }Temporarily commented to avoid errors
   
   # validate mean.method
   mean.opt <- c("stouffer", "foldsize", "equal")
@@ -175,8 +187,8 @@ crossvalidation <- function(formula,
   }
   
   # split data into lists with training and test set
-  #folds as numeric vector - gosset style
-  if(!is.list(folds)){
+  # folds as numeric vector - gosset style
+  if (!is.list(folds)) {
   train <- list()
   for (i in 1:k) {
     train[[i]] <- data[folds != i ,]
@@ -185,22 +197,27 @@ crossvalidation <- function(formula,
   test <- list()
   for (i in 1:k) {
     test[[i]] <- data[folds == i  ,]
-  }
-  
+    }
   }
   
   #folds as list - caret style
-  if(is.list(folds)){
+  if (is.list(folds)) {
+    
+    k <- length(folds)
+    mean.method <- "equal"
+    message("\nmean.method set to 'equal' as folds is a list \n")
+    
     train <- list()
     for (i in 1:k) {
-      train[[i]] <- data[folds[[i]] ,]
+      train[[i]] <- data[folds[[i]], ]
     }
     
     test <- list()
     for (i in 1:k) {
-      test[[i]] <- data[-folds[[i]]  ,]
+      test[[i]] <- data[-folds[[i]], ]
     }
   }
+  
   # fit the models
   mod <- lapply(train, function(X) {
     args <- list(formula = formula, data = X)
@@ -257,6 +274,7 @@ crossvalidation <- function(formula,
   result <- list(coeffs = means,
                  raw = list(call = deparse(formula, width.cutoff = 500),
                             estimators = estimators,
+                            k = k,
                             folds = folds,
                             models = mod,
                             data = data))
@@ -264,13 +282,14 @@ crossvalidation <- function(formula,
   class(result) <- union("gosset_cv", class(result))
   
   return(result)
+  
 }
 
 
 #' Get estimators from model parameters
 #' 
 #' @param model a list with models
-#' @param test_data a dist with data.frames to test model
+#' @param test_data a list with data.frames to test model
 #' @return The model goodness-of-fit estimators
 #' data("airquality")
 #' mod <- glm(Temp ~ Wind, Solar.R, data = airquality, family = poisson())
@@ -336,6 +355,10 @@ print.gosset_cv <- function(x, ...) {
                                   ...){
   # take length of folds
   N <- length(folds)
+  
+  if (is.list(folds)) {
+    mean.method <- "equal"
+  }
   
   # Z-test weight mean
   if (mean.method == "stouffer") {

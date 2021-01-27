@@ -7,7 +7,7 @@
 crossvalidation(
   formula,
   data,
-  k = 10,
+  k = NULL,
   folds = NULL,
   mean.method = NULL,
   seed = NULL,
@@ -24,7 +24,7 @@ containing the variables in the model}
 
 \item{k}{an integer for the number of bins in the cross-validation}
 
-\item{folds}{an optional vector specifying the folds in the cross-validation}
+\item{folds}{an optional vector or list of vectors specifying the \var{k}-folds in the cross-validation}
 
 \item{mean.method}{a character for the method to calculate the mean of 
 cross-validation estimators. 
@@ -68,6 +68,18 @@ cv <- crossvalidation(Temp ~ Wind + Solar.R,
                 
 
 \donttest{
+# Folds as list 
+require("caret")
+
+fd <- createFolds(y = airquality$Day, k = 15, list = TRUE, returnTrain = TRUE)
+ 
+crossvalidation(Temp ~ .,
+                data = airquality,
+                folds = fd,
+                family = poisson(link = "log"))
+
+########################################
+  
 # Plackett-Luce Model
 require("PlackettLuce")
 
@@ -130,6 +142,6 @@ Other model selection functions:
 \code{\link{forward}()}
 }
 \author{
-Kauê de Sousa and Jacob van Etten
+Kauê de Sousa, Jacob van Etten and David Brown
 }
 \concept{model selection functions}

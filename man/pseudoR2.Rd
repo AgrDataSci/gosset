@@ -16,7 +16,7 @@ pseudoR2(object, ...)
 \method{pseudoR2}{bttree}(object, ...)
 }
 \arguments{
-\item{object}{a fitted model object}
+\item{object}{a model object of class glm, gnm, lm, pltree or bttree}
 
 \item{...}{additional arguments affecting the R-squared produced}
 }
