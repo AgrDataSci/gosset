@@ -68,7 +68,7 @@
 #' @importFrom parallel detectCores makeCluster
 #' @importFrom stats as.formula
 #' @export
-forward <- function(formula, data, k = 10, folds = NULL,
+forward <- function(formula, data, k = NULL, folds = NULL,
                     select.by = "deviance", akaike.weights = FALSE,
                     ncores = 1, packages = NULL, seed = NULL, ...) {
 
@@ -86,10 +86,18 @@ forward <- function(formula, data, k = 10, folds = NULL,
       seed <- as.integer(stats::runif(1, 0, 10000))
     }
     
+    if (is.null(k)) {
+      stop("\nargument 'k' is missing with no default\n")
+    }
+    
     set.seed(seed)
     
     folds <- sample(rep(1:k, times = ceiling(n / k), length.out = n))
     
+  }
+  
+  if (is.list(folds)) {
+    k <- length(folds)
   }
 
   opt.select <- c("AIC","deviance","logLik",
@@ -143,9 +151,9 @@ forward <- function(formula, data, k = 10, folds = NULL,
   # keep only the response variable and explanatory variables
   data <- data[, c(Y, exp_var)]
 
-  message("\nCreating ", ncores, " parallel cluster(s) of ", 
+  message("\nCreating ", ncores, " parallel cluster(s) out of ", 
           parallel::detectCores(),
-          " cores. This may reduce the performance of your computer \n")
+          " cores \n")
 
   # create cluster to do parallelisation
   cluster <- parallel::makeCluster(ncores)
@@ -376,7 +384,7 @@ forward <- function(formula, data, k = 10, folds = NULL,
   
   result <- result[, keepthis]
   
-  nfold <- max(m$raw$folds)
+  nfold <- m$raw$k
 
   result  <- array(unlist(result), c(1, nfold, 6))
 

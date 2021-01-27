@@ -9,9 +9,9 @@ forward(
   data,
   k = NULL,
   folds = NULL,
-  select.by = NULL,
+  select.by = "deviance",
   akaike.weights = FALSE,
-  ncores = NULL,
+  ncores = 1,
   packages = NULL,
   seed = NULL,
   ...
@@ -26,11 +26,11 @@ containing the variables in the model}
 
 \item{k}{an integer for the number of bins in the cross-validation}
 
-\item{folds}{an optional vector specifying the folds in the cross-validation}
+\item{folds}{an optional vector or list of vectors specifying the \var{k}-folds in the cross-validation}
 
 \item{select.by}{a character for the goodness-of-fit statistical parameter to
 select the models. Set as 'deviance' by default. Check 'Value' for details in outputs 
-and goodness-of-fit options.}
+and goodness-of-fit options}
 
 \item{akaike.weights}{optional, logical object for averaging the goodness-of-fit 
 coefficients with Akaike weights}
