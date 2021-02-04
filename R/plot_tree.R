@@ -132,11 +132,6 @@ plot_tree <- function(object, qve = TRUE,
       bmax <- X$estimate+(X$quasiSE)
       items <- items
     })
-    
-    #X$bmax <- ifelse(X$bmax > 1, 0.991, X$bmax)
-    
-    #X$bmin <- ifelse(X$bmin < 0, 0.001, X$bmin)
-    
     return(X)
   })
   
@@ -176,8 +171,8 @@ plot_tree <- function(object, qve = TRUE,
         multcompPL(object, 
                    threshold = threshold,
                    terms = terms,
-                   adjust = adjust,
-                   ref = ref)
+                   ref = ref,
+                   adjust = adjust)
         
        }, error = function(cond){
         message("Unable to get letters for the plotting object.",

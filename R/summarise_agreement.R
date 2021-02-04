@@ -195,10 +195,18 @@ plot.gosset_agree <- function(x, ...) {
   }
   
   if (scales == 1) {
-    labs <- c(0, 0.25, 0.50, 0.75, 1)
-    brks <- seq(0, 100, by = 25)/100
-    lims <- c(0, 1)
-    rnd <- 2
+    
+    if (any(unlist(x[c("kendall", "first", "last")]) < 0)) {
+      labs <- c(-1, -0.75, -0.50, -0.25, 0, 0.25, 0.50, 0.75, 1)
+      brks <- seq(-100, 100, by = 25)/100
+      lims <- c(-1, 1)
+      rnd <- 2
+    }else{
+      labs <- c(0, 0.25, 0.50, 0.75, 1)
+      brks <- seq(0, 100, by = 25)/100
+      lims <- c(0, 1)
+      rnd <- 2
+    }
     
     x[c("kendall", "first", "last")] <- 
       lapply(x[c("kendall", "first", "last")], function(y){
@@ -208,10 +216,17 @@ plot.gosset_agree <- function(x, ...) {
   }
   
   if (scales == 100) {
-    labs <- paste0(seq(0, 100, by = 25), "%")
-    brks <- seq(0, 100, by = 25)
-    lims <- c(0, 100)
-    rnd <- 0
+    if (any(unlist(x[c("kendall", "first", "last")]) < 0)) {
+      labs <- paste0(seq(-100, 100, by = 25), "%")
+      brks <- seq(-100, 100, by = 25)
+      lims <- c(-100, 100)
+      rnd <- 0
+    }else{
+      labs <- paste0(seq(0, 100, by = 25), "%")
+      brks <- seq(0, 100, by = 25)
+      lims <- c(0, 100)
+      rnd <- 0
+      }
   }
   
   # coerce labels to be in the order as provided by input

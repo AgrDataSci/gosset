@@ -116,7 +116,7 @@ multcompPL.pltree <- function(mod, terms = NULL, threshold = 0.05, adjust = "non
   groups <- list()
   
   for(i in seq_along(node_id)){
-    g <- multcompPL(mod = nodes[[i]], threshold = threshold, ...)
+    g <- multcompPL(mod = nodes[[i]], threshold = threshold, adjust = adjust,...)
     g$node <- node_id[[i]]
     groups[[i]] <- g
   }
@@ -139,6 +139,8 @@ multcompPL.pltree <- function(mod, terms = NULL, threshold = 0.05, adjust = "non
 plot.multcompPL <- function(x, level = 0.95, ...){
   
   x$term <- .reduce(as.character(x$term), ...)
+  items <- rev(sort(unique(x$term)))
+  x$term <- factor(x$term, levels = items)
   
   estimate <- x$estimate
   term <- x$term
