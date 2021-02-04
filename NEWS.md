@@ -1,6 +1,7 @@
-gosset 0.2.6 (2021-01-12)
+gosset 0.2.6 (unpublished)
 =========================
-
+* `forward()` and `crossvalidation()` deals with caret list folds
+* `plot()` method in `summarise_agreement()` deals with negative values
 
 
 gosset 0.2.5.9000 (2020-09-16)
