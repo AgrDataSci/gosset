@@ -72,7 +72,7 @@ multcompPL.default <- function(mod, terms = NULL, threshold = 0.05, adjust = "no
   
   #re-order qv output to ensure letters are produced in a sensible order
   qv1$term <- stats::reorder(factor(rownames(qv1)), qv1$estimate, mean)
-  qv1 <- qv1[order(qv1$estimate, decreasing = TRUE),]
+  qv1 <- qv1[order(qv1$estimate, decreasing = TRUE), ]
   
   #get mean seperation letter groupings
   args <- list(formula = estimate ~ term, 
@@ -153,6 +153,8 @@ plot.multcompPL <- function(x, level = 0.95, ...){
                                     label = group, 
                                     xmax = estimate + stats::qnorm(1-(1-level)/2) * quasiSE,
                                     xmin = estimate - stats::qnorm(1-(1-level)/2) * quasiSE)) +
+    ggplot2::geom_vline(xintercept = 0, 
+                        colour = "#E5E7E9", size = 0.8) +
     ggplot2::geom_point() +
     ggplot2::geom_errorbar(width = 0.1) +
     ggplot2::geom_text(vjust = 1.2) +

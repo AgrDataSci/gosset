@@ -9,6 +9,7 @@
 #' @param log logical, if \code{TRUE} log-likelihood coefficients are 
 #'  displayed instead of worth parameters
 #' @param ref optional, character for the reference item when log = \code{TRUE}
+#' @param ci.level an integer for the confidence interval levels
 #' @param ... additional arguments passed to methods
 #' @return An object of class ggplot
 #' @seealso \code{\link[qvcalc]{qvcalc}} \code{\link[ggplot2]{ggplot}}
@@ -51,7 +52,8 @@
 #' theme_bw labs theme element_text element_blank element_rect element_line facet_grid
 #' @noRd
 plot_tree <- function(object, qve = TRUE, 
-                      log = FALSE, ref = NULL, add.letters = FALSE, ...){
+                      log = FALSE, ref = NULL, 
+                      add.letters = FALSE, ci.level = 0.95, ...){
   
   dots <- list(...)
   
@@ -65,7 +67,7 @@ plot_tree <- function(object, qve = TRUE,
 
   if(is.null(nudge.x)) nudge.x <- 0
   if(is.null(nudge.y)) nudge.y <- 0.35
-  if(is.null(letter.size)) letter.size <- 3
+  if(is.null(letter.size)) letter.size <- 14
   
   # Extract ids from terminal nodes
   node_id <- partykit::nodeids(object, terminal = TRUE)
@@ -128,8 +130,8 @@ plot_tree <- function(object, qve = TRUE,
   # Add limits in error bars and item names
   coeffs <- lapply(coeffs, function(X){
     X <- within(X, {
-      bmin <- X$estimate-(X$quasiSE)
-      bmax <- X$estimate+(X$quasiSE)
+      bmax = X$estimate + stats::qnorm(1-(1-ci.level)/2) * X$quasiSE
+      bmin = X$estimate - stats::qnorm(1-(1-ci.level)/2) * X$quasiSE
       items <- items
     })
     return(X)
@@ -148,6 +150,11 @@ plot_tree <- function(object, qve = TRUE,
   }
   
   coeffs <- do.call("rbind", coeffs)
+  
+  if (isTRUE(qve)) {
+    coeffs$bmin <- ifelse(coeffs$bmin < 0, 0, coeffs$bmin)
+    coeffs$bmax <- ifelse(coeffs$bmax > 1, 1, coeffs$bmax)
+  }
   
   coeffs$id <- paste0(coeffs$node, "_", coeffs$items)
   
@@ -175,8 +182,7 @@ plot_tree <- function(object, qve = TRUE,
                    adjust = adjust)
         
        }, error = function(cond){
-        message("Unable to get letters for the plotting object.",
-                " The issue has likely occurred in qvcalc::qvcalc() \n")
+        message("Unable to get letters for the plotting object.\n")
         return(NA)
       }
     )
@@ -302,20 +308,4 @@ plot_tree <- function(object, qve = TRUE,
   }
   return(p)
 }
-
-# library("PlackettLuce")
-# R <- matrix(c(1, 2, 0, 0,
-#               4, 1, 2, 3,
-#               2, 1, 1, 1,
-#               1, 2, 3, 0,
-#               2, 1, 1, 0,
-#               1, 0, 3, 2), nrow = 6, byrow = TRUE)
-# colnames(R) <- c("apple", "banana", "orange", "pear")
-# 
-# # create rankings object
-# R <- as.rankings(R)
-# 
-# # Standard maximum likelihood estimates
-# mod <- PlackettLuce(R, npseudo = 0)
-
 

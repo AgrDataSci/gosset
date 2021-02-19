@@ -197,8 +197,8 @@ plot.gosset_agree <- function(x, ...) {
   if (scales == 1) {
     
     if (any(unlist(x[c("kendall", "first", "last")]) < 0)) {
-      labs <- c(-1, -0.75, -0.50, -0.25, 0, 0.25, 0.50, 0.75, 1)
-      brks <- seq(-100, 100, by = 25)/100
+      labs <- c(-1, -0.50, 0, 0.50, 1)
+      brks <- seq(-100, 100, by = 50)/100
       lims <- c(-1, 1)
       rnd <- 2
     }else{
@@ -217,8 +217,8 @@ plot.gosset_agree <- function(x, ...) {
   
   if (scales == 100) {
     if (any(unlist(x[c("kendall", "first", "last")]) < 0)) {
-      labs <- paste0(seq(-100, 100, by = 25), "%")
-      brks <- seq(-100, 100, by = 25)
+      labs <- paste0(seq(-100, 100, by = 50), "%")
+      brks <- seq(-100, 100, by = 50)
       lims <- c(-100, 100)
       rnd <- 0
     }else{
