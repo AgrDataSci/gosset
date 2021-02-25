@@ -30,7 +30,7 @@ containing the variables in the model}
 cross-validation estimators. 
 Options are: 'equal', arithmetic mean; 
 'foldsize', weighted mean by the size in each fold; 
-'stouffer' weighted through Z-test. See references}
+'stouffer' Weighting each test block (fold) by the square root of its sample size. This is roughly equivalent to Stouffer's Z-score method, see Darlington and Hayes (2000), page 499}
 
 \item{seed}{integer, the seed for random number generation. If NULL (the default), 
 \pkg{gosset} will set the seed randomly}
@@ -129,8 +129,8 @@ Elder J. F. (2003). Journal of Computational and Graphical Statistics, 12(4), 85
 James G., et al. (2013). An Introduction to Statistical Learning: with Applications in R.
 \url{https://doi.org/10.1007/978-1-4614-7138-7}
 
-Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. 
-\url{https://doi.org/10.1111/j.1420-9101.2005.00917.x}
+Darlington RB, Hayes AF (2000) Combining independent p values: Extensions of the Stouffer and binomial methods. Psychological Methods 5 (4):496-515. doi:10.1037/1082-989X.5.4.496
+\url{https://doi.apa.org/doi/10.1037/1082-989X.5.4.496}
 }
 \seealso{
 \code{\link[psychotree]{bttree}}, 
