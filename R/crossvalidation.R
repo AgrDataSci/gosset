@@ -314,7 +314,7 @@ crossvalidation <- function(formula,
   
   pR2 <- t(mapply(function(X, Y) {
     try(pseudoR2(X), silent = TRUE)
-  }, X = model, Y = test_data[]))
+  }, X = model))
   
   pR2 <- matrix(as.numeric(unlist(pR2)),
                 ncol = 5,
