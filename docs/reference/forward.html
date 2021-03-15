@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5-2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5.9012</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/agrobioinfoservices/gosset/">
+  <a href="https://github.com/agrdatasci/gosset/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -122,7 +122,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Forward stepwise regression for model selection</h1>
-    <small class="dont-index">Source: <a href='https://github.com/agrobioinfoservices/gosset/blob/master/R/forward.R'><code>R/forward.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/agrdatasci/gosset/blob/master/R/forward.R'><code>R/forward.R</code></a></small>
     <div class="hidden name"><code>forward.Rd</code></div>
     </div>
 
@@ -137,9 +137,9 @@
   <span class='no'>data</span>,
   <span class='kw'>k</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>folds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>select.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>select.by</span> <span class='kw'>=</span> <span class='st'>"deviance"</span>,
   <span class='kw'>akaike.weights</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>packages</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>seed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>
@@ -164,13 +164,13 @@ containing the variables in the model</p></td>
     </tr>
     <tr>
       <th>folds</th>
-      <td><p>an optional vector specifying the folds in the cross-validation</p></td>
+      <td><p>an optional vector or list of vectors specifying the <var>k</var>-folds in the cross-validation</p></td>
     </tr>
     <tr>
       <th>select.by</th>
       <td><p>a character for the goodness-of-fit statistical parameter to
 select the models. Set as 'deviance' by default. Check 'Value' for details in outputs 
-and goodness-of-fit options.</p></td>
+and goodness-of-fit options</p></td>
     </tr>
     <tr>
       <th>akaike.weights</th>
@@ -262,7 +262,7 @@ Cross-validation estimates are computed using the fitted models on the validatio
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kauê de Sousa, Jacob van Etten, Sam Dumble, Nicolas Greliche, Jonathan Steinke.</p>
+  <p>Developed by Kauê de Sousa, Jacob van Etten, Sam Dumble, Nicolas Greliche, David Brown, Jonathan Steinke.</p>
 </div>
 
 <div class="pkgdown">

@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5-2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5.9012</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/agrobioinfoservices/gosset/">
+  <a href="https://github.com/agrdatasci/gosset/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -119,19 +119,33 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/agrobioinfoservices/gosset/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+      <small>Source: <a href='https://github.com/agrdatasci/gosset/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="gosset-025-1-2020-07-07" class="section level1">
-<h1 class="page-header" data-toc-text="0.2.5-1">
-<a href="#gosset-025-1-2020-07-07" class="anchor"></a>gosset 0.2.5-1 (2020-07-07)</h1>
+    <div id="gosset-026-unpublished" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.6">
+<a href="#gosset-026-unpublished" class="anchor"></a>gosset 0.2.6 (unpublished)</h1>
+<ul>
+<li>
+<code><a href="../reference/forward.html">forward()</a></code> and <code><a href="../reference/crossvalidation.html">crossvalidation()</a></code> deals with caret list folds</li>
+<li>
+<code><a href="https://rdrr.io/r/base/plot.html">plot()</a></code> method in <code><a href="../reference/summarise_agreement.html">summarise_agreement()</a></code> deals with negative values</li>
+</ul>
+</div>
+    <div id="gosset-0259000-2020-09-16" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.5.9000">
+<a href="#gosset-0259000-2020-09-16" class="anchor"></a>gosset 0.2.5.9000 (2020-09-16)</h1>
 <div id="improvements" class="section level3">
 <h3 class="hasAnchor">
 <a href="#improvements" class="anchor"></a>IMPROVEMENTS</h3>
 <ul>
+<li>add argument qve to skip quasi-variance to plot coefficients in <code>plot_tree()</code>
+</li>
 <li>
 <code><a href="../reference/rank_numeric.html">rank_numeric()</a></code> deals with ids of class characters</li>
-<li>pass ref to <code>.multicompPL()</code>
+<li>argument <code>ref</code> can be used in <code>multicompPL()</code> to select the reference item</li>
+<li>adjust scale in the <code><a href="https://rdrr.io/r/base/plot.html">plot()</a></code> method for <code><a href="../reference/summarise_agreement.html">summarise_agreement()</a></code> using the argument scales, where <code>scales = 100</code> is to set the scale from 0-100 and <code>scales = 1</code> for a scale from 0-1</li>
+<li>plot method for <code><a href="../reference/multcompPL.html">multcompPL()</a></code>
 </li>
 </ul>
 </div>
@@ -317,7 +331,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kauê de Sousa, Jacob van Etten, Sam Dumble, Nicolas Greliche, Jonathan Steinke.</p>
+  <p>Developed by Kauê de Sousa, Jacob van Etten, Sam Dumble, Nicolas Greliche, David Brown, Jonathan Steinke.</p>
 </div>
 
 <div class="pkgdown">

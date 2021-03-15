@@ -7,21 +7,20 @@
   "identifier": "gosset",
   "description": "Toolkit for a workflow to analyse metadata and experimental citizen \n    science data, from collating data of different sources to model sellection and \n    visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer \n    of modern statistics in small sample experimental design and analysis.",
   "name": "gosset: Modelling Metadata and Crowdsourced Citizen Science",
-  "codeRepository": "https://agrobioinfoservices.github.io/gosset/",
-  "issueTracker": "https://github.com/agrobioinfoservices/gosset/issues",
+  "codeRepository": "https://github.com/agrobioinfoservices/gosset",
+  "issueTracker": "https://github.com/agrdatasci/gosset/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.2.4",
+  "version": "0.2.5.9012",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
-    "version": "4.0.0",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.0.0 (2020-04-24)",
+  "runtimePlatform": "R version 4.0.3 (2020-10-10)",
   "author": [
     {
       "@type": "Person",
-      "givenName": "Kaue",
+      "givenName": "Kauê",
       "familyName": "de Sousa",
       "email": "kaue.desousa@inn.no",
       "@id": "https://orcid.org/0000-0002-7571-7845"
@@ -41,6 +40,12 @@
       "@type": "Person",
       "givenName": "Nicolas",
       "familyName": "Greliche"
+    },
+    {
+      "@type": "Person",
+      "givenName": "David",
+      "familyName": "Brown",
+      "@id": "https://orcid.org/0000-0003-2859-1618"
     },
     {
       "@type": "Person",
@@ -68,7 +73,7 @@
   "maintainer": [
     {
       "@type": "Person",
-      "givenName": "Kaue",
+      "givenName": "Kauê",
       "familyName": "de Sousa",
       "email": "kaue.desousa@inn.no",
       "@id": "https://orcid.org/0000-0002-7571-7845"
@@ -346,12 +351,10 @@
     }
   ],
   "releaseNotes": "https://github.com/agrobioinfoservices/gosset/blob/master/NEWS.md",
-  "readme": "https://github.com/agrobioinfoservices/gosset/blob/master/README.md",
-  "fileSize": "428.697KB",
-  "contIntegration": [
-    "https://ci.appveyor.com/project/kauedesousa/gosset",
-    "https://travis-ci.org/agrobioinfoservices/gosset",
-    "https://codecov.io/github/agrobioinfoservices/gosset?branch=master"
-  ],
-  "developmentStatus": "https://www.repostatus.org/#active"
+  "readme": "https://github.com/AgrDataSci/gosset/blob/master/README.md",
+  "fileSize": "1889.243KB",
+  "contIntegration": ["https://travis-ci.org/agrobioinfoservices/gosset", "https://codecov.io/github/agrobioinfoservices/gosset?branch=master"],
+  "developmentStatus": "https://www.tidyverse.org/lifecycle/#maturing",
+  "relatedLink": "https://agrdatasci.github.io/gosset/",
+  "keywords": ["r", "citizen-science", "rankings-data", "meta-analysis"]
 }

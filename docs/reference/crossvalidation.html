@@ -83,7 +83,7 @@ PlackettLuce" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5-2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5.9012</span>
       </span>
     </div>
 
@@ -104,7 +104,7 @@ PlackettLuce" />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/agrobioinfoservices/gosset/">
+  <a href="https://github.com/agrdatasci/gosset/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -123,7 +123,7 @@ PlackettLuce" />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Cross-validation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/agrobioinfoservices/gosset/blob/master/R/crossvalidation.R'><code>R/crossvalidation.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/agrdatasci/gosset/blob/master/R/crossvalidation.R'><code>R/crossvalidation.R</code></a></small>
     <div class="hidden name"><code>crossvalidation.Rd</code></div>
     </div>
 
@@ -137,7 +137,7 @@ Generalized Nonlinear models from <span class="pkg">gnm</span>, and Plackett-Luc
     <pre class="usage"><span class='fu'>crossvalidation</span>(
   <span class='no'>formula</span>,
   <span class='no'>data</span>,
-  <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>k</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>folds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>mean.method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>seed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -164,7 +164,7 @@ containing the variables in the model</p></td>
     </tr>
     <tr>
       <th>folds</th>
-      <td><p>an optional vector specifying the folds in the cross-validation</p></td>
+      <td><p>an optional vector or list of vectors specifying the <var>k</var>-folds in the cross-validation</p></td>
     </tr>
     <tr>
       <th>mean.method</th>
@@ -230,6 +230,18 @@ goodness-of-fit estimates, which are:</p>
 
 
 <span class='co'># \donttest{</span>
+<span class='co'># Folds as list </span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"caret"</span>)
+
+<span class='no'>fd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/caret/man/createDataPartition.html'>createFolds</a></span>(<span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>airquality</span>$<span class='no'>Day</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>list</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>returnTrain</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>crossvalidation</span>(<span class='no'>Temp</span> ~ <span class='no'>.</span>,
+                <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>airquality</span>,
+                <span class='kw'>folds</span> <span class='kw'>=</span> <span class='no'>fd</span>,
+                <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>poisson</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"log"</span>))
+
+<span class='co'>########################################</span>
+
 <span class='co'># Plackett-Luce Model</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"PlackettLuce"</span>)
 
@@ -278,7 +290,7 @@ goodness-of-fit estimates, which are:</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kauê de Sousa, Jacob van Etten, Sam Dumble, Nicolas Greliche, Jonathan Steinke.</p>
+  <p>Developed by Kauê de Sousa, Jacob van Etten, Sam Dumble, Nicolas Greliche, David Brown, Jonathan Steinke.</p>
 </div>
 
 <div class="pkgdown">

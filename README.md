@@ -5,8 +5,8 @@
 [![CRAN](https://www.r-pkg.org/badges/version/gosset)](https://cran.r-project.org/package=gosset)
 [![cran checks](https://cranchecks.info/badges/worst/gosset)](https://cran.r-project.org/web/checks/check_results_gosset.html)
 [![Downloads](https://cranlogs.r-pkg.org/badges/gosset)](https://cran.r-project.org/package=gosset) 
-[![Travis](https://travis-ci.org/agrobioinfoservices/gosset.svg?branch=master)](https://travis-ci.org/agrobioinfoservices/gosset)
-[![codecov](https://codecov.io/gh/agrobioinfoservices/gosset/master.svg)](https://codecov.io/github/agrobioinfoservices/gosset?branch=master)
+[![Travis](https://travis-ci.org/agrdatasci/gosset.svg?branch=master)](https://travis-ci.org/agrdatasci/gosset)
+[![codecov](https://codecov.io/gh/agrdatasci/gosset/master.svg)](https://codecov.io/github/agrdatasci/gosset?branch=master)
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
@@ -22,14 +22,14 @@ The development version can be installed via
 
 ``` r
 library("remotes")
-remotes::install_github("agrobioinfoservices/gosset", build_vignettes = TRUE)
+remotes::install_github("agrdatasci/gosset", build_vignettes = TRUE)
 ```
 
 ## Example
 
 ## Going further
 
-The full functionality of **gosset** is illustrated in the package vignette. The vignette can be found on the [package website](https://agrobioinfoservices.github.io/gosset/) or from within `R` once the package has been installed, e.g. via
+The full functionality of **gosset** is illustrated in the package vignette. The vignette can be found on the [package website](https://agrdatasci.github.io/gosset/) or from within `R` once the package has been installed, e.g. via
 
 ``` r
 vignette("Overview", package = "gosset")
@@ -37,7 +37,7 @@ vignette("Overview", package = "gosset")
 
 ## Meta
 
-  - Please [report any issues or bugs](https://github.com/agrobioinfoservices/gosset/issues).
+  - Please [report any issues or bugs](https://github.com/agrdatasci/gosset/issues).
 
   - License: MIT
 
