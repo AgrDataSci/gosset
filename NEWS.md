@@ -1,7 +1,11 @@
-gosset 0.2.6 (unpublished)
+gosset 0.2.6
 =========================
+
+### Improvements
+
 * `forward()` and `crossvalidation()` deals with caret list folds
 * `plot()` method in `summarise_agreement()` deals with negative values
+* `rank_tricot()` now handles with ties which a assigned in position 2
 
 
 gosset 0.2.5.9000 (2020-09-16)

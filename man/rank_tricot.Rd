@@ -4,14 +4,7 @@
 \alias{rank_tricot}
 \title{Build Plackett-Luce rankings from tricot dataset}
 \usage{
-rank_tricot(
-  data = NULL,
-  items = NULL,
-  input = NULL,
-  group = FALSE,
-  additional.rank = NULL,
-  ...
-)
+rank_tricot(data, items, input, group = FALSE, additional.rank = NULL, ...)
 }
 \arguments{
 \item{data}{a data.frame with columns specified by items and input values}
@@ -98,6 +91,6 @@ Other rank functions:
 \code{\link{rank_paircomp}()}
 }
 \author{
-Kauê de Sousa, with ideas from Heather Turner
+Kauê de Sousa and Jacob van Etten, with ideas from Heather Turner
 }
 \concept{rank functions}

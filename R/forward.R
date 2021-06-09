@@ -1,3 +1,35 @@
+#' Combine parallel outputs
+#' @param ... arguments passed to methods
+#' @noRd
+.comb <- function(...) {
+  abind::abind(..., along = 1, force.array = TRUE)
+}
+
+#' Model call for parallel
+#' @param formula a symbolic description of the model, if set as   
+#'   \eqn{ y ~ . } all variables in \code{data} are used 
+#' @param args a list with model call arguments 
+#' @noRd
+.forward_dopar <- function(formula, args){
+  
+  args <- c(formula, args)
+  
+  m <- do.call(gosset::crossvalidation, args)
+  
+  result <- m$raw$estimators
+  
+  keepthis <- c("AIC","deviance","logLik", "MaxLik","CraggUhler", "Agresti")
+  
+  result <- result[, keepthis]
+  
+  nfold <- m$raw$k
+  
+  result  <- array(unlist(result), c(1, nfold, 6))
+  
+  return(result)
+  
+}
+
 #' Forward stepwise regression for model selection
 #' 
 #' Forward selection is a type of stepwise regression which begins with an empty
@@ -365,30 +397,4 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   return(result)
 }
 
-
-# combine results from parallel
-.comb <- function(...) {
-  abind::abind(..., along = 1, force.array = TRUE)
-}
-
-# model call for parallel
-.forward_dopar <- function(formula, args){
-
-  args <- c(formula, args)
-
-  m <- do.call(gosset::crossvalidation, args)
-
-  result <- m$raw$estimators
-  
-  keepthis <- c("AIC","deviance","logLik", "MaxLik","CraggUhler", "Agresti")
-  
-  result <- result[, keepthis]
-  
-  nfold <- m$raw$k
-
-  result  <- array(unlist(result), c(1, nfold, 6))
-
-  return(result)
-
-}
 

@@ -17,7 +17,7 @@ that serves as baseline for comparing the other characteristics}
 \item{compare.to}{a list of objects of same class and dimensions of 
 \code{baseline} to be compared}
 
-\item{labels}{a character to specify the name of compared chacteristics}
+\item{labels}{a character to specify the name of compared characteristics}
 
 \item{x}{object of class 'gosset_agree' for the plotting method. 
 Generates a 'ggplot' object that can be passed to any ggplot2 method}

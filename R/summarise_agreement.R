@@ -10,7 +10,7 @@
 #' that serves as baseline for comparing the other characteristics
 #' @param compare.to a list of objects of same class and dimensions of 
 #' \code{baseline} to be compared
-#' @param labels a character to specify the name of compared chacteristics
+#' @param labels a character to specify the name of compared characteristics
 #' @param x object of class 'gosset_agree' for the plotting method. 
 #' Generates a 'ggplot' object that can be passed to any ggplot2 method
 #' @param ... additional arguments passed to methods. See details

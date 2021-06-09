@@ -8,7 +8,7 @@
 #' comparison with a local item can be added as additional rankings with the 
 #' argument \code{additional.rank}.
 #'
-#' @author Kauê de Sousa, with ideas from Heather Turner
+#' @author Kauê de Sousa and Jacob van Etten, with ideas from Heather Turner
 #' @family rank functions
 #' @param data a data.frame with columns specified by items and input values
 #' @param items a character or numerical vector for indexing the column(s) 
@@ -71,16 +71,11 @@
 #' 
 #' @importFrom PlackettLuce as.rankings group
 #' @export
-rank_tricot <- function(data = NULL, items = NULL, 
-                        input = NULL, group = FALSE, 
-                        additional.rank = NULL, ...) {
+rank_tricot <- function(data, items, input, 
+                        group = FALSE, additional.rank = NULL, 
+                        ...) {
   
-  # keep only target columns in data
-  if (is.null(data)) {
-    stop("argument 'data' is missing with no default")
-  }
-  
-  # if tibble put it as data.frame
+  # if tibble coerce into a data.frame
   if (.is_tibble(data)) {
     data <- as.data.frame(data, stringsAsFactors = FALSE)
   }
@@ -94,10 +89,10 @@ rank_tricot <- function(data = NULL, items = NULL,
   
   # get extra arguments
   dots <- list(...)
+  
   # if all data is required
   full.output <- dots[["full.output"]]
-  full.output <- isTRUE(full.output)
-  
+
   # check number of comparisons to decide which way data will 
   # be handled, if type is tricot or if it contains more comparisons
   ncomp <- ncol(items)
@@ -105,7 +100,57 @@ rank_tricot <- function(data = NULL, items = NULL,
   # with 3 comparisons
   if (ncomp == 3) {
     
-    r <- .pivot_triadic(i = items, r = input)
+    n <- nrow(items)
+    
+    # check for more than two missing labels in items
+    mi <- rowSums(apply(items, 2, is.na))
+    if (any(mi > 1)) {
+      stop("Cannot handle more than 2 NAs per row in 'items', 
+           more than 2 NAs where found in rows ", 
+           paste(which(mi > 1), collapse = ", "), "\n")
+    }
+    
+    # if there is one NA  per row in items and observations 
+    # with only two items add a pseudo-item which will be removed later
+    if (any(mi == 1))  {
+      items[is.na(items)] <- "pseudoitem"
+    }
+    
+    # data frame with items as matrix
+    im <- as.matrix(items)
+    
+    # get the names of items
+    itemnames <- unique(as.vector(im))
+    
+    # a Sparse matrix where rows are the observations 
+    # and columns the item names
+    r <- matrix(0, nrow = n, ncol = length(itemnames))
+    colnames(r) <- itemnames
+    
+    # run over the rows filling the rankings that were observed 
+    for(j in seq_len(n)){ 
+      
+      r[j, im[j,]] <- .setorder(as.vector(unlist(input[j,])))
+    
+    }
+    
+    R <- PlackettLuce::as.rankings(r)
+    
+    # if full output is required, for internal use
+    # put r into the ordering format
+    if (isTRUE(full.output)) {
+      r2 <- matrix("", nrow = n, ncol = 3)
+      colnames(r2) <- c("best", "middle", "worst")
+      r[r==0] <- NA
+      for(j in seq_len(n)) {
+        jr <- sort(r[j, !is.na(r[j, ])])
+        if (sum(jr == 2) > 1) {
+          names(jr)[jr == 2] <- paste(names(jr[jr == 2]), collapse = ", ")
+        }
+        r2[j, ] <- names(jr)
+      }
+      r <- r2
+    }
     
   }
   
@@ -113,14 +158,14 @@ rank_tricot <- function(data = NULL, items = NULL,
   if (ncomp >= 4) {
     
     r <- .pivot_tetra(i = items, r = input)
-  
+    
+    # get item names 
+    itemnames <- sort(unique(as.vector(r)))
+    
+    # make a PlackettLuce rankings
+    R <- PlackettLuce::as.rankings(r, input = "ordering", items = itemnames)
+    
   }
-  
-  # get item names 
-  itemnames <- sort(unique(as.vector(r)))
-  
-  # make a PlackettLuce rankings
-  R <- PlackettLuce::as.rankings(r, input = "ordering", items = itemnames)
   
   # if pseudo-item were added, it is removed
   pseudo <- grepl("pseudoitem", itemnames) 
@@ -139,7 +184,7 @@ rank_tricot <- function(data = NULL, items = NULL,
   G <- PlackettLuce::group(R, index = gi)
   
   # check if all data is required
-  if (full.output) {
+  if (isTRUE(full.output)) {
     R <- list(PLranking = R, PLgrouped = G, myrank = r)
   }
   
@@ -152,76 +197,36 @@ rank_tricot <- function(data = NULL, items = NULL,
   
 }
 
-# this function deals with object in the triadic approach
-# in ClimMob when three items are tested by each participant
-# i, is a dataframe with items
-# r, is a dataframe with rankings 
-.pivot_triadic <- function(i, r) {
+#' Set the order of tricot rankings
+#' @param x a vector of length 3 with the tricot letters A, B, C,
+#'  a Tie will be assigned the value 2
+#' @examples 
+#' x <- c("C", "Tie")
+#' gosset:::.setorder(x)
+#' 
+#' x <- c("A", "B")
+#' gosset:::.setorder(x)
+#' @noRd
+.setorder <- function(x){
+  s <- rep(2, times = 3) #default value is 2
+  L <- LETTERS[1:3]
   
-  n <- nrow(i)
+  # works backwards from C to A to give most importance 
+  # to item(s) listed as better
+  s[L %in% strsplit(x[2], split="")] <- 3
+  s[L %in% strsplit(x[1], split="")] <- 1
   
-  if (any(is.na(unlist(r)))) {
-    stop("NAs cannot be handled in tricot rankings \n")
-  }
-  
-  if (any(r[,1] == r[,2])) {
-    stop("Ties cannot be handled in tricot rankings \n")
-  }
-  
-  # check for more than two missing labels in items
-  mi <- rowSums(apply(i, 2, is.na))
-  if( any(mi > 1) ) {
-    stop("Cannot handle less than 2 NAs per row in 'items' \n")
-  }
-  
-  # if there is one NA  per row in items and observations 
-  # with only two items add a pseudo-item which will be removed later
-  if ( any(mi == 1) )  {
-    i[is.na(i)] <- "pseudoitem"
-  }
-  
-  
-  # fix names in rankings
-  # first column must be the best item
-  # and the second the worst
-  names(r) <- c("best", "worst")
-  
-  # rankings should be LETTERS (A, B, C), 
-  # we must convert it into factor and then into integer 
-  # it allow us to impute the middle-ranked item
-  # (a strict ranking is assumed here, so the sum of each row should always be 6)
-  r <- within(r, {
-    best = as.integer(factor(best, levels = LETTERS[1:3]))
-    worst = as.integer(factor(worst, levels = LETTERS[1:3]))
-    middle = as.integer(6 - best - worst)
-  })
-  
-  # combine items with rankings
-  r <- cbind(i, r)
-  
-  # convert items into a matrix
-  i <- as.matrix(i)
-  
-  # then replace rankings integers with their respective item names
-  r <- within(r, {
-    best = i[cbind(seq_len(n), best)]
-    worst = i[cbind(seq_len(n), worst)]
-    middle = i[cbind(seq_len(n), middle)]
-  })
-  
-  r <- r[, c("best", "middle", "worst")]
-  
-  r <- as.matrix(r)
-  
-  return(r)
-  
+  #avoid skipped numbers
+  # s <- order(s)
+  return(s)
 }
 
-# this function deals with object in the tetra approach
-# in ClimMob when four or more items are tested by each participant
-# i, is a dataframe with items
-# r, is a dataframe with rankings 
-
+#' Tetra rankings
+#'  This function deals with object in the tetra approach
+#'  in ClimMob when four or more items are tested by each participant
+#' @param i is a dataframe with items
+#' @param r is a dataframe with rankings 
+#' @noRd
 .pivot_tetra <- function(i, r){
   
   # fix names in r data
@@ -269,13 +274,15 @@ rank_tricot <- function(data = NULL, items = NULL,
   
 } 
 
-# this function adds additional ranks, generally when a local item 
-# is tested against the tricot items
-# i, is a dataframe with items
-# R, is an object of class rankings from PlackettLuce
-# add, is a dataframe with additional rankings characters 
-## indication whether the tricot items performed "Better" or "Worse" 
-## compared to the local item
+
+#' this function adds additional ranks, generally when a local item 
+#' is tested against the tricot items
+#' i, is a dataframe with items
+#' R, is an object of class rankings from PlackettLuce
+#' add, is a dataframe with additional rankings characters 
+#' indication whether the tricot items performed "Better" or "Worse" 
+#' compared to the local item
+#' @noRd
 .additional_rankings <- function(i, R, add){
   
   n <- nrow(add)

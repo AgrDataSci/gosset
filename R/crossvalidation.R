@@ -313,8 +313,8 @@ crossvalidation <- function(formula,
   Deviance <- as.numeric(Deviance)
   
   pR2 <- t(mapply(function(X, Y) {
-    try(pseudoR2(X), silent = TRUE)
-  }, X = model))
+    try(pseudoR2(X, newdata = Y), silent = TRUE)
+  }, X = model, Y = test_data[]))
   
   pR2 <- matrix(as.numeric(unlist(pR2)),
                 ncol = 5,

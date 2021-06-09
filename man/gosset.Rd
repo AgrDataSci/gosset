@@ -17,11 +17,11 @@ Toolkit for a workflow to analyse metadata and experimental citizen
 \strong{Useful links:}
 \itemize{
 \item{Development repository: 
- \url{https://github.com/agrobioinfoservices/gosset}}
+ \url{https://github.com/agrdatasci/gosset}}
 \item{Static documentation: 
- \url{https://agrobioinfoservices.github.io/gosset/}}
+ \url{https://agrdatasci.github.io/gosset/}}
 \item{Report bugs: 
- \url{https://github.com/agrobioinfoservices/gosset/issues}}
+ \url{https://github.com/agrdatasci/gosset/issues}}
 }
 }
 \author{

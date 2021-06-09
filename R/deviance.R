@@ -185,7 +185,7 @@ deviance.pltree <- function(object, newdata = NULL, ...) {
   }
   
   # get AIC from model object 
-  aic <- stats::AIC(object, newdata = newdata)
+  aic <- stats::AIC(object, newdata = newdata, ...)
   
   # get degrees of freedom
   df <- attr(stats::logLik(object), "df")
