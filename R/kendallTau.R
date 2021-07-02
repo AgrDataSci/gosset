@@ -106,7 +106,7 @@ kendallTau.matrix <- function(x, y, ...){
     X <- K[1:nc]
     Y <- K[(nc + 1):(nc * 2)]
     
-    .get_kendall(X, Y, ...)
+    .get_kendall(X, Y)
     
   })
   
@@ -206,7 +206,7 @@ kendallTau.paircomp <- function(x, y, ...) {
 #' .get_kendall(p1, p2, null.rm = TRUE)
 #' .get_kendall(p1, p2, null.rm = FALSE)
 #' @noRd
-.get_kendall <- function(x, y, null.rm = TRUE) {
+.get_kendall <- function(x, y, null.rm = TRUE, ...) {
   
   keep <- !is.na(x) & !is.na(y)
   
@@ -239,8 +239,8 @@ kendallTau.paircomp <- function(x, y, ...) {
   
   tau_cor <- stats::cor(x, 
                         y, 
-                        method = "kendall",
-                        use = "pairwise.complete.obs")
+                        method = "kendall", 
+                        ...)
   
   n <- length(x)
   

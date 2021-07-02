@@ -18,7 +18,7 @@
 #' cross-validation estimators. 
 #' Options are: 'equal', arithmetic mean; 
 #' 'foldsize', weighted mean by the size in each fold; 
-#' 'stouffer' weighted through Z-test. See references 
+#' 'Ztest' weighted through Z-test. See references 
 #' @param seed integer, the seed for random number generation. If NULL (the default), 
 #' \pkg{gosset} will set the seed randomly
 #' @param ... additional arguments passed the methods of the chosen model
@@ -148,7 +148,7 @@ crossvalidation <- function(formula,
   }
   
   # validate mean.method
-  mean.opt <- c("stouffer", "foldsize", "equal")
+  mean.opt <- c("Ztest", "foldsize", "equal")
   
   if (is.null(mean.method)) {
     mean.method <- mean.opt[1]
@@ -234,9 +234,10 @@ crossvalidation <- function(formula,
   # if model is pltree take the kendall cor 
   if (model == "pltree") {
     
+    # get the original rankings from each bin in test
     R_pl <- all.vars(formula)[[1]]
     
-    R_pl <- lapply(test, function(x) {
+    R_pl <- lapply(train, function(x) {
       
       x <- x[, R_pl]
       
@@ -244,17 +245,36 @@ crossvalidation <- function(formula,
       
     })
     
-    preds <- gof[[2]]
+    preds <- lapply(mod, function(x) {
+      predict(x, vcov = FALSE)
+    })
+    
+    
+    #preds <- gof[[2]]
+    
+    # when additional rankings are added to place the local item 
+    # we should rescale the matrix in predictions
+    rescale <- nrow(R_pl[[1]]) / nrow(preds[[1]]) == 4
+    
+    if (rescale) {
+      
+      preds <- lapply(preds, function(x) {
+        
+        x <- rbind(x, x, x, x)
+        
+      })
+      
+    }
     
     KT <- mapply(function(X, Y) {
       
-        try(kendallTau(X, Y)[[1]], silent = TRUE)
+      try(kendallTau(X, Y)[[1]], silent = TRUE)
       
-      }, X = R_pl, Y = preds)
-      
-      KT <- as.numeric(KT)
-      
-      estimators$kendallTau <- KT
+    }, X = R_pl, Y = preds)
+    
+    KT <- as.numeric(KT)
+    
+    estimators$kendallTau <- KT
       
   }
   
@@ -324,7 +344,7 @@ crossvalidation <- function(formula,
   
   # and the predictions
   preds <-  mapply(function(X, Y) {
-    try(predict(X, newdata = Y), silent = TRUE)
+    try(predict(X, newdata = Y, vcov = FALSE), silent = TRUE)
   }, X = model, Y = test_data[])
   
   gof <- cbind(data.frame(AIC = aic, 
@@ -350,8 +370,9 @@ print.gosset_cv <- function(x, ...) {
 }
 
 # Compute weighted means in cross-validation
-.mean_crossvalidation <- function(object, folds = NULL, 
-                                  mean.method = "stouffer", 
+.mean_crossvalidation <- function(object, 
+                                  folds = NULL, 
+                                  mean.method = "Ztest", 
                                   ...){
   # take length of folds
   N <- length(folds)
@@ -361,7 +382,7 @@ print.gosset_cv <- function(x, ...) {
   }
   
   # Z-test weight mean
-  if (mean.method == "stouffer") {
+  if (mean.method == "Ztest") {
     # take the number of folds
     max_folds <- max(folds)
     
@@ -380,10 +401,10 @@ print.gosset_cv <- function(x, ...) {
     
     # then we multiply the input values by the
     # weight of each fold
-    stouffer <- object * wfold
+    Ztest <- object * wfold
     
-    # sum these values and that is the stouffer mean
-    m <- sum(stouffer, na.rm = TRUE)
+    # sum these values and that is the Ztest mean
+    m <- sum(Ztest, na.rm = TRUE)
   }
   
   # mean weighted by foldsize

@@ -249,7 +249,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
         modpar <- t(as.matrix(modpar))
       }
 
-      # then take the stouffer mean
+      # then take the Ztest mean
       modpar <- apply(modpar, 1, function(x) {
         .mean_crossvalidation(object = x,
                               folds = folds,

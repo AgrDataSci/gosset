@@ -129,21 +129,21 @@ summarise_agreement <- function(baseline, compare.to, labels = NULL){
   
   # take the first ranked item in CC
   CC_first <- lapply(CC, function(y) {
-    apply(y, 1, function(x) {
+    as.vector(apply(y, 1, function(x) {
       
-      names(x)[which(x == 1)]
+      names(x)[which(x == 1)[1]]
       
-    })
+    }))
   })
   
   
   # take the first ranked item in CC
   CC_last <- lapply(CC, function(y) {
-    apply(y, 1, function(x) {
+    as.vector(unlist(apply(y, 1, function(x) {
       
-      names(x)[which.max(x)]
+      names(x)[which.max(x)[1]]
       
-    })
+    })))
   })
   
   
