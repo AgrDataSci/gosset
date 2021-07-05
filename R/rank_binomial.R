@@ -143,6 +143,8 @@ rank_binomial <- function(object,
   object$player1 <- factor(object$player1, levels = players)
   object$player2 <- factor(object$player2 , levels = players)
   
+  class(object) <- union("gosset_df", class(object))
+  
   return(object)
   
 }

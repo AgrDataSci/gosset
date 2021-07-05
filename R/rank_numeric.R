@@ -62,7 +62,6 @@
 #'                   items = c(1:5),
 #'                   input = c(6:10))
 #'  
-#' @importFrom tibble tibble
 #' @importFrom tidyr gather spread
 #' @importFrom PlackettLuce as.rankings group
 #' @export

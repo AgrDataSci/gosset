@@ -77,7 +77,7 @@ summarise_victories <- function(object){
   bin <- bin[order(bin$player1), ]
   
   # add class for the plotting method
-  class(bin) <- c("gosset_vctr", class(bin))
+  class(bin) <- c("gosset_vctr", "gosset_df", class(bin))
   
   return(bin)
   

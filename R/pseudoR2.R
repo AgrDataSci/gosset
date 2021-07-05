@@ -37,7 +37,6 @@
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom PlackettLuce PlackettLuce as.grouped_rankings
 #' @importFrom stats deviance formula na.omit predict update
-#' @importFrom tibble tibble
 #' @export
 pseudoR2 <- function(object, ...) {
   
@@ -268,13 +267,15 @@ pseudoR2.bttree <- function(object, ...){
   # Agresti pseudo R2
   agr_pr2 <- 1 - (LL / LLNull)
   
-  result <- tibble::tibble(
+  result <- data.frame(
     logLik = LL,
     logLikNull = LLNull,
     MaxLik = maxlike,
     CraggUhler = cu_pr2,
     Agresti = agr_pr2
   )
+  
+  class(result) <- union("gosset_df", class(result))
   
   return(result)
   

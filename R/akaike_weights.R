@@ -61,6 +61,8 @@ akaike_weights <- function(object){
                        relative_logLik = rel_LL, 
                        akaike_weights = weights)
   
+  class(result) <- union("gosset_df", class(result))
+  
   return(result)
   
 }

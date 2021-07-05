@@ -111,7 +111,6 @@
 #'                 
 #' }
 #'                 
-#' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom stats model.frame model.response runif
 #' @export
 crossvalidation <- function(formula, 
@@ -249,9 +248,6 @@ crossvalidation <- function(formula,
       predict(x, vcov = FALSE)
     })
     
-    
-    #preds <- gof[[2]]
-    
     # when additional rankings are added to place the local item 
     # we should rescale the matrix in predictions
     rescale <- nrow(R_pl[[1]]) / nrow(preds[[1]]) == 4
@@ -287,10 +283,14 @@ crossvalidation <- function(formula,
   })
   
   # means and estimates as tibble
-  means <- tibble::as_tibble(t(means))
+  means <- as.data.frame(t(means))
   
-  estimators <- tibble::as_tibble(estimators)
+  class(means) <- union("gosset_df", class(means))
+  
+  estimators <- as.data.frame(estimators)
 
+  class(estimators) <- union("gosset_df", class(estimators))
+  
   result <- list(coeffs = means,
                  raw = list(call = deparse(formula, width.cutoff = 500),
                             estimators = estimators,

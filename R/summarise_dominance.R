@@ -48,7 +48,6 @@
 #' d <- summarise_dominance(R)
 #' 
 #'  
-#' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom ggplot2 ggplot aes geom_tile geom_tile geom_text 
 #'  scale_x_discrete scale_fill_gradient2 labs
 #' @export
@@ -79,7 +78,7 @@ summarise_dominance <- function(object){
   bin <- bin[, -c(3)]
   
   # add class for the plotting method
-  class(bin) <- c("gosset_dmnc", class(bin))
+  class(bin) <- c("gosset_dmnc", "gosset_df", class(bin))
   
   return(bin)
   

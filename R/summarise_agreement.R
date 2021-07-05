@@ -63,10 +63,8 @@
 #' 
 #' p <- plot(a)
 #' 
-#' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom ggplot2 ggplot aes geom_bar facet_wrap coord_flip 
 #' geom_text scale_y_continuous theme element_text labs
-#' @importFrom tibble tibble
 #' @export
 summarise_agreement <- function(baseline, compare.to, labels = NULL){
 
@@ -168,12 +166,12 @@ summarise_agreement <- function(baseline, compare.to, labels = NULL){
     labels <- paste0("Characteristic ", 1:length(CC))
   }
   
-  result <- tibble::tibble(labels = labels,
-                           kendall = unlist(Kendall) * 100,
-                           first = unlist(first) * 100,
-                           last = unlist(last) * 100)
+  result <- data.frame(labels = labels,
+                       kendall = unlist(Kendall) * 100,
+                       first = unlist(first) * 100,
+                       last = unlist(last) * 100)
   
-  class(result) <- c('gosset_agree', class(result))
+  class(result) <- c('gosset_agree', 'gosset_df', class(result))
   
   return(result)
  

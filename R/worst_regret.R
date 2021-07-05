@@ -48,7 +48,6 @@
 #' @importFrom partykit nodeids
 #' @importFrom psychotools itempar
 #' @importFrom qvcalc qvcalc.itempar
-#' @importFrom tibble as_tibble
 #' @export
 worst_regret <- function(object, ...){
   
@@ -112,7 +111,9 @@ worst_regret <- function(object, ...){
   
   w <- w[order(w$worst_regret), ]
 
-  w <- tibble::as_tibble(w[ ,c(3,1:2)])
+  w <- as.data.frame(w[ ,c(3,1:2)])
 
+  class(w) <- union("gosset_df", class(w))
+  
   return(w)
 }

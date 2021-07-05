@@ -30,7 +30,7 @@ containing the variables in the model}
 cross-validation estimators. 
 Options are: 'equal', arithmetic mean; 
 'foldsize', weighted mean by the size in each fold; 
-'stouffer' weighted through Z-test. See references}
+'Ztest' weighted through Z-test. See references}
 
 \item{seed}{integer, the seed for random number generation. If NULL (the default), 
 \pkg{gosset} will set the seed randomly}

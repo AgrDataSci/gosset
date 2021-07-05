@@ -57,7 +57,6 @@
 #' 
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom stats cor
-#' @importFrom tibble as_tibble
 #' @importFrom PlackettLuce as.grouped_rankings
 #' @export
 kendallTau<- function(x, y, ...){
@@ -127,7 +126,9 @@ kendallTau.matrix <- function(x, y, ...){
   
   kt <- t(as.data.frame(kt))
   
-  kt <- tibble::as_tibble(kt)
+  kt <- as.data.frame(kt)
+  
+  class(kt) <- union("gosset_df", class(kt))
   
   return(kt)
   

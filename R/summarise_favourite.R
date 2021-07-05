@@ -38,7 +38,6 @@
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom ggplot2 ggplot aes geom_hline geom_bar coord_flip scale_y_continuous 
 #'  scale_fill_gradient2 labs
-#' @importFrom tibble tibble
 #' @export
 summarise_favourite <- function(object, ...){
   
@@ -97,17 +96,17 @@ summarise_favourite <- function(object, ...){
   # favourability score
   fav_score <- dataR$best - dataR$worst
   
-  sumstats <- tibble::tibble(items = dataR$Var1,
-                             N = dataR$Freq,
-                             best =  dataR$best,
-                             worst = dataR$worst,
-                             wins = wins,
-                             fav_score = fav_score)
+  sumstats <- data.frame(items = dataR$Var1,
+                         N = dataR$Freq,
+                         best =  dataR$best,
+                         worst = dataR$worst,
+                         wins = wins,
+                         fav_score = fav_score)
   
 
   sumstats <- sumstats[rev(order(sumstats$fav_score)), ]
   
-  class(sumstats) <- c("gosset_fvrt", class(sumstats))
+  class(sumstats) <- c("gosset_fvrt", "gosset_df", class(sumstats))
   
   return(sumstats)
 
