@@ -137,12 +137,9 @@ pseudoR2.pltree <- function(object, ...){
   }
   
   # logLik of a null model
-  #LLNull <- PlackettLuce::PlackettLuce(R)
-  #LLNull <- LLNull$null.loglik
-  
-  LLNull <- .logLikNull(R)
-  
-  
+  LLNull <- PlackettLuce::PlackettLuce(R)
+  LLNull <- LLNull$null.loglik
+
   pR2 <- .getpseudoR2(LLNull, LL, n)
   
   return(pR2)
