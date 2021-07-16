@@ -81,7 +81,7 @@ pseudoR2.default <- function(object, ...){
     LL <- stats::deviance(object, newdata = newdata) / -2
     
     # number of observations in the original model
-    # to avoid issues with the structure of different model aproaches
+    # to avoid issues with the structure of different model approaches
     # we get the number of rows of a prediction matrix which will
     # have the same dimensions as the response variable
     n <- nrow(as.matrix(stats::predict(object, newdata = newdata)))

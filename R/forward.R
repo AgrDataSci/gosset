@@ -16,15 +16,11 @@
   
   m <- do.call(gosset::crossvalidation, args)
   
-  result <- m$raw$estimators
-  
-  keepthis <- c("AIC","deviance","logLik", "MaxLik","CraggUhler", "Agresti")
-  
-  result <- result[, keepthis]
+  result <- m$raw$estimator
   
   nfold <- m$raw$k
   
-  result  <- array(unlist(result), c(1, nfold, 6))
+  result  <- array(unlist(result), c(1, nfold, ncol(result)))
   
   return(result)
   
@@ -61,7 +57,6 @@
 #' \item{Agresti}{Agresti pseudo R-squared}
 #' Cross-validation estimates are computed using the fitted models on the validation samples.
 #' @examples 
-#'  
 #' 
 #' require("gnm")
 #' require("foreach")
@@ -146,8 +141,8 @@ forward <- function(formula, data, k = NULL, folds = NULL,
   # Define initial parameters for forward selection
   # baseline if AIC or deviance without akaike.weights
   # take a very high number
-  if (select.by %in% c("AIC","deviance") & isFALSE(aw)) {
-    baseline <-  1e+11
+  if (select.by %in% c("AIC","deviance")) {
+    baseline <-  1e100
   } else {
     # if other method, take 0 as baseline
     baseline <- 0

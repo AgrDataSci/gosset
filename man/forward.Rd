@@ -64,7 +64,6 @@ Forward selection is a type of stepwise regression which begins with an empty
  when it makes a single best improvement to the model.
 }
 \examples{
- 
 
 require("gnm")
 require("foreach")
