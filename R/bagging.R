@@ -14,12 +14,12 @@
 #' \pkg{gosset} will set the seed randomly
 #' @param ... additional arguments passed the methods of the chosen model
 #' @return an object of class \code{gosset_cv} with the cross-validation 
-#' @examples
 #' @export
 bagging <- function(formula, 
                     data, 
                     K = 100,
                     N = 1000,
+                    seed = NULL,
                     ...)
 {
   

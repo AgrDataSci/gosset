@@ -99,6 +99,7 @@ forward(preference ~ .,
 }
 \seealso{
 Other model selection functions: 
+\code{\link{bagging}()},
 \code{\link{btpermute}()},
 \code{\link{crossvalidation}()}
 }

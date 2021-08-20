@@ -86,6 +86,7 @@ University of Pennsylvania
 \code{\link{rank_binomial}}, \code{\link[BradleyTerry2]{BTm}}
 
 Other model selection functions: 
+\code{\link{bagging}()},
 \code{\link{crossvalidation}()},
 \code{\link{forward}()}
 }

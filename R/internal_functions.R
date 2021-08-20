@@ -441,3 +441,32 @@
   return(x)
 }
 
+#' Get labels of variables used in a party tree
+#' 
+#' @param x an object of class party
+#' @param var optional, a vector of existing variables used to fit 
+#' a party tree in \var{x}, model.frame() is used by default
+#' @examples 
+#' example("beans", package = "PlackettLuce")
+#' G <- group(R, rep(seq_len(nrow(beans)), 4))
+#' 
+#' tree <- pltree(G ~ maxTN + season + lon,  data = beans, alpha = 0.05)
+#' 
+#' get_rules_labels(tree)
+#' @export
+get_rules_labels <- function(tree, var = NULL) {
+  
+  rules <- partykit:::.list.rules.party(tree)
+  rules <- paste(rules, collapse = "  ")
+
+  if (is.null(var)) {
+    var <- names(model.frame(tree))
+  }
+
+  labels <- sapply(var, function(x) {
+    grepl(x, rules)
+  })
+  
+  names(labels[labels == TRUE])
+  
+}
