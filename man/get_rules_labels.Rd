@@ -13,10 +13,11 @@ get_rules_labels(x)
 Get labels of variables used in a party tree
 }
 \examples{
+
 example("beans", package = "PlackettLuce")
 G <- group(R, rep(seq_len(nrow(beans)), 4))
 
-tree <- pltree(G ~ maxTN + season + lon,  data = beans, alpha = 0.05)
+tree <- pltree(G ~ maxTN + season + lon, data = beans)
 
 get_rules_labels(tree)
 }
