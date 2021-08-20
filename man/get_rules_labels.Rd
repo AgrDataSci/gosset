@@ -4,13 +4,10 @@
 \alias{get_rules_labels}
 \title{Get labels of variables used in a party tree}
 \usage{
-get_rules_labels(tree, var = NULL)
+get_rules_labels(x)
 }
 \arguments{
-\item{var}{optional, a vector of existing variables used to fit 
-a party tree in \var{x}, model.frame() is used by default}
-
-\item{x}{an object of class party}
+\item{x}{an object of class \code{party}}
 }
 \description{
 Get labels of variables used in a party tree
@@ -19,7 +16,7 @@ Get labels of variables used in a party tree
 example("beans", package = "PlackettLuce")
 G <- group(R, rep(seq_len(nrow(beans)), 4))
 
-tree <- pltree(G ~ maxTN + season,  data = beans, alpha = 0.05)
+tree <- pltree(G ~ maxTN + season + lon,  data = beans, alpha = 0.05)
 
 get_rules_labels(tree)
 }
