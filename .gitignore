@@ -36,5 +36,3 @@ vignettes/*.tex
 .Rproj.user
 
 dev/
-R/fold_stability.R
-
