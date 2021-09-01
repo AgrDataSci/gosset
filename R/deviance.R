@@ -1,8 +1,11 @@
 #'
 #' @method logLik pltree
 #' @export
-logLik.pltree <- function(object, newdata = NULL, ...) {
+logLik.pltree <- function(object, newdata = NULL, method = "gosset", ...) {
   
+  if (method != "gosset") {
+    UseMethod(...)
+  }
   
   if (is.null(newdata)) {
     

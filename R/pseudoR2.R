@@ -109,7 +109,7 @@ pseudoR2.pltree <- function(object, ...){
   # pR2 in a fit sample
   if (is.null(newdata)) {
     #logLik of object
-    LL <- stats::deviance(object)[1] / -2
+    LL <- stats::logLik(object)[2]
     
     # observed rankings
     R <- object[[1]]$data
@@ -137,8 +137,7 @@ pseudoR2.pltree <- function(object, ...){
   }
   
   # logLik of a null model
-  LLNull <- PlackettLuce::PlackettLuce(R)
-  LLNull <- LLNull$null.loglik
+  LLNull <- logLik(object, ...)[1]
 
   pR2 <- .getpseudoR2(LLNull, LL, n)
   
