@@ -1,8 +1,20 @@
+#'
 #' @method logLik pltree
 #' @export
 logLik.pltree <- function(object, newdata = NULL, ...) {
   
-  dat <- object$data
+  
+  if (is.null(newdata)) {
+    
+    dat <- object$data
+    
+  }
+  
+  if (!is.null(newdata)) {
+    
+    dat <- newdata 
+    
+  }
   
   whichG <- unlist(lapply(dat, class))
   
@@ -10,9 +22,9 @@ logLik.pltree <- function(object, newdata = NULL, ...) {
   
   G <- dat[, whichG]
   
-  G <- G[1:length(G),,as.grouped_rankings = FALSE]
+  G <- G[1:length(G), , as.grouped_rankings = FALSE]
   
-  coeff <- stats::predict(object, newdata = newdata, ...)
+  coeff <- stats::predict(object, newdata = dat, ...)
   
   # This function assumes that all coefficients
   # are equal to get a true null estimates
