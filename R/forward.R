@@ -212,7 +212,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
                                      )
                   )
 
-    dimnames(models) <- list(seq_len(fs),
+    names(models) <- list(seq_len(fs),
                              paste0("bin", seq_len(k)),
                              opt.select)
 
@@ -314,7 +314,7 @@ forward <- function(formula, data, k = NULL, folds = NULL,
 
     # model calls to add into list of parameters
     call_m <- paste0(Y, " ~ ", paste(paste(var_keep, collapse = " "), exp_var))
-    call_m <- tibble::as_tibble(cbind(call = call_m, models_avg))
+    call_m <- as.data.frame(cbind(call = call_m, models_avg))
     call_m[2:ncol(call_m)] <- lapply(call_m[2:ncol(call_m)], as.numeric)
     call_m <- list(call_m, models)
 
