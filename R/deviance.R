@@ -267,7 +267,9 @@ deviance.pltree <- function(object, newdata = NULL, ...) {
   object <- logLik(object, newdata = newdata, ...)
   
   # and the deviance 
-  object * - (2)
+  result <- object * - (2)
+  
+  return(as.vector(result[2]))
   
 }
 
