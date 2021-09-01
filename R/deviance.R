@@ -1,3 +1,74 @@
+#' @method logLik pltree
+#' @export
+logLik.pltree <- function(object, newdata = NULL, ...) {
+  
+  dat <- object$data
+  
+  whichG <- unlist(lapply(dat, class))
+  
+  whichG <- which(whichG %in% "grouped_rankings")
+  
+  G <- dat[, whichG]
+  
+  G <- G[1:length(G),,as.grouped_rankings = FALSE]
+  
+  coeff <- stats::predict(object, newdata = newdata, ...)
+  
+  # This function assumes that all coefficients
+  # are equal to get a true null estimates
+  dimo <- dim(G)
+  coeffNULL <- matrix(0, nrow = dimo[1], ncol = dimo[2])
+  
+  input <- array(c(G, coeff), dim = c(dimo, 2))
+  
+  LL <- apply(input, 1, function(x) {
+    
+    x <- x[x[, 1] != 0, ]
+    # Put coefficients in the right order
+    v <- x[order(x[, 1], na.last = NA), 2]
+    l <- 0L
+    # From Hunter MM(2004) The Annals of Statistics, Vol. 32, 
+    # No. 1, 384-406, page 397
+    for (i in seq_along(v)) {
+      l <- l + v[i] - log(sum(exp(v[(i):(length(v))])))
+    }
+    
+    return(l)
+    
+  })
+  
+  LL <- sum(LL)
+  
+  inputNULL <- array(c(G, coeffNULL), dim = c(dimo, 2))
+  
+  LLnull <- apply(inputNULL, 1, function(x) {
+    
+    x <- x[x[, 1] != 0, ]
+    # Put coefficients in the right order
+    v <- x[order(x[, 1], na.last = NA), 2]
+    l <- 0L
+    # From Hunter MM(2004) The Annals of Statistics, Vol. 32, 
+    # No. 1, 384-406, page 397
+    for (i in seq_along(v)) {
+      l <- l + v[i] - log(sum(exp(v[(i):(length(v))])))
+    }
+    
+    return(l)
+    
+  })
+  
+  LLnull <- sum(LLnull)
+  
+  result <- c(LLnull, LL)
+  
+  names(result) <- c("logLikNULL", "logLik")
+  
+  return(result)
+  
+}
+
+
+
 # AIC from a Bradley-Terry model
 # code adapted from PlackettLuce repository
 # Turner et al (2020)
@@ -180,18 +251,12 @@ deviance.bttree <- function(object, newdata = NULL, ...) {
 #' @export
 deviance.pltree <- function(object, newdata = NULL, ...) {
   
-  if (is.null(newdata)) {
-    return(NextMethod(object, ...))
-  }
-  
-  # get AIC from model object 
-  aic <- stats::AIC(object, newdata = newdata, ...)
-  
-  # get degrees of freedom
-  df <- attr(stats::logLik(object), "df")
+  # compute deviance
+  object <- logLik(object, newdata = newdata, ...)
   
   # and the deviance 
-  aic - (2 * df)
+  object * - (2)
+  
 }
 
 
