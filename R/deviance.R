@@ -6,7 +6,7 @@
 #' @importFrom stats predict
 #' @importFrom partykit predict.modelparty nodeids
 #' @export
-logLik.pltree <- function(object, newdata = NULL, method = "Hunter", ...) {
+logLik.pltree <- function(object, newdata = NULL, method = "Turner", ...) {
   
   if (method == "Turner") {
     

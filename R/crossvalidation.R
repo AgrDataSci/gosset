@@ -117,7 +117,7 @@
 #' @export
 crossvalidation <- function(formula, 
                             data, 
-                            k = NULL,
+                            k = 10,
                             folds = NULL, 
                             mean.method = "Ztest",
                             logLik.method = "Turner",
@@ -137,10 +137,6 @@ crossvalidation <- function(formula,
     # check if a seed is provided
     if (is.null(seed)) {
       seed <- as.integer(stats::runif(1, 0, 1000000))
-    }
-    
-    if (is.null(k)) {
-      stop("\nargument 'k' is missing with no default\n")
     }
     
     set.seed(seed)
@@ -229,9 +225,29 @@ crossvalidation <- function(formula,
   })
   
   # get goodness-of-fit estimates from models
-  gof <- .get_estimators(model = mod, test_data = test, logLik.method = logLik.method)
-
-  estimators <- gof[[1]]
+  # take models from training data to compute deviance, pseudo R-squared
+  # and the predictions of the test part of the data
+  estimators <- try(mapply(function(X, Y) {
+    a <- AIC(X, newdata = Y)
+    d <- deviance(X, newdata = Y, method = logLik.method)
+    p <- pseudoR2(X, newdata = Y, method = logLik.method)
+    data.frame(AIC = a, deviance = d, p)
+  }, X = mod, Y = test[]), silent = TRUE)
+  
+  if ("try-error" %in% class(estimators)) {
+    estimators <- matrix(0, nrow = k, ncol = 7, byrow = TRUE)
+  }
+  
+  nms <- dimnames(estimators)[[1]]
+  
+  estimators <- matrix(unlist(estimators), nrow = k, ncol = 7, byrow = TRUE)
+  
+  dimnames(estimators)[[2]] <- nms
+  
+  # and the predictions
+  preds <-  mapply(function(X, Y) {
+    try(predict(X, newdata = Y, vcov = FALSE), silent = TRUE)
+  }, X = model, Y = test[])
   
   # if model is pltree take the kendall cor 
   if (model == "pltree") {
@@ -273,21 +289,69 @@ crossvalidation <- function(formula,
     
     KT <- as.numeric(KT)
     
-    estimators$kendallTau <- KT
+    estimators <- cbind(estimators, kendallTau = KT)
       
   }
   
   # estimators are then averaged weighted by 
   # number of predicted cases using selected mean method
-  means <- apply(estimators, 2, function(x) {
-    .mean_crossvalidation(object = x, 
-                          folds = folds, 
-                          mean.method = mean.method)
-  })
+  # Z-test weight mean
+  N <- dim(data)[1]
   
-  # means and estimates as tibble
+  if (is.list(folds)) {
+    mean.method <- "equal" 
+  }
+  
+  if (mean.method == "Ztest") {
+    # take the number of folds
+    max_folds <- max(folds)
+    
+    # make a table of folds and take
+    # how many observations each fold has
+    foldsize <- table(folds)
+    
+    # take the weight of each fold
+    # first, the squared root of foldsize (observations per fold)
+    # by the total number of observation
+    wfold <- sqrt(as.vector(foldsize) / N)
+    
+    # then divide this vector by its sum
+    wfold <- wfold / sum(wfold)
+    
+    # then we multiply the input values by the
+    # weight of each fold
+    # sum these values and that is the Ztest mean
+    means <- apply(estimators, 2, function(x){
+      m <- x * wfold
+      sum(m, na.rm = TRUE)
+    })
+  }
+  
+  # mean weighted by foldsize
+  if (mean.method == "foldsize") {
+    # make a table of folds and take
+    # the number of observations per fold
+    foldsize <- as.vector(table(folds))
+    
+    # fold size mean is the product of multiplication of object values by 
+    # its number of observations then divided by the total number of observations
+    means <- apply(estimators, 2, function(x){
+      sum(x * foldsize, na.rm = TRUE) / sum(foldsize)
+    })
+  }
+  
+  # arithmetic mean 
+  if (mean.method == "equal") {
+    means <- apply(estimators, 2, function(x){
+      mean(x, na.rm = TRUE) 
+    })
+  }
+  
+  # means and estimates as data frame
   means <- as.data.frame(t(means))
   
+  names(means) <- dimnames(estimators)[[2]]
+   
   class(means) <- union("gosset_df", class(means))
   
   estimators <- as.data.frame(estimators)
@@ -309,123 +373,11 @@ crossvalidation <- function(formula,
 }
 
 
-#' Get estimators from model parameters
-#' 
-#' @param model a list with models
-#' @param test_data a list with data.frames to test model
-#' @return The model goodness-of-fit estimators
-#' data("airquality")
-#' mod <- glm(Temp ~ Wind, Solar.R, data = airquality, family = poisson())
-#' test <- airquality[1:10, ]
-#' .get_estimators(list(model), list(test))
-#' @noRd
-.get_estimators <- function(model, test_data, logLik.method) {
-  
-  # take models from training data to compute deviance, pseudo R-squared
-  # and the predictions of the test part of the data
-  aic <- mapply(function(X, Y) {
-    try(AIC(X, newdata = Y), silent = TRUE)
-  }, X = model, Y = test_data[])
-  
-  aic <- as.numeric(aic)
-  
-  Deviance <- mapply(function(X, Y) {
-    try(deviance(X, newdata = Y, method = logLik.method), silent = TRUE)
-  }, X = model, Y = test_data[])
-  
-  Deviance <- as.numeric(Deviance)
-  
-  pR2 <- t(mapply(function(X, Y) {
-    try(pseudoR2(X, newdata = Y, method = logLik.method), silent = TRUE)
-  }, X = model, Y = test_data[]))
-  
-  pR2 <- matrix(as.numeric(unlist(pR2)),
-                ncol = 5,
-                nrow = length(model),
-                dimnames = list(1:length(model),
-                                dimnames(pR2)[[2]]))
-  
-  # and the predictions
-  preds <-  mapply(function(X, Y) {
-    try(predict(X, newdata = Y, vcov = FALSE), silent = TRUE)
-  }, X = model, Y = test_data[])
-  
-  gof <- cbind(data.frame(AIC = aic, 
-                          deviance = Deviance), 
-               pR2)
-  
-  
-  estimators <- list(goodness_of_fit = gof,
-                     predictions = preds)
-  
-  
-  return(estimators)
-  
-}
-
 #' @method print gosset_cv
 #' @export
 print.gosset_cv <- function(x, ...) {
   cat("Model formula:\n")
   cat(x[["raw"]][["call"]], "\n \n")
-  cat("Cross-validation estimates: \n")
-  print(round(unlist(x[["coeffs"]]), 4))
-}
-
-# Compute weighted means in cross-validation
-.mean_crossvalidation <- function(object, 
-                                  folds = NULL, 
-                                  mean.method = "Ztest", 
-                                  ...){
-  # take length of folds
-  N <- length(folds)
-  
-  if (is.list(folds)) {
-    mean.method <- "equal"
-  }
-  
-  # Z-test weight mean
-  if (mean.method == "Ztest") {
-    # take the number of folds
-    max_folds <- max(folds)
-    
-    # make a table of folds and take
-    # how many observations each fold has
-    foldsize <- table(folds)
-    
-    # take the weight of each fold
-    # first, the squared root of foldsize (observations per fold)
-    # by the total number of observation
-    wfold <- sqrt(as.vector(foldsize) / N)
-    
-    # then divide this vector by its sum
-    wfold <- wfold / sum(wfold)
-    # wfold <- (max_folds * wfold) / sum(wfold)
-    
-    # then we multiply the input values by the
-    # weight of each fold
-    Ztest <- object * wfold
-    
-    # sum these values and that is the Ztest mean
-    m <- sum(Ztest, na.rm = TRUE)
-  }
-  
-  # mean weighted by foldsize
-  if (mean.method == "foldsize") {
-    # make a table of folds and take
-    # the number of observations per fold
-    foldsize <- as.vector(table(folds))
-    
-    # fold size mean is the product of multiplication of object values by 
-    # its number of observations then divided by the total number of observations
-    m <- sum(object * foldsize, na.rm = TRUE) / sum(foldsize)
-  }
-  
-  # arithmetic mean 
-  if (mean.method == "equal") {
-    m <- mean(object, na.rm = TRUE)
-  }
-  
-  return(m)
-  
+  cat("Weighted Cross-validation estimates: \n")
+  print(x$coeffs)
 }

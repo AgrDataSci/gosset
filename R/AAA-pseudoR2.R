@@ -98,9 +98,13 @@ pseudoR2.default <- function(object, ...){
 #' @method pseudoR2 pltree
 #' @importFrom partykit node_party
 #' @export
-pseudoR2.pltree <- function(object, newdata = NULL, method = "Hunter", ...){
+pseudoR2.pltree <- function(object, newdata = NULL, method = "Turner", ...){
   
   n <- dim(object$data)[[1]]
+  
+  if (!is.null(newdata)) {
+    n <- dim(newdata)[[1]]
+  }
   
   LL <- logLik(object, newdata = newdata, method = method, ...)[[1]]
     
@@ -223,7 +227,7 @@ pseudoR2.bttree <- function(object, ...){
 #' @return the pseudo R squared
 #' @noRd 
 .getpseudoR2 <- function(LLNull, LL, n) {
-  # minus two times the logLik
+  # logLik time minus two
   g2 <- ((LLNull - LL) * -2)
   # maximum likelihood pseudo R2
   maxlike <- 1 - exp(-g2 / n)

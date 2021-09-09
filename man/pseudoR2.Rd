@@ -12,11 +12,11 @@ pseudoR2(object, ...)
 
 \method{pseudoR2}{default}(object, ...)
 
-\method{pseudoR2}{pltree}(object, newdata = NULL, method = "Hunter", ...)
+\method{pseudoR2}{pltree}(object, newdata = NULL, method = "Turner", ...)
 
 \method{pseudoR2}{bttree}(object, ...)
 
-\method{logLik}{pltree}(object, newdata = NULL, method = "Hunter", ...)
+\method{logLik}{pltree}(object, newdata = NULL, method = "Turner", ...)
 }
 \arguments{
 \item{object}{a model object of class glm, gnm, lm, pltree or bttree}
