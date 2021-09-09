@@ -87,7 +87,9 @@ plot_tree <- function(object, qve = TRUE,
   if (isTRUE(qve)) {
    
     # get item parameters from model
-    coeffs <- try(lapply(nodes, psychotools::itempar), silent = TRUE)
+    coeffs <- try(lapply(nodes, function(x) {
+      psychotools::itempar(x, vcov = TRUE)
+      }), silent = TRUE)
     
     if (isTRUE("try-error" %in% class(coeffs))) {
       stop("Unable to compute quasi-variance estimates. Check for errors/warnings in ",

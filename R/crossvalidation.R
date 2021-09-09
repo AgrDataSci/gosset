@@ -19,6 +19,8 @@
 #' Options are: 'equal', arithmetic mean; 
 #' 'foldsize', weighted mean by the size in each fold; 
 #' 'Ztest' weighted through Z-test. See references 
+#' @param logLik.method a character for the method to compute logLik,
+#'  options are "Hunter" or "Turner"
 #' @param seed integer, the seed for random number generation. If NULL (the default), 
 #' \pkg{gosset} will set the seed randomly
 #' @param ... additional arguments passed the methods of the chosen model
@@ -117,7 +119,8 @@ crossvalidation <- function(formula,
                             data, 
                             k = NULL,
                             folds = NULL, 
-                            mean.method = NULL,
+                            mean.method = "Ztest",
+                            logLik.method = "Turner",
                             seed = NULL,
                             ...)
 {
@@ -226,7 +229,7 @@ crossvalidation <- function(formula,
   })
   
   # get goodness-of-fit estimates from models
-  gof <- .get_estimators(model = mod, test_data = test)
+  gof <- .get_estimators(model = mod, test_data = test, logLik.method = logLik.method)
 
   estimators <- gof[[1]]
   
@@ -316,7 +319,7 @@ crossvalidation <- function(formula,
 #' test <- airquality[1:10, ]
 #' .get_estimators(list(model), list(test))
 #' @noRd
-.get_estimators <- function(model, test_data) {
+.get_estimators <- function(model, test_data, logLik.method) {
   
   # take models from training data to compute deviance, pseudo R-squared
   # and the predictions of the test part of the data
@@ -327,13 +330,13 @@ crossvalidation <- function(formula,
   aic <- as.numeric(aic)
   
   Deviance <- mapply(function(X, Y) {
-    try(deviance(X, newdata = Y), silent = TRUE)
+    try(deviance(X, newdata = Y, method = logLik.method), silent = TRUE)
   }, X = model, Y = test_data[])
   
   Deviance <- as.numeric(Deviance)
   
   pR2 <- t(mapply(function(X, Y) {
-    try(pseudoR2(X, newdata = Y), silent = TRUE)
+    try(pseudoR2(X, newdata = Y, method = logLik.method), silent = TRUE)
   }, X = model, Y = test_data[]))
   
   pR2 <- matrix(as.numeric(unlist(pR2)),

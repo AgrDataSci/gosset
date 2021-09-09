@@ -8,8 +8,8 @@
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-Toolkit for a workflow to analyse metadata and experimental citizen 
-    science data, from collating data of different sources to model sellection and 
+Toolkit for a workflow to analyse experimental citizen 
+    science data, from collating data of different sources to model selection and 
     visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer 
     of modern statistics in small sample experimental design and analysis.
 }

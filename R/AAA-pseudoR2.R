@@ -96,48 +96,17 @@ pseudoR2.default <- function(object, ...){
 
 #' @rdname pseudoR2
 #' @method pseudoR2 pltree
+#' @importFrom partykit node_party
 #' @export
-pseudoR2.pltree <- function(object, ...){
+pseudoR2.pltree <- function(object, newdata = NULL, method = "Hunter", ...){
   
-  dots <- list(...)
+  n <- dim(object$data)[[1]]
   
-  newdata <- dots[["newdata"]]
-  
-  # identify the name of response variable
-  Y <- all.vars(stats::formula(object))[1]
-  
-  # pR2 in a fit sample
-  if (is.null(newdata)) {
-    #logLik of object
-    LL <- stats::logLik(object)[2]
+  LL <- logLik(object, newdata = newdata, method = method, ...)[[1]]
     
-    # observed rankings
-    R <- object[[1]]$data
-    R <- R[, Y]
-    R <- R[1:length(R), , as.grouped_rankings = FALSE]
-    
-    # number of observations
-    n <- nrow(object[[1]]$data)
-    
-    
-  }
-  
-  # pR2 on a validation sample
-  if (!is.null(newdata)) {
-    # predicted logLik on newdata using object
-    LL <- stats::deviance(object, newdata = newdata) / -2
-    
-    # observed rankings on newdata
-    R <- newdata[, Y]
-    R <- R[1:length(R), , as.grouped_rankings = FALSE]
-    
-    # number of observations in newdata
-    n <- nrow(newdata)
-    
-  }
-  
-  # logLik of a null model
-  LLNull <- logLik(object, ...)[1]
+  # NULL loglik from both methods should be the same 
+  # this is to be sure that newdata is used when needed
+  LLNull <- logLik(object, newdata = newdata, method = "Hunter", ...)[[2]]
 
   pR2 <- .getpseudoR2(LLNull, LL, n)
   

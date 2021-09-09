@@ -9,7 +9,8 @@ crossvalidation(
   data,
   k = NULL,
   folds = NULL,
-  mean.method = NULL,
+  mean.method = "Ztest",
+  logLik.method = "Turner",
   seed = NULL,
   ...
 )
@@ -31,6 +32,9 @@ cross-validation estimators.
 Options are: 'equal', arithmetic mean; 
 'foldsize', weighted mean by the size in each fold; 
 'Ztest' weighted through Z-test. See references}
+
+\item{logLik.method}{a character for the method to compute logLik 
+options are "Hunter" or "Turner"}
 
 \item{seed}{integer, the seed for random number generation. If NULL (the default), 
 \pkg{gosset} will set the seed randomly}
