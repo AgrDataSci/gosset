@@ -84,28 +84,76 @@ plot_tree <- function(object, qve = TRUE,
     nobs[[i]] <- as.integer(object[[ node_id[i] ]]$node$info$nobs) 
   }
   
+  # get item names
+  items <- dimnames(coef(object))[[2]]
+  
   if (isTRUE(qve)) {
    
     # get item parameters from model
     coeffs <- try(lapply(nodes, function(x) {
-      psychotools::itempar(x, vcov = TRUE)
+      z <- psychotools::itempar(x, vcov = TRUE)
+      # get estimates from item parameters using qvcalc
+      z <- qvcalc::qvcalc(z)$qvframe
       }), silent = TRUE)
     
+    if (isTRUE("try-error" %in% class(coeffs))) {
+      
+      message("Unable to compute quasi-variance estimates with whole tree. Updating the model ", 
+              "using rankings from each node \n")
+      
+      coeffs <- try(lapply(nodes, function(x) {
+        psychotools::itempar(x, vcov = FALSE)
+      }), silent = TRUE)
+      
+      # update the model, this will check if ranking is complete in each node 
+      # and refit the rankings from each node to get the qvSE 
+      qvSE <- try(lapply(nodes, function(x) {
+        
+        Z <- x$rankings
+        
+        Z <- Z[1:length(Z),, as.rankings = F]
+        
+        rmv <- which(colSums(Z) == 0)
+        
+        if (length(rmv) > 0) Z <- Z[, -rmv]
+        
+        Z <- update(x, rankings = Z, weights = freq(Z), start = NULL)
+        
+        Z <- psychotools::itempar(Z, vcov = TRUE)
+        
+        # get estimates from item parameters using qvcalc
+        Z <- qvcalc::qvcalc(Z)
+        
+        # extract data frames with estimates
+        Z <- Z$qvframe
+        
+        Z$items <- rownames(Z)
+        
+        Z
+        
+      }), silent = TRUE)
+      
+      x <- list()
+      for (i in seq_along(coeffs)) {
+        
+       xi <- data.frame(estimate = as.vector(coeffs[[i]]),
+                         items = items)
+       
+       xi <- merge(xi, qvSE[[i]][,c("items", "quasiSE")], by = "items", all.x = TRUE)
+       
+       x[[i]] <- xi
+       
+      }
+      
+      coeffs <- x
+      
+    }
+    
+    # if the error persists then return an error 
     if (isTRUE("try-error" %in% class(coeffs))) {
       stop("Unable to compute quasi-variance estimates. Check for errors/warnings in ",
            "your modelparty object. \n Also, you can try qve = FALSE \n")
     }
-    
-    # get estimates from item parameters using qvcalc
-    coeffs <- lapply(coeffs, qvcalc::qvcalc)
-    
-    # extract data frames with estimates
-    coeffs <- lapply(coeffs, function(X){
-      df <- X[]$qvframe }
-    )
-    
-    # get item names
-    items <- rownames(coeffs[[1]])
     
   }
   
@@ -113,9 +161,7 @@ plot_tree <- function(object, qve = TRUE,
     
     add.letters <- FALSE
     
-    coeffs <- stats::coef(object, log = log, ref = ref)
-    
-    items <- dimnames(coeffs)[[2]]
+    coeffs <- itempar(object, vcov = FALSE)
     
     x <- list()
     for (i in seq_len(dim(coeffs)[[1]])) {
@@ -310,4 +356,10 @@ plot_tree <- function(object, qve = TRUE,
   }
   return(p)
 }
+
+
+
+
+
+
 
