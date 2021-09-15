@@ -64,7 +64,7 @@ logLik.pltree <- function(object, newdata = NULL, method = "Turner", ...) {
   
   G <- G[1:length(G), , as.grouped_rankings = FALSE]
   
-  coeff <- stats::predict(object, newdata = dat, vcov = FALSE, ...)
+  coeff <- stats::predict(object, newdata = dat, ...)
   
   
   dimo <- dim(G)
