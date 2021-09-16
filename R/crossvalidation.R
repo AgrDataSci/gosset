@@ -246,7 +246,7 @@ crossvalidation <- function(formula,
   
   # and the predictions
   preds <-  mapply(function(X, Y) {
-    try(predict(X, newdata = Y, vcov = FALSE), silent = TRUE)
+    try(predict(X, newdata = Y), silent = TRUE)
   }, X = model, Y = test[])
   
   # if model is pltree take the kendall cor 
@@ -264,7 +264,7 @@ crossvalidation <- function(formula,
     })
     
     preds <- lapply(mod, function(x) {
-      predict(x, vcov = FALSE)
+      predict(x)
     })
     
     # when additional rankings are added to place the local item 
