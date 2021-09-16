@@ -15,7 +15,7 @@
 #' \item{logLikNull}{Null log-likelihood}
 #' \item{MaxLik}{maximum likelihood pseudo R-squared}
 #' \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
-#' \item{Agresti}{Agresti pseudo R-squared}
+#' \item{McFadden}{McFadden pseudo R-squared}
 #' @references 
 #' 
 #' Agresti A. (2002). Categorical Data Analysis. John Wiley & Sons, Inc., 
@@ -235,8 +235,8 @@ pseudoR2.bttree <- function(object, ...){
   maxlike_max <- 1 - exp(LLNull * 2 / n)
   # Cragg and Uhler's pseudo R2
   cu_pr2 <- maxlike / maxlike_max
-  # Agresti pseudo R2
-  agr_pr2 <- 1 - (LL / LLNull)
+  #McFadden, D. (1973). Conditional logit analysis of qualitative choice behavior. (pages 121 - 122)
+  mcfadden <- 1 - (LL / LLNull)
   
   result <- data.frame(
     logLik = LL,
