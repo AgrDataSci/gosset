@@ -243,7 +243,7 @@ pseudoR2.bttree <- function(object, ...){
     logLikNull = LLNull,
     MaxLik = maxlike,
     CraggUhler = cu_pr2,
-    Agresti = agr_pr2
+    McFadden = mcfadden
   )
   
   class(result) <- union("gosset_df", class(result))
