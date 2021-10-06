@@ -33,7 +33,7 @@ Imports:
     ggplot2,
     partykit,
     parallel,
-    PlackettLuce (>= 0.4.0),
+    PlackettLuce,
     psychotools, 
     qvcalc,
     stats, 
