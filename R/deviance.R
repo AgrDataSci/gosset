@@ -6,9 +6,9 @@
 #' @importFrom stats predict
 #' @importFrom partykit predict.modelparty nodeids
 #' @export
-logLik.pltree <- function(object, newdata = NULL, method = "Turner", ...) {
+logLik.pltree <- function(object, newdata = NULL, method = "tree", ...) {
   
-  if (method == "Turner") {
+  if (method == "tree") {
     
     if (is.null(newdata)) {
         return(NextMethod(object, ...))
@@ -46,69 +46,69 @@ logLik.pltree <- function(object, newdata = NULL, method = "Turner", ...) {
       
   }
   
-  if (is.null(newdata)) {
-    dat <- object$data
-  }
-  
-  if (!is.null(newdata)) {
+  if(method == "worth"){
     
-    dat <- newdata 
-    
-  }
-  
-  whichG <- unlist(lapply(dat, class))
-  
-  whichG <- which(whichG %in% "grouped_rankings")
-  
-  G <- dat[, whichG]
-  
-  G <- G[1:length(G), , as.grouped_rankings = FALSE]
-  
-  coeff <- stats::predict(object, newdata = dat, vcov = FALSE, ...)
-  
-  
-  dimo <- dim(G)
-  
-  # Compute logLik
-  input <- array(c(G, coeff), dim = c(dimo, 2))
-  
-  LL <- apply(input, 1, function(x) {
-    
-    x <- x[x[, 1] != 0, ]
-    # Put coefficients in the right order
-    v <- x[order(x[, 1], na.last = NA), 2]
-    l <- 0L
-    # From Hunter MM(2004) The Annals of Statistics, Vol. 32, 
-    # No. 1, 384-406, page 397
-    for (i in seq_along(v)) {
-      l <- l + v[i] - log(sum(exp(v[(i):(length(v))])))
+    if (is.null(newdata)){
+      dat <- object$data
     }
     
-    return(l)
-    
-  })
-  
-  LL <- sum(LL)
-  
-  # This function assumes that all coefficients
-  # are equal to get a true null estimates
-  coeffNULL <- matrix(0, nrow = dimo[1], ncol = dimo[2])
-  
-  inputNULL <- array(c(G, coeffNULL), dim = c(dimo, 2))
-  
-  LLnull <- apply(inputNULL, 1, function(x) {
-    
-    x <- x[x[, 1] != 0, ]
-    # Put coefficients in the right order
-    v <- x[order(x[, 1], na.last = NA), 2]
-    l <- 0L
-    # From Hunter MM(2004) The Annals of Statistics, Vol. 32, 
-    # No. 1, 384-406, page 397
-    for (i in seq_along(v)) {
-      l <- l + v[i] - log(sum(exp(v[(i):(length(v))])))
+    if (!is.null(newdata)) {
+      dat <- newdata   
     }
     
-    return(l)
+    whichG <- unlist(lapply(dat, class))
+    
+    whichG <- which(whichG %in% "grouped_rankings")
+    
+    G <- dat[, whichG]
+    
+    G <- G[1:length(G), , as.grouped_rankings = FALSE]
+    
+    coeff <- stats::predict(object, newdata = dat, ...)
+    
+    
+    dimo <- dim(G)
+    
+    # Compute logLik
+    input <- array(c(G, coeff), dim = c(dimo, 2))
+    
+    LL <- apply(input, 1, function(x) {
+      
+      x <- x[x[, 1] != 0, ]
+      # Put coefficients in the right order
+      v <- x[order(x[, 1], na.last = NA), 2]
+      l <- 0L
+      # From Hunter MM(2004) The Annals of Statistics, Vol. 32, 
+      # No. 1, 384-406, page 397
+      for (i in seq_along(v)) {
+        l <- l + v[i] - log(sum(exp(v[(i):(length(v))])))
+      }
+      
+      return(l)
+      
+    })
+    
+    LL <- sum(LL)
+    
+    # This function assumes that all coefficients
+    # are equal to get a true null estimates
+    coeffNULL <- matrix(0, nrow = dimo[1], ncol = dimo[2])
+    
+    inputNULL <- array(c(G, coeffNULL), dim = c(dimo, 2))
+    
+    LLnull <- apply(inputNULL, 1, function(x) {
+      
+      x <- x[x[, 1] != 0, ]
+      # Put coefficients in the right order
+      v <- x[order(x[, 1], na.last = NA), 2]
+      l <- 0L
+      # From Hunter MM(2004) The Annals of Statistics, Vol. 32, 
+      # No. 1, 384-406, page 397
+      for (i in seq_along(v)) {
+        l <- l + v[i] - log(sum(exp(v[(i):(length(v))])))
+      }
+      
+      return(l)
     
   })
   
@@ -119,6 +119,7 @@ logLik.pltree <- function(object, newdata = NULL, method = "Turner", ...) {
   names(result) <- c("logLik", "logLikNULL")
   
   return(result)
+  }
   
 }
 

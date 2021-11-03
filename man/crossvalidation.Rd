@@ -10,7 +10,7 @@ crossvalidation(
   k = 10,
   folds = NULL,
   mean.method = "Ztest",
-  logLik.method = "Turner",
+  logLik.method = "tree",
   seed = NULL,
   ...
 )
@@ -34,7 +34,7 @@ Options are: 'equal', arithmetic mean;
 'Ztest' weighted through Z-test. See references}
 
 \item{logLik.method}{a character for the method to compute logLik,
-options are "Hunter" or "Turner"}
+options are "tree" (default) or "worth"}
 
 \item{seed}{integer, the seed for random number generation. If NULL (the default), 
 \pkg{gosset} will set the seed randomly}
@@ -49,7 +49,7 @@ goodness-of-fit estimates, which are:
 \item{logLik}{Log-Likelihood}
 \item{MaxLik}{Maximum likelihood pseudo R-squared}
 \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
-\item{Agresti}{Agresti pseudo R-squared}
+\item{McFadden}{McFadden pseudo R-squared}
 \item{kendallTau}{the Kendall correlation coefficient, only for Plackett-Luce models}
 }
 \description{

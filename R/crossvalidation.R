@@ -20,7 +20,7 @@
 #' 'foldsize', weighted mean by the size in each fold; 
 #' 'Ztest' weighted through Z-test. See references 
 #' @param logLik.method a character for the method to compute logLik,
-#'  options are "Hunter" or "Turner"
+#'  options are "tree" (default) or "worth"
 #' @param seed integer, the seed for random number generation. If NULL (the default), 
 #' \pkg{gosset} will set the seed randomly
 #' @param ... additional arguments passed the methods of the chosen model
@@ -31,7 +31,7 @@
 #' \item{logLik}{Log-Likelihood}
 #' \item{MaxLik}{Maximum likelihood pseudo R-squared}
 #' \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
-#' \item{Agresti}{Agresti pseudo R-squared}
+#' \item{McFadden}{McFadden pseudo R-squared}
 #' \item{kendallTau}{the Kendall correlation coefficient, only for Plackett-Luce models}
 #' @seealso \code{\link[psychotree]{bttree}}, 
 #' \code{\link[gnm]{gnm}},
@@ -115,12 +115,12 @@
 #'                 
 #' @importFrom stats model.frame model.response runif
 #' @export
-crossvalidation <- function(formula, 
+crossvalidation <- function(formula,
                             data, 
                             k = 10,
                             folds = NULL, 
                             mean.method = "Ztest",
-                            logLik.method = "Turner",
+                            logLik.method = "tree",
                             seed = NULL,
                             ...)
 {
@@ -231,8 +231,9 @@ crossvalidation <- function(formula,
     a <- AIC(X, newdata = Y)
     d <- deviance(X, newdata = Y, method = logLik.method)
     p <- pseudoR2(X, newdata = Y, method = logLik.method)
-    data.frame(AIC = a, deviance = d, p)
-  }, X = mod, Y = test[]), silent = TRUE)
+    data.frame(AIC = a, 
+               deviance = d, p)
+  }, X = mod, Y = test[]), silent = FALSE)
   
   if ("try-error" %in% class(estimators)) {
     estimators <- matrix(0, nrow = k, ncol = 7, byrow = TRUE)
@@ -246,7 +247,7 @@ crossvalidation <- function(formula,
   
   # and the predictions
   preds <-  mapply(function(X, Y) {
-    try(predict(X, newdata = Y, vcov = FALSE), silent = TRUE)
+    try(predict(X, newdata = Y), silent = TRUE)
   }, X = model, Y = test[])
   
   # if model is pltree take the kendall cor 
@@ -264,7 +265,7 @@ crossvalidation <- function(formula,
     })
     
     preds <- lapply(mod, function(x) {
-      predict(x, vcov = FALSE)
+      predict(x)
     })
     
     # when additional rankings are added to place the local item 
