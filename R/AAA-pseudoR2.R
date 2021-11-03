@@ -98,7 +98,7 @@ pseudoR2.default <- function(object, ...){
 #' @method pseudoR2 pltree
 #' @importFrom partykit node_party
 #' @export
-pseudoR2.pltree <- function(object, newdata = NULL, method = "Turner", ...){
+pseudoR2.pltree <- function(object, newdata = NULL, method = "tree", ...){
   
   n <- dim(object$data)[[1]]
   
@@ -107,10 +107,16 @@ pseudoR2.pltree <- function(object, newdata = NULL, method = "Turner", ...){
   }
   
   LL <- logLik(object, newdata = newdata, method = method, ...)[[1]]
-    
-  # NULL loglik from both methods should be the same 
-  # this is to be sure that newdata is used when needed
-  LLNull <- logLik(object, newdata = newdata, method = "Hunter", ...)[[2]]
+  
+  if(method == "tree"){
+    LLNull <- partykit::node_party(object)$info$object$null.loglik
+  }
+  
+  if(method == "worth"){
+    # NULL loglik from both methods should be the same 
+    # this is to be sure that newdata is used when needed
+    LLNull <- logLik(object, newdata = newdata, method = method, ...)[[2]]
+  }
 
   pR2 <- .getpseudoR2(LLNull, LL, n)
   

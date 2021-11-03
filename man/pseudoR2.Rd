@@ -12,11 +12,11 @@ pseudoR2(object, ...)
 
 \method{pseudoR2}{default}(object, ...)
 
-\method{pseudoR2}{pltree}(object, newdata = NULL, method = "Turner", ...)
+\method{pseudoR2}{pltree}(object, newdata = NULL, method = "tree", ...)
 
 \method{pseudoR2}{bttree}(object, ...)
 
-\method{logLik}{pltree}(object, newdata = NULL, method = "Turner", ...)
+\method{logLik}{pltree}(object, newdata = NULL, method = "tree", ...)
 }
 \arguments{
 \item{object}{a model object of class glm, gnm, lm, pltree or bttree}
@@ -34,7 +34,7 @@ A data frame containing the pseudo R-squared coefficients:
 \item{logLikNull}{Null log-likelihood}
 \item{MaxLik}{maximum likelihood pseudo R-squared}
 \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
-\item{Agresti}{Agresti pseudo R-squared}
+\item{McFadden}{McFadden pseudo R-squared}
 }
 \description{
 Regression coefficient to evaluate goodness-of-fit in a given model when 
