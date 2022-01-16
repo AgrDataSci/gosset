@@ -120,7 +120,6 @@ crossvalidation <- function(formula,
                             k = 10,
                             folds = NULL, 
                             mean.method = "Ztest",
-                            logLik.method = "tree",
                             seed = NULL,
                             ...)
 {
@@ -229,10 +228,11 @@ crossvalidation <- function(formula,
   # and the predictions of the test part of the data
   estimators <- try(mapply(function(X, Y) {
     a <- AIC(X, newdata = Y)
-    d <- deviance(X, newdata = Y, method = logLik.method)
-    p <- pseudoR2(X, newdata = Y, method = logLik.method)
-    data.frame(AIC = a, 
-               deviance = d, p)
+    d <- deviance(X, newdata = Y)
+    p <- pseudoR2(X, newdata = Y)
+    data.frame(deviance = d,
+               AIC = a,
+               p)
   }, X = mod, Y = test[]), silent = FALSE)
   
   if ("try-error" %in% class(estimators)) {
@@ -322,7 +322,7 @@ crossvalidation <- function(formula,
     # then we multiply the input values by the
     # weight of each fold
     # sum these values and that is the Ztest mean
-    means <- apply(estimators, 2, function(x){
+    means <- apply(estimators[, 5:8], 2, function(x){
       m <- x * wfold
       sum(m, na.rm = TRUE)
     })
@@ -336,20 +336,30 @@ crossvalidation <- function(formula,
     
     # fold size mean is the product of multiplication of object values by 
     # its number of observations then divided by the total number of observations
-    means <- apply(estimators, 2, function(x){
+    means <- apply(estimators[, 5:8], 2, function(x){
       sum(x * foldsize, na.rm = TRUE) / sum(foldsize)
     })
   }
   
   # arithmetic mean 
   if (mean.method == "equal") {
-    means <- apply(estimators, 2, function(x){
+    means <- apply(estimators[, 5:8], 2, function(x){
       mean(x, na.rm = TRUE) 
     })
   }
   
   # means and estimates as data frame
   means <- as.data.frame(t(means))
+  
+  dev <- sum(estimators[, 1])
+  
+  aic <- sum(estimators[, 2])
+  
+  ll <- sum(estimators[, 3])
+  
+  ll_null <- sum(estimators[, 4])
+  
+  means <- cbind(dev, aic, ll, ll_null, means)
   
   names(means) <- dimnames(estimators)[[2]]
    

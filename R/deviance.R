@@ -1,130 +1,3 @@
-#' @param method a character for the method to compute logLik 
-#'  options are "Hunter" or "Turner"
-#' @param newdata optionally, a data frame in which to look for variables 
-#' @method logLik pltree
-#' @rdname pseudoR2
-#' @importFrom stats predict
-#' @importFrom partykit predict.modelparty nodeids
-#' @export
-logLik.pltree <- function(object, newdata = NULL, method = "tree", ...) {
-  
-  if (method == "tree") {
-    
-    if (is.null(newdata)) {
-        return(NextMethod(object, ...))
-    }
-    
-    response <- as.character(formula(object)[[2L]])
-    if (!response %in% colnames(newdata)) 
-      stop("`newdata` must include response")
-    f <- formula(object)
-    environment(f) <- parent.frame()
-    newdata <- model.frame(f, data = newdata, ...)
-    node <- partykit::predict.modelparty(object, newdata = newdata, 
-                                         type = "node")
-    cf <- coef(object, log = FALSE)
-    if (is.null(dim(cf))) 
-      cf <- t(as.matrix(cf))
-    nodes <- partykit::nodeids(object, terminal = TRUE)
-    dots <- object$info$dots
-    G <- model.response(newdata)
-    w <- model.weights(newdata)
-    if (is.null(w)) 
-      w <- rep.int(1L, length(G))
-    LL <- df <- numeric(length(nodes))
-    for (i in seq_along(nodes)) {
-      id <- node == nodes[i]
-      if (sum(id)) {
-        fit <- suppressWarnings(do.call("plfit", c(list(y = G[id, 
-        ], start = cf[i, ], weights = w[id], maxit = 0), 
-        dots)))
-        LL[i] <- -fit$objfun
-      }
-    }
-    
-    return(sum(LL))
-      
-  }
-  
-  if(method == "worth"){
-    
-    if (is.null(newdata)){
-      dat <- object$data
-    }
-    
-    if (!is.null(newdata)) {
-      dat <- newdata   
-    }
-    
-    whichG <- unlist(lapply(dat, class))
-    
-    whichG <- which(whichG %in% "grouped_rankings")
-    
-    G <- dat[, whichG]
-    
-    G <- G[1:length(G), , as.grouped_rankings = FALSE]
-    
-    coeff <- stats::predict(object, newdata = dat, ...)
-    
-    
-    dimo <- dim(G)
-    
-    # Compute logLik
-    input <- array(c(G, coeff), dim = c(dimo, 2))
-    
-    LL <- apply(input, 1, function(x) {
-      
-      x <- x[x[, 1] != 0, ]
-      # Put coefficients in the right order
-      v <- x[order(x[, 1], na.last = NA), 2]
-      l <- 0L
-      # From Hunter MM(2004) The Annals of Statistics, Vol. 32, 
-      # No. 1, 384-406, page 397
-      for (i in seq_along(v)) {
-        l <- l + v[i] - log(sum(exp(v[(i):(length(v))])))
-      }
-      
-      return(l)
-      
-    })
-    
-    LL <- sum(LL)
-    
-    # This function assumes that all coefficients
-    # are equal to get a true null estimates
-    coeffNULL <- matrix(0, nrow = dimo[1], ncol = dimo[2])
-    
-    inputNULL <- array(c(G, coeffNULL), dim = c(dimo, 2))
-    
-    LLnull <- apply(inputNULL, 1, function(x) {
-      
-      x <- x[x[, 1] != 0, ]
-      # Put coefficients in the right order
-      v <- x[order(x[, 1], na.last = NA), 2]
-      l <- 0L
-      # From Hunter MM(2004) The Annals of Statistics, Vol. 32, 
-      # No. 1, 384-406, page 397
-      for (i in seq_along(v)) {
-        l <- l + v[i] - log(sum(exp(v[(i):(length(v))])))
-      }
-      
-      return(l)
-    
-  })
-  
-  LLnull <- sum(LLnull)
-  
-  result <- c(LL, LLnull)
-  
-  names(result) <- c("logLik", "logLikNULL")
-  
-  return(result)
-  }
-  
-}
-
-
-
 #' AIC from a Bradley-Terry model
 #' code adapted from PlackettLuce repository
 #' Turner et al (2020)
@@ -307,13 +180,20 @@ deviance.bttree <- function(object, newdata = NULL, ...) {
 #' @export
 deviance.pltree <- function(object, newdata = NULL, ...) {
   
-  # compute deviance
-  object <- logLik(object, newdata = newdata, ...)
+  if (is.null(newdata)) {
+    return(NextMethod(object, ...))
+  }
   
-  # and the deviance 
-  result <- object * - (2)
+  # get AIC from model object 
+  aic <- stats::AIC(object, newdata = newdata, ...)
   
-  return(as.vector(result[1]))
+  # get degrees of freedom
+  df <- attr(stats::logLik(object), "df")
+  
+  #get the deviance
+  pltree_deviance <- aic - (2 * df)
+  
+  return(pltree_deviance)
   
 }
 
