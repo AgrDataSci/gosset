@@ -1,4 +1,5 @@
 #' Rank decimal numbers
+#' 
 #' @param object a vector with floating point numbers
 #' @param id optional, a vector with ids to group values
 #' @param bindwith optional, a data.frame to cbind with ranked values
@@ -441,29 +442,3 @@
   return(x)
 }
 
-#' Get labels of variables used in a party tree
-#' 
-#' @param x an object of class \code{party}
-#' @examples 
-#' 
-#' example("beans", package = "PlackettLuce")
-#' G <- group(R, rep(seq_len(nrow(beans)), 4))
-#' 
-#' tree <- pltree(G ~ maxTN + season + lon, data = beans)
-#' 
-#' get_rules_labels(tree)
-#' @export
-get_rules_labels <- function(x) {
-  
-  rules <- partykit:::.list.rules.party(x)
-  rules <- paste(rules, collapse = "  ")
-
-  var <- names(model.frame(x))
-
-  labels <- sapply(var, function(x) {
-    grepl(x, rules)
-  })
-  
-  names(labels[labels == TRUE])
-  
-}

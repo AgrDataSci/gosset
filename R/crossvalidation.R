@@ -13,7 +13,8 @@
 #' @param data a data frame (or object coercible by as.data.frame to a data frame)
 #' containing the variables in the model
 #' @param k an integer for the number of bins in the cross-validation
-#' @param folds an optional vector or list of vectors specifying the \var{k}-folds in the cross-validation
+#' @param folds an optional vector or list of vectors specifying the \var{k}-folds 
+#' in the cross-validation
 #' @param mean.method a character for the method to calculate the mean of 
 #' cross-validation estimators. 
 #' Options are: 'equal', arithmetic mean; 
@@ -21,7 +22,7 @@
 #' 'Ztest' weighted through Z-test. See references 
 #' @param logLik.method a character for the method to compute logLik,
 #'  options are "tree" (default) or "worth"
-#' @param seed integer, the seed for random number generation. If NULL (the default), 
+#' @param seed integer, the seed for random number generation. If \code{NULL} (the default), 
 #' \pkg{gosset} will set the seed randomly
 #' @param ... additional arguments passed the methods of the chosen model
 #' @return an object of class \code{gosset_cv} with the cross-validation 
@@ -37,22 +38,20 @@
 #' \code{\link[gnm]{gnm}},
 #' \code{\link[PlackettLuce]{pltree}}
 #' @references 
-#' Agresti A. (2002). Categorical Data Analysis. 
-#' \url{http://doi.wiley.com/10.1002/0471249688}
 #' 
 #' Elder J. F. (2003). Journal of Computational and Graphical Statistics, 12(4), 853–864.
-#' \url{https://doi.org/10.1198/1061860032733}
+#' \doi{https://doi.org/10.1198/1061860032733}
 #' 
 #' James G., et al. (2013). An Introduction to Statistical Learning: with Applications in R.
-#' \url{https://doi.org/10.1007/978-1-4614-7138-7}
+#' \doi{https://doi.org/10.1007/978-1-4614-7138-7}
 #' 
 #' Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. 
-#' \url{https://doi.org/10.1111/j.1420-9101.2005.00917.x}
+#' \doi{https://doi.org/10.1111/j.1420-9101.2005.00917.x}
 #' 
 #' @examples
-#' # Generalized Linear Models
-#' require("gnm")
 #' 
+#' # Generalized Linear Models
+#' if (require("gnm")) {
 #' data("airquality")
 #' 
 #' cv <- crossvalidation(Temp ~ Wind + Solar.R,
@@ -60,11 +59,11 @@
 #'                       k = 3,
 #'                       seed = 999,
 #'                       family = poisson())
-#'                 
+#' }
 #' 
 #' \donttest{
 #' # Folds as list 
-#' require("caret")
+#' if(require("caret")) {
 #' 
 #' fd <- createFolds(y = airquality$Day, k = 15, list = TRUE, returnTrain = TRUE)
 #'  
@@ -72,11 +71,11 @@
 #'                 data = airquality,
 #'                 folds = fd,
 #'                 family = poisson(link = "log"))
-#' 
+#' }
 #' ########################################
 #'   
 #' # Plackett-Luce Model
-#' require("PlackettLuce")
+#' if(require("PlackettLuce")) {
 #' 
 #' # beans data from PlackettLuce
 #' data("beans", package = "PlackettLuce")
@@ -98,19 +97,7 @@
 #'                       k = k,
 #'                       folds = folds,
 #'                       minsize = 100)
-#' 
-#' ########################################
-#' 
-#' # Bradley-Terry Model
-#' require("psychotree")
-#' 
-#' # Germany's Next Topmodel 2007 data from psychotree
-#' data("Topmodel2007", package = "psychotree")
-#' 
-#' cv <- crossvalidation(preference ~ .,
-#'                       data = Topmodel2007,
-#'                       k = 5)
-#'                 
+#' }
 #' }
 #'                 
 #' @importFrom stats model.frame model.response runif

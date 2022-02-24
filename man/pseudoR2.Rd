@@ -26,7 +26,7 @@ pseudoR2(object, ...)
 \item{newdata}{optionally, a data frame in which to look for variables}
 
 \item{method}{a character for the method to compute logLik 
-options are "Hunter" or "Turner"}
+options are "tree" or "worth"}
 }
 \value{
 A data frame containing the pseudo R-squared coefficients:

@@ -29,7 +29,7 @@ kendallTau(x, y, ...)
 
 \item{y}{a vector, matrix or data frame with compatible dimensions to \code{x}}
 
-\item{...}{further arguments afecting the Kendall tau produced. See details}
+\item{...}{further arguments affecting the Kendall tau produced. See details}
 }
 \value{
 The Kendall correlation coefficient and the Effective N, which 
@@ -50,10 +50,6 @@ and the possibility to remove zeros from incomplete ranks
 null.rm logical, to remove zeros from \code{x} and \code{y}
 }
 \examples{
-
-# check the correlation between observed rankings 
-# and the predicted rankings from PlackettLuce
-
 library("PlackettLuce")
 
 R <- matrix(c(1, 2, 4, 3,
@@ -79,7 +75,7 @@ k <- kendallTau(R[1,], preds[1,])
 }
 \references{
 Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. 
-https://doi.org/10.1093/biomet/30.1-2.81.
+\doi{https://doi.org/10.1093/biomet/30.1-2.81}
 }
 \seealso{
 \code{\link[stats]{cor}}

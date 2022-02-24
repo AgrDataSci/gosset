@@ -40,7 +40,7 @@
 #'                   items = 2,
 #'                   input = 3,
 #'                   id = 1,
-#'                   grouped.rankings = TRUE)
+#'                   group = TRUE)
 #' 
 #' #..............................................
 #' #..............................................
@@ -62,19 +62,12 @@
 #'                   items = c(1:5),
 #'                   input = c(6:10))
 #'  
-#' @importFrom tidyr gather spread
 #' @importFrom PlackettLuce as.rankings group
 #' @export
-rank_numeric <- function(data = NULL, items = NULL,
-                         input = NULL, id = NULL, 
-                         group = FALSE, ascending = FALSE, 
+rank_numeric <- function(data, items, input, 
+                         id = NULL, group = FALSE, ascending = FALSE, 
                          ...) {
   
-  
-  # keep only target columns in data
-  if (is.null(data)) {
-    stop("argument 'data' is missing with no default \n")
-  }
   
   if (class(data)[1] != "data.frame") {
     data <- data.frame(data, stringsAsFactors = FALSE)
@@ -131,10 +124,7 @@ rank_numeric <- function(data = NULL, items = NULL,
     r <- cbind(id, items, r)
     
     # put rankings into a long format 
-    r <- tidyr::gather(r, 
-                       key = "variable",
-                       value = "value",
-                       names(r)[2:ncol(r)])
+    r <- .set_long(r, id = "id")
     
     # this vector checks which rows are the ranks and which 
     # are the item name
@@ -184,7 +174,7 @@ rank_numeric <- function(data = NULL, items = NULL,
   }
   
   # reshape data into wide format
-  r <- tidyr::spread(r, item, rank)
+  r <- .set_wide(r, "id")
   
   # replace possible NA's with zeros (0) as required for PlackettLuce
   r[is.na(r)] <- 0

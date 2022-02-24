@@ -8,10 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-Toolkit for a workflow to analyse experimental citizen 
-    science data, from collating data of different sources to model selection and 
-    visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer 
-    of modern statistics in small sample experimental design and analysis.
+Toolkit for a workflow to analyse experimental citizen science data, from collating data of different sources to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.
 }
 \seealso{
 \strong{Useful links:}
@@ -25,6 +22,6 @@ Toolkit for a workflow to analyse experimental citizen
 }
 }
 \author{
-Kauê de Sousa and Jacob van Etten and Sam Dumble and 
- Nicolas Greliche and Jonathan Steinke and Svein Ø. Solberg
+Kauê de Sousa and Jacob van Etten and David Brown 
+and Jonathan Steinke
 }

@@ -1,8 +1,9 @@
 #' Modelling Metadata and Experimental Citizen Science
 #'
 #' @name gosset
-#' @author Kauê de Sousa and Jacob van Etten and Sam Dumble and 
-#'  Nicolas Greliche and Jonathan Steinke and Svein Ø. Solberg
+#' @author Kauê de Sousa and Jacob van Etten and David Brown 
+#' and Jonathan Steinke
+#' 
 #' @docType package
 #'
 #' @seealso

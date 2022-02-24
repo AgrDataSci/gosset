@@ -10,9 +10,11 @@
 #' \item{relative_logLik}{the relative log-likelihood}
 #' \item{akaike_weights}{the Akaike weights}
 #' @references 
+#' 
 #' Wagenmakers E. J. & Farrell S. (2004). 
 #' Psychonomic Bulletin and Review, 11(1), 192–196. 
-#' \url{https://doi.org/10.3758/BF03206482}
+#' \doi{https://doi.org/10.3758/BF03206482}
+#' 
 #' @examples
 #'  
 #' data("airquality")

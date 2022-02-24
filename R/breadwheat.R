@@ -1,10 +1,11 @@
 #' Preferred bread wheat varieties
 #'
-#' Data from crowdsourcing citizen-science trials of bread wheat 
+#' Data from decentralized on-farm trials of bread wheat 
 #' (\emph{Triticum aestivum} L.) varieties in Vaishali, India over the 
 #' 2014's Rabi season. Farmers were asked to test three varieties 
-#' of bread wheat randomly assigned from a total of 16 varieties 
-#' and report which one had the best and worst performance considering 
+#' of bread wheat randomly assigned as incomplete blocks of 
+#' three varieties (out of 16 varieties) and assess which one had
+#' the best and worst performance considering 
 #' four traits, germination, grain quality, yield and overall performance. 
 #' 
 #' @keywords dataset
@@ -14,7 +15,8 @@
 #'     \item{\code{variety_b}}{The name of variety B in the comparison.}
 #'     \item{\code{variety_c}}{The name of variety C in the comparison.}
 #'     \item{\code{district}}{The administrative region where the experiment was stablished.}
-#'     \item{\code{village}}{The village within the administrative region where the experiment was stablished.}
+#'     \item{\code{village}}{The village within the administrative region where the 
+#'      experiment was stablished.}
 #'     \item{\code{participant_name}}{The participant name (ommited for protection and privacy).}
 #'     \item{\code{age}}{The participant age.}
 #'     \item{\code{gender}}{The participant gender M = Male; F = Female.}

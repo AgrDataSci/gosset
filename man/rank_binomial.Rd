@@ -49,7 +49,7 @@ rank_binomial(R, disaggregate = TRUE)
 \references{
 Turner H. & Firth D. (2012). 
 Journal of Statistical Software, 48(9), 1–21. 
-\url{http://dx.doi.org/10.18637/jss.v048.i09}
+\doi{https://doi.org/10.18637/jss.v048.i09}
 }
 \seealso{
 \code{\link{btpermute}}, \code{\link[BradleyTerry2]{BTm}}

@@ -13,7 +13,7 @@
 #' @family goodness-of-fit functions
 #' @param x a numeric vector, matrix or data frame
 #' @param y a vector, matrix or data frame with compatible dimensions to \code{x}
-#' @param ... further arguments afecting the Kendall tau produced. See details 
+#' @param ... further arguments affecting the Kendall tau produced. See details 
 #' @details 
 #' 
 #' null.rm logical, to remove zeros from \code{x} and \code{y} 
@@ -24,13 +24,9 @@
 #' @references 
 #' 
 #' Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. 
-#' https://doi.org/10.1093/biomet/30.1-2.81.
+#' \doi{https://doi.org/10.1093/biomet/30.1-2.81}
 #' 
 #' @examples
-#' 
-#' # check the correlation between observed rankings 
-#' # and the predicted rankings from PlackettLuce
-#' 
 #' library("PlackettLuce")
 #' 
 #' R <- matrix(c(1, 2, 4, 3,
@@ -54,7 +50,6 @@
 #' k <- kendallTau(R[1,], preds[1,])
 #' 
 #' @seealso \code{\link[stats]{cor}}
-#' 
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom stats cor
 #' @importFrom PlackettLuce as.grouped_rankings
@@ -86,8 +81,11 @@ kendallTau.default <- function(x, y, ...){
   
   kt <- t(as.data.frame(kt))
   
+  kt <- as.data.frame(kt)
   
-  kt <- tibble::as_tibble(kt)
+  class(kt) <- union("gosset_df", class(kt))
+  
+  rownames(kt) <- 1:nrow(kt)
   
   return(kt)
   
@@ -129,6 +127,8 @@ kendallTau.matrix <- function(x, y, ...){
   kt <- as.data.frame(kt)
   
   class(kt) <- union("gosset_df", class(kt))
+  
+  rownames(kt) <- 1:nrow(kt)
   
   return(kt)
   

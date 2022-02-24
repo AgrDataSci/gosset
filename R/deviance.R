@@ -1,5 +1,5 @@
 #' @param method a character for the method to compute logLik 
-#'  options are "Hunter" or "Turner"
+#'  options are "tree" or "worth"
 #' @param newdata optionally, a data frame in which to look for variables 
 #' @method logLik pltree
 #' @rdname pseudoR2
@@ -48,34 +48,46 @@ logLik.pltree <- function(object, newdata = NULL, method = "tree", ...) {
   
   if(method == "worth"){
     
+    # if newdata is NULL then use the original data 
+    # in the object
     if (is.null(newdata)){
       dat <- object$data
     }
     
+    # if new data exists then use it to make the rankings
     if (!is.null(newdata)) {
       dat <- newdata   
     }
     
+    # find the grouped_rankings in the data 
     whichG <- unlist(lapply(dat, class))
     
     whichG <- which(whichG %in% "grouped_rankings")
     
     G <- dat[, whichG]
     
+    # and coerce it to a matrix
     G <- G[1:length(G), , as.grouped_rankings = FALSE]
     
+    # get the predicted coefficients from each row in 
+    # the grouped_rankings
     coeff <- stats::predict(object, newdata = dat, ...)
     
-    
+    # get the dimensions of the matrix with the rankings
     dimo <- dim(G)
     
-    # Compute logLik
+    # put the rankings in an array
+    # the first layer is the original rankings
+    # the second layer is the predicted rankings
     input <- array(c(G, coeff), dim = c(dimo, 2))
     
+    # Compute logLik
     LL <- apply(input, 1, function(x) {
       
+      # remove the missing rankings in the original set
       x <- x[x[, 1] != 0, ]
-      # Put coefficients in the right order
+      
+      # Put predicted coefficients in the right order
       v <- x[order(x[, 1], na.last = NA), 2]
       l <- 0L
       # From Hunter MM(2004) The Annals of Statistics, Vol. 32, 
@@ -109,30 +121,27 @@ logLik.pltree <- function(object, newdata = NULL, method = "tree", ...) {
       }
       
       return(l)
+      })
+  
+
+    LLnull <- sum(LLnull)
+  
+    result <- c(LL, LLnull)
     
-  })
-  
-  LLnull <- sum(LLnull)
-  
-  result <- c(LL, LLnull)
-  
-  names(result) <- c("logLik", "logLikNULL")
-  
-  return(result)
+    names(result) <- c("logLik", "logLikNULL")
+    
+    return(result)
+    
   }
   
 }
 
-
-
-#' AIC from a Bradley-Terry model
-#' code adapted from PlackettLuce repository
-#' Turner et al (2020)
 #' @method AIC bttree
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom stats AIC coef formula logLik model.response model.weights
 #' @importFrom partykit nodeids predict.modelparty
 #' @importFrom psychotools btmodel estfun.btmodel itempar
+#' @rdname crossvalidation
 #' @export
 AIC.bttree <- function(object, newdata = NULL, ...) {
   
@@ -205,6 +214,7 @@ AIC.bttree <- function(object, newdata = NULL, ...) {
 # Turner et al (2020)
 # https://github.com/hturner/PlackettLuce/blob/master/R/pltree.R
 #' @method deviance bttree
+#' @rdname crossvalidation
 #' @export
 deviance.bttree <- function(object, newdata = NULL, ...) {
   
@@ -304,6 +314,7 @@ deviance.bttree <- function(object, newdata = NULL, ...) {
 # compute AIC in a validation sample and remove the degrees of freedom
 # https://github.com/hturner/PlackettLuce/issues/32
 #' @method deviance pltree
+#' @rdname crossvalidation
 #' @export
 deviance.pltree <- function(object, newdata = NULL, ...) {
   
@@ -321,6 +332,7 @@ deviance.pltree <- function(object, newdata = NULL, ...) {
 # compute AIC with a validation sample
 # code from https://freakonometrics.hypotheses.org/20158
 #' @method AIC gnm
+#' @rdname crossvalidation
 #' @export
 AIC.gnm <- function(object, newdata = NULL, ...) {
   
@@ -337,6 +349,7 @@ AIC.gnm <- function(object, newdata = NULL, ...) {
 
 # code from https://freakonometrics.hypotheses.org/20158
 #' @method deviance gnm
+#' @rdname crossvalidation
 #' @export
 deviance.gnm <- function(object, newdata = NULL, ...) {
   
@@ -363,6 +376,7 @@ deviance.gnm <- function(object, newdata = NULL, ...) {
 # compute AIC with a validation sample
 # code from https://freakonometrics.hypotheses.org/20158
 #' @method AIC glm
+#' @rdname crossvalidation
 #' @export
 AIC.glm <- function(object, newdata = NULL, ...) {
   
@@ -379,6 +393,7 @@ AIC.glm <- function(object, newdata = NULL, ...) {
 
 # code from https://freakonometrics.hypotheses.org/20158
 #' @method deviance glm
+#' @rdname crossvalidation
 #' @export
 deviance.glm <- function(object, newdata = NULL, ...) {
   
@@ -405,6 +420,7 @@ deviance.glm <- function(object, newdata = NULL, ...) {
 # compute AIC with a validation sample
 # code from https://freakonometrics.hypotheses.org/20158
 #' @method AIC lm
+#' @rdname crossvalidation
 #' @export
 AIC.lm <- function(object, newdata = NULL, ...) {
   
@@ -421,6 +437,7 @@ AIC.lm <- function(object, newdata = NULL, ...) {
 
 # code from https://freakonometrics.hypotheses.org/20158
 #' @method deviance lm
+#' @rdname crossvalidation
 #' @export
 deviance.lm <- function(object, newdata = NULL, ...) {
   

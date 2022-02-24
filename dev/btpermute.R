@@ -47,12 +47,10 @@
 #'  
 #' @references 
 #' Lysen, S. (2009) Permuted inclusion criterion: A variable selection technique. 
-#' University of Pennsylvania
-#' \url{https://repository.upenn.edu/edissertations/28/}
+#' University of Pennsylvania \url{https://repository.upenn.edu/edissertations/28/}
 #' 
 #' @examples 
-#' \donttest{
-#' require("BradleyTerry2")
+#' if (require("BradleyTerry2")) {
 #' 
 #' data("kenyachoice", package = "gosset")
 #' 

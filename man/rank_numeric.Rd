@@ -5,9 +5,9 @@
 \title{Plackett-Luce rankings from numeric values}
 \usage{
 rank_numeric(
-  data = NULL,
-  items = NULL,
-  input = NULL,
+  data,
+  items,
+  input,
   id = NULL,
   group = FALSE,
   ascending = FALSE,
@@ -67,7 +67,7 @@ R <- rank_numeric(df,
                   items = 2,
                   input = 3,
                   id = 1,
-                  grouped.rankings = TRUE)
+                  group = TRUE)
 
 #..............................................
 #..............................................

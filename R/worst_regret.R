@@ -62,7 +62,6 @@ worst_regret <- function(object, ...){
   
   # get estimates from terminal nodes using qvcalc
   probs <- lapply(probs, function(X) {
-
     parameters <- psychotools::itempar(X, vcov = TRUE, alias = TRUE)
     parameters <- qvcalc::qvcalc.itempar(parameters)
     parameters <- parameters[[2]]
