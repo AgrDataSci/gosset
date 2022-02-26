@@ -442,3 +442,21 @@
   return(x)
 }
 
+
+
+#' Color pallete
+#' @param x a integer
+#' @return the color pallete
+#' @noRd
+.col_pallet <- function(x, ...) {
+  
+  p <- c('#d73027','#4575b4', '#f46d43','#74add1', 
+         '#fdae61','#abd9e9', '#fee090', '#762a83',
+         '#a6dba0','#9970ab','#5aae61', '#c2a5cf', 
+         '#1b7837')
+  
+  v <- p[1:x]
+  
+  return(v)
+  
+}

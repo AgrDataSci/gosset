@@ -3,7 +3,7 @@
   "@type": "SoftwareSourceCode",
   "identifier": "gosset",
   "description": "Toolkit for a workflow to analyse experimental agriculture data, \n    from data synthesis to model selection and visualisation. \n    The package is named after W.S. Gosset aka ‘Student’, a pioneer \n    of modern statistics in small sample experimental design and analysis.",
-  "name": "gosset: Tools for Analysis and Visualiation in Experimental Agriculture",
+  "name": "gosset: Tools for Data Analysis in Experimental Agriculture",
   "codeRepository": "https://agrdatasci.github.io/gosset/",
   "issueTracker": "https://github.com/agrdatasci/gosset/issues",
   "license": "https://spdx.org/licenses/MIT",
@@ -244,5 +244,5 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1971.541KB"
+  "fileSize": "1982.284KB"
 }

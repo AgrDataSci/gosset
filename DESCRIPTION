@@ -1,6 +1,6 @@
 Package: gosset
 Type: Package
-Title: Tools for Analysis and Visualiation in Experimental Agriculture
+Title: Tools for Data Analysis in Experimental Agriculture
 Version: 0.3
 Authors@R: c(person("Kauê", "de Sousa", 
         email = "kaue.desousa@inn.no", role = c("aut", "cre"),
@@ -43,3 +43,4 @@ Suggests:
     testthat
 Language: en-GB
 RoxygenNote: 7.1.2
+VignetteBuilder: knitr

@@ -256,7 +256,7 @@ plot.pltree <- function(x,
   # Extract ids from terminal nodes
   node_id <- partykit::nodeids(x, terminal = TRUE)
   
-  # get node information
+  # get models from each node
   nodes <- list()
   for (i in seq_along(node_id)) {
     nodes[[i]] <- x[[ node_id[i] ]]$node$info$object

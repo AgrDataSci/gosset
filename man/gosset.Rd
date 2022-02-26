@@ -4,7 +4,7 @@
 \name{gosset}
 \alias{gosset}
 \alias{gosset-package}
-\title{Tools for Analysis and Visualiation in Experimental Agriculture}
+\title{Tools for Data Analysis in Experimental Agriculture}
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 

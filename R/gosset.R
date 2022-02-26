@@ -1,4 +1,4 @@
-#' Tools for Analysis and Visualiation in Experimental Agriculture
+#' Tools for Data Analysis in Experimental Agriculture
 #'
 #' @name gosset
 #' @author Kauê de Sousa and Jacob van Etten 

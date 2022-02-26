@@ -1,0 +1,24 @@
+---
+title: "gosset: Tools for Data Analysis in Experimental Agriculture"
+package: gosset
+author:
+- name: Kauê de Sousa
+  affiliation: Department of Agricultural Sciences, Inland Norway University, Hamar, Norway </br> Systems Tranformation, Bioversity International, Montpellier, France 
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{Overview}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown_notangle}
+bibliography: ["vignette.bib"]
+csl: citation_style.csl
+---
+
+# Summary
+
+
+# Usage
+
+
+
+## References
+

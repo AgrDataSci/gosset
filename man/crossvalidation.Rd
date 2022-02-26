@@ -78,6 +78,44 @@ test data in Bradley-Terry model from \pkg{psychotree}, Generalized Linear and
 Generalized Nonlinear models from \pkg{gnm}, and Plackett-Luce model from 
 \pkg{PlackettLuce}
 }
+\examples{
+\donttest{
+# Generalized Linear Models
+if (require("gnm")) {
+data("airquality")
+
+cv <- crossvalidation(Temp ~ Wind + Solar.R,
+                      data = airquality,
+                      k = 3,
+                      seed = 999,
+                      family = poisson())
+}                    
+# Plackett-Luce Model
+if(require("PlackettLuce")) {
+# beans data from PlackettLuce
+data("beans", package = "PlackettLuce")
+
+G <- rank_tricot(data = beans,
+                 items = c(1:3),
+                 input = c(4:5),
+                 additional.rank = beans[c(6:8)],
+                 group = TRUE)
+
+beans <- cbind(G, beans)
+
+# take seasons as bins
+k <- length(unique(beans$season))
+folds <- as.integer(as.factor(beans$season))
+
+cv <- crossvalidation(G ~ maxTN,
+                      data = beans,
+                      k = k,
+                      folds = folds,
+                      minsize = 100)
+}
+}
+                
+}
 \references{
 Elder J. F. (2003). Journal of Computational and Graphical Statistics, 12(4), 853–864.
 \doi{https://doi.org/10.1198/1061860032733}

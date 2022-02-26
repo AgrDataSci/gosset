@@ -61,7 +61,7 @@
 #'                       k = 3,
 #'                       seed = 999,
 #'                       family = poisson())
-#'                       
+#' }                    
 #' # Plackett-Luce Model
 #' if(require("PlackettLuce")) {
 #' # beans data from PlackettLuce
