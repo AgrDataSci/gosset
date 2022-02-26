@@ -16,12 +16,25 @@ The **gosset** package provides the toolkit for a workflow to analyse experiment
 
 ## Installation
 
+The stable version is available through CRAN.
+
+```r
+install.packages("gosset")
+```
+
 The development version can be installed via
 
 ``` r
 library("remotes")
-remotes::install_github("agrdatasci/gosset", build_vignettes = TRUE)
+remotes::install_github("agrdatasci/gosset")
 ```
+
+## Example
+
+## Going further
+
+The full functionality of **gosset** is illustrated in the [package website](https://AgrDataSci.github.io/gosset/) 
+
 
 ## Meta
 
