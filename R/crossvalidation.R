@@ -25,6 +25,8 @@
 #' @param seed integer, the seed for random number generation. If \code{NULL} (the default), 
 #' \pkg{gosset} will set the seed randomly
 #' @param ... additional arguments passed the methods of the chosen model
+#' @param object a model object
+#' @param newdata a data.frame with test data
 #' @return an object of class \code{gosset_cv} with the cross-validation 
 #' goodness-of-fit estimates, which are:
 #' \item{AIC}{Akaike Information Criterion}
@@ -48,8 +50,8 @@
 #' Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. 
 #' \doi{https://doi.org/10.1111/j.1420-9101.2005.00917.x}
 #' 
-#' @examples
-#' 
+#' @examples 
+#' \donttest{
 #' # Generalized Linear Models
 #' if (require("gnm")) {
 #' data("airquality")
@@ -59,24 +61,9 @@
 #'                       k = 3,
 #'                       seed = 999,
 #'                       family = poisson())
-#' }
-#' 
-#' \donttest{
-#' # Folds as list 
-#' if(require("caret")) {
-#' 
-#' fd <- createFolds(y = airquality$Day, k = 15, list = TRUE, returnTrain = TRUE)
-#'  
-#' crossvalidation(Temp ~ .,
-#'                 data = airquality,
-#'                 folds = fd,
-#'                 family = poisson(link = "log"))
-#' }
-#' ########################################
-#'   
+#'                       
 #' # Plackett-Luce Model
 #' if(require("PlackettLuce")) {
-#' 
 #' # beans data from PlackettLuce
 #' data("beans", package = "PlackettLuce")
 #' 
@@ -211,6 +198,7 @@ crossvalidation <- function(formula,
     
   })
   
+  newdata <- ""
   # get goodness-of-fit estimates from models
   # take models from training data to compute deviance, pseudo R-squared
   # and the predictions of the test part of the data
@@ -359,7 +347,6 @@ crossvalidation <- function(formula,
   return(result)
   
 }
-
 
 #' @method print gosset_cv
 #' @export

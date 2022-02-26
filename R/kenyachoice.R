@@ -24,8 +24,7 @@
 #'  \item{\code{Z}}{Zai pits}  
 #'  }
 #' @source 
-#' Steinke, J., et. al. (2019). Household-specific targeting of agricultural advice 
-#' via mobile phones: Feasibility of a minimum data approach for smallholder context. 
-#' Computers and Electronics in Agriculture, 162, 991–1000. 
-#' \url{https://doi.org/10.1016/j.compag.2019.05.026}
+#' Steinke, J., et. al. (2019). 
+#' Computers and Electronics in Agriculture, 162, 991–1000.
+#' \doi{https://doi.org/10.1016/j.compag.2019.05.026}
 "kenyachoice"

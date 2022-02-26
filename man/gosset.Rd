@@ -4,24 +4,24 @@
 \name{gosset}
 \alias{gosset}
 \alias{gosset-package}
-\title{Modelling Metadata and Experimental Citizen Science}
+\title{Tools for Analysis and Visualiation in Experimental Agriculture}
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-Toolkit for a workflow to analyse experimental citizen science data, from collating data of different sources to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.
+Toolkit for a workflow to analyse experimental agriculture data, from data synthesis to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.
 }
 \seealso{
 \strong{Useful links:}
 \itemize{
 \item{Development repository: 
- \url{https://github.com/agrdatasci/gosset}}
+ \url{https://github.com/AgrDataSci/gosset}}
 \item{Static documentation: 
- \url{https://agrdatasci.github.io/gosset/}}
+ \url{https://AgrDataSci.github.io/gosset/}}
 \item{Report bugs: 
- \url{https://github.com/agrdatasci/gosset/issues}}
+ \url{https://github.com/AgrDataSci/gosset/issues}}
 }
 }
 \author{
-Kauê de Sousa and Jacob van Etten and David Brown 
-and Jonathan Steinke
+Kauê de Sousa and Jacob van Etten 
+and David Brown and Jonathan Steinke
 }

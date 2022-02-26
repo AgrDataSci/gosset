@@ -1,22 +1,19 @@
 {
-  "@context": [
-    "https://doi.org/10.5063/schema/codemeta-2.0",
-    "http://schema.org"
-  ],
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "gosset",
-  "description": "Toolkit for a workflow to analyse metadata and experimental citizen \n    science data, from collating data of different sources to model sellection and \n    visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer \n    of modern statistics in small sample experimental design and analysis.",
-  "name": "gosset: Modelling Metadata and Crowdsourced Citizen Science",
-  "codeRepository": "https://github.com/agrobioinfoservices/gosset",
+  "description": "Toolkit for a workflow to analyse experimental agriculture data, \n    from data synthesis to model selection and visualisation. \n    The package is named after W.S. Gosset aka ‘Student’, a pioneer \n    of modern statistics in small sample experimental design and analysis.",
+  "name": "gosset: Tools for Analysis and Visualiation in Experimental Agriculture",
+  "codeRepository": "https://agrdatasci.github.io/gosset/",
   "issueTracker": "https://github.com/agrdatasci/gosset/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.2.5.9012",
+  "version": "0.3",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.0.3 (2020-10-10)",
+  "runtimePlatform": "R version 4.1.0 (2021-05-18)",
   "author": [
     {
       "@type": "Person",
@@ -30,16 +27,6 @@
       "givenName": "Jacob",
       "familyName": "van Etten",
       "@id": "https://orcid.org/0000-0001-7554-2558"
-    },
-    {
-      "@type": "Person",
-      "givenName": "Sam",
-      "familyName": "Dumble"
-    },
-    {
-      "@type": "Person",
-      "givenName": "Nicolas",
-      "familyName": "Greliche"
     },
     {
       "@type": "Person",
@@ -60,16 +47,8 @@
       "givenName": "Jacob",
       "familyName": "van Etten",
       "@id": "https://orcid.org/0000-0001-7554-2558"
-    },
-    {
-      "@type": "Person",
-      "givenName": "Svein",
-      "familyName": "Solberg",
-      "@id": "https://orcid.org/0000-0002-4491-4483"
     }
   ],
-  "copyrightHolder": {},
-  "funder": {},
   "maintainer": [
     {
       "@type": "Person",
@@ -82,30 +61,6 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
-      "identifier": "climatrends",
-      "name": "climatrends",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=climatrends"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "ClimMobTools",
-      "name": "ClimMobTools",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=ClimMobTools"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "gnm",
       "name": "gnm",
       "provider": {
@@ -115,18 +70,6 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=gnm"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "ggparty",
-      "name": "ggparty",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=ggparty"
     },
     {
       "@type": "SoftwareApplication",
@@ -154,18 +97,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "patchwork",
-      "name": "patchwork",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=patchwork"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "rmarkdown",
       "name": "rmarkdown",
       "provider": {
@@ -189,26 +120,19 @@
       "sameAs": "https://CRAN.R-project.org/package=testthat"
     }
   ],
-  "softwareRequirements": [
-    {
+  "softwareRequirements": {
+    "1": {
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
       "version": ">= 3.5.0"
     },
-    {
+    "2": {
       "@type": "SoftwareApplication",
-      "identifier": "abind",
-      "name": "abind",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=abind"
+      "identifier": "methods",
+      "name": "methods"
     },
-    {
+    "3": {
       "@type": "SoftwareApplication",
       "identifier": "BradleyTerry2",
       "name": "BradleyTerry2",
@@ -220,31 +144,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=BradleyTerry2"
     },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "doParallel",
-      "name": "doParallel",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=doParallel"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "foreach",
-      "name": "foreach",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=foreach"
-    },
-    {
+    "4": {
       "@type": "SoftwareApplication",
       "identifier": "ggplot2",
       "name": "ggplot2",
@@ -256,12 +156,19 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=ggplot2"
     },
-    {
+    "5": {
       "@type": "SoftwareApplication",
-      "identifier": "methods",
-      "name": "methods"
+      "identifier": "ggparty",
+      "name": "ggparty",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggparty"
     },
-    {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "partykit",
       "name": "partykit",
@@ -273,16 +180,10 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=partykit"
     },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "parallel",
-      "name": "parallel"
-    },
-    {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "PlackettLuce",
       "name": "PlackettLuce",
-      "version": ">= 0.2-8",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -291,7 +192,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=PlackettLuce"
     },
-    {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "psychotools",
       "name": "psychotools",
@@ -303,7 +204,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=psychotools"
     },
-    {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "qvcalc",
       "name": "qvcalc",
@@ -315,24 +216,12 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=qvcalc"
     },
-    {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "stats",
       "name": "stats"
     },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "tibble",
-      "name": "tibble",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=tibble"
-    },
-    {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "tidyr",
       "name": "tidyr",
@@ -344,17 +233,24 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tidyr"
     },
-    {
+    "12": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
-    }
-  ],
-  "releaseNotes": "https://github.com/agrobioinfoservices/gosset/blob/master/NEWS.md",
-  "readme": "https://github.com/AgrDataSci/gosset/blob/master/README.md",
-  "fileSize": "1889.243KB",
-  "contIntegration": ["https://travis-ci.org/agrobioinfoservices/gosset", "https://codecov.io/github/agrobioinfoservices/gosset?branch=master"],
-  "developmentStatus": "https://www.tidyverse.org/lifecycle/#maturing",
-  "relatedLink": "https://agrdatasci.github.io/gosset/",
-  "keywords": ["r", "citizen-science", "rankings-data", "meta-analysis"]
+    },
+    "13": {
+      "@type": "SoftwareApplication",
+      "identifier": "patchwork",
+      "name": "patchwork",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=patchwork"
+    },
+    "SystemRequirements": null
+  },
+  "fileSize": "1968.535KB"
 }

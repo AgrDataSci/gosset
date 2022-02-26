@@ -16,11 +16,11 @@
 #' @references 
 #' Loomes G. & Sugden R. (1982). 
 #' The Economic Journal, 92(368), 805. 
-#' \url{https://doi.org/10.2307/2232669}
+#' \doi{https://doi.org/10.2307/2232669}
 #' 
 #' Bleichrodt H. & Wakker P. P. (2015). 
 #' The Economic Journal, 125(583), 493–532. 
-#' \url{https://doi.org/10.1111/ecoj.12200}
+#' \doi{https://doi.org/10.1111/ecoj.12200}
 #' 
 #' @examples
 #'
@@ -102,7 +102,7 @@ worst_regret <- function(object, ...){
   
   winProbs <- apply(winprobs, 2, mean)
 
-  w <- as.data.frame(cbind(win_probs = winProbs , worst_regret = WR ))
+  w <- as.data.frame(cbind(win_probs = winProbs , worst_regret = WR))
 
   w$items <- row.names(w)
 
@@ -112,7 +112,10 @@ worst_regret <- function(object, ...){
 
   w <- as.data.frame(w[ ,c(3,1:2)])
 
+  rownames(w) <- 1:nrow(w)
+  
   class(w) <- union("gosset_df", class(w))
   
   return(w)
+  
 }

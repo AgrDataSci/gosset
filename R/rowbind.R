@@ -1,15 +1,21 @@
 #' Combine R objects by rows
 #' 
-#' Combine R objects when number and names of columns do no match 
+#' Combine R objects when number and names of columns do not match 
 #' 
 #' @family utility functions
 #' @param x a R object, typically a data.frame, matrix or list
 #' @param y a matrix, a data.frame (or any other object that can
 #' be coerced to data.frame)
 #' @param ... additional arguments passed to methods
+#' @return a data.frame with the combined data
 #' @examples
+#'  
+#' # two data frames
+#' rowbind(airquality, mtcars)
 #' 
-#' d <- rowbind(airquality, mtcars)
+#' # a list of data frames
+#' l <- list(airquality, mtcars)
+#' rowbind(l)
 #' 
 #' @export
 rowbind <- function(x, ...){

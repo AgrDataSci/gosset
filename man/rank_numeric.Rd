@@ -69,26 +69,6 @@ R <- rank_numeric(df,
                   id = 1,
                   group = TRUE)
 
-#..............................................
-#..............................................
- 
-# Rankings with 5 items randomly assigned
-
-i <- as.data.frame(matrix(NA, nrow = 10, ncol = 5))
-names(i) <- paste0("Item",1:5)
-
-r <- as.data.frame(matrix(NA, nrow = 10, ncol = 5))
-names(r) <- paste0("Position_Item",1:5)
-
-for(s in 1:10) {
-  i[s,] <- sample(LETTERS[1:5])
-  r[s,] <- sample(1:5)
-}
-data <- cbind(i, r)
-R <- rank_numeric(data = data,
-                  items = c(1:5),
-                  input = c(6:10))
- 
 }
 \seealso{
 \code{\link[PlackettLuce]{rankings}}

@@ -1,8 +1,8 @@
-#' Modelling Metadata and Experimental Citizen Science
+#' Tools for Analysis and Visualiation in Experimental Agriculture
 #'
 #' @name gosset
-#' @author Kauê de Sousa and Jacob van Etten and David Brown 
-#' and Jonathan Steinke
+#' @author Kauê de Sousa and Jacob van Etten 
+#' and David Brown and Jonathan Steinke
 #' 
 #' @docType package
 #'
@@ -10,10 +10,10 @@
 #'\strong{Useful links:}
 #' \itemize{
 #' \item{Development repository: 
-#'  \url{https://github.com/agrdatasci/gosset}}
+#'  \url{https://github.com/AgrDataSci/gosset}}
 #' \item{Static documentation: 
-#'  \url{https://agrdatasci.github.io/gosset/}}
+#'  \url{https://AgrDataSci.github.io/gosset/}}
 #' \item{Report bugs: 
-#'  \url{https://github.com/agrdatasci/gosset/issues}}
+#'  \url{https://github.com/AgrDataSci/gosset/issues}}
 #' }
 "_PACKAGE"

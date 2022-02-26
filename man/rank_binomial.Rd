@@ -52,8 +52,6 @@ Journal of Statistical Software, 48(9), 1–21.
 \doi{https://doi.org/10.18637/jss.v048.i09}
 }
 \seealso{
-\code{\link{btpermute}}, \code{\link[BradleyTerry2]{BTm}}
-
 Other rank functions: 
 \code{\link{rank_numeric}()},
 \code{\link{rank_paircomp}()},

@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Combine R objects by rows — rowbind" />
-<meta property="og:description" content="Combine R objects when number and names of columns do no match" />
+<meta property="og:description" content="Combine R objects when number and names of columns do not match" />
 <meta property="og:image" content="/logo.svg" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5.9012</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3</span>
       </span>
     </div>
 
@@ -88,7 +88,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -102,7 +102,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/agrdatasci/gosset/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -125,16 +125,16 @@
     </div>
 
     <div class="ref-description">
-    <p>Combine R objects when number and names of columns do no match</p>
+    <p>Combine R objects when number and names of columns do not match</p>
     </div>
 
-    <pre class="usage"><span class='fu'>rowbind</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>rowbind</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>rowbind</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)
+<span class='fu'>rowbind</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for list</span>
-<span class='fu'>rowbind</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>rowbind</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,10 +154,20 @@ be coerced to data.frame)</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a data.frame with the combined data</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples">
-<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>rowbind</span>(<span class='no'>airquality</span>, <span class='no'>mtcars</span>)</pre>
+    <pre class="examples"> 
+<span class='co'># two data frames</span>
+<span class='fu'>rowbind</span><span class='op'>(</span><span class='va'>airquality</span>, <span class='va'>mtcars</span><span class='op'>)</span>
+
+<span class='co'># a list of data frames</span>
+<span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>airquality</span>, <span class='va'>mtcars</span><span class='op'>)</span>
+<span class='fu'>rowbind</span><span class='op'>(</span><span class='va'>l</span><span class='op'>)</span>
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -169,11 +179,11 @@ be coerced to data.frame)</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kauê de Sousa, Jacob van Etten, Sam Dumble, Nicolas Greliche, David Brown, Jonathan Steinke.</p>
+  <p>Developed by Kauê de Sousa, Jacob van Etten, David Brown, Jonathan Steinke.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

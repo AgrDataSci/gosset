@@ -47,11 +47,12 @@
 
 
 <meta property="og:title" content="Preferred bread wheat varieties — breadwheat" />
-<meta property="og:description" content="Data from crowdsourcing citizen-science trials of bread wheat 
+<meta property="og:description" content="Data from decentralized on-farm trials of bread wheat 
 (Triticum aestivum L.) varieties in Vaishali, India over the 
 2014's Rabi season. Farmers were asked to test three varieties 
-of bread wheat randomly assigned from a total of 16 varieties 
-and report which one had the best and worst performance considering 
+of bread wheat randomly assigned as incomplete blocks of 
+three varieties (out of 16 varieties) and assess which one had
+the best and worst performance considering 
 four traits, germination, grain quality, yield and overall performance." />
 <meta property="og:image" content="/logo.svg" />
 
@@ -85,7 +86,7 @@ four traits, germination, grain quality, yield and overall performance." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5.9012</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3</span>
       </span>
     </div>
 
@@ -93,7 +94,7 @@ four traits, germination, grain quality, yield and overall performance." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -107,7 +108,7 @@ four traits, germination, grain quality, yield and overall performance." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/agrdatasci/gosset/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -130,25 +131,27 @@ four traits, germination, grain quality, yield and overall performance." />
     </div>
 
     <div class="ref-description">
-    <p>Data from crowdsourcing citizen-science trials of bread wheat 
+    <p>Data from decentralized on-farm trials of bread wheat 
 (<em>Triticum aestivum</em> L.) varieties in Vaishali, India over the 
 2014's Rabi season. Farmers were asked to test three varieties 
-of bread wheat randomly assigned from a total of 16 varieties 
-and report which one had the best and worst performance considering 
+of bread wheat randomly assigned as incomplete blocks of 
+three varieties (out of 16 varieties) and assess which one had
+the best and worst performance considering 
 four traits, germination, grain quality, yield and overall performance.</p>
     </div>
 
-    <pre class="usage"><span class='no'>breadwheat</span></pre>
+    <pre class="usage"><span class='va'>breadwheat</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A data frame with 493 records and 19 variables:</p><dl'>
+    <p>A data frame with 493 records and 19 variables:</p><dl>
     <dt><code>variety_a</code></dt><dd><p>The name of variety A in the comparison.</p></dd>
     <dt><code>variety_b</code></dt><dd><p>The name of variety B in the comparison.</p></dd>
     <dt><code>variety_c</code></dt><dd><p>The name of variety C in the comparison.</p></dd>
     <dt><code>district</code></dt><dd><p>The administrative region where the experiment was stablished.</p></dd>
-    <dt><code>village</code></dt><dd><p>The village within the administrative region where the experiment was stablished.</p></dd>
+    <dt><code>village</code></dt><dd><p>The village within the administrative region where the 
+     experiment was stablished.</p></dd>
     <dt><code>participant_name</code></dt><dd><p>The participant name (ommited for protection and privacy).</p></dd>
     <dt><code>age</code></dt><dd><p>The participant age.</p></dd>
     <dt><code>gender</code></dt><dd><p>The participant gender M = Male; F = Female.</p></dd>
@@ -190,11 +193,11 @@ a CGIAR Research Centre, through the ClimMob platform <a href='https://climmob.n
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kauê de Sousa, Jacob van Etten, Sam Dumble, Nicolas Greliche, David Brown, Jonathan Steinke.</p>
+  <p>Developed by Kauê de Sousa, Jacob van Etten, David Brown, Jonathan Steinke.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

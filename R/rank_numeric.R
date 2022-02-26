@@ -42,30 +42,13 @@
 #'                   id = 1,
 #'                   group = TRUE)
 #' 
-#' #..............................................
-#' #..............................................
-#'  
-#' # Rankings with 5 items randomly assigned
-#' 
-#' i <- as.data.frame(matrix(NA, nrow = 10, ncol = 5))
-#' names(i) <- paste0("Item",1:5)
-#' 
-#' r <- as.data.frame(matrix(NA, nrow = 10, ncol = 5))
-#' names(r) <- paste0("Position_Item",1:5)
-#' 
-#' for(s in 1:10) {
-#'   i[s,] <- sample(LETTERS[1:5])
-#'   r[s,] <- sample(1:5)
-#' }
-#' data <- cbind(i, r)
-#' R <- rank_numeric(data = data,
-#'                   items = c(1:5),
-#'                   input = c(6:10))
-#'  
+#' @importFrom tidyr gather spread
 #' @importFrom PlackettLuce as.rankings group
 #' @export
 rank_numeric <- function(data, items, input, 
-                         id = NULL, group = FALSE, ascending = FALSE, 
+                         id = NULL, 
+                         group = FALSE, 
+                         ascending = FALSE, 
                          ...) {
   
   
@@ -124,7 +107,10 @@ rank_numeric <- function(data, items, input,
     r <- cbind(id, items, r)
     
     # put rankings into a long format 
-    r <- .set_long(r, id = "id")
+    r <- tidyr::gather(r, 
+                       key = "variable",
+                       value = "value",
+                       names(r)[2:ncol(r)])
     
     # this vector checks which rows are the ranks and which 
     # are the item name
@@ -174,7 +160,7 @@ rank_numeric <- function(data, items, input,
   }
   
   # reshape data into wide format
-  r <- .set_wide(r, "id")
+  r <- tidyr::spread(r, item, rank)
   
   # replace possible NA's with zeros (0) as required for PlackettLuce
   r[is.na(r)] <- 0
@@ -195,7 +181,7 @@ rank_numeric <- function(data, items, input,
   # and a PlackettLuce grouped_rankings
   n <- nrow(R)
   G <- PlackettLuce::group(R, index = seq_len(n))
-    
+  
   # return a grouped_rankings if required
   if (group) {
     R <- G
@@ -206,7 +192,7 @@ rank_numeric <- function(data, items, input,
 }
 
 #' Compute an ascending rank
-#' @param object a data.frame internaly formated by rank_numeric
+#' @param object a data.frame internaly formatted by rank_numeric
 #' @return the object with rankings in the ascending order, 
 #' meaning that lower is better
 #' @examples 

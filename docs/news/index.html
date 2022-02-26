@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5.9012</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -101,7 +101,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/agrdatasci/gosset/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -122,30 +122,36 @@
       <small>Source: <a href='https://github.com/agrdatasci/gosset/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="gosset-026-unpublished" class="section level1">
+    <div id="gosset-026" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.6">
-<a href="#gosset-026-unpublished" class="anchor"></a>gosset 0.2.6 (unpublished)</h1>
+<a href="#gosset-026" class="anchor"></a>gosset 0.2.6</h1>
+<div id="improvements" class="section level3">
+<h3 class="hasAnchor">
+<a href="#improvements" class="anchor"></a>Improvements</h3>
 <ul>
 <li>
-<code><a href="../reference/forward.html">forward()</a></code> and <code><a href="../reference/crossvalidation.html">crossvalidation()</a></code> deals with caret list folds</li>
+<code>forward()</code> and <code><a href="../reference/crossvalidation.html">crossvalidation()</a></code> deals with caret list folds</li>
 <li>
-<code><a href="https://rdrr.io/r/base/plot.html">plot()</a></code> method in <code><a href="../reference/summarise_agreement.html">summarise_agreement()</a></code> deals with negative values</li>
+<code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method in <code>summarise_agreement()</code> deals with negative values</li>
+<li>
+<code><a href="../reference/rank_tricot.html">rank_tricot()</a></code> now handles with ties which a assigned in position 2</li>
 </ul>
+</div>
 </div>
     <div id="gosset-0259000-2020-09-16" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.5.9000">
 <a href="#gosset-0259000-2020-09-16" class="anchor"></a>gosset 0.2.5.9000 (2020-09-16)</h1>
-<div id="improvements" class="section level3">
+<div id="improvements-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#improvements" class="anchor"></a>IMPROVEMENTS</h3>
+<a href="#improvements-1" class="anchor"></a>IMPROVEMENTS</h3>
 <ul>
 <li>add argument qve to skip quasi-variance to plot coefficients in <code>plot_tree()</code>
 </li>
 <li>
 <code><a href="../reference/rank_numeric.html">rank_numeric()</a></code> deals with ids of class characters</li>
 <li>argument <code>ref</code> can be used in <code>multicompPL()</code> to select the reference item</li>
-<li>adjust scale in the <code><a href="https://rdrr.io/r/base/plot.html">plot()</a></code> method for <code><a href="../reference/summarise_agreement.html">summarise_agreement()</a></code> using the argument scales, where <code>scales = 100</code> is to set the scale from 0-100 and <code>scales = 1</code> for a scale from 0-1</li>
-<li>plot method for <code><a href="../reference/multcompPL.html">multcompPL()</a></code>
+<li>adjust scale in the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method for <code>summarise_agreement()</code> using the argument scales, where <code>scales = 100</code> is to set the scale from 0-100 and <code>scales = 1</code> for a scale from 0-1</li>
+<li>plot method for <code>multcompPL()</code>
 </li>
 </ul>
 </div>
@@ -155,7 +161,7 @@
 <ul>
 <li>Fix an issue in <code><a href="../reference/rank_binomial.html">rank_binomial()</a></code> in assigning the ids when argument <code>disaggregate = TRUE</code>
 </li>
-<li>Fix an issue in setting up the permuted formulas in <code><a href="../reference/btpermute.html">btpermute()</a></code>, with the fix n.formula = n.vars + 1</li>
+<li>Fix an issue in setting up the permuted formulas in <code>btpermute()</code>, with the fix n.formula = n.vars + 1</li>
 </ul>
 </div>
 </div>
@@ -166,16 +172,16 @@
 <h3 class="hasAnchor">
 <a href="#new-features" class="anchor"></a>NEW FEATURES</h3>
 <ul>
-<li>forward selection is added with <code><a href="../reference/forward.html">forward()</a></code>
+<li>forward selection is added with <code>forward()</code>
 </li>
 <li>
-<code><a href="../reference/btpermute.html">btpermute()</a></code> is added for model selection with BTm()</li>
+<code>btpermute()</code> is added for model selection with BTm()</li>
 <li>abbreviation method in plot methods of summarise_* functions</li>
 </ul>
 </div>
-<div id="improvements-1" class="section level3">
+<div id="improvements-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#improvements-1" class="anchor"></a>IMPROVEMENTS</h3>
+<a href="#improvements-2" class="anchor"></a>IMPROVEMENTS</h3>
 <ul>
 <li>No user visible improvements</li>
 </ul>
@@ -198,9 +204,9 @@
     <div id="gosset-018-2020-01-16" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.8">
 <a href="#gosset-018-2020-01-16" class="anchor"></a>gosset 0.1.8 (2020-01-16)</h1>
-<div id="improvements-2" class="section level3">
+<div id="improvements-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#improvements-2" class="anchor"></a>IMPROVEMENTS</h3>
+<a href="#improvements-3" class="anchor"></a>IMPROVEMENTS</h3>
 <ul>
 <li>Write documentation in good practice. Avoid calling the entire package but specific functions.</li>
 </ul>
@@ -229,7 +235,7 @@
 <h3 class="hasAnchor">
 <a href="#changes-in-behaviour-2" class="anchor"></a>CHANGES IN BEHAVIOUR</h3>
 <ul>
-<li><p>Rename functions <code><a href="../reference/summarise_agreement.html">agreement()</a></code>, <code><a href="../reference/summarise_dominance.html">dominance()</a></code>, <code><a href="../reference/summarise_favourite.html">favourite()</a></code>, and <code><a href="../reference/summarise_victories.html">victories()</a></code> with the tag <code>summarise</code> and add it into summarise functions. No warking message provided. New functions are <code><a href="../reference/summarise_agreement.html">summarise_agreement()</a></code>, <code><a href="../reference/summarise_dominance.html">summarise_dominance()</a></code>, <code><a href="../reference/summarise_favourite.html">summarise_favourite()</a></code>, and <code><a href="../reference/summarise_victories.html">summarise_victories()</a></code></p></li>
+<li><p>Rename functions <code>agreement()</code>, <code>dominance()</code>, <code>favourite()</code>, and <code>victories()</code> with the tag <code>summarise</code> and add it into summarise functions. No warking message provided. New functions are <code>summarise_agreement()</code>, <code>summarise_dominance()</code>, <code>summarise_favourite()</code>, and <code>summarise_victories()</code></p></li>
 <li><p>Argument ‘index’ is removed from <code>rainfall()</code> and <code>temperature()</code>, all indices are given by default</p></li>
 </ul>
 </div>
@@ -258,7 +264,7 @@
 <h3 class="hasAnchor">
 <a href="#new-features-3" class="anchor"></a>NEW FEATURES</h3>
 <ul>
-<li>Function to summarise results from pairwise comparisons, <code><a href="../reference/summarise_agreement.html">agreement()</a></code>, <code><a href="../reference/summarise_dominance.html">dominance()</a></code>, <code><a href="../reference/summarise_favourite.html">favourite()</a></code> and <code><a href="../reference/summarise_victories.html">victories()</a></code>
+<li>Function to summarise results from pairwise comparisons, <code>agreement()</code>, <code>dominance()</code>, <code>favourite()</code> and <code>victories()</code>
 </li>
 <li>Increased test coverage</li>
 </ul>
@@ -331,11 +337,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kauê de Sousa, Jacob van Etten, Sam Dumble, Nicolas Greliche, David Brown, Jonathan Steinke.</p>
+  <p>Developed by Kauê de Sousa, Jacob van Etten, David Brown, Jonathan Steinke.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

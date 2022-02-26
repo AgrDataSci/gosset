@@ -20,12 +20,20 @@ rowbind(x, ...)
 \item{y}{a matrix, a data.frame (or any other object that can
 be coerced to data.frame)}
 }
+\value{
+a data.frame with the combined data
+}
 \description{
-Combine R objects when number and names of columns do no match
+Combine R objects when number and names of columns do not match
 }
 \examples{
+ 
+# two data frames
+rowbind(airquality, mtcars)
 
-d <- rowbind(airquality, mtcars)
+# a list of data frames
+l <- list(airquality, mtcars)
+rowbind(l)
 
 }
 \concept{utility functions}

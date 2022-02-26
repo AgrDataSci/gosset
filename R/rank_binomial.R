@@ -17,7 +17,6 @@
 #'  the second player in the contests}
 #' \item{win1}{number of times player1 wins against player2}
 #' \item{win2}{number of times player2 wins against player1}
-#' @seealso \code{\link{btpermute}}, \code{\link[BradleyTerry2]{BTm}}
 #' @references 
 #' Turner H. & Firth D. (2012). 
 #' Journal of Statistical Software, 48(9), 1–21. 

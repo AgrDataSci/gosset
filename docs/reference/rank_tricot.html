@@ -86,7 +86,7 @@ argument additional.rank." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5.9012</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@ argument additional.rank." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -108,7 +108,7 @@ argument additional.rank." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/agrdatasci/gosset/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -140,14 +140,7 @@ comparison with a local item can be added as additional rankings with the
 argument <code>additional.rank</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>rank_tricot</span>(
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>items</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>input</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>additional.rank</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>rank_tricot</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>items</span>, <span class='va'>input</span>, group <span class='op'>=</span> <span class='cn'>FALSE</span>, additional.rank <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,54 +183,59 @@ tricot items and the local item</p></td>
 a "grouped_rankings" and the ordered items</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>van Etten J., et al. (2019). Experimental Agriculture, 55(S1), 275–296.
-<a href='https://doi.org/10.1017/S0014479716000739'>https://doi.org/10.1017/S0014479716000739</a></p>
+    <p>van Etten J., et al. (2016). Experimental Agriculture, 55(S1), 275–296.
+doi: <a href='https://doi.org/10.1017/S0014479716000739'>10.1017/S0014479716000739</a></p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/PlackettLuce/man/rankings.html'>rankings</a></code>, <code><a href='breadwheat.html'>breadwheat</a></code></p>
+    <div class='dont-index'><p><code><a href='https://hturner.github.io/PlackettLuce/reference/rankings.html'>rankings</a></code>, <code><a href='breadwheat.html'>breadwheat</a></code></p>
 <p>Other rank functions: 
 <code><a href='rank_binomial.html'>rank_binomial</a>()</code>,
 <code><a href='rank_numeric.html'>rank_numeric</a>()</code>,
 <code><a href='rank_paircomp.html'>rank_paircomp</a>()</code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Kauê de Sousa and Jacob van Etten, with ideas from Heather Turner</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
 <span class='co'># using breadwheat data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"breadwheat"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"gosset"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"breadwheat"</span>, package <span class='op'>=</span> <span class='st'>"gosset"</span><span class='op'>)</span>
 
 <span class='co'># convert the tricot rankings from breadwheat data</span>
 <span class='co'># into a object of class 'rankings' from PlackettLuce</span>
-<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_tricot</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>breadwheat</span>,
-                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"variety_a"</span>,<span class='st'>"variety_b"</span>,<span class='st'>"variety_c"</span>),
-                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"overall_best"</span>,<span class='st'>"overall_worst"</span>))
-
+<span class='va'>R</span> <span class='op'>&lt;-</span> <span class='fu'>rank_tricot</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>breadwheat</span>,
+                 items <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"variety_a"</span>,<span class='st'>"variety_b"</span>,<span class='st'>"variety_c"</span><span class='op'>)</span>,
+                 input <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"overall_best"</span>,<span class='st'>"overall_worst"</span><span class='op'>)</span><span class='op'>)</span>
+                 
 <span class='co'>############################################################</span>
-
+  
 <span class='co'># beans data where each observer compares 3 varieties randomly distributed</span>
 <span class='co'># from a list of 11 and additionally compares these 3 varieties</span>
 <span class='co'># with their local variety</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"PlackettLuce"</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"beans"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"PlackettLuce"</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://hturner.github.io/PlackettLuce/'>"PlackettLuce"</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"beans"</span>, package <span class='op'>=</span> <span class='st'>"PlackettLuce"</span><span class='op'>)</span>
 
 <span class='co'># first build rankings with only tricot items</span>
 <span class='co'># and return an object of class 'rankings'</span>
-<span class='no'>R</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_tricot</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beans</span>,
-                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>),
-                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>:<span class='fl'>5</span>))
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>R</span>)
+<span class='va'>R</span> <span class='op'>&lt;-</span> <span class='fu'>rank_tricot</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>beans</span>,
+                 items <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>,
+                 input <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>R</span><span class='op'>)</span>
 
 <span class='co'>############################################################</span>
 
 <span class='co'># pass the comparison with local item as an additional rankings, then</span>
 <span class='co'># each of the 3 varieties are compared separately with the local item</span>
 <span class='co'># and return an object of class grouped_rankings</span>
-<span class='no'>G</span> <span class='kw'>&lt;-</span> <span class='fu'>rank_tricot</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beans</span>,
-                 <span class='kw'>items</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>),
-                 <span class='kw'>input</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>:<span class='fl'>5</span>),
-                 <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-                 <span class='kw'>additional.rank</span> <span class='kw'>=</span> <span class='no'>beans</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>:<span class='fl'>8</span>)])
+<span class='va'>G</span> <span class='op'>&lt;-</span> <span class='fu'>rank_tricot</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>beans</span>,
+                 items <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>,
+                 input <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>,
+                 group <span class='op'>=</span> <span class='cn'>TRUE</span>,
+                 additional.rank <span class='op'>=</span> <span class='va'>beans</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>6</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>G</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>G</span><span class='op'>)</span>
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -249,11 +247,11 @@ a "grouped_rankings" and the ordered items</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kauê de Sousa, Jacob van Etten, Sam Dumble, Nicolas Greliche, David Brown, Jonathan Steinke.</p>
+  <p>Developed by Kauê de Sousa, Jacob van Etten, David Brown, Jonathan Steinke.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -4,6 +4,7 @@
 \alias{node_labels}
 \alias{node_rules}
 \alias{top_items}
+\alias{plot.pltree}
 \title{Get node labels and rules used in a party tree}
 \usage{
 node_labels(x)
@@ -11,28 +12,46 @@ node_labels(x)
 node_rules(x)
 
 top_items(x, top = 5)
+
+\method{plot}{pltree}(x, log = TRUE, ref = NULL, ci.level = 0.95, ...)
 }
 \arguments{
 \item{x}{an object of class \code{party}}
 
 \item{top}{an integer for the number of items to return}
+
+\item{log}{logical, if \code{TRUE} log-worth coefficients are 
+displayed instead of worth}
+
+\item{ref}{optional, character for the reference item when
+\var{log} = \code{TRUE}}
+
+\item{ci.level}{an integer for the confidence interval levels}
+
+\item{...}{additional arguments passed to methods}
 }
 \value{
-a vector with the node labels, a data.frame with node rules
+a vector with the node labels, 
+ a data.frame with node rules, a ggplot
 }
 \description{
-Get node labels and rules used in a party tree
-
-Get node rules
-
-Get the top items out of a decision tree
+Returns the covariates used to split a recursive
+ partitioning tree and the rules that were applied 
+ to build the tree
 }
 \examples{
-if (require("PlackettLuce")) {
-example("beans", package = "PlackettLuce")
-G <- group(R, rep(seq_len(nrow(beans)), 4))
+\donttest{
+library("PlackettLuce")
+data("beans", package = "PlackettLuce")
+G <- rank_tricot(data = beans,
+                 items = c(1:3),
+                 input = c(4:5),
+                 group = TRUE,
+                 additional.rank = beans[c(6:8)])
+ 
+pld <- cbind(G, beans[,c("maxTN", "season", "lon")])
 
-tree <- pltree(G ~ maxTN + season + lon, data = beans)
+tree <- pltree(G ~ maxTN + season + lon, data = pld)
 
 node_labels(tree)
 
@@ -40,6 +59,9 @@ node_rules(tree)
 
 top_items(tree)
 
+plot(tree)
+
+plot(tree, log = TRUE)
 }
 }
 \author{

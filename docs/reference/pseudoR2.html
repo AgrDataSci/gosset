@@ -84,7 +84,7 @@ a similar scale (from 0 to 1), with higher values indicating better model fit." 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5.9012</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3</span>
       </span>
     </div>
 
@@ -92,7 +92,7 @@ a similar scale (from 0 to 1), with higher values indicating better model fit." 
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -106,7 +106,7 @@ a similar scale (from 0 to 1), with higher values indicating better model fit." 
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/agrdatasci/gosset/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -124,7 +124,7 @@ a similar scale (from 0 to 1), with higher values indicating better model fit." 
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Pseudo R-squared</h1>
-    <small class="dont-index">Source: <a href='https://github.com/agrdatasci/gosset/blob/master/R/pseudoR2.R'><code>R/pseudoR2.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/agrdatasci/gosset/blob/master/R/AAA-pseudoR2.R'><code>R/AAA-pseudoR2.R</code></a>, <a href='https://github.com/agrdatasci/gosset/blob/master/R/logLik.R'><code>R/logLik.R</code></a></small>
     <div class="hidden name"><code>pseudoR2.Rd</code></div>
     </div>
 
@@ -136,16 +136,19 @@ from the maximum likelihood through an iterative process. These estimates are ca
 a similar scale (from 0 to 1), with higher values indicating better model fit.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pseudoR2</span>(<span class='no'>object</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>pseudoR2</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>pseudoR2</span>(<span class='no'>object</span>, <span class='no'>...</span>)
+<span class='fu'>pseudoR2</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for pltree</span>
-<span class='fu'>pseudoR2</span>(<span class='no'>object</span>, <span class='no'>...</span>)
+<span class='fu'>pseudoR2</span><span class='op'>(</span><span class='va'>object</span>, newdata <span class='op'>=</span> <span class='cn'>NULL</span>, method <span class='op'>=</span> <span class='st'>"tree"</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for bttree</span>
-<span class='fu'>pseudoR2</span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>pseudoR2</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for pltree</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/logLik.html'>logLik</a></span><span class='op'>(</span><span class='va'>object</span>, newdata <span class='op'>=</span> <span class='cn'>NULL</span>, method <span class='op'>=</span> <span class='st'>"tree"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,6 +161,15 @@ a similar scale (from 0 to 1), with higher values indicating better model fit.</
       <th>...</th>
       <td><p>additional arguments affecting the R-squared produced</p></td>
     </tr>
+    <tr>
+      <th>newdata</th>
+      <td><p>optionally, a data frame in which to look for variables</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>a character for the method to compute logLik 
+options are "tree" or "worth"</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -167,7 +179,7 @@ a similar scale (from 0 to 1), with higher values indicating better model fit.</
 <dt>logLikNull</dt><dd><p>Null log-likelihood</p></dd>
 <dt>MaxLik</dt><dd><p>maximum likelihood pseudo R-squared</p></dd>
 <dt>CraggUhler</dt><dd><p>Cragg and Uhler's pseudo R-squared</p></dd>
-<dt>Agresti</dt><dd><p>Agresti pseudo R-squared</p></dd>
+<dt>McFadden</dt><dd><p>McFadden pseudo R-squared</p></dd>
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -179,16 +191,21 @@ http://www.jstor.org/stable/3448514</p>
 
     <div class='dont-index'><p>Other goodness-of-fit functions: 
 <code><a href='kendallTau.html'>kendallTau</a>()</code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Kauê de Sousa and Jacob van Etten</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"airquality"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"airquality"</span><span class='op'>)</span>
 
-<span class='no'>mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>Temp</span> ~ <span class='no'>Wind</span> + <span class='no'>Solar.R</span>,
-           <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>airquality</span>,
-           <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>poisson</a></span>())
+<span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>Temp</span> <span class='op'>~</span> <span class='va'>Wind</span> <span class='op'>+</span> <span class='va'>Solar.R</span>,
+           data <span class='op'>=</span> <span class='va'>airquality</span>,
+           family <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>poisson</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>pseudoR2</span>(<span class='no'>mod</span>)</pre>
+<span class='fu'>pseudoR2</span><span class='op'>(</span><span class='va'>mod</span><span class='op'>)</span>
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -200,11 +217,11 @@ http://www.jstor.org/stable/3448514</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kauê de Sousa, Jacob van Etten, Sam Dumble, Nicolas Greliche, David Brown, Jonathan Steinke.</p>
+  <p>Developed by Kauê de Sousa, Jacob van Etten, David Brown, Jonathan Steinke.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

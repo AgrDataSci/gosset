@@ -13,8 +13,8 @@
 #' \code{\link[psychotools]{paircomp}}
 #' @references 
 #' Strobl C., Wickelmaier F. & Zeileis A. (2011). 
-#' Journal of Educational and Behavioral Statistics, 36(2), 135–153. 
-#' \url{https://doi.org/10.3102/1076998609359791}
+#' Journal of Educational and Behavioral Statistics, 36(2), 135–153.
+#' doi:10.3102/1076998609359791
 #' 
 #' @examples 
 #'  
