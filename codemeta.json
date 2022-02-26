@@ -41,14 +41,6 @@
       "@id": "https://orcid.org/0000-0001-5742-702X"
     }
   ],
-  "contributor": [
-    {
-      "@type": "Person",
-      "givenName": "Jacob",
-      "familyName": "van Etten",
-      "@id": "https://orcid.org/0000-0001-7554-2558"
-    }
-  ],
   "maintainer": [
     {
       "@type": "Person",
@@ -252,5 +244,5 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1968.535KB"
+  "fileSize": "1971.541KB"
 }
