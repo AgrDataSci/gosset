@@ -7,12 +7,13 @@
 #' to risk analysis in diversification strategies. 
 #' 
 #' @author Jacob van Etten and Kauê de Sousa
-#' @param object an object of class modelparty
+#' @param object an object of class \code{party}
 #' @param ... further arguments passed to methods
-#' @return A data frame with probabilities of winning
+#' @return A data frame with regret estimates
 #' \item{items}{the item names}
-#' \item{win_probs}{the probabilities of winning}
-#' \item{worst_regret}{the worst regret index}
+#' \item{worth}{the worth parameters}
+#' \item{worst_regret}{the worst regret}
+#' \item{regret}{the squared regret}
 #' @references 
 #' Loomes G. & Sugden R. (1982). 
 #' The Economic Journal, 92(368), 805. 
@@ -54,14 +55,24 @@ worst_regret <- function(object, ...){
   # get ids of terminal nodes
   nodes <- partykit::nodeids(object, terminal = TRUE)
 
-  # get the coefficients from each terminal node
-  probs <- list()
+  # get the models from each terminal node
+  coeffs <- list()
   for(i in seq_along(nodes)) {
-    probs[[i]] <- object[[ nodes[i] ]]$node$info$object
+    coeffs[[i]] <- object[[ nodes[i] ]]$node$info$object
   }
   
-  # get estimates from terminal nodes using qvcalc
-  probs <- lapply(probs, function(X) {
+  # probability of the scenario is the weigthed values of 
+  # number of observations in the nodes
+  # get number of observations in each inner node
+  nobs <- integer(0L)
+  for (i in seq_along(nodes)) {
+    nobs <- c(nobs, as.integer(object[[nodes[i]]]$node$info$nobs))
+  }
+  
+  probs <- nobs / sum(nobs)
+  
+  # get worth from models using qvcalc
+  coeffs <- lapply(coeffs, function(X) {
     parameters <- psychotools::itempar(X, vcov = TRUE, alias = TRUE)
     parameters <- qvcalc::qvcalc.itempar(parameters)
     parameters <- parameters[[2]]
@@ -69,48 +80,38 @@ worst_regret <- function(object, ...){
   } )
 
   # get names of items
-  items <- unique(row.names(probs[[1]]))
+  items <- unique(row.names(coeffs[[1]]))
 
-  # combine these probabilites by rows into a single dataframe
-  probs <- do.call("rbind", probs)
+  # combine the worth by rows into a single data.frame
+  coeffs <- do.call("rbind", coeffs)
 
-  # add node id to the dataframe
-  probs$node <- rep(nodes, each = length(items))
-
+  # add node id to the data.frame
+  coeffs$node <- rep(nodes, each = length(items))
+ 
   # add item names
-  probs$items <- rep(items, times = length(nodes))
-
-  # change row names to numeric
-  row.names(probs) <- 1:nrow(probs)
+  coeffs$items <- rep(items, times = length(nodes))
 
   # regret is difference with the best variety in each node
-  probs$regret <- unlist(tapply(probs$estimate, probs$node, function(x) {
+  coeffs$regret <- unlist(tapply(coeffs$estimate, coeffs$node, function(x) {
     max(x) - x
   }))
 
   # worst regret is the highest regret across the nodes
-  WR <- tapply(probs$regret, probs$items, max)
+  wr <- tapply(coeffs$regret, coeffs$items, max)
 
-  # get the probability of winning of all observers
-  # first, check if winprobs is provided as input 
-  dots <- list(...)
-  if("winprobs" %in% names(dots)) { 
-    winprobs <- dots[["winprobs"]]  
-  } else {
-    winprobs <- predict(object)  
-  }
+  # regret is the sum of the squared values of all items regret
+  regret <- unlist(tapply(coeffs$regret, coeffs$items, function(x) {
+    sum(x)^2
+  }))
   
-  winProbs <- apply(winprobs, 2, mean)
-
-  w <- as.data.frame(cbind(win_probs = winProbs , worst_regret = WR))
-
-  w$items <- row.names(w)
-
-  row.names(w) <- 1:nrow(w)
+  worth <- tapply(coeffs$estimate, coeffs$items, mean)
   
-  w <- w[order(w$worst_regret), ]
+  w <- data.frame(items = items, 
+                  worth = worth[items], 
+                  worst_regret = wr[items], 
+                  regret = regret[items])
 
-  w <- as.data.frame(w[ ,c(3,1:2)])
+  w <- w[order(w$regret), ]
 
   rownames(w) <- 1:nrow(w)
   

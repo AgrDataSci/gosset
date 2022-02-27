@@ -11,9 +11,9 @@ reliability(x, ...)
 
 \method{reliability}{default}(x, y = NULL, ...)
 
-\method{reliability}{PlackettLuce}(x, ref = NULL)
+\method{reliability}{PlackettLuce}(x, ref, ...)
 
-\method{reliability}{pltree}(x, ref = NULL)
+\method{reliability}{pltree}(x, ref, ...)
 }
 \arguments{
 \item{x}{a numeric vector, or an object of 
@@ -24,7 +24,7 @@ of class \code{PlackettLuce} or \code{pltree}}
 \item{y}{numeric, the reference value}
 
 \item{ref}{a character or integer for indexing the
-element containing reference values in data}
+element containing reference values in \var{x}}
 }
 \value{
 the reliability based on the worth parameters
@@ -53,5 +53,5 @@ colnames(R) <- c("apple", "banana", "orange", "pear")
 
 mod <- PlackettLuce(R)
 
-reliability(mod, ref = "pear")
+reliability(mod, ref = "apple")
 }

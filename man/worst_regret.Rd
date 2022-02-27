@@ -7,15 +7,16 @@
 worst_regret(object, ...)
 }
 \arguments{
-\item{object}{an object of class modelparty}
+\item{object}{an object of class \code{party}}
 
 \item{...}{further arguments passed to methods}
 }
 \value{
-A data frame with probabilities of winning
+A data frame with regret estimates
 \item{items}{the item names}
-\item{win_probs}{the probabilities of winning}
-\item{worst_regret}{the worst regret index}
+\item{worth}{the worth parameters}
+\item{worst_regret}{the worst regret}
+\item{regret}{the squared regret}
 }
 \description{
 Compute a worst regret index from recursive partitioning trees. 

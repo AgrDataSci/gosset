@@ -8,7 +8,7 @@
 #'  of class \code{PlackettLuce} or \code{pltree}
 #' @param y numeric, the reference value
 #' @param ref a character or integer for indexing the
-#'  element containing reference values in data
+#'  element containing reference values in \var{x}
 #' @param ... additional arguments passed to methods
 #' @return the reliability based on the worth parameters
 #' @examples
@@ -64,7 +64,7 @@ reliability.default <- function(x, y = NULL, ...) {
 #' @rdname reliability
 #' @method reliability PlackettLuce
 #' @export
-reliability.PlackettLuce <- function(x, ref = NULL) {
+reliability.PlackettLuce <- function(x, ref, ...) {
   
   worth <- coef(x, log = FALSE) 
   
@@ -75,7 +75,7 @@ reliability.PlackettLuce <- function(x, ref = NULL) {
 #' @rdname reliability
 #' @method reliability pltree
 #' @export 
-reliability.pltree <- function(x, ref = NULL) {
+reliability.pltree <- function(x, ref, ...) {
   
   worth <- coef(x, log = FALSE) 
   
