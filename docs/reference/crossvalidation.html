@@ -135,7 +135,7 @@ PlackettLuce" />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Cross-validation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/agrdatasci/gosset/blob/master/R/crossvalidation.R'><code>R/crossvalidation.R</code></a>, <a href='https://github.com/agrdatasci/gosset/blob/master/R/logLik.R'><code>R/logLik.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/agrdatasci/gosset/blob/master/R/crossvalidation.R'><code>R/crossvalidation.R</code></a>, <a href='https://github.com/agrdatasci/gosset/blob/master/R/deviance.R'><code>R/deviance.R</code></a></small>
     <div class="hidden name"><code>crossvalidation.Rd</code></div>
     </div>
 
@@ -152,7 +152,6 @@ Generalized Nonlinear models from <span class="pkg">gnm</span>, and Plackett-Luc
   k <span class='op'>=</span> <span class='fl'>10</span>,
   folds <span class='op'>=</span> <span class='cn'>NULL</span>,
   mean.method <span class='op'>=</span> <span class='st'>"Ztest"</span>,
-  logLik.method <span class='op'>=</span> <span class='st'>"tree"</span>,
   seed <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>
 <span class='op'>)</span>
@@ -202,11 +201,6 @@ cross-validation estimators.
 Options are: 'equal', arithmetic mean; 
 'foldsize', weighted mean by the size in each fold; 
 'Ztest' weighted through Z-test. See references</p></td>
-    </tr>
-    <tr>
-      <th>logLik.method</th>
-      <td><p>a character for the method to compute logLik,
-options are "tree" (default) or "worth"</p></td>
     </tr>
     <tr>
       <th>seed</th>

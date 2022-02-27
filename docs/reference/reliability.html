@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pseudo R-squared — pseudoR2 • gosset</title>
+<title>Reliability based on worth parameters — reliability • gosset</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,12 +46,10 @@
 
 
 
-<meta property="og:title" content="Pseudo R-squared — pseudoR2" />
-<meta property="og:description" content="Regression coefficient to evaluate goodness-of-fit in a given model when 
-ordinary least squares (OLS) are not available. The algorithm computes estimates 
-from the maximum likelihood through an iterative process. These estimates are called 
-'pseudo R-squared' because they look like 'R-squared' in the sense that they are on 
-a similar scale (from 0 to 1), with higher values indicating better model fit." />
+<meta property="og:title" content="Reliability based on worth parameters — reliability" />
+<meta property="og:description" content="Measures the precision of estimated values, and
+ the potential response to selection on those 
+ estimated values" />
 <meta property="og:image" content="/logo.svg" />
 
 
@@ -135,82 +133,75 @@ a similar scale (from 0 to 1), with higher values indicating better model fit." 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pseudo R-squared</h1>
-    <small class="dont-index">Source: <a href='https://github.com/agrdatasci/gosset/blob/master/R/AAA-pseudoR2.R'><code>R/AAA-pseudoR2.R</code></a></small>
-    <div class="hidden name"><code>pseudoR2.Rd</code></div>
+    <h1>Reliability based on worth parameters</h1>
+    <small class="dont-index">Source: <a href='https://github.com/agrdatasci/gosset/blob/master/R/reliabilty.R'><code>R/reliabilty.R</code></a></small>
+    <div class="hidden name"><code>reliability.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Regression coefficient to evaluate goodness-of-fit in a given model when 
-ordinary least squares (OLS) are not available. The algorithm computes estimates 
-from the maximum likelihood through an iterative process. These estimates are called 
-'pseudo R-squared' because they look like 'R-squared' in the sense that they are on 
-a similar scale (from 0 to 1), with higher values indicating better model fit.</p>
+    <p>Measures the precision of estimated values, and
+ the potential response to selection on those 
+ estimated values</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pseudoR2</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>reliability</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>pseudoR2</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'>reliability</span><span class='op'>(</span><span class='va'>x</span>, y <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for PlackettLuce</span>
+<span class='fu'>reliability</span><span class='op'>(</span><span class='va'>x</span>, ref <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='co'># S3 method for pltree</span>
-<span class='fu'>pseudoR2</span><span class='op'>(</span><span class='va'>object</span>, newdata <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for bttree</span>
-<span class='fu'>pseudoR2</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>reliability</span><span class='op'>(</span><span class='va'>x</span>, ref <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>a model object of class glm, gnm, lm, pltree or bttree</p></td>
+      <th>x</th>
+      <td><p>a numeric vector, or an object of 
+of class <code>PlackettLuce</code> or <code>pltree</code></p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments affecting the R-squared produced</p></td>
+      <td><p>additional arguments passed to methods</p></td>
     </tr>
     <tr>
-      <th>newdata</th>
-      <td><p>a data.set with testing data</p></td>
+      <th>y</th>
+      <td><p>numeric, the reference value</p></td>
+    </tr>
+    <tr>
+      <th>ref</th>
+      <td><p>a character or integer for indexing the
+element containing reference values in data</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data frame containing the pseudo R-squared coefficients:</p>
-<dt>logLik</dt><dd><p>log-likelihood</p></dd>
-<dt>logLikNull</dt><dd><p>Null log-likelihood</p></dd>
-<dt>MaxLik</dt><dd><p>maximum likelihood pseudo R-squared</p></dd>
-<dt>CraggUhler</dt><dd><p>Cragg and Uhler's pseudo R-squared</p></dd>
-<dt>McFadden</dt><dd><p>McFadden pseudo R-squared</p></dd>
-
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Agresti A. (2002). Categorical Data Analysis. John Wiley &amp; Sons, Inc., 
-Hoboken, NJ, USA. doi:10.1002/0471249688</p>
-<p>Hunter D. R. (2004). The Annals of Statistics, 32(1), 384–406. 
-http://www.jstor.org/stable/3448514</p>
-<p>Cragg, J. G., &amp; Uhler, R. S. (1970). The Canadian Journal of 
-Economics 3(3), 386-406. doi:10.2307/133656</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other goodness-of-fit functions: 
-<code><a href='kendallTau.html'>kendallTau</a>()</code></p></div>
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
-
-    <p>Kauê de Sousa and Jacob van Etten</p>
+    <p>the reliability based on the worth parameters</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples">
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"airquality"</span><span class='op'>)</span>
+    <pre class="examples"><span class='co'># vector example</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>9.5</span>, <span class='fl'>12</span>, <span class='fl'>12.3</span>, <span class='fl'>15</span><span class='op'>)</span>
+<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fl'>11.2</span>
+<span class='fu'>reliability</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>
+ 
+<span class='co'># PlackettLuce example</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://hturner.github.io/PlackettLuce/'>"PlackettLuce"</a></span><span class='op'>)</span> 
 
-<span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>Temp</span> <span class='op'>~</span> <span class='va'>Wind</span> <span class='op'>+</span> <span class='va'>Solar.R</span>,
-           data <span class='op'>=</span> <span class='va'>airquality</span>,
-           family <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>poisson</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>R</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>3</span>,
+              <span class='fl'>4</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>,
+              <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>1</span>, <span class='fl'>4</span>,
+              <span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>1</span>,
+              <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>3</span>,
+              <span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>3</span>, <span class='fl'>2</span><span class='op'>)</span>, nrow <span class='op'>=</span> <span class='fl'>6</span>, byrow <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>R</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apple"</span>, <span class='st'>"banana"</span>, <span class='st'>"orange"</span>, <span class='st'>"pear"</span><span class='op'>)</span>
 
-<span class='fu'>pseudoR2</span><span class='op'>(</span><span class='va'>mod</span><span class='op'>)</span>
+<span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html'>PlackettLuce</a></span><span class='op'>(</span><span class='va'>R</span><span class='op'>)</span>
 
+<span class='fu'>reliability</span><span class='op'>(</span><span class='va'>mod</span>, ref <span class='op'>=</span> <span class='st'>"pear"</span><span class='op'>)</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
