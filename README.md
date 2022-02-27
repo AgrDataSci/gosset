@@ -8,7 +8,7 @@
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
-# *gosset*: Tools for Analysis and Visualiation in Experimental Agriculture <img align="right" src="man/figures/logo.png">
+# *gosset*: Tools for Data Analysis in Experimental Agriculture <img align="right" src="man/figures/logo.png">
 
 ## Overview
 

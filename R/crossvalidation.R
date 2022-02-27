@@ -20,8 +20,6 @@
 #' Options are: 'equal', arithmetic mean; 
 #' 'foldsize', weighted mean by the size in each fold; 
 #' 'Ztest' weighted through Z-test. See references 
-#' @param logLik.method a character for the method to compute logLik,
-#'  options are "tree" (default) or "worth"
 #' @param seed integer, the seed for random number generation. If \code{NULL} (the default), 
 #' \pkg{gosset} will set the seed randomly
 #' @param ... additional arguments passed the methods of the chosen model
@@ -94,7 +92,6 @@ crossvalidation <- function(formula,
                             k = 10,
                             folds = NULL, 
                             mean.method = "Ztest",
-                            logLik.method = "tree",
                             seed = NULL,
                             ...)
 {
@@ -161,14 +158,14 @@ crossvalidation <- function(formula,
   # split data into lists with training and test set
   # folds as numeric vector - gosset style
   if (!is.list(folds)) {
-  train <- list()
-  for (i in 1:k) {
-    train[[i]] <- data[folds != i ,]
-  }
-  
-  test <- list()
-  for (i in 1:k) {
-    test[[i]] <- data[folds == i  ,]
+    train <- list()
+    for (i in 1:k) {
+      train[[i]] <- data[folds != i ,]
+    }
+    
+    test <- list()
+    for (i in 1:k) {
+      test[[i]] <- data[folds == i  ,]
     }
   }
   
@@ -204,8 +201,8 @@ crossvalidation <- function(formula,
   # and the predictions of the test part of the data
   estimators <- try(mapply(function(X, Y) {
     a <- AIC(X, newdata = Y)
-    d <- deviance(X, newdata = Y, method = logLik.method)
-    p <- pseudoR2(X, newdata = Y, method = logLik.method)
+    d <- deviance(X, newdata = Y)
+    p <- pseudoR2(X, newdata = Y)
     data.frame(AIC = a, 
                deviance = d, p)
   }, X = mod, Y = test[]), silent = FALSE)
@@ -225,7 +222,7 @@ crossvalidation <- function(formula,
     try(predict(X, newdata = Y), silent = TRUE)
   }, X = model, Y = test[])
   
-  # if model is pltree take the kendall cor 
+  # if model is pltree take the kendall correlation
   if (model == "pltree") {
     
     # get the original rankings from each bin in test
@@ -266,7 +263,7 @@ crossvalidation <- function(formula,
     KT <- as.numeric(KT)
     
     estimators <- cbind(estimators, kendallTau = KT)
-      
+    
   }
   
   # estimators are then averaged weighted by 
@@ -327,14 +324,19 @@ crossvalidation <- function(formula,
   means <- as.data.frame(t(means))
   
   names(means) <- dimnames(estimators)[[2]]
-   
+  
   class(means) <- union("gosset_df", class(means))
   
   estimators <- as.data.frame(estimators)
-
+  
   class(estimators) <- union("gosset_df", class(estimators))
   
-  result <- list(coeffs = means,
+  sums <- as.data.frame(t(colSums(estimators[, 1:4])))
+  
+  class(sums) <- union("gosset_df", class(sums))
+  
+  result <- list(coeffs_weighted = means,
+                 coeffs_sum = sums,
                  raw = list(call = deparse(formula, width.cutoff = 500),
                             estimators = estimators,
                             k = k,
@@ -353,6 +355,10 @@ crossvalidation <- function(formula,
 print.gosset_cv <- function(x, ...) {
   cat("Model formula:\n")
   cat(x[["raw"]][["call"]], "\n \n")
+  cat("Sum of Cross-validation estimates: \n")
+  print(x$coeffs_sum)
+  cat("\n")
   cat("Weighted Cross-validation estimates: \n")
-  print(x$coeffs)
+  print(x$coeffs_weighted)
 }
+

@@ -9,6 +9,7 @@
 #' @author Kauê de Sousa and Jacob van Etten
 #' @family goodness-of-fit functions
 #' @param object a model object of class glm, gnm, lm, pltree or bttree
+#' @param newdata a data.set with testing data
 #' @param ... additional arguments affecting the R-squared produced
 #' @return A data frame containing the pseudo R-squared coefficients:
 #' \item{logLik}{log-likelihood}
@@ -19,10 +20,13 @@
 #' @references 
 #' 
 #' Agresti A. (2002). Categorical Data Analysis. John Wiley & Sons, Inc., 
-#' Hoboken, NJ, USA. http://doi.wiley.com/10.1002/0471249688
+#' Hoboken, NJ, USA. doi:10.1002/0471249688
 #' 
 #' Hunter D. R. (2004). The Annals of Statistics, 32(1), 384–406. 
 #' http://www.jstor.org/stable/3448514
+#' 
+#' Cragg, J. G., & Uhler, R. S. (1970). The Canadian Journal of 
+#' Economics 3(3), 386-406. doi:10.2307/133656
 #' 
 #' @examples
 #'
@@ -98,27 +102,33 @@ pseudoR2.default <- function(object, ...){
 #' @method pseudoR2 pltree
 #' @importFrom partykit node_party
 #' @export
-pseudoR2.pltree <- function(object, newdata = NULL, method = "tree", ...){
+pseudoR2.pltree <- function(object, newdata = NULL, ...){
   
-  n <- dim(object$data)[[1]]
   
-  if (!is.null(newdata)) {
+  if(is.null(newdata)){
+    
+    n <- dim(object$data)[[1]]
+    
+    LL <- deviance(object) / -2
+    
+    LLNull <- partykit::node_party(object)$info$object$null.loglik 
+    
+    pR2 <- .getpseudoR2(LLNull, LL, n)
+    
+  }
+  
+  
+  if(!is.null(newdata)){
+    
     n <- dim(newdata)[[1]]
+    
+    LL <- deviance(object, newdata = newdata, ...) / -2
+    
+    LLNull <-  partykit::node_party(object)$info$object$null.loglik 
+    
+    pR2 <- .getpseudoR2(LLNull, LL, n)
+    
   }
-  
-  LL <- logLik(object, newdata = newdata, method = method, ...)[[1]]
-  
-  if(method == "tree"){
-    LLNull <- partykit::node_party(object)$info$object$null.loglik
-  }
-  
-  if(method == "worth"){
-    # NULL loglik from both methods should be the same 
-    # this is to be sure that newdata is used when needed
-    LLNull <- logLik(object, newdata = newdata, method = method, ...)[[2]]
-  }
-
-  pR2 <- .getpseudoR2(LLNull, LL, n)
   
   return(pR2)
   
