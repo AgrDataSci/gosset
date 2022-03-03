@@ -15,11 +15,6 @@
 #' @param k an integer for the number of bins in the cross-validation
 #' @param folds an optional vector or list of vectors specifying the \var{k}-folds 
 #' in the cross-validation
-#' @param mean.method a character for the method to calculate the mean of 
-#' cross-validation estimators. 
-#' Options are: 'equal', arithmetic mean; 
-#' 'foldsize', weighted mean by the size in each fold; 
-#' 'Ztest' weighted through Z-test. See references 
 #' @param seed integer, the seed for random number generation. If \code{NULL} (the default), 
 #' \pkg{gosset} will set the seed randomly
 #' @param ... additional arguments passed the methods of the chosen model
@@ -33,17 +28,16 @@
 #' \item{MaxLik}{Maximum likelihood pseudo R-squared}
 #' \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
 #' \item{McFadden}{McFadden pseudo R-squared}
-#' \item{kendallTau}{the Kendall correlation coefficient, only for Plackett-Luce models}
+#' \item{kendallTau}{the Kendall correlation coefficient}
 #' @seealso \code{\link[psychotree]{bttree}}, 
 #' \code{\link[gnm]{gnm}},
 #' \code{\link[PlackettLuce]{pltree}}
 #' @references 
 #' 
-#' Elder J. F. (2003). Journal of Computational and Graphical Statistics, 12(4), 853–864.
-#' \doi{https://doi.org/10.1198/1061860032733}
+#' Elder J. F. (2003). Journal of Computational and Graphical Statistics, 
+#' 12(4), 853–864. \doi{https://doi.org/10.1198/1061860032733}
 #' 
-#' James G., et al. (2013). An Introduction to Statistical Learning: with Applications in R.
-#' \doi{https://doi.org/10.1007/978-1-4614-7138-7}
+#' James G., et al. (2013). \doi{https://doi.org/10.1007/978-1-4614-7138-7}
 #' 
 #' Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. 
 #' \doi{https://doi.org/10.1111/j.1420-9101.2005.00917.x}
@@ -91,7 +85,6 @@ crossvalidation <- function(formula,
                             data, 
                             k = 10,
                             folds = NULL, 
-                            mean.method = "Ztest",
                             seed = NULL,
                             ...)
 {
@@ -114,18 +107,6 @@ crossvalidation <- function(formula,
     
     folds <- sample(rep(1:k, times = ceiling(n / k), length.out = n))
     
-  }
-  
-  # validate mean.method
-  mean.opt <- c("Ztest", "foldsize", "equal")
-  
-  if (is.null(mean.method)) {
-    mean.method <- mean.opt[1]
-  }
-  
-  if (!mean.method %in% mean.opt) {
-    stop("unknown mean method, valid options are: ", 
-         paste(mean.opt, collapse = ", "), "\n")
   }
   
   # create a model frame 
@@ -195,7 +176,6 @@ crossvalidation <- function(formula,
     
   })
   
-  newdata <- ""
   # get goodness-of-fit estimates from models
   # take models from training data to compute deviance, pseudo R-squared
   # and the predictions of the test part of the data
@@ -266,64 +246,38 @@ crossvalidation <- function(formula,
     
   }
   
-  # estimators are then averaged weighted by 
-  # number of predicted cases using selected mean method
-  # Z-test weight mean
+  # pseudo-R2 estimators are then averaged weighted by 
+  # number of predicted cases using Z-test weight mean
   N <- dim(data)[1]
   
-  if (is.list(folds)) {
-    mean.method <- "equal" 
-  }
+  # take the number of folds
+  max_folds <- max(folds)
   
-  if (mean.method == "Ztest") {
-    # take the number of folds
-    max_folds <- max(folds)
-    
-    # make a table of folds and take
-    # how many observations each fold has
-    foldsize <- table(folds)
-    
-    # take the weight of each fold
-    # first, the squared root of foldsize (observations per fold)
-    # by the total number of observation
-    wfold <- sqrt(as.vector(foldsize) / N)
-    
-    # then divide this vector by its sum
-    wfold <- wfold / sum(wfold)
-    
-    # then we multiply the input values by the
-    # weight of each fold
-    # sum these values and that is the Ztest mean
-    means <- apply(estimators, 2, function(x){
-      m <- x * wfold
-      sum(m, na.rm = TRUE)
-    })
-  }
+  # make a table of folds and take
+  # how many observations each fold has
+  foldsize <- table(folds)
   
-  # mean weighted by foldsize
-  if (mean.method == "foldsize") {
-    # make a table of folds and take
-    # the number of observations per fold
-    foldsize <- as.vector(table(folds))
-    
-    # fold size mean is the product of multiplication of object values by 
-    # its number of observations then divided by the total number of observations
-    means <- apply(estimators, 2, function(x){
-      sum(x * foldsize, na.rm = TRUE) / sum(foldsize)
-    })
-  }
+  # take the weight of each fold
+  # first, the squared root of foldsize (observations per fold)
+  # by the total number of observation
+  wfold <- sqrt(as.vector(foldsize) / N)
   
-  # arithmetic mean 
-  if (mean.method == "equal") {
-    means <- apply(estimators, 2, function(x){
-      mean(x, na.rm = TRUE) 
-    })
-  }
+  # then divide this vector by its sum
+  wfold <- wfold / sum(wfold)
+  
+  # then we multiply the input values by the
+  # weight of each fold
+  # sum these values and that is the Ztest mean
+  means <- apply(estimators, 2, function(x){
+    m <- x * wfold
+    sum(m, na.rm = TRUE)
+  })
   
   # means and estimates as data frame
   means <- as.data.frame(t(means))
   
-  names(means) <- dimnames(estimators)[[2]]
+  # AIC, deviance and logLik should be the sum of fold values
+  means[1,1:4] <- as.data.frame(t(colSums(estimators[, 1:4])))
   
   class(means) <- union("gosset_df", class(means))
   
@@ -331,12 +285,7 @@ crossvalidation <- function(formula,
   
   class(estimators) <- union("gosset_df", class(estimators))
   
-  sums <- as.data.frame(t(colSums(estimators[, 1:4])))
-  
-  class(sums) <- union("gosset_df", class(sums))
-  
-  result <- list(coeffs_weighted = means,
-                 coeffs_sum = sums,
+  result <- list(coeffs = means,
                  raw = list(call = deparse(formula, width.cutoff = 500),
                             estimators = estimators,
                             k = k,
@@ -355,10 +304,7 @@ crossvalidation <- function(formula,
 print.gosset_cv <- function(x, ...) {
   cat("Model formula:\n")
   cat(x[["raw"]][["call"]], "\n \n")
-  cat("Sum of Cross-validation estimates: \n")
-  print(x$coeffs_sum)
-  cat("\n")
-  cat("Weighted Cross-validation estimates: \n")
-  print(x$coeffs_weighted)
+  cat("Cross-validation estimates: \n")
+  print(x$coeffs)
 }
 

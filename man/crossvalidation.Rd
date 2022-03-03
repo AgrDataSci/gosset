@@ -9,15 +9,7 @@
 \alias{deviance.gnm}
 \title{Cross-validation}
 \usage{
-crossvalidation(
-  formula,
-  data,
-  k = 10,
-  folds = NULL,
-  mean.method = "Ztest",
-  seed = NULL,
-  ...
-)
+crossvalidation(formula, data, k = 10, folds = NULL, seed = NULL, ...)
 
 \method{AIC}{bttree}(object, newdata = NULL, ...)
 
@@ -42,12 +34,6 @@ containing the variables in the model}
 \item{folds}{an optional vector or list of vectors specifying the \var{k}-folds 
 in the cross-validation}
 
-\item{mean.method}{a character for the method to calculate the mean of 
-cross-validation estimators. 
-Options are: 'equal', arithmetic mean; 
-'foldsize', weighted mean by the size in each fold; 
-'Ztest' weighted through Z-test. See references}
-
 \item{seed}{integer, the seed for random number generation. If \code{NULL} (the default), 
 \pkg{gosset} will set the seed randomly}
 
@@ -66,7 +52,7 @@ goodness-of-fit estimates, which are:
 \item{MaxLik}{Maximum likelihood pseudo R-squared}
 \item{CraggUhler}{Cragg and Uhler's pseudo R-squared}
 \item{McFadden}{McFadden pseudo R-squared}
-\item{kendallTau}{the Kendall correlation coefficient, only for Plackett-Luce models}
+\item{kendallTau}{the Kendall correlation coefficient}
 }
 \description{
 Methods for measuring the performance of a predictive model on sets of 
@@ -113,11 +99,10 @@ cv <- crossvalidation(G ~ maxTN,
                 
 }
 \references{
-Elder J. F. (2003). Journal of Computational and Graphical Statistics, 12(4), 853–864.
-\doi{https://doi.org/10.1198/1061860032733}
+Elder J. F. (2003). Journal of Computational and Graphical Statistics, 
+12(4), 853–864. \doi{https://doi.org/10.1198/1061860032733}
 
-James G., et al. (2013). An Introduction to Statistical Learning: with Applications in R.
-\doi{https://doi.org/10.1007/978-1-4614-7138-7}
+James G., et al. (2013). \doi{https://doi.org/10.1007/978-1-4614-7138-7}
 
 Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. 
 \doi{https://doi.org/10.1111/j.1420-9101.2005.00917.x}
