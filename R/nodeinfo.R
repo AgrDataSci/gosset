@@ -239,6 +239,11 @@ plot.pltree <- function(x,
                         ref = NULL, 
                         ci.level = 0.95, ...){
   
+  
+  if (length(x) == 1) {
+    return(NextMethod(x, ...))
+  }
+  
   dots <- list(...)
   
   font.size <- dots[["font.size"]]

@@ -106,7 +106,7 @@ PlackettLuce" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Overview.html">gosset: Tools for Data Analysis in Experimental Agriculture</a>
+      <a href="../articles/Overview.html">Trait prioritization and crop performance with decentralized on-farm data</a>
     </li>
   </ul>
 </li>
@@ -146,15 +146,7 @@ Generalized Nonlinear models from <span class="pkg">gnm</span>, and Plackett-Luc
 <span class="pkg">PlackettLuce</span></p>
     </div>
 
-    <pre class="usage"><span class='fu'>crossvalidation</span><span class='op'>(</span>
-  <span class='va'>formula</span>,
-  <span class='va'>data</span>,
-  k <span class='op'>=</span> <span class='fl'>10</span>,
-  folds <span class='op'>=</span> <span class='cn'>NULL</span>,
-  mean.method <span class='op'>=</span> <span class='st'>"Ztest"</span>,
-  seed <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span>
+    <pre class="usage"><span class='fu'>crossvalidation</span><span class='op'>(</span><span class='va'>formula</span>, <span class='va'>data</span>, k <span class='op'>=</span> <span class='fl'>10</span>, folds <span class='op'>=</span> <span class='cn'>NULL</span>, seed <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for bttree</span>
 <span class='fu'><a href='https://rdrr.io/r/stats/AIC.html'>AIC</a></span><span class='op'>(</span><span class='va'>object</span>, newdata <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
@@ -195,14 +187,6 @@ containing the variables in the model</p></td>
 in the cross-validation</p></td>
     </tr>
     <tr>
-      <th>mean.method</th>
-      <td><p>a character for the method to calculate the mean of 
-cross-validation estimators. 
-Options are: 'equal', arithmetic mean; 
-'foldsize', weighted mean by the size in each fold; 
-'Ztest' weighted through Z-test. See references</p></td>
-    </tr>
-    <tr>
       <th>seed</th>
       <td><p>integer, the seed for random number generation. If <code>NULL</code> (the default), 
 <span class="pkg">gosset</span> will set the seed randomly</p></td>
@@ -231,14 +215,13 @@ goodness-of-fit estimates, which are:</p>
 <dt>MaxLik</dt><dd><p>Maximum likelihood pseudo R-squared</p></dd>
 <dt>CraggUhler</dt><dd><p>Cragg and Uhler's pseudo R-squared</p></dd>
 <dt>McFadden</dt><dd><p>McFadden pseudo R-squared</p></dd>
-<dt>kendallTau</dt><dd><p>the Kendall correlation coefficient, only for Plackett-Luce models</p></dd>
+<dt>kendallTau</dt><dd><p>the Kendall correlation coefficient</p></dd>
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Elder J. F. (2003). Journal of Computational and Graphical Statistics, 12(4), 853–864.
-doi: <a href='https://doi.org/10.1198/1061860032733'>10.1198/1061860032733</a></p>
-<p>James G., et al. (2013). An Introduction to Statistical Learning: with Applications in R.
-doi: <a href='https://doi.org/10.1007/978-1-4614-7138-7'>10.1007/978-1-4614-7138-7</a></p>
+    <p>Elder J. F. (2003). Journal of Computational and Graphical Statistics, 
+12(4), 853–864. doi: <a href='https://doi.org/10.1198/1061860032733'>10.1198/1061860032733</a></p>
+<p>James G., et al. (2013). doi: <a href='https://doi.org/10.1007/978-1-4614-7138-7'>10.1007/978-1-4614-7138-7</a></p>
 <p>Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. 
 doi: <a href='https://doi.org/10.1111/j.1420-9101.2005.00917.x'>10.1111/j.1420-9101.2005.00917.x</a></p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
