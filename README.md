@@ -38,7 +38,7 @@ The full functionality of **gosset** is illustrated in the [package website](htt
 
 ## Meta
 
-  - Please [report any issues or bugs](https://github.com/agrdatasci/gosset/issues).
+  - Please [report any issues or bugs](https://github.com/AgrDataSci/gosset/issues).
   - License: MIT
   - Get citation information for *gosset* in R by typing `citation(package = "gosset")`.
   - You are welcome to contribute to the *gosset* project. Please read our [contribution guide lines](CONTRIBUTING.md).
