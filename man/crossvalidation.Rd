@@ -111,6 +111,9 @@ Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373.
 \code{\link[psychotree]{bttree}}, 
 \code{\link[gnm]{gnm}},
 \code{\link[PlackettLuce]{pltree}}
+
+Other model selection functions: 
+\code{\link{btpermute}()}
 }
 \author{
 Kauê de Sousa, Jacob van Etten and David Brown

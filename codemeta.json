@@ -59,6 +59,42 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
+      "identifier": "climatrends",
+      "name": "climatrends",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=climatrends"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "ClimMobTools",
+      "name": "ClimMobTools",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ClimMobTools"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "chirps",
+      "name": "chirps",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=chirps"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "knitr",
       "name": "knitr",
       "provider": {
@@ -238,5 +274,5 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "2804.193KB"
+  "fileSize": "2807.095KB"
 }

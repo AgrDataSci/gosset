@@ -37,6 +37,9 @@ Imports:
     utils,
     patchwork
 Suggests:
+    climatrends,
+    ClimMobTools,
+    chirps,
     knitr,
     psychotree,
     rmarkdown

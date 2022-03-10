@@ -47,10 +47,11 @@
 #'  
 #' @references 
 #' Lysen, S. (2009) Permuted inclusion criterion: A variable selection technique. 
-#' University of Pennsylvania \url{https://repository.upenn.edu/edissertations/28/}
-#' 
+#' University of Pennsylvania
+#' \url{https://repository.upenn.edu/edissertations/28/}
 #' @examples 
-#' if (require("BradleyTerry2")) {
+#' \donttest{
+#' require("BradleyTerry2")
 #' 
 #' data("kenyachoice", package = "gosset")
 #' 
@@ -72,10 +73,10 @@ btpermute <- function(contests = NULL,
   
   # define/set a seed to ensure reproducibility 
   if (is.null(seed)) {
-    seed <- as.integer(runif(1, 1, .Machine$integer.max))
+    seed <- runif(1, 1, 99999)
   }
   set.seed(seed)
-  seeds <- as.integer(runif(n.iterations, 1, .Machine$integer.max))
+  seeds <- as.integer(runif(n.iterations, 1, 99999))
   
   # contests should be a data.frame with 5 columns
   # if not, then stop
@@ -92,7 +93,7 @@ btpermute <- function(contests = NULL,
   not_factor <- any(c(!is.factor(contests$Item1), !is.factor(contests$Item2)))
   
   if (isTRUE(not_factor)) {
-    stop("'player1' and 'player2' should be factors with the same levels \n")
+    stop("'player1' and 'player2' should be factors with the same levels\n")
   }
   
   # check if players are factors with same level
@@ -114,8 +115,8 @@ btpermute <- function(contests = NULL,
   # to be processed by BTm
   #assign("items", items, envir = .GlobalEnv)
   items <<- items
-  Win1  <- contests$Win1
-  Win2  <- contests$Win2
+  Win1 <- contests$Win1
+  Win2 <- contests$Win2
   Item1 <- contests$Item1
   Item2 <- contests$Item2
   
@@ -141,16 +142,16 @@ btpermute <- function(contests = NULL,
   
   # List of formula "extensions" to be added to the
   # BTm models as variables are sequentially added.
-  nform <- max(seq_along(Vars)) + 1
+  nperm <- n.iterations + 1
   
   BTmformula <- as.list(paste0("~ .. + ", 
-                               sprintf("Var%1d", seq_len(nform)), 
+                               sprintf("Var%1d", seq_len(nperm)), 
                                "[ObsID] * items[..]"))
   BTmformula <- lapply(BTmformula, stats::as.formula)
   
   # permutations formulas
   BTmformulaPV <- as.list(paste0("~ .. + ", 
-                                 sprintf("PV%1d", seq_len(nform)), 
+                                 sprintf("PV%1d", seq_len(nperm)), 
                                  "[ObsID] * items[..]"))
   BTmformulaPV <- lapply(BTmformulaPV, stats::as.formula)
   
@@ -186,7 +187,7 @@ btpermute <- function(contests = NULL,
         break)
     )
     # Selecting covariates
-
+    
     # deviances at first round (to identify the first variable to include)
     devl <-  numeric(length = length(allVars2)) 
     names(devl) <- allVars2
@@ -331,22 +332,14 @@ btpermute <- function(contests = NULL,
                                         collapse = " + "))
   
   
-  # reconstruct the formula to replace the strings Var with the real predictor name
-  # this will make easier to track the model call and re-use in other BTm functions
   repl <- match(selected, origVarnames)
   finalcall <- deparse(finalmodel, width.cutoff = 500)
-  finalcall <- strsplit(finalcall, "[~]")[[1]][-1]
-
   for(i in seq_along(repl)) {
-    finalcall[[i]] <- gsub(paste0("Var",repl[i]), selected[i], finalcall[[i]])
+    finalcall <- gsub(paste0("Var",repl[i]), selected[i], finalcall)
   }
   
-  finalcall <- paste0(finalcall, collapse = "~ ")
-  
-  finalcall <- paste0("~ ", finalcall)
-  
   finalmodel <- stats::as.formula(finalcall)
-
+  
   names(dat[[2]]) <- names(predictors)
   
   # fit final model with the selected variables
