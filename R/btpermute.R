@@ -354,7 +354,7 @@ btpermute <- function(contests = NULL,
       ...)
   
   result <- list(model = PICmodel, 
-                 call = finalcall,
+                 formula = finalcall,
                  selected = as.character(selected),
                  seeds = seeds,
                  deviances = deviances)
@@ -368,7 +368,7 @@ btpermute <- function(contests = NULL,
 #' @export
 print.gosset_btpermute <- function(x, ...) {
   cat("Model formula:\n")
-  cat(x[["call"]], "\n \n")
+  cat(x[["formula"]], "\n \n")
   cat("Permutation estimates: \n")
   p <- unlist(x[["model"]][c("aic","deviance",
                              "null.deviance",
