@@ -214,7 +214,7 @@ top_items <- function(x, top = 5) {
 }
 
 
-#' Plot party tree
+#' Plot PlackettLuce tree
 #' @param log logical, if \code{TRUE} log-worth coefficients are 
 #'  displayed instead of worth
 #' @param ref optional, character for the reference item when
