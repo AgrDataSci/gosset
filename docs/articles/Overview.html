@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.003</span>
       </span>
     </div>
 
@@ -54,7 +54,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -86,13 +86,16 @@
 
       
 
-      </header><script src="Overview_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><script src="Overview_files/header-attrs-2.13/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Trait prioritization and crop performance with decentralized on-farm data</h1>
+      <h1 data-toc-skip>Trait prioritization and crop performance with
+decentralized on-farm data</h1>
                         <h4 class="author">Kauê de Sousa</h4>
             <address class="author_afil">
-      Department of Agricultural Sciences, Inland Norway University, Hamar, Norway  Systems Tranformation, Bioversity International, Montpellier, France<br><small class="dont-index">Source: <a href="https://github.com/agrdatasci/gosset/blob/master/vignettes/Overview.Rmd"><code>vignettes/Overview.Rmd</code></a></small>
+      Department of Agricultural Sciences, Inland Norway University,
+Hamar, Norway  Systems Tranformation, Bioversity International,
+Montpellier, France<br><small class="dont-index">Source: <a href="https://github.com/agrdatasci/gosset/blob/master/vignettes/Overview.Rmd"><code>vignettes/Overview.Rmd</code></a></small>
       <div class="hidden name"><code>Overview.Rmd</code></div>
 
     </address>
@@ -103,8 +106,15 @@
 <div id="summary" class="section level1">
 <h1 class="hasAnchor">
 <a href="#summary" class="anchor"></a>Summary</h1>
-<p>The gosset package provides a set of tools and methods to implement a workflow to analyse experimental agriculture data, from data synthesis to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.</p>
-<p>In this example I show one of the possible workflows to assess trait prioritization and crop performance using decentralized on-farm data generated with the tricot approach<span class="citation"><sup>1</sup></span>. I use the <code>breadwheat</code> data from gosset.</p>
+<p>The gosset package provides a set of tools and methods to implement a
+workflow to analyse experimental agriculture data, from data synthesis
+to model selection and visualisation. The package is named after W.S.
+Gosset aka ‘Student’, a pioneer of modern statistics in small sample
+experimental design and analysis.</p>
+<p>In this example I show one of the possible workflows to assess trait
+prioritization and crop performance using decentralized on-farm data
+generated with the tricot approach<span class="citation"><sup>1</sup></span>. I use the <code>breadwheat</code>
+data from gosset.</p>
 </div>
 <div id="trait-prioritization" class="section level1">
 <h1 class="hasAnchor">
@@ -121,7 +131,8 @@
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">breadwheat</span><span class="op">)</span>
 
 <span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">breadwheat</span></code></pre></div>
-<p>Then an analysis comparing trait prioritization. Use all the traits but exclude Overall</p>
+<p>Then an analysis comparing trait prioritization. Use all the traits
+but exclude Overall</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"yield"</span>,
             <span class="st">"grainquality"</span>,
@@ -132,7 +143,14 @@
 
 <span class="co"># name of varieties </span>
 <span class="va">itemnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="va">dat</span><span class="op">[</span><span class="va">items</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>Then build the rankings using the function <code><a href="../reference/rank_tricot.html">rank_tricot()</a></code> which parse the data from the data.frame into an object of class <code>rankings</code>. I also do a validation inside the loop to remove observations where the best and worst are equal and remove <code>NA</code>s. From the list of <code>ranking</code> objects I fit a Plackett-Luce model using <code><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html">PlackettLuce()</a></code><span class="citation"><sup>2</sup></span>. This model estimates the probability of one variety outperforming all the others (worth) in the trait based on the Luce’s axiom<span class="citation"><sup>3</sup></span>.</p>
+<p>Then build the rankings using the function <code><a href="../reference/rank_tricot.html">rank_tricot()</a></code>
+which parse the data from the data.frame into an object of class
+<code>rankings</code>. I also do a validation inside the loop to remove
+observations where the best and worst are equal and remove
+<code>NA</code>s. From the list of <code>ranking</code> objects I fit a
+Plackett-Luce model using <code><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html">PlackettLuce()</a></code><span class="citation"><sup>2</sup></span>. This model estimates the
+probability of one variety outperforming all the others (worth) in the
+trait based on the Luce’s axiom<span class="citation"><sup>3</sup></span>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># build the rankings and put into a list</span>
 <span class="va">pldat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
@@ -161,19 +179,35 @@
 
 <span class="co"># fit the PlackettLuce model </span>
 <span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">pldat</span>, <span class="va">PlackettLuce</span><span class="op">)</span></code></pre></div>
-<p>The function <code><a href="../reference/worth_map.html">worth_map()</a></code> is a visualization tool to help in identifying variety performance based on different traits. It plots the log-worth (worth in log scale) of each trait indicating the variety performance. Positive values indicate a superior performance for a given trait, while negative values a under performance.</p>
+<p>The function <code><a href="../reference/worth_map.html">worth_map()</a></code> is a visualization tool to help
+in identifying variety performance based on different traits. It plots
+the log-worth (worth in log scale) of each trait indicating the variety
+performance. Positive values indicate a superior performance for a given
+trait, while negative values a under performance.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/worth_map.html">worth_map</a></span><span class="op">(</span><span class="va">mod</span>, labels <span class="op">=</span> <span class="va">traits</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="crop-performance-with-environmental-data" class="section level1">
 <h1 class="hasAnchor">
 <a href="#crop-performance-with-environmental-data" class="anchor"></a>Crop performance with environmental data</h1>
-<p>Here I use the overall performance of varieties combined with environmental data to to assess crop variety performance. This approach was also used by van Etten et al. (2019)<span class="citation"><sup>4</sup></span>. I use the function <code><a href="https://agrdatasci.github.io/climatrends/reference/temperature.html">temperature()</a></code> from the climatrends<span class="citation"><sup>5</sup></span> package to compute temperature indices for the first 80 days after planting in each data point. The climate data used is NASA POWER data supported by the package nasapower<span class="citation"><sup>6</sup></span>.</p>
+<p>Here I use the overall performance of varieties combined with
+environmental data to to assess crop variety performance. This approach
+was also used by van Etten et al. (2019)<span class="citation"><sup>4</sup></span>. I use the function
+<code><a href="https://agrdatasci.github.io/climatrends/reference/temperature.html">temperature()</a></code> from the climatrends<span class="citation"><sup>5</sup></span> package to compute temperature
+indices for the first 80 days after planting in each data point. The
+climate data used is NASA POWER data supported by the package
+nasapower<span class="citation"><sup>6</sup></span>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">temp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://agrdatasci.github.io/climatrends/reference/temperature.html">temperature</a></span><span class="op">(</span><span class="va">dat</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lon"</span>,<span class="st">"lat"</span><span class="op">)</span><span class="op">]</span>, 
                     day.one <span class="op">=</span> <span class="va">dat</span><span class="op">[</span>, <span class="st">"planting_date"</span><span class="op">]</span>,
                     span <span class="op">=</span> <span class="fl">80</span><span class="op">)</span></code></pre></div>
-<p>Then I build the rankings using the function <code><a href="../reference/rank_tricot.html">rank_tricot()</a></code> but now as a <code>grouped_rankings</code> by adding the argument group = TRUE. This enables the ranking to be linked to covariates, in that case the temperature indices. Then with the function <code><a href="https://hturner.github.io/PlackettLuce/reference/pltree.html">pltree()</a></code> I fit a Plackett-Luce tree using the maximum night temperature (maxNT) and maximum day temperature (maxDT).</p>
+<p>Then I build the rankings using the function
+<code><a href="../reference/rank_tricot.html">rank_tricot()</a></code> but now as a <code>grouped_rankings</code> by
+adding the argument group = TRUE. This enables the ranking to be linked
+to covariates, in that case the temperature indices. Then with the
+function <code><a href="https://hturner.github.io/PlackettLuce/reference/pltree.html">pltree()</a></code> I fit a Plackett-Luce tree using the
+maximum night temperature (maxNT) and maximum day temperature
+(maxDT).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">R</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rank_tricot.html">rank_tricot</a></span><span class="op">(</span><span class="va">dat</span>, 
                  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"variety_a"</span>,<span class="st">"variety_b"</span>,<span class="st">"variety_c"</span><span class="op">)</span>, 
@@ -186,7 +220,9 @@
              alpha <span class="op">=</span> <span class="fl">0.1</span>,
              gamma <span class="op">=</span> <span class="cn">TRUE</span>,
              data <span class="op">=</span> <span class="va">pld</span><span class="op">)</span></code></pre></div>
-<p>The sets of functions below help in the visualization and identification of varieties with better performance in each node of the tree.</p>
+<p>The sets of functions below help in the visualization and
+identification of varieties with better performance in each node of the
+tree.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">pl</span><span class="op">)</span>
 
@@ -194,7 +230,7 @@
 
 <span class="fu"><a href="../reference/node_labels.html">top_items</a></span><span class="op">(</span><span class="va">pl</span>, top <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/worst_regret.html">worst_regret</a></span><span class="op">(</span><span class="va">pl</span><span class="op">)</span>
+<span class="fu">worst_regret</span><span class="op">(</span><span class="va">pl</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/worth_map.html">worth_map</a></span><span class="op">(</span><span class="va">pl</span><span class="op">)</span></code></pre></div>
 <div id="references" class="section level2 unnumbered">
@@ -203,27 +239,44 @@
 <div id="refs" class="references csl-bib-body" line-spacing="2">
 <div id="ref-vanEttentricotguide" class="csl-entry">
 <div class="csl-left-margin">1. </div>
-<div class="csl-right-inline">van Etten, J., Manners, R., Steinke, J., Matthus, E. &amp; de Sousa, K. <em><span class="nocase">The tricot approach: Guide for large-scale participatory experiments</span></em>. (Alliance of Bioversity International; CIAT; Alliance Bioversity International; CIAT, 2020).</div>
+<div class="csl-right-inline">van
+Etten, J., Manners, R., Steinke, J., Matthus, E. &amp; de Sousa, K.
+<em><a href="https://hdl.handle.net/10568/109942"><span class="nocase">The tricot approach: Guide for large-scale participatory
+experiments</span></a></em>. (Alliance of Bioversity International;
+CIAT; Alliance Bioversity International; CIAT, 2020).</div>
 </div>
 <div id="ref-Turner2020" class="csl-entry">
 <div class="csl-left-margin">2. </div>
-<div class="csl-right-inline">Turner, H. L., van Etten, J., Firth, D. &amp; Kosmidis, I. <span class="nocase">Modelling rankings in R: the PlackettLuce package</span>. <em>Computational Statistics</em> <strong>2020</strong>, 1027–1057 (2020).</div>
+<div class="csl-right-inline">Turner, H. L., van Etten, J., Firth, D. &amp;
+Kosmidis, I. <a href="https://doi.org/10.1007/s00180-020-00959-3"><span class="nocase">Modelling rankings in R: the PlackettLuce
+package</span></a>. <em>Computational Statistics</em>
+<strong>2020</strong>, 1027–1057 (2020).</div>
 </div>
 <div id="ref-Luce1959" class="csl-entry">
 <div class="csl-left-margin">3. </div>
-<div class="csl-right-inline">Luce, R. D. <em><span>Individual Choice Behavior</span></em>. 153 (Courier Corporation, 1959).</div>
+<div class="csl-right-inline">Luce, R. D. <em><span>Individual Choice
+Behavior</span></em>. 153 (Courier Corporation, 1959).</div>
 </div>
 <div id="ref-vanEtten2019" class="csl-entry">
 <div class="csl-left-margin">4. </div>
-<div class="csl-right-inline">van Etten, J., de Sousa, K., Aguilar, A., Barrios, M., <em>et al.</em> <span class="nocase">Crop variety management for climate adaptation supported by citizen science</span>. <em>Proceedings of the National Academy of Sciences</em> <strong>116</strong>, 4194–4199 (2019).</div>
+<div class="csl-right-inline">van
+Etten, J., de Sousa, K., Aguilar, A., Barrios, M., <em>et al.</em> <a href="https://doi.org/10.1073/pnas.1813720116"><span class="nocase">Crop
+variety management for climate adaptation supported by citizen
+science</span></a>. <em>Proceedings of the National Academy of
+Sciences</em> <strong>116</strong>, 4194–4199 (2019).</div>
 </div>
 <div id="ref-climatrends" class="csl-entry">
 <div class="csl-left-margin">5. </div>
-<div class="csl-right-inline">de Sousa, K., van Etten, J. &amp; Solberg, S. Ø. <em>Climatrends: Climate variability indices for ecological modelling</em>. (2020).</div>
+<div class="csl-right-inline">de
+Sousa, K., van Etten, J. &amp; Solberg, S. Ø. <em><a href="https://CRAN.R-project.org/package=climatrends">Climatrends:
+Climate variability indices for ecological modelling</a></em>.
+(2020).</div>
 </div>
 <div id="ref-Sparks2018" class="csl-entry">
 <div class="csl-left-margin">6. </div>
-<div class="csl-right-inline">Sparks, A. H. <span class="nocase">nasapower: A NASA POWER Global Meteorology, Surface Solar Energy and Climatology Data Client for R</span>. <em>Journal of Open Source Software</em> <strong>3</strong>, 1035 (2018).</div>
+<div class="csl-right-inline">Sparks, A. H. <a href="https://doi.org/10.21105/joss.01035"><span class="nocase">nasapower: A NASA POWER Global Meteorology, Surface Solar
+Energy and Climatology Data Client for R</span></a>. <em>Journal of Open
+Source Software</em> <strong>3</strong>, 1035 (2018).</div>
 </div>
 </div>
 </div>

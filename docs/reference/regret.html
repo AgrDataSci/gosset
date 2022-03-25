@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pairwise comparison rankings — rank_paircomp • gosset</title>
+<title>Regret-based values for risk assessment — regret • gosset</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,11 @@
 
 
 
-<meta property="og:title" content="Pairwise comparison rankings — rank_paircomp" />
-<meta property="og:description" content="Pairwise comparisons from a ranking object. Ties are not 
-taken into account, then they are added as NA's." />
+<meta property="og:title" content="Regret-based values for risk assessment — regret" />
+<meta property="og:description" content="Regret is an important heuristic in the behavioural sciences. 
+Minimizing worst regret (the loss under the worst possible 
+outcome) is a criterion that takes a conservative approach 
+to risk analysis in diversification strategies." />
 <meta property="og:image" content="/logo.svg" />
 
 
@@ -132,77 +134,101 @@ taken into account, then they are added as NA's." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pairwise comparison rankings</h1>
-    <small class="dont-index">Source: <a href='https://github.com/agrdatasci/gosset/blob/master/R/rank_paircomp.R'><code>R/rank_paircomp.R</code></a></small>
-    <div class="hidden name"><code>rank_paircomp.Rd</code></div>
+    <h1>Regret-based values for risk assessment</h1>
+    <small class="dont-index">Source: <a href='https://github.com/agrdatasci/gosset/blob/master/R/regret.R'><code>R/regret.R</code></a></small>
+    <div class="hidden name"><code>regret.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Pairwise comparisons from a ranking object. Ties are not 
-taken into account, then they are added as NA's.</p>
+    <p>Regret is an important heuristic in the behavioural sciences. 
+Minimizing worst regret (the loss under the worst possible 
+outcome) is a criterion that takes a conservative approach 
+to risk analysis in diversification strategies.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>rank_paircomp</span><span class='op'>(</span><span class='va'>object</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>regret</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span>, bootstrap <span class='op'>=</span> <span class='cn'>TRUE</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>regret</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span>, <span class='va'>values</span>, <span class='va'>items</span>, <span class='va'>group</span>, bootstrap <span class='op'>=</span> <span class='cn'>TRUE</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
+<span class='co'># S3 method for pltree</span>
+<span class='fu'>regret</span><span class='op'>(</span><span class='va'>object</span>, bootstrap <span class='op'>=</span> <span class='cn'>TRUE</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>an object of class "rankings" or "grouped_rankings" 
-which is a matrix of dense rankings.</p></td>
+      <td><p>a data.frame or an object of class <code>pltree</code></p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further arguments passed to methods</p></td>
+    </tr>
+    <tr>
+      <th>bootstrap</th>
+      <td><p>logical, to run a bayes bootstrap on <var>object</var></p></td>
+    </tr>
+    <tr>
+      <th>normalize</th>
+      <td><p>logical, to normalize values to sum to 1</p></td>
+    </tr>
+    <tr>
+      <th>values</th>
+      <td><p>an index in (object) with the values to compute regret</p></td>
+    </tr>
+    <tr>
+      <th>items</th>
+      <td><p>an index in  <var>object</var> for the different items</p></td>
+    </tr>
+    <tr>
+      <th>group</th>
+      <td><p>an index in <var>object</var> for the different scenarios</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an object of class "paircomp" which is a matrix 
- of pairwise comparisons</p>
+    <p>A data frame with regret estimates</p>
+<dt>items</dt><dd><p>the item names</p></dd>
+<dt>worth</dt><dd><p>the worth parameters</p></dd>
+<dt>regret</dt><dd><p>the squared regret</p></dd>
+<dt>worst_regret</dt><dd><p>the worst regret</p></dd>
+
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Strobl C., Wickelmaier F. &amp; Zeileis A. (2011). 
-Journal of Educational and Behavioral Statistics, 36(2), 135–153.
-doi:10.3102/1076998609359791</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='https://hturner.github.io/PlackettLuce/reference/rankings.html'>rankings</a></code>, 
-<code><a href='https://rdrr.io/pkg/psychotools/man/paircomp.html'>paircomp</a></code></p>
-<p>Other rank functions: 
-<code><a href='rank_binomial.html'>rank_binomial</a>()</code>,
-<code><a href='rank_numeric.html'>rank_numeric</a>()</code>,
-<code><a href='rank_tricot.html'>rank_tricot</a>()</code></p></div>
+    <p>Loomes G. &amp; Sugden R. (1982). 
+The Economic Journal, 92(368), 805. 
+doi: <a href='https://doi.org/10.2307/2232669'>10.2307/2232669</a></p>
+<p>Bleichrodt H. &amp; Wakker P. P. (2015). 
+The Economic Journal, 125(583), 493–532. 
+doi: <a href='https://doi.org/10.1111/ecoj.12200'>10.1111/ecoj.12200</a></p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <p>Kauê de Sousa and Jacob van Etten</p>
+    <p>Jacob van Etten and Kauê de Sousa</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"> 
+    <pre class="examples">
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://hturner.github.io/PlackettLuce/'>"PlackettLuce"</a></span><span class='op'>)</span>
-
-<span class='va'>R</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>0</span>, <span class='fl'>0</span>,
-              <span class='fl'>4</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>,
-              <span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>3</span>, <span class='fl'>1</span>,
-              <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>0</span>,
-              <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>,
-              <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>3</span>, <span class='fl'>2</span><span class='op'>)</span>, nrow <span class='op'>=</span> <span class='fl'>6</span>, byrow <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>R</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apple"</span>, <span class='st'>"banana"</span>, <span class='st'>"orange"</span>, <span class='st'>"pear"</span><span class='op'>)</span>
-<span class='va'>R</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://hturner.github.io/PlackettLuce/reference/rankings.html'>as.rankings</a></span><span class='op'>(</span><span class='va'>R</span><span class='op'>)</span>
-
-<span class='va'>PC</span> <span class='op'>&lt;-</span> <span class='fu'>rank_paircomp</span><span class='op'>(</span><span class='va'>R</span><span class='op'>)</span>
-
-<span class='co'>#############################################</span>
-
-<span class='co'># using breadwheat data</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"breadwheat"</span>, package <span class='op'>=</span> <span class='st'>"gosset"</span><span class='op'>)</span>
 
 <span class='co'># convert the tricot rankings from breadwheat data</span>
-<span class='co'># into a object of class 'rankings' from PlackettLuce</span>
-<span class='va'>R</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rank_tricot.html'>rank_tricot</a></span><span class='op'>(</span><span class='va'>breadwheat</span>,
+<span class='co'># into a object of class 'grouped_rankings'</span>
+
+<span class='va'>G</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rank_tricot.html'>rank_tricot</a></span><span class='op'>(</span><span class='va'>breadwheat</span>,
                  items <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"variety_a"</span>,<span class='st'>"variety_b"</span>,<span class='st'>"variety_c"</span><span class='op'>)</span>,
-                 input <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"overall_best"</span>,<span class='st'>"overall_worst"</span><span class='op'>)</span><span class='op'>)</span>
+                 input <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"overall_best"</span>,<span class='st'>"overall_worst"</span><span class='op'>)</span>,
+                 group <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 
-<span class='va'>PC</span> <span class='op'>&lt;-</span> <span class='fu'>rank_paircomp</span><span class='op'>(</span><span class='va'>R</span><span class='op'>)</span>
+<span class='co'># combine grouped rankings with temperature indices</span>
+<span class='va'>mydata</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>G</span>, <span class='va'>breadwheat</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"lon"</span>,<span class='st'>"lat"</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>
+
+<span class='co'># fit a pltree model using geographic data</span>
+<span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://hturner.github.io/PlackettLuce/reference/pltree.html'>pltree</a></span><span class='op'>(</span><span class='va'>G</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>mydata</span><span class='op'>)</span>
+
+<span class='fu'>regret</span><span class='op'>(</span><span class='va'>mod</span><span class='op'>)</span>
+
 
 </pre>
   </div>

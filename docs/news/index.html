@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.003</span>
       </span>
     </div>
 
@@ -95,7 +95,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -143,11 +143,14 @@
 <a href="#improvements" class="anchor"></a>Improvements</h3>
 <ul>
 <li>
-<code>forward()</code> and <code><a href="../reference/crossvalidation.html">crossvalidation()</a></code> deals with caret list folds</li>
+<code>forward()</code> and <code><a href="../reference/crossvalidation.html">crossvalidation()</a></code> deals with
+caret list folds</li>
 <li>
-<code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method in <code>summarise_agreement()</code> deals with negative values</li>
+<code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method in <code>summarise_agreement()</code>
+deals with negative values</li>
 <li>
-<code><a href="../reference/rank_tricot.html">rank_tricot()</a></code> now handles with ties which a assigned in position 2</li>
+<code><a href="../reference/rank_tricot.html">rank_tricot()</a></code> now handles with ties which a assigned in
+position 2</li>
 </ul>
 </div>
 </div>
@@ -159,12 +162,17 @@
 <h3 class="hasAnchor">
 <a href="#improvements-1" class="anchor"></a>IMPROVEMENTS</h3>
 <ul>
-<li>add argument qve to skip quasi-variance to plot coefficients in <code>plot_tree()</code>
+<li>add argument qve to skip quasi-variance to plot coefficients in
+<code>plot_tree()</code>
 </li>
 <li>
 <code><a href="../reference/rank_numeric.html">rank_numeric()</a></code> deals with ids of class characters</li>
-<li>argument <code>ref</code> can be used in <code>multicompPL()</code> to select the reference item</li>
-<li>adjust scale in the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method for <code>summarise_agreement()</code> using the argument scales, where <code>scales = 100</code> is to set the scale from 0-100 and <code>scales = 1</code> for a scale from 0-1</li>
+<li>argument <code>ref</code> can be used in <code>multicompPL()</code>
+to select the reference item</li>
+<li>adjust scale in the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method for
+<code>summarise_agreement()</code> using the argument scales, where
+<code>scales = 100</code> is to set the scale from 0-100 and
+<code>scales = 1</code> for a scale from 0-1</li>
 <li>plot method for <code>multcompPL()</code>
 </li>
 </ul>
@@ -173,9 +181,11 @@
 <h3 class="hasAnchor">
 <a href="#bug-fixes" class="anchor"></a>BUG FIXES</h3>
 <ul>
-<li>Fix an issue in <code><a href="../reference/rank_binomial.html">rank_binomial()</a></code> in assigning the ids when argument <code>disaggregate = TRUE</code>
+<li>Fix an issue in <code><a href="../reference/rank_binomial.html">rank_binomial()</a></code> in assigning the ids
+when argument <code>disaggregate = TRUE</code>
 </li>
-<li>Fix an issue in setting up the permuted formulas in <code><a href="../reference/btpermute.html">btpermute()</a></code>, with the fix n.formula = n.vars + 1</li>
+<li>Fix an issue in setting up the permuted formulas in
+<code><a href="../reference/btpermute.html">btpermute()</a></code>, with the fix n.formula = n.vars + 1</li>
 </ul>
 </div>
 </div>
@@ -190,7 +200,8 @@
 <li>forward selection is added with <code>forward()</code>
 </li>
 <li>
-<code><a href="../reference/btpermute.html">btpermute()</a></code> is added for model selection with BTm()</li>
+<code><a href="../reference/btpermute.html">btpermute()</a></code> is added for model selection with
+BTm()</li>
 <li>abbreviation method in plot methods of summarise_* functions</li>
 </ul>
 </div>
@@ -210,7 +221,9 @@
 <h3 class="hasAnchor">
 <a href="#changes-in-behaviour" class="anchor"></a>CHANGES IN BEHAVIOUR</h3>
 <ul>
-<li>Functions <code><a href="https://agrdatasci.github.io/climatrends/reference/rainfall.html">rainfall()</a></code>, <code><a href="https://agrdatasci.github.io/climatrends/reference/temperature.html">temperature()</a></code>, <code><a href="https://agrdatasci.github.io/climatrends/reference/ETo.html">ETo()</a></code> and <code><a href="https://agrdatasci.github.io/climatrends/reference/GDD.html">GDD()</a></code> migrates to <strong>climatrends</strong>
+<li>Functions <code><a href="https://agrdatasci.github.io/climatrends/reference/rainfall.html">rainfall()</a></code>, <code><a href="https://agrdatasci.github.io/climatrends/reference/temperature.html">temperature()</a></code>,
+<code><a href="https://agrdatasci.github.io/climatrends/reference/ETo.html">ETo()</a></code> and <code><a href="https://agrdatasci.github.io/climatrends/reference/GDD.html">GDD()</a></code> migrates to
+<strong>climatrends</strong>
 </li>
 <li>Change license to MIT</li>
 <li>Change logo</li>
@@ -225,14 +238,17 @@
 <h3 class="hasAnchor">
 <a href="#improvements-3" class="anchor"></a>IMPROVEMENTS</h3>
 <ul>
-<li>Write documentation in good practice. Avoid calling the entire package but specific functions.</li>
+<li>Write documentation in good practice. Avoid calling the entire
+package but specific functions.</li>
 </ul>
 </div>
 <div id="changes-in-behaviour-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#changes-in-behaviour-1" class="anchor"></a>CHANGES IN BEHAVIOUR</h3>
 <ul>
-<li>argument “ascending” in <code><a href="../reference/rank_numeric.html">rank_numeric()</a></code> in restricted to floating point numbers. Integer values are ranked as provided by input.</li>
+<li>argument “ascending” in <code><a href="../reference/rank_numeric.html">rank_numeric()</a></code> in restricted to
+floating point numbers. Integer values are ranked as provided by
+input.</li>
 </ul>
 </div>
 </div>
@@ -246,15 +262,23 @@
 <ul>
 <li>Classify main functions into families</li>
 <li>
-<code><a href="https://agrdatasci.github.io/climatrends/reference/rainfall.html">rainfall()</a></code> and <code><a href="https://agrdatasci.github.io/climatrends/reference/temperature.html">temperature()</a></code> now allows for time series indices</li>
+<code><a href="https://agrdatasci.github.io/climatrends/reference/rainfall.html">rainfall()</a></code> and <code><a href="https://agrdatasci.github.io/climatrends/reference/temperature.html">temperature()</a></code> now allows
+for time series indices</li>
 </ul>
 </div>
 <div id="changes-in-behaviour-2" class="section level3">
 <h3 class="hasAnchor">
 <a href="#changes-in-behaviour-2" class="anchor"></a>CHANGES IN BEHAVIOUR</h3>
 <ul>
-<li><p>Rename functions <code>agreement()</code>, <code>dominance()</code>, <code>favourite()</code>, and <code>victories()</code> with the tag <code>summarise</code> and add it into summarise functions. No warking message provided. New functions are <code>summarise_agreement()</code>, <code>summarise_dominance()</code>, <code>summarise_favourite()</code>, and <code>summarise_victories()</code></p></li>
-<li><p>Argument ‘index’ is removed from <code><a href="https://agrdatasci.github.io/climatrends/reference/rainfall.html">rainfall()</a></code> and <code><a href="https://agrdatasci.github.io/climatrends/reference/temperature.html">temperature()</a></code>, all indices are given by default</p></li>
+<li><p>Rename functions <code>agreement()</code>,
+<code>dominance()</code>, <code>favourite()</code>, and
+<code>victories()</code> with the tag <code>summarise</code> and add it
+into summarise functions. No warking message provided. New functions are
+<code>summarise_agreement()</code>, <code>summarise_dominance()</code>,
+<code>summarise_favourite()</code>, and
+<code>summarise_victories()</code></p></li>
+<li><p>Argument ‘index’ is removed from <code><a href="https://agrdatasci.github.io/climatrends/reference/rainfall.html">rainfall()</a></code> and
+<code><a href="https://agrdatasci.github.io/climatrends/reference/temperature.html">temperature()</a></code>, all indices are given by default</p></li>
 </ul>
 </div>
 </div>
@@ -267,12 +291,17 @@
 <a href="#new-features-2" class="anchor"></a>NEW FEATURES</h3>
 <ul>
 <li>
-<code>.get_timeseries()</code> now implements the Euclidean method to search for its nearest neighbour in the nasapower output. This optmises the function and reduce dependencies</li>
-<li>ranking functions now implements internal processess to decode ranks and reduce dependencies</li>
+<code>.get_timeseries()</code> now implements the Euclidean method
+to search for its nearest neighbour in the nasapower output. This
+optmises the function and reduce dependencies</li>
+<li>ranking functions now implements internal processess to decode ranks
+and reduce dependencies</li>
 <li>
-<code><a href="../reference/pseudoR2.html">pseudoR2()</a></code> as a S3 method for objects of class “glm”, “gnm”, “bttree” and “pltree”</li>
+<code><a href="../reference/pseudoR2.html">pseudoR2()</a></code> as a S3 method for objects of class “glm”,
+“gnm”, “bttree” and “pltree”</li>
 <li>
-<code><a href="../reference/kendallTau.html">kendallTau()</a></code> as S3 method for objects of class “numeric”, “matrix”, “data.frame”, “rankings”, “grouped_rankings”</li>
+<code><a href="../reference/kendallTau.html">kendallTau()</a></code> as S3 method for objects of class
+“numeric”, “matrix”, “data.frame”, “rankings”, “grouped_rankings”</li>
 </ul>
 </div>
 </div>
@@ -284,7 +313,9 @@
 <h3 class="hasAnchor">
 <a href="#new-features-3" class="anchor"></a>NEW FEATURES</h3>
 <ul>
-<li>Function to summarise results from pairwise comparisons, <code>agreement()</code>, <code>dominance()</code>, <code>favourite()</code> and <code>victories()</code>
+<li>Function to summarise results from pairwise comparisons,
+<code>agreement()</code>, <code>dominance()</code>,
+<code>favourite()</code> and <code>victories()</code>
 </li>
 <li>Increased test coverage</li>
 </ul>
@@ -295,7 +326,8 @@
 <a href="#gosset-013-2019-11-15" class="anchor"></a>gosset 0.1.3 (2019-11-15)<small> Unreleased </small>
 </h1>
 <ul>
-<li>Successfull migration from <strong>ClimMobTools</strong> to <strong>gosset</strong>
+<li>Successfull migration from <strong>ClimMobTools</strong> to
+<strong>gosset</strong>
 </li>
 </ul>
 </div>
@@ -307,7 +339,8 @@
 <h3 class="hasAnchor">
 <a href="#new-features-4" class="anchor"></a>NEW FEATURES</h3>
 <ul>
-<li>Migrating functions from <strong>ClimMobTools</strong> to <strong>gosset</strong>
+<li>Migrating functions from <strong>ClimMobTools</strong> to
+<strong>gosset</strong>
 </li>
 </ul>
 </div>
@@ -316,9 +349,11 @@
 <a href="#changes-in-behaviour-3" class="anchor"></a>CHANGES IN BEHAVIOUR</h3>
 <ul>
 <li>
-<code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> method for crossvalidation and <code>rank_decimal()</code> deprecated</li>
+<code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> method for crossvalidation and
+<code>rank_decimal()</code> deprecated</li>
 <li>
-<code><a href="../reference/rank_numeric.html">rank_numeric()</a></code> and <code><a href="../reference/rank_tricot.html">rank_tricot()</a></code> replaces <code>rank_PL()</code>. NO warning message added</li>
+<code><a href="../reference/rank_numeric.html">rank_numeric()</a></code> and <code><a href="../reference/rank_tricot.html">rank_tricot()</a></code> replaces
+<code>rank_PL()</code>. NO warning message added</li>
 </ul>
 </div>
 </div>
@@ -333,10 +368,14 @@
 <li>
 <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> method for crossvalidation objects</li>
 <li>
-<code><a href="../reference/pseudoR2.html">pseudoR2()</a></code> for object of class “pltree” extracts null loglik from PlackettLuce</li>
-<li>replace <code>to_rankings()</code> by <code>rank_PL()</code>. Warning message added</li>
-<li>replace <code>num2rank()</code> by <code>rank_decimal()</code>. No warning message added</li>
-<li>replace <code>to_paircomp()</code> by <code><a href="../reference/rank_paircomp.html">rank_paircomp()</a></code>. No warning message added</li>
+<code><a href="../reference/pseudoR2.html">pseudoR2()</a></code> for object of class “pltree” extracts null
+loglik from PlackettLuce</li>
+<li>replace <code>to_rankings()</code> by <code>rank_PL()</code>.
+Warning message added</li>
+<li>replace <code>num2rank()</code> by <code>rank_decimal()</code>. No
+warning message added</li>
+<li>replace <code>to_paircomp()</code> by <code><a href="../reference/rank_paircomp.html">rank_paircomp()</a></code>.
+No warning message added</li>
 </ul>
 </div>
 </div>
