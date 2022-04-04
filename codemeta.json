@@ -7,7 +7,7 @@
   "codeRepository": "https://agrdatasci.github.io/gosset/",
   "issueTracker": "https://github.com/agrdatasci/gosset/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -274,5 +274,5 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "2823.468KB"
+  "fileSize": "2850.925KB"
 }
