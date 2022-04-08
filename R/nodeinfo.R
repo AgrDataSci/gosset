@@ -261,6 +261,9 @@ plot.pltree <- function(x,
   
   # make panels
   p <- try(build_tree_nodes(nodes, 
+                            log = log,
+                            ci.level = ci.level,
+                            ref = ref,
                             node.ids = node_id,
                             n.obs = nobs, ...), silent = TRUE)
   
