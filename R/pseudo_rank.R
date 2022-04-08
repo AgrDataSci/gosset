@@ -31,6 +31,16 @@ pseudo_rank <- function(object, ...) {
   # find the missing values
   missR <- as.vector(which(sumR == 0))
   
+  if (length(missR) == 0) {
+    
+    if (keepclass == "rankings") {
+      object <- PlackettLuce::as.rankings(object)
+    }
+    
+    return(object)
+    
+  }
+  
   # check for n times the items are tested to balance variance
   tested <- apply(object, 2, function(x){sum(x != 0)})
   tested <- floor(mean(tested[-missR]))

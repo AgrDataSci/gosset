@@ -4,6 +4,7 @@
 \alias{regret}
 \alias{regret.default}
 \alias{regret.pltree}
+\alias{regret.list}
 \title{Regret-based values for risk assessment}
 \usage{
 regret(object, ..., bootstrap = TRUE, normalize = TRUE)
@@ -11,9 +12,12 @@ regret(object, ..., bootstrap = TRUE, normalize = TRUE)
 \method{regret}{default}(object, ..., values, items, group, bootstrap = TRUE, normalize = TRUE)
 
 \method{regret}{pltree}(object, bootstrap = TRUE, normalize = TRUE, ...)
+
+\method{regret}{list}(object, bootstrap = TRUE, normalize = TRUE, ...)
 }
 \arguments{
-\item{object}{a data.frame or an object of class \code{pltree}}
+\item{object}{a data.frame, an object of class \code{pltree}, or a 
+list with \code{PlackettLuce} models}
 
 \item{...}{further arguments passed to methods}
 
@@ -21,7 +25,7 @@ regret(object, ..., bootstrap = TRUE, normalize = TRUE)
 
 \item{normalize}{logical, to normalize values to sum to 1}
 
-\item{values}{an index in \var(object) with the values to compute regret}
+\item{values}{an index in \var{object} with the values to compute regret}
 
 \item{items}{an index in  \var{object} for the different items}
 
@@ -42,6 +46,7 @@ to risk analysis in diversification strategies.
 }
 \examples{
 
+# Case 1 ####
 library("PlackettLuce")
 data("breadwheat", package = "gosset")
 
@@ -62,7 +67,31 @@ mod <- pltree(G ~ ., data = mydata)
 
 regret(mod)
 
+# Case 2 ####
+# list of PlackettLuce models
+R <- matrix(c(1, 2, 3, 0,
+              4, 1, 2, 3,
+              2, 1, 3, 4,
+              1, 2, 3, 0,
+              2, 1, 3, 0,
+              1, 0, 3, 2), nrow = 6, byrow = TRUE)
+colnames(R) <- c("apple", "banana", "orange", "pear")
 
+mod1 <- PlackettLuce(R)
+
+R2 <- matrix(c(1, 2, 0, 3,
+               2, 1, 0, 3,
+               2, 1, 0, 3,
+               1, 2, 0, 3,
+               2, 1, 0, 3,
+               1, 3, 4, 2), nrow = 6, byrow = TRUE)
+colnames(R2) <- c("apple", "banana", "orange", "pear")
+
+mod2 <- PlackettLuce(R2)
+
+mod <- list(mod1, mod2)
+
+regret(mod, n1 = 500)
 }
 \references{
 Loomes G. & Sugden R. (1982). 

@@ -6,12 +6,13 @@
 #' to risk analysis in diversification strategies. 
 #' 
 #' @author Jacob van Etten and Kauê de Sousa
-#' @param object a data.frame or an object of class \code{pltree}
+#' @param object a data.frame, an object of class \code{pltree}, or a 
+#'  list with \code{PlackettLuce} models
 #' @param bootstrap logical, to run a bayes bootstrap on \var{object}
 #' @param normalize logical, to normalize values to sum to 1
 #' @param group an index in \var{object} for the different scenarios 
 #' @param items an index in  \var{object} for the different items
-#' @param values an index in \var(object) with the values to compute regret
+#' @param values an index in \var{object} with the values to compute regret
 #' @param ... further arguments passed to methods
 #' @return A data frame with regret estimates
 #' \item{items}{the item names}
@@ -29,6 +30,7 @@
 #' 
 #' @examples
 #'
+#' # Case 1 ####
 #' library("PlackettLuce")
 #' data("breadwheat", package = "gosset")
 #' 
@@ -49,7 +51,31 @@
 #' 
 #' regret(mod)
 #' 
+#' # Case 2 ####
+#' # list of PlackettLuce models
+#' R <- matrix(c(1, 2, 3, 0,
+#'               4, 1, 2, 3,
+#'               2, 1, 3, 4,
+#'               1, 2, 3, 0,
+#'               2, 1, 3, 0,
+#'               1, 0, 3, 2), nrow = 6, byrow = TRUE)
+#' colnames(R) <- c("apple", "banana", "orange", "pear")
 #' 
+#' mod1 <- PlackettLuce(R)
+#' 
+#' R2 <- matrix(c(1, 2, 0, 3,
+#'                2, 1, 0, 3,
+#'                2, 1, 0, 3,
+#'                1, 2, 0, 3,
+#'                2, 1, 0, 3,
+#'                1, 3, 4, 2), nrow = 6, byrow = TRUE)
+#' colnames(R2) <- c("apple", "banana", "orange", "pear")
+#' 
+#' mod2 <- PlackettLuce(R2)
+#' 
+#' mod <- list(mod1, mod2)
+#' 
+#' regret(mod, n1 = 500)
 #' @importFrom partykit nodeids
 #' @importFrom psychotools itempar
 #' @importFrom qvcalc qvcalc.itempar
@@ -211,94 +237,86 @@ regret.pltree <- function(object, bootstrap = TRUE, normalize = TRUE, ...) {
   
 }
 
-
-# regret.list <- function(object, bootstrap = TRUE, normalize = TRUE, ...) {
-#   
-#   isPlackettLuce <- unlist(lapply(object, class))
-#   
-#   if (!"PlackettLuce" %in% isPlackettLuce) {
-#     
-#     
-#     
-#   }
+#' @rdname regret
+#' @method regret list
+#' @export
+regret.list <- function(object, bootstrap = TRUE, normalize = TRUE, ...) {
   
-  # # get ids of terminal nodes
-  # nodes <- partykit::nodeids(object, terminal = TRUE)
-  # 
-  # # get the models from each terminal node
-  # coeffs <- list()
-  # for(i in seq_along(nodes)) {
-  #   coeffs[[i]] <- object[[ nodes[i] ]]$node$info$object
-  # }
-  # 
-  # # probability of the scenario is the weigthed values of 
-  # # number of observations in the nodes
-  # # get number of observations in each inner node
-  # nobs <- integer(0L)
-  # for (i in seq_along(nodes)) {
-  #   nobs <- c(nobs, as.integer(object[[nodes[i]]]$node$info$nobs))
-  # }
-  # 
-  # probs <- nobs / sum(nobs)
-  # 
-  # if (isTRUE(bootstrap)) {
-  #   ci_level <- 1 - object$info$control$alpha
-  #   # get worth from models using qvcalc
-  #   coeffs <- lapply(coeffs, function(X) {
-  #     pars <- psychotools::itempar(X, vcov = FALSE, alias = TRUE)
-  #     pars <- qvcalc::qvcalc.itempar(pars)
-  #     pars <- pars[[2]]
-  #     pars <- as.data.frame(as.matrix(pars))
-  #     pars$items <- rownames(pars)
-  #     # add confidence intervals as "new" data sets for bootstrapping 
-  #     pars1 <- pars
-  #     pars1$estimate <- pars1$estimate + stats::qnorm(1 - (1 - ci_level) / 2) * pars1$quasiSE
-  #     pars2 <- pars
-  #     pars2$estimate <- pars2$estimate - stats::qnorm(1 - (1 - ci_level) / 2) * pars2$quasiSE
-  #     pars <- rbind(pars, pars1, pars2)
-  #     pars
-  #   })
-  #   
-  #   # get names of items
-  #   items <- unique(coeffs[[1]]$items)
-  #   
-  #   # combine the worth by rows into a single data.frame
-  #   coeffs <- do.call("rbind", coeffs)
-  #   
-  #   # add node id to the data.frame
-  #   coeffs$node <- rep(nodes, each = length(items) * 3)
-  # }
-  # 
-  # if (isFALSE(bootstrap)) {
-  #   # get worth from models using qvcalc
-  #   coeffs <- lapply(coeffs, function(X) {
-  #     pars <- psychotools::itempar(X, vcov = FALSE, alias = TRUE)
-  #     pars <- qvcalc::qvcalc.itempar(pars)
-  #     pars <- pars[[2]]
-  #     pars <- as.data.frame(as.matrix(pars))
-  #     pars$items <- rownames(pars)
-  #     pars
-  #   })
-  #   
-  #   # get names of items
-  #   items <- unique(coeffs[[1]]$items)
-  #   
-  #   # combine the worth by rows into a single data.frame
-  #   coeffs <- do.call("rbind", coeffs)
-  #   
-  #   # add node id to the data.frame
-  #   coeffs$node <- rep(nodes, each = length(items))
-  # }
-  # 
-  # regret(object = coeffs,
-  #        values = "estimate",
-  #        items = "items",
-  #        group = "node",
-  #        bootstrap = bootstrap,
-  #        normalize = normalize, 
-  #        ...)
+  isPlackettLuce <- unlist(lapply(object, class))
   
-# }
+  if (!"PlackettLuce" %in% isPlackettLuce) {
+    stop("Only objects of class 'PlackettLuce' are accepted for this method \n")
+  }
+  
+  if (isTRUE(bootstrap)) {
+    ci_level <- 1 - 0.05
+    # is likely that the error id due to missing items in one the nodes
+    # so we apply the function pseudo_ranking() to add these missing items
+    # extract the original rankings, add pseudo_ranking and refit the model
+    coeffs <- lapply(object, function(y){
+      r <- y$rankings
+      r <- pseudo_rank(r)
+      stats::update(y, rankings = r)
+    })
+    
+    # get worth from models using qvcalc
+    coeffs <- lapply(coeffs, function(X) {
+      pars <- psychotools::itempar(X, log = FALSE)
+      # get estimates from item parameters using qvcalc
+      pars <- qvcalc::qvcalc(pars)$qvframe
+      pars$quasiSE[is.na(pars$quasiSE)] <- min(pars$quasiSE, na.rm = TRUE)
+      pars$items <- rownames(pars)
+      # add confidence intervals as "new" data sets for bootstrapping
+      pars1 <- pars
+      pars1$estimate <- pars1$estimate + stats::qnorm(1 - (1 - ci_level) / 2) * pars1$quasiSE
+      pars2 <- pars
+      pars2$estimate <- pars2$estimate - stats::qnorm(1 - (1 - ci_level) / 2) * pars2$quasiSE
+      pars <- rbind(pars, pars1, pars2)
+      pars
+    })
+    
+    # get names of items
+    items <- unique(coeffs[[1]]$items)
+    
+    # combine the worth by rows into a single data.frame
+    coeffs <- do.call("rbind", coeffs)
+    
+    # add node id to the data.frame
+    coeffs$node <- rep(1:length(object), each = length(items) * 3)
+    
+  }
+  
+  if (isFALSE(bootstrap)) {
+    # get worth from models using qvcalc
+    coeffs <- lapply(object, function(y){
+      r <- y$rankings
+      r <- pseudo_rank(r)
+      m <- stats::update(y, rankings = r)
+      pars <- psychotools::itempar(m, log = FALSE)
+      pars <- qvcalc::qvcalc(pars)$qvframe
+      pars$quasiSE[is.na(pars$quasiSE)] <- min(pars$quasiSE, na.rm = TRUE)
+      pars$items <- rownames(pars)
+      pars
+    })
+    
+    # get names of items
+    items <- unique(coeffs[[1]]$items)
+    
+    # combine the worth by rows into a single data.frame
+    coeffs <- do.call("rbind", coeffs)
+    
+    # add node id to the data.frame
+    coeffs$node <- rep(1:length(object), each = length(items))
+    
+  }
+  
+  regret(object = coeffs,
+         values = "estimate",
+         items = "items",
+         group = "node",
+         bootstrap = bootstrap,
+         normalize = normalize)
+}
 
 #' Performs a Bayesian bootstrap 
 #' 

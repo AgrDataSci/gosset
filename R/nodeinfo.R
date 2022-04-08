@@ -244,22 +244,14 @@ plot.pltree <- function(x,
     return(NextMethod(x, ...))
   }
   
-  dots <- list(...)
-  
-  font.size <- dots[["font.size"]]
-  threshold <- dots[["threshold"]]
-  terms     <- dots[["terms"]]
-  adjust    <- dots[["adjust"]]
-  nudge.x   <- dots[["nudge.x"]]
-  nudge.y   <- dots[["nudge.y"]]
-  letter.size <- dots[["letter.size"]]
-  
-  if(is.null(nudge.x)) nudge.x <- 0
-  if(is.null(nudge.y)) nudge.y <- 0.35
-  if(is.null(letter.size)) letter.size <- 14
-  
   # Extract ids from terminal nodes
   node_id <- partykit::nodeids(x, terminal = TRUE)
+  
+  # get number of observations in each inner node
+  nobs <- integer(0L)
+  for (i in seq_along(node_id)) {
+    nobs <- c(nobs, as.integer(x[[ node_id[i] ]]$node$info$nobs))
+  }
   
   # get models from each node
   nodes <- list()
@@ -267,74 +259,106 @@ plot.pltree <- function(x,
     nodes[[i]] <- x[[ node_id[i] ]]$node$info$object
   }
   
-  # get number of observations in each inner node
-  nobs <- list()
-  for (i in seq_along(node_id)) {
-    nobs[[i]] <- as.integer(x[[ node_id[i] ]]$node$info$nobs) 
+  # make panels
+  p <- try(build_tree_nodes(nodes, 
+                            node.ids = node_id,
+                            n.obs = nobs, ...), silent = TRUE)
+  
+  if (isTRUE("try-error" %in% class(p))) {
+    return(NextMethod(x, ...))
+  } 
+  
+  # get the tree structure
+  tree <- build_tree_branches(x, ...)
+  
+  # put branches and nodes together 
+  p <- (tree / p)
+  
+  return(p)
+  
+}
+
+#' Build tree
+#' This function builds the party tree
+#' @param x a party object
+#' @noRd
+build_tree_branches <- function(x, ...){
+  splitvar <- 0L
+  p.value <- 0L
+  id <- 0L
+  
+  ggparty::ggparty(x, terminal_space = 0) +
+    ggparty::geom_edge() +
+    ggparty::geom_edge_label() +
+    ggplot2::theme(legend.position = "none") +
+    ggparty::geom_node_label(line_list = list(
+      ggplot2::aes(label = splitvar),
+      ggplot2::aes(label = paste("p =",
+                                 formatC(p.value,
+                                         format = "e",
+                                         digits = 1))),
+      ggplot2::aes(label = ""),
+      ggplot2::aes(label = id)),
+      line_gpar = list(list(size = 12),
+                       list(size = 10),
+                       list(size = 10),
+                       list(size = 10,
+                            col = "black",
+                            fontface = "bold",
+                            alignment = "center")
+      ),
+      ids = "inner") +
+    ggplot2::coord_cartesian(ylim = c(0.1, 1.1))
+  
+}
+
+#' Build tree nodes
+#' This function makes the panels 
+#' @param x a list with PlackettLuce objects
+#' @inheritParams plot.pltree
+build_tree_nodes <- function(x, 
+                             log = TRUE, 
+                             ref = NULL, 
+                             ci.level = 0.95, 
+                             node.ids = NULL,
+                             n.obs = NULL, ...){
+  
+  if (isTRUE(log)) ref <- NULL
+  
+  if (is.null(node.ids)) {
+    node.ids <- 1:length(x)
   }
   
+  estimate <- 0L
+  bmin <- 0L
+  bmax <- 0L
+  
   # get item names
-  items <- dimnames(coef(x))[[2]]
+  items <- names(coef(x[[1]]))
   
   # get item parameters from model
-  coeffs <- try(lapply(nodes, function(x) {
-    z <- psychotools::itempar(x, vcov = TRUE, log = log, ref = ref)
+  coeffs <- try(lapply(x, function(y) {
+    z <- psychotools::itempar(y, log = log, ref = ref)
     # get estimates from item parameters using qvcalc
-    z <- qvcalc::qvcalc(z)$qvframe
+    z <- qvcalc::qvcalc(z, ref = ref)$qvframe
   }), silent = TRUE)
   
   if (isTRUE("try-error" %in% class(coeffs))) {
     
-    message("Unable to compute quasi-variance estimates with whole tree. \n",
-            "Updating the model using rankings from each node \n")
+    # is likely that the error id due to missing items in one the nodes
+    # so we apply the function pseudo_ranking() to add these missing items
+    # extract the original rankings, add pseudo_ranking and refit the model
+    coeffs <- lapply(x, function(y){
+      r <- y$rankings
+      r <- pseudo_rank(r)
+      stats::update(y, rankings = r)
+    })
     
-    coeffs <- try(lapply(nodes, function(x) {
-      psychotools::itempar(x, vcov = FALSE, log = log, ref = ref)
-    }), silent = TRUE)
-    
-    # update the model, this will check if ranking is complete in each node 
-    # and refit the rankings from each node to get the qvSE 
-    qvSE <- try(lapply(nodes, function(x) {
-      
-      Z <- x$rankings
-      
-      Z <- Z[1:length(Z),, as.rankings = F]
-      
-      rmv <- which(colSums(Z) == 0)
-      
-      if (length(rmv) > 0) Z <- Z[, -rmv]
-      
-      Z <- stats::update(x, rankings = Z, 
-                         weights = PlackettLuce::freq(Z), 
-                         start = NULL)
-      
-      Z <- psychotools::itempar(Z, vcov = FALSE)
-      
+    coeffs <- try(lapply(coeffs, function(y) {
+      z <- psychotools::itempar(y, log = log, ref = ref)
       # get estimates from item parameters using qvcalc
-      Z <- qvcalc::qvcalc(Z)
-      
-      # extract data frames with estimates
-      Z <- Z$qvframe
-      
-      Z$items <- rownames(Z)
-      
-      Z
-      
+      z <- qvcalc::qvcalc(z)$qvframe
     }), silent = TRUE)
-    
-    x <- list()
-    for (i in seq_along(coeffs)) {
-      
-      xi <- data.frame(estimate = as.vector(coeffs[[i]]),
-                       items = items)
-      
-      xi <- merge(xi, qvSE[[i]][,c("items", "quasiSE")], by = "items", all.x = TRUE)
-      
-      x[[i]] <- xi
-      
-    }
-    
-    coeffs <- x
     
   }
   
@@ -355,15 +379,11 @@ plot.pltree <- function(x,
   })
   
   # Add node information and number of observations
-  for (i in seq_along(node_id)) {
-    
+  for (i in seq_along(node.ids)) {
     coeffs[[i]] <- within(coeffs[[i]], {
-      
-      nobs <- nobs[[i]]
-      
-      node <- node_id[i]}
+      nobs <- n.obs[i]
+      node <- node.ids[i]}
     )
-    
   }
   
   coeffs <- do.call("rbind", coeffs)
@@ -388,40 +408,6 @@ plot.pltree <- function(x,
   
   coeffs$items <- factor(coeffs$items, levels = rev(sort(items)))
   
-  splitvar <- 0L
-  p.value <- 0L
-  id <- 0L
-  estimate <- 0L
-  bmin <- 0L
-  bmax <- 0L
-  
-  # get the tree structure
-  if (length(node_id) > 1) {
-    tree <- 
-      ggparty::ggparty(x, terminal_space = 0) +
-      ggparty::geom_edge() +
-      ggparty::geom_edge_label() +
-      ggplot2::theme(legend.position = "none") +
-      ggparty::geom_node_label(line_list = list(
-        ggplot2::aes(label = splitvar),
-        ggplot2::aes(label = paste("p =",
-                                   formatC(p.value,
-                                           format = "e",
-                                           digits = 1))),
-        ggplot2::aes(label = ""),
-        ggplot2::aes(label = id)),
-        line_gpar = list(list(size = 12),
-                         list(size = 10),
-                         list(size = 10),
-                         list(size = 10,
-                              col = "black",
-                              fontface = "bold",
-                              alignment = "center")
-        ),
-        ids = "inner") +
-      ggplot2::coord_cartesian(ylim = c(0.1, 1.1))
-  }
-  
   # Get max and min values for the x axis in the plot
   xmax <- round(max(coeffs$bmax, na.rm = TRUE) + 0.01, digits = 4)
   
@@ -442,14 +428,13 @@ plot.pltree <- function(x,
   xlabs <- as.character(round(xbreaks, 2))
   
   # Check font size for axis X and Y, and plot title
-  p <- 
-    ggplot2::ggplot(coeffs, 
-                    ggplot2::aes(x = estimate, 
-                                 y = items)) +
+  ggplot2::ggplot(coeffs, 
+                  ggplot2::aes(x = estimate, 
+                               y = items)) +
     ggplot2::geom_vline(xintercept = xinter, 
                         colour = "#E5E7E9", size = 0.8) +
     ggplot2::geom_text(ggplot2::aes(label = groups),
-                       position = ggplot2::position_nudge(y = nudge.y, x = nudge.x)) +
+                       position = ggplot2::position_nudge(y = 0.35, x = 0)) +
     ggplot2::geom_point(pch = 21, size = 2, 
                         fill = "black",colour = "black") +
     ggplot2::geom_errorbarh(ggplot2::aes(xmin = bmin,
@@ -469,7 +454,7 @@ plot.pltree <- function(x,
                                                        hjust = 1, vjust = 0.5, 
                                                        face = "plain",
                                                        colour = "black"),
-                   text = ggplot2::element_text(size = letter.size),
+                   text = ggplot2::element_text(size = 14),
                    strip.background = ggplot2::element_blank(),
                    plot.background = ggplot2::element_blank(),
                    panel.grid.major = ggplot2::element_blank(),
@@ -478,11 +463,8 @@ plot.pltree <- function(x,
                    axis.ticks = ggplot2::element_line(colour = "black", size = 0.5),
                    axis.ticks.length = grid::unit(0.3, "cm"))
   
-  if(length(node_id) > 1){
-    p <- (tree / p)
-  }
-  
-  return(p)
   
 }
+
+
 
