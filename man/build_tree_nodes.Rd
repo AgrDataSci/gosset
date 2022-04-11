@@ -11,8 +11,7 @@ build_tree_nodes(
   ref = NULL,
   ci.level = 0.95,
   node.ids = NULL,
-  n.obs = NULL,
-  ...
+  n.obs = NULL
 )
 }
 \arguments{
@@ -25,8 +24,6 @@ displayed instead of worth}
 \var{log} = \code{TRUE}}
 
 \item{ci.level}{an integer for the confidence interval levels}
-
-\item{...}{additional arguments passed to methods}
 }
 \description{
 Build tree nodes

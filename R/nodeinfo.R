@@ -265,7 +265,7 @@ plot.pltree <- function(x,
                             ci.level = ci.level,
                             ref = ref,
                             node.ids = node_id,
-                            n.obs = nobs, ...), silent = TRUE)
+                            n.obs = nobs), silent = TRUE)
   
   if (isTRUE("try-error" %in% class(p))) {
     return(NextMethod(x, ...))
@@ -324,7 +324,7 @@ build_tree_nodes <- function(x,
                              ref = NULL, 
                              ci.level = 0.95, 
                              node.ids = NULL,
-                             n.obs = NULL, ...){
+                             n.obs = NULL){
   
   if (isTRUE(log)) ref <- NULL
   
