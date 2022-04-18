@@ -28,6 +28,8 @@
 #' Cragg, J. G., & Uhler, R. S. (1970). The Canadian Journal of 
 #' Economics 3(3), 386-406. doi:10.2307/133656
 #' 
+#' McFadden, D. (1973). Conditional logit analysis of qualitative choice behavior.
+#' 
 #' @examples
 #'
 #' data("airquality")
