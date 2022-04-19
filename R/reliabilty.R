@@ -4,7 +4,7 @@
 #'  the potential response to selection on those 
 #'  estimated values
 #'  
-#' @param x a numeric vector, or an object of 
+#' @param x a numeric vector, or an object  
 #'  of class \code{PlackettLuce} or \code{pltree}
 #' @param y numeric, the reference value
 #' @param ref a character or integer for indexing the
