@@ -16,7 +16,7 @@ reliability(x, ...)
 \method{reliability}{pltree}(x, ref, ...)
 }
 \arguments{
-\item{x}{a numeric vector, or an object of 
+\item{x}{a numeric vector, or an object
 of class \code{PlackettLuce} or \code{pltree}}
 
 \item{...}{additional arguments passed to methods}
