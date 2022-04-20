@@ -42,6 +42,7 @@ Suggests:
     chirps,
     knitr,
     psychotree,
+    nasapower,
     rmarkdown
 Language: en-GB
 RoxygenNote: 7.1.2
