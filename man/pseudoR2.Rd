@@ -57,10 +57,13 @@ http://www.jstor.org/stable/3448514
 
 Cragg, J. G., & Uhler, R. S. (1970). The Canadian Journal of 
 Economics 3(3), 386-406. doi:10.2307/133656
+
+McFadden, D. (1973). Conditional logit analysis of qualitative choice behavior.
 }
 \seealso{
 Other goodness-of-fit functions: 
-\code{\link{kendallTau}()}
+\code{\link{kendallTau}()},
+\code{\link{kendallW}()}
 }
 \author{
 Kauê de Sousa and Jacob van Etten

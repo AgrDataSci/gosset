@@ -81,6 +81,7 @@ Kendall M. G. (1938). Biometrika, 30(1–2), 81–93.
 \code{\link[stats]{cor}}
 
 Other goodness-of-fit functions: 
+\code{\link{kendallW}()},
 \code{\link{pseudoR2}()}
 }
 \author{
