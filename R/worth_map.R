@@ -108,7 +108,7 @@ worth_map.default <- function(object, ...) {
 #' @export
 worth_map.list <- function(object, labels, ...) {
   
-  winprobs <- .combine_coeffs(object, log = TRUE, vcov = FALSE)
+  winprobs <- .combine_coeffs(object, log = TRUE, vcov = FALSE, ...)
   
   # add name of features
   names(winprobs) <- labels

@@ -1,7 +1,7 @@
 Package: gosset
 Type: Package
 Title: Tools for Data Analysis in Experimental Agriculture
-Version: 0.4.002
+Version: 0.4.003
 Authors@R: c(person("Kauê", "de Sousa", 
         email = "kaue.desousa@inn.no", role = c("aut", "cre"),
         comment = c(ORCID = "0000-0002-7571-7845")),
