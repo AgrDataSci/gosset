@@ -137,9 +137,11 @@ worth_map.list <- function(object, labels, ...) {
                   fill = winprob,
                   label = as.character(round(winprob, 2)))) +
     ggplot2::geom_tile() + 
-    ggplot2::scale_fill_distiller(palette = "RdBu", limit = lims,
+    ggplot2::scale_fill_distiller(palette = "RdBu", 
+                                  limit = lims,
                                   direction = 1,
-                                  na.value = "white") +
+                                  na.value = "white",
+                                  name = "") +
     ggplot2::theme_bw() +
     theme(axis.text = ggplot2::element_text(color = "grey20"),
           strip.text.x = ggplot2::element_text(color = "grey20"),
