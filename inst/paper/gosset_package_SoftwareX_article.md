@@ -1,6 +1,6 @@
 ---
 title: 'gosset: Tools for Data Analysis in  Experimental Agriculture'
-author: "Kauê de Sousa, Jacob van Etten, David Brown, Jonathan Steinke"
+author: "Kauê de Sousa^1,2^, Jacob van Etten^1^, David Brown^3,4^, Jonathan Steinke^1,5^"
 address: Digital Inclusion, Bioversity International
 output:
   pdf_document: default
@@ -16,7 +16,7 @@ editor_options:
 
 ::: frontmatter
 ::: keyword
-data-driven agriculture, Plackett-Luce model ,keyword 3
+data-driven agriculture, Plackett-Luce model 
 :::
 :::
 
@@ -78,15 +78,22 @@ other software etc.).*
 *Describe the software in as much as is necessary to establish a
 vocabulary needed to explain its impact.*
 
+The R package gosset provides functionality supporting the data analysis workflows in experimental agriculture, especially with rank-based approaches in on-farm experimental agriculture. Typically, this data analysis workflow includes (1) data management and preparation, (2) modelling and (3) results visualization and presentation.
+
 ## Software Architecture
 
 *Give a short overview of the overall software architecture; provide a
 pictorial component overview or similar (if possible). If necessary
 provide implementation details.*
 
+
+
 ## Software Functionalities
 
 *Present the major functionalities of the software.*
+
+**Data management and preparation**
+
 
 ## Sample code snippets analysis (optional)
 
@@ -139,7 +146,7 @@ influenced its outcome.
 
 # Acknowledgements {#acknowledgements .unnumbered}
 
-This work was supported by The Nordic Joint Committee for Agricultural and Food Research (grant num. 202100-2817). We thank Julian Ramirez-Villegas and Marcel Schrijvers-Gonlag for the useful insights and discussion that helped in the development of this study.
+
 
 ::: thebibliography
 00
