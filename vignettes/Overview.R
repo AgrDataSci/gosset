@@ -1,27 +1,37 @@
-## ----fetch, message=FALSE, eval=FALSE, echo=TRUE------------------------------
-#  library("PlackettLuce")
-#  library("gosset")
-#  library("climatrends")
-#  library("nasapower")
-#  
-#  data("breadwheat", package = "gosset")
-#  
-#  head(breadwheat)
-#  
-#  dat <- breadwheat
-#  
+## ----fetch, message=FALSE, eval=TRUE, echo=TRUE-------------------------------
+library("gosset")
+library("PlackettLuce")
+library("climatrends")
+library("nasapower")
 
-## ---- message=FALSE, eval=FALSE, echo=TRUE------------------------------------
-#  traits <- c("yield",
-#              "grainquality",
-#              "germination")
-#  
-#  # names of colunms with varieties
-#  items <- paste0("variety_", letters[1:3])
-#  
-#  # name of varieties
-#  itemnames <- sort(unique(unlist(dat[items])))
-#  
+data("nicabean", package = "gosset")
+
+dat <- nicabean$trial
+
+covar <- nicabean$covar
+
+head(dat)
+
+
+## ---- message=FALSE, eval=TRUE, echo=TRUE-------------------------------------
+
+traits <- unique(dat$trait)
+
+R <- list()
+
+for (i in seq_along(traits)) {
+  
+  dat_i <- subset(dat, dat$trait == traits[i])
+  
+  R[[i]] <- rank_numeric(data = dat_i,
+                         items = "item",
+                         input = "rank", 
+                         id = "id", 
+                         ascending = TRUE)
+}
+
+head(R[[1]])
+
 
 ## ---- message=FALSE, eval=FALSE, echo=TRUE------------------------------------
 #  # build the rankings and put into a list

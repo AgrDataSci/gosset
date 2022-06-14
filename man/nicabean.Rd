@@ -31,7 +31,7 @@ nicabean
 }
 \description{
 Data from decentralized on-farm trials of common bean 
-(\emph{Phaseolus vulgaris} L.) varieties in Nicaragua over the 
+(\emph{Phaseolus vulgaris} L.) varieties in Nicaragua over
 five seasons between 2015 and 2016. Following the tricot approach, 
 farmers were asked to test three varieties of common bean randomly 
 assigned as incomplete blocks of three varieties (out of 10 varieties) 
