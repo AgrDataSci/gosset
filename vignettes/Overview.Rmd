@@ -1,5 +1,5 @@
 ---
-title: "Trait prioritization and crop performance with decentralized on-farm data"
+title: "Trait prioritization and crop performance with decentralized on-farm trial data"
 package: gosset
 author:
 - name: Kauê de Sousa
@@ -18,11 +18,11 @@ csl: citation_style.csl
 
 The gosset package provides a set of tools and methods to implement a workflow to analyse experimental agriculture data, from data synthesis to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.
 
-In this example I show one of the possible workflows to assess trait prioritization and crop performance using decentralized on-farm data generated with the tricot approach[@vanEttentricotguide]. I use the `breadwheat` data from gosset.
+In this example I show one of the possible workflows to assess trait prioritization and crop performance using decentralized on-farm data generated with the tricot approach[@vanEttentricotguide]. I use the `nicabean` data from gosset. This data set was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot approach, farmers were asked to test three varieties of common bean randomly assigned as incomplete blocks of three varieties (out of 10 varieties) and assess which of those three had the best and worst performance in nine traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, taste, and overall appreciation).
 
 # Trait prioritization 
 
-First I load the packages and data.  
+First I load the packages and the data. The `nicabean` data is a list with two data frames, the first `nicabean[["bean_covar"]]` contains the covariates associated with the data, the second `nicabean[["bean_rank"]]` contains the trial data with farmers' evaluations. For better handling we take both data frames out of the list as separated data frames.
 
 ```{r fetch, message=FALSE, eval=FALSE, echo=TRUE}
 library("PlackettLuce")
@@ -30,31 +30,23 @@ library("gosset")
 library("climatrends")
 library("nasapower")
 
-data("breadwheat", package = "gosset")
+data("nicabean", package = "gosset")
 
-head(breadwheat)
+dat <- nicabean$bean_rank
 
-dat <- breadwheat
+covar <- nicabean$bean_covar
 
 ```
 
-Then an analysis comparing trait prioritization. Use all the traits but exclude Overall
+Farmers assessed nine traits, with overall appreciation, being a trait that describes farmers' overall evaluation considering all the performance of varieties over the season. The trait is a mix between farmers' appreciation (choice behaviour) and the "real" on-farm variety performance. Using the evaluations of other traits, which are more oriented to the trait performance, we can assess the drivers of farmers' appreciation. For this, I use the function `kendallTau()`, which measures the rank correlation between two traits, with overall appreciation as baseline. 
 
+First, I transform the rankings into Plackett-Luce rankings[@Turner2020] using the function `rank_numeric()`. I run iterativelly over the traits adding the rankings to a list called `R`.
 
 ```{r , message=FALSE, eval=FALSE, echo=TRUE}
-traits <- c("yield",
-            "grainquality",
-            "germination")
-
-# names of colunms with varieties 
-items <- paste0("variety_", letters[1:3])
-
-# name of varieties 
-itemnames <- sort(unique(unlist(dat[items])))
 
 ```
 
-Then build the rankings using the function `rank_tricot()` which parse the data from the data.frame into an object of class `rankings`. I also do a validation inside the loop to remove observations where the best and worst are equal and remove `NA`s. From the list of `ranking` objects I fit a Plackett-Luce model using `PlackettLuce()`[@Turner2020]. This model estimates the probability of one variety outperforming all the others (worth) in the trait based on the Luce's axiom[@Luce1959].
+
 
 ```{r , message=FALSE, eval=FALSE, echo=TRUE}
 # build the rankings and put into a list
