@@ -96,7 +96,7 @@ The kendall correlation shows that farmers prioritized the traits yield ($\tau$ 
 From the breeder perspective, we can visually assess the trait performance using the function `worth_map()`. 
 The function is a visualization tool to help in identifying variety performance based on different traits. It plots the log-worth (worth in log scale) of each trait indicating the variety performance. Positive values indicate a superior performance for a given trait, while negative values a under performance.
 
-We first fit the Plackett-Luce models to get the log-worth estimates:
+We first fit the Plackett-Luce models to get the log-worth estimates, then use the function `worth_plot()` assigning the variety Amadeus 77 as the reference. The output is a ggplot object which can be modified using arguments and functions from the package `ggpplot2`[@ggplot2].
 
 ```{r worth, message=FALSE, eval=TRUE, echo=TRUE}
 mod <- lapply(R, PlackettLuce)
