@@ -13,11 +13,8 @@
 #' @family goodness-of-fit functions
 #' @param x a numeric vector, matrix or data frame
 #' @param y a vector, matrix or data frame with compatible dimensions to \code{x}
+#' @param null.rm logical, to remove zeros from \code{x} and \code{y} 
 #' @param ... further arguments affecting the Kendall tau produced. See details 
-#' @details 
-#' 
-#' null.rm logical, to remove zeros from \code{x} and \code{y} 
-#' 
 #' @return The Kendall correlation coefficient and the Effective N, which 
 #' is the equivalent N needed if all items were compared to all items. 
 #' Can be used for significance testing.
@@ -54,7 +51,7 @@
 #' @importFrom stats cor
 #' @importFrom PlackettLuce as.grouped_rankings
 #' @export
-kendallTau<- function(x, y, ...){
+kendallTau<- function(x, y, null.rm = TRUE, ...){
   
   UseMethod("kendallTau")
   
@@ -62,10 +59,48 @@ kendallTau<- function(x, y, ...){
 
 #' @rdname kendallTau
 #' @export
-kendallTau.default <- function(x, y, ...){
+kendallTau.default <- function(x, y, null.rm = TRUE, ...){
   
   
-  kt <- .get_kendall(x, y, ...)
+  keep <- !is.na(x) & !is.na(y)
+  
+  # if TRUE, remove zeros in both rankings
+  if (null.rm) {
+    
+    keep <- x != 0 & y != 0 & keep
+    
+  }
+  
+  x <- x[keep]
+  
+  y <- y[keep]
+  
+  # if any decimal in x or y transform it to integer rankings
+  # decimals will be computed as descending rankings
+  # where the highest values are the "best" 
+  # negative values are placed as least positions
+  if (any(.is_decimal(x))) {
+    
+    x <- .rank_decimal(x)$rank
+    
+  }
+  
+  if(any(.is_decimal(y))) {
+    
+    y <- .rank_decimal(y)$rank
+    
+  }
+  
+  tau_cor <- stats::cor(x, 
+                        y, 
+                        method = "kendall", 
+                        ...)
+  
+  n <- length(x)
+  
+  weight <- n * (n - 1) / 2
+  
+  kt <- c(tau_cor, weight)
   
   # Extract the values from the vector
   N <- kt[2]
@@ -103,13 +138,15 @@ kendallTau.matrix <- function(x, y, ...){
     X <- K[1:nc]
     Y <- K[(nc + 1):(nc * 2)]
     
-    .get_kendall(X, Y)
+    kendallTau(X, Y, ...)
     
   })
   
+  kt <- do.call("rbind", kt)
+  
   # Extract the values from the matrix
-  tau <- kt[1,]
-  N <- kt[2,]
+  tau <- kt[,1]
+  N <- kt[,2]
   
   tau_average <- sum(tau * N, na.rm = TRUE) / sum(N)
   
@@ -134,16 +171,6 @@ kendallTau.matrix <- function(x, y, ...){
   
 }
 
-
-#' @rdname kendallTau
-#' @method kendallTau data.frame
-#' @export
-kendallTau.data.frame <- function(x, y, ...){
-  
-  kendallTau.matrix(x, y, ...)
-
-}
-
 #' @rdname kendallTau
 #' @method kendallTau rankings
 #' @export
@@ -153,7 +180,7 @@ kendallTau.rankings <- function(x, y, ...){
   
   Y <- y[1:nrow(y), , as.rankings = FALSE]
   
-  kendallTau.matrix(X, Y, ...)
+  kendallTau(X, Y, ...)
   
 }
 
@@ -167,7 +194,7 @@ kendallTau.grouped_rankings <- function(x, y, ...){
   
   Y <- y[1:length(y), , as.grouped_rankings = FALSE]
   
-  kendallTau.matrix(X, Y, ...)
+  kendallTau(X, Y, ...)
   
 }
 
@@ -184,73 +211,7 @@ kendallTau.paircomp <- function(x, y, ...) {
   
   Y <- y[1:length(y), as.grouped_rankings = FALSE]
   
-  kendallTau.matrix(X, Y, ...)
-  
-}
-
-
-#' Kendall tau for a vector
-#' 
-#' Applies the "kendall" method from stats::cor with some 
-#' previous treatment in the data, such as converting floating number into 
-#' ranks (from the higher being the first and negative being the last) 
-#' and removing zeros from incomplete ranks
-#'
-#' @param x a object of class numeric 
-#' @param y a object of class numeric 
-#' @param null.rm logical, to remove zeros from \code{x} and \code{y} 
-#' @return The Kendall correlation coefficient and the Effective N
-#' @examples
-#' p1 <- c(1,2,3,4,5,6,7)
-#' p2 <- c(1,2,0,3,5,7,6)
-#' 
-#' .get_kendall(p1, p2, null.rm = TRUE)
-#' .get_kendall(p1, p2, null.rm = FALSE)
-#' @noRd
-.get_kendall <- function(x, y, null.rm = TRUE, ...) {
-  
-  keep <- !is.na(x) & !is.na(y)
-  
-  # if TRUE, remove zeros in both rankings
-  if (null.rm) {
-    
-    keep <- x != 0 & y != 0 & keep
-    
-  }
-  
-  x <- x[keep]
-  
-  y <- y[keep]
-  
-  # if any decimal in x or y transform it to integer rankings
-  # decimals will be computed as descending rankings
-  # where the highest values are the "best" 
-  # negative values are placed as least positions
-  if (any(.is_decimal(x))) {
-    
-    x <- .rank_decimal(x)$rank
-    
-  }
-  
-  if(any(.is_decimal(y))) {
-    
-    y <- .rank_decimal(y)$rank
-  
-  }
-  
-  tau_cor <- stats::cor(x, 
-                        y, 
-                        method = "kendall", 
-                        ...)
-  
-  n <- length(x)
-  
-  weight <- n * (n - 1) / 2
-  
-  result <- c(tau_cor, weight)
-  
-  return(result)
-  
+  kendallTau(X, Y, ...)
   
 }
 

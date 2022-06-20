@@ -31,7 +31,7 @@
 #'                    
 #' 
 #' kendallW(beans_plt)
-
+#' @importFrom DescTools KendallW
 #' @export
 kendallW <- function(x, ...) {
   

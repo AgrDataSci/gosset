@@ -4,19 +4,16 @@
 \alias{kendallTau}
 \alias{kendallTau.default}
 \alias{kendallTau.matrix}
-\alias{kendallTau.data.frame}
 \alias{kendallTau.rankings}
 \alias{kendallTau.grouped_rankings}
 \alias{kendallTau.paircomp}
 \title{Kendall rank correlation coefficient}
 \usage{
-kendallTau(x, y, ...)
+kendallTau(x, y, null.rm = TRUE, ...)
 
-\method{kendallTau}{default}(x, y, ...)
+\method{kendallTau}{default}(x, y, null.rm = TRUE, ...)
 
 \method{kendallTau}{matrix}(x, y, ...)
-
-\method{kendallTau}{data.frame}(x, y, ...)
 
 \method{kendallTau}{rankings}(x, y, ...)
 
@@ -28,6 +25,8 @@ kendallTau(x, y, ...)
 \item{x}{a numeric vector, matrix or data frame}
 
 \item{y}{a vector, matrix or data frame with compatible dimensions to \code{x}}
+
+\item{null.rm}{logical, to remove zeros from \code{x} and \code{y}}
 
 \item{...}{further arguments affecting the Kendall tau produced. See details}
 }
@@ -45,9 +44,6 @@ The 'kendallTau' function applies the "kendall" method from 'stats::cor'
 with some previous treatment in the data, such as converting floating numbers
 into ranks (from the higher being the first and negative being the last) 
 and the possibility to remove zeros from incomplete ranks
-}
-\details{
-null.rm logical, to remove zeros from \code{x} and \code{y}
 }
 \examples{
 library("PlackettLuce")
