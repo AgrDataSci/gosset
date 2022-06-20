@@ -3,8 +3,8 @@ title: 'gosset: An R package for analysis and synthesis of ranking data in agric
   experimentation'
 abstract: null
 output:
-  word_document: default
   pdf_document: default
+  word_document: default
   html_document:
     df_print: paged
 editor_options:
@@ -14,7 +14,7 @@ bibliography: paper.bib
 header-includes: \usepackage{caption} \captionsetup[figure]{labelformat=empty}
 ---
 
->Kauê de Sousa^1,2[*]^, Jacob van Etten^2^, David Brown^3,4^, Jonathan Steinke^2,5^  
+>Kauê de Sousa^1,2[*]^, David Brown^3,4^, Jonathan Steinke^2,5^, Jacob van Etten^2^  
 >-
 >
 ^1^ Department of Agricultural Sciences, Inland Norway University of Applied Sciences, 2318 Hamar, Norway  
@@ -30,7 +30,7 @@ Appropriate data management and analysis are necessary to produce practical info
 
 ::: frontmatter
 ::: keyword
-data-driven agriculture, Plackett-Luce model
+**Keywords**: Bradley-Terry, Plackett-Luce, data science, on-farm trials, participatory-research, tricot
 :::
 :::
 
@@ -97,7 +97,9 @@ vocabulary needed to explain its impact.*
 The R package gosset provides functionality supporting the analysis
 workflows in agricultural experimentation, especially with rank-based
 approaches. The package is available in The Comprehensive R Archive Network (CRAN)
-and can be installed by executing ``install.packages("gosset")``.
+and can be installed by executing ``install.packages("gosset")``. The package is named 
+in honor to William Sealy Gosset, known by the pen name ‘Student’, a pioneer of modern statistics
+in small sample experimental design and analysis [@Ziliak_2019].
 
 ## Software Architecture
 
@@ -115,69 +117,67 @@ style [@r_extensions_2022] and are contained in the R sub-directory.
 
 *Present the major functionalities of the software.*
 
+
 **Data management and preparation**
 
-When data from agricultural experiments is not in ranking format, it
-should be transformed to be used as inputs into R packages for the
-analysis of ranking data. For instance, the Plackett-Luce model [@luce_individual_1959;@Plackett]
-is implemented in the R package as PlackettLuce,
-which requires the data to be formatted as ranking matrix. Another
-example is the Bradley-Terry model [@bradley1952rank], implemented
-in the package BradleyTerry2 [@BradleyTerry2] and which requires the
-input data to be formatted as paired comparisons. For these cases,
-gosset provides the functions ``rank_numeric`` and ``rank_binomial`` respectively. The
-function ``rank_numeric`` transforms a set of numeric values into an ordinal
-ranking, considering if items with higher numeric values should be ranked first or
-last. The function ``rank_binomial`` transforms data in rankings format into
-pairwise comparisons, as required by the package BradleyTerry2.
-Additionally, gosset provides the function ``rank_tricot``, for the case
-when the experimental data is collected from tricot trials. In those trials,
-farmers rank the technology under evaluation (e.g., crop variety) stating which
-is the best and which is the worst from a set of three [@vanetten_beza_2019].
+*   **``rank_binomial``** transforms a ranking object into a binary comparisons, as required
+by package BradleyTerry2 [@BradleyTerry2].  
+*   **``rank_numeric``** converts numeric values into rankings. The parameter ``ascending``
+indicates if the rankings should be made considering the numeric values in ascending order. 
+The default is ``asceding = FALSE``. This function is useful when the data were collected 
+as numerical observations, for instance, in a experiment measuring crop yield.  
+*   **``rank_tricot``** transforms data in tricot format into rankings.
 
 **Modelling**
 
-The gosset package provides the following functions to support model
-selection and validation of Bradley-Terry and Plackett-Luce models. The function ``pseudoR2``
-computes goodness-of-fit measure McFadden's pseudo-R2 [@mcfadden1973conditional]. The ``AIC``
-function computes the Akaike Information Criterion[@akaike1974]. The ``kendallTau`` function
-computes the Kendall-tau rank correlation coefficient [@kendall_1938]. 
+*   **``AIC``** computes the Akaike Information Criterion @akaike1974] for a Bradley-Terry model fitted with
+BradleyTerry2 [@BradleyTerry2] or a Plackett-Luce model fitted with [@Turner2020].  
+*   **``btpermute``** deviance-based forward variable selection [@lysen2009permuted] procedure for Bradley-Terry models.  
+*   **``compare``** compare the agreenment between methods.  
+*   **``crossvalidation``** performs k-fold cross-validation, where k could be specified by the user.The default is
+10-fold. Folds can be provided as a vector for a custom cross-validation, such as blocked cross-validation.
+*   **``forward``** executes forward variable selection with cross-validation.  
+*   **``kendallTau``** computes the Kendall-tau rank correlation coefficient between two rankings [@kendall_1938].  
+*   **``kendallW``** computes Kendall's W (coefficient of concordance) among observed rankings and those predicted by
+the Plackett-Luce model.  
+*   **``pseudoR2``** computes goodness-of-fit measure McFadden's pseudo-R2 [@mcfadden1973conditional].
 
 
 **Visualization and results presentation**  
 
-``plot``  
+*   **``plot``** provides an alternative to the default plot function of the PlackettLuce package.  
 
-``worth_map``  
+*   **``regret``**  
 
-``worth_map``  
+*   **``reliability``**  
 
+*   **``worth_bar``**  
 
-``regret``  
-
-``reliability``
+*   **``worth_map``**
 
 
 # Illustrative Examples
 We demonstrate the functionality of the gosset package using the 
 trial dataset "nicabean", which consists of trial data collected in
-Nicaragua following the tricot approach. We use the Plackett-Luce model
-implemented in the R package *PlackettLuce*[@Turner2020]. We use climate data
-as model covariates to investigate the effect fo climate factors on the performance 
-of common bean (*Phaseolus vulgaris* L.) genotypes. For obtaining the climate data,
-we use the *nasapower* package[@nasapower]. Climatic indices were computed with the
-*climatrends* package[@climatrendspkg].
+Nicaragua. In this example we present a suggested workflow to assess trait prioritization and crop performance using decentralized on-farm data generated with the tricot approach [@vanetten_beza_2019]. 
 
-First, the required packages and data are loaded.
-``` {r}
+We use the `nicabean` dataset, which was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot approach, farmers were asked to test in their farms three varieties of common bean. The varieties were randomly assigned as incomplete blocks of size three (out of 10 varieties). The farmers assessed which of the three varieties has the best and worst performance in nine traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, taste) and overall appreciation). The farmers also provided their overall appreciation about the varieties, i.e., which
+variety has the best and the worst performance based on the overall performance considering all the traits.
+
+We use the Plackett-Luce model implemented in the R package *PlackettLuce*[@Turner2020]. 
+To consider the effecto of climate on the variety performance, we use climate data
+For obtaining the climate data, we used the *nasapower* package[@nasapower]. 
+Climatic indices were computed with the *climatrends* package[@climatrendspkg].
+
+First, we load the required packages and data. The ``nicabean`` dataset contains the 
+tricot rankings (``trial``), the climate covariates (``covar``) and the traits observations (``traits``).
+``` {r fetch, message=FALSE, eval=TRUE, echo=TRUE}
 library("gosset")
 library("PlackettLuce")
 library("climatrends")
 library("nasapower")
 
-#data("nicabean", package = "gosset")
-
-load("D:/GitHub/gosset/data/nicabean.rda")
+data("nicabean", package = "gosset")
 
 dat <- nicabean$trial
 
@@ -186,7 +186,7 @@ covar <- nicabean$covar
 traits <- unique(dat$trait)
 
 ```
-Make a PlackettLuce rank using the function ``rank_numeric``
+Make a PlackettLuce rank using the function ``rank_numeric``.
 ```{r}
 R <- vector(mode = "list", length = length(traits))
 
@@ -204,8 +204,10 @@ for (i in seq_along(traits)) {
 ```
 
 ```{r}
-head(R[[1]], 10)
+head(R[[1]], 5)
 ```
+
+
 Kendall correlation between traits using kendallTau()
 ```
 
