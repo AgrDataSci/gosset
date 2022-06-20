@@ -13,10 +13,10 @@ vignette: >
   %\VignetteIndexEntry{Overview}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown_notangle}
-  % \VignetteDepends{nasapower}
-  % \VignetteDepends{ggplot2}
-  % \VignetteDepends{PlackettLuce}
-  % \VignetteDepends{climatrends}
+  %\VignetteDepends{nasapower}
+  %\VignetteDepends{ggplot2}
+  %\VignetteDepends{PlackettLuce}
+  %\VignetteDepends{climatrends}
 bibliography: ["vignette.bib"]
 csl: citation_style.csl
 ---
@@ -46,7 +46,7 @@ dat <- nicabean$trial
 
 covar <- nicabean$covar
 
-head(dat)
+lapply(nicabean, head)
 
 ```
 
@@ -99,6 +99,7 @@ The function is a visualization tool to help in identifying variety performance 
 We first fit the Plackett-Luce models to get the log-worth estimates, then use the function `worth_plot()` assigning the variety Amadeus 77 as the reference. The output is a ggplot object which can be modified using arguments and functions from the package `ggpplot2`[@ggplot2].
 
 ```{r worth, message=FALSE, eval=TRUE, echo=TRUE}
+
 mod <- lapply(R, PlackettLuce)
 
 worth_map(mod[-baseline],
@@ -106,6 +107,7 @@ worth_map(mod[-baseline],
           ref = "Amadeus 77") +
   labs(x = "Variety",
        y = "Trait")
+
 ```
 
 

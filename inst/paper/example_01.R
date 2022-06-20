@@ -24,6 +24,21 @@ for (i in seq_along(traits)) {
                          ascending = TRUE)
 }
 
+head(R[[1]])
+
+r <- R[[1]]
+
+class(r)
+
+r2 <- unclass(r)
+
+class(r2)
+
+mod <- PlackettLuce(r2)
+
+mod
+
+
 
 # kendall 
 baseline <- which(grepl("OverallAppreciation", traits))
@@ -44,8 +59,8 @@ mod <- lapply(R, PlackettLuce)
 
 worth_map(mod[-baseline],
           labels = traits[-baseline], 
-          ref = "INTA Matagalpa") +
-  lab(x = "Variety",
+          ref = "Amadeus 77") +
+  labs(x = "Variety",
        y = "Trait")
 
 

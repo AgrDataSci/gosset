@@ -3,6 +3,7 @@ library("gosset")
 library("PlackettLuce")
 library("climatrends")
 library("nasapower")
+library("ggplot2")
 
 data("nicabean", package = "gosset")
 
@@ -10,10 +11,10 @@ dat <- nicabean$trial
 
 covar <- nicabean$covar
 
-head(dat)
+lapply(nicabean, head)
 
 
-## ---- message=FALSE, eval=TRUE, echo=TRUE-------------------------------------
+## ----rank, message=FALSE, eval=TRUE, echo=TRUE--------------------------------
 
 traits <- unique(dat$trait)
 
@@ -33,38 +34,29 @@ for (i in seq_along(traits)) {
 head(R[[1]])
 
 
-## ---- message=FALSE, eval=FALSE, echo=TRUE------------------------------------
-#  # build the rankings and put into a list
-#  pldat <- list()
-#  
-#  # run over the rankings of each trait
-#  for(i in seq_along(traits)){
-#  
-#    # select the item names and rankings for the trait in the iteration i
-#    d_i <- dat[, c(items, paste0(traits[i], c("_best", "_worst")))]
-#    # not observed as NA
-#    d_i[d_i == "Not observed"] <- NA
-#    # check for ties in the response pos == neg
-#    keep <- d_i[,4] != d_i[,5] & !is.na(d_i[,4]) & !is.na(d_i[,5])
-#    # keep only the TRUE values out of the later validation
-#    d_i <- d_i[keep, ]
-#  
-#    names(d_i)[4:5] <- c("best", "worst")
-#  
-#    R_i <- rank_tricot(d_i, items = 1:3, input = c("best", "worst"))
-#  
-#    pldat[[i]] <- R_i
-#  
-#  }
-#  
-#  pldat
-#  
-#  # fit the PlackettLuce model
-#  mod <- lapply(pldat, PlackettLuce)
-#  
+## ----kendall, message=FALSE, eval=TRUE, echo=TRUE-----------------------------
+baseline <- which(grepl("OverallAppreciation", traits))
 
-## ---- message=FALSE, eval=FALSE, echo=TRUE------------------------------------
-#  worth_map(mod, labels = traits)
+kendall <- lapply(R[-baseline], function(X){
+  kendallTau(x = X, y = R[[baseline]])
+})
+
+kendall <- do.call("rbind", kendall)
+
+kendall$trait <- traits[-baseline]
+
+print(kendall)
+
+## ----worth, message=FALSE, eval=TRUE, echo=TRUE-------------------------------
+
+mod <- lapply(R, PlackettLuce)
+
+worth_map(mod[-baseline],
+          labels = traits[-baseline], 
+          ref = "Amadeus 77") +
+  labs(x = "Variety",
+       y = "Trait")
+
 
 ## ---- message=FALSE, eval=FALSE, echo=TRUE------------------------------------
 #  temp <- temperature(dat[, c("lon","lat")],
