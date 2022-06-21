@@ -2,8 +2,8 @@
 title: '`gosset`: An R package for analysis and synthesis of ranking data in agricultural experimentation'
 abstract: null
 output:
-  pdf_document: default
   word_document: default
+  pdf_document: default
   html_document:
     df_print: paged
 editor_options:
@@ -53,17 +53,7 @@ Appropriate data management and analysis are necessary to produce practical info
 
 : *Code metadata (mandatory)*
 
-# Motivation and significance
-
-*Introduce the scientific background and the motivation for developing the software.*
-
-*Explain why the software is important, and describe the exact (scientific) problem(s) it solves.*
-
-*Indicate in what way the software has contributed (or how it will contribute in the future) to the process of scientific discovery; if available, this is to be supported by citing a research paper using the software.*
-
-*Provide a description of the experimental setting (how does the user use the software?).*
-
-*Introduce related work in literature (cite or list algorithms used, other software etc.).*
+# Motivation and significance  
 
 Participatory experimentation approaches have been increasingly applied in agricultural research [@deRoo2019farm]. While collecting data in ranking format is uncommon in general
 agricultural research settings, it is often collected in participatory experiments [@Coe2002AnalyzingRA]. Recently developed approaches for on-farm experimentation,
@@ -73,19 +63,13 @@ respectively. For (2), gosset provides functions for model selection and validat
 
 # Software description
 
-*Describe the software in as much as is necessary to establish a vocabulary needed to explain its impact.*
-
 The R package gosset provides functionality supporting the analysis workflows in agricultural experimentation, especially with rank-based approaches. The package is available in The Comprehensive R Archive Network (CRAN) and can be installed by executing `install.packages("gosset")`. The package is named in honor to William Sealy Gosset, known by the pen name ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis [@Ziliak_2019].
 
 ## Software Architecture
 
-*Give a short overview of the overall software architecture; provide a pictorial component overview or similar (if possible). If necessary provide implementation details.*
-
 The R package gosset is structured following the guidelines described in the manual for creating R add-on packages [@r_extensions_2022]. This structure basically consist of files DESCRTIPTION, LICENSE, NAMESPACE and NEWS, and directories data, dev, docs, inst, man, R, and vignettes. The package functions were developed following the S3 methods style [@r_extensions_2022] and are contained in the R sub-directory.
 
 ## Software Functionalities
-
-*Present the major functionalities of the software.*
 
 ### Data management and preparation
 
@@ -96,26 +80,26 @@ The R package gosset is structured following the guidelines described in the man
 ### Modelling
 
 * `AIC` computes the Akaike Information Criterion @akaike1974] for a Bradley-Terry model fitted with BradleyTerry2 [@BradleyTerry2] or a Plackett-Luce model fitted with [@Turner2020].  
-* `btpermute` deviance-based forward variable selection [@lysen2009permuted] procedure for Bradley-Terry models.
+* `btpermute` deviance-based forward variable selection [@lysen2009permuted] procedure for Bradley-Terry models.  
 * `compare` compare the agreenment between methods.  
-* `crossvalidation` performs k-fold cross-validation, where k could be specified by the user.The default is 10-fold. Folds can be provided as a vector for a custom cross-validation, such as blocked cross-validation.
+* `crossvalidation` performs k-fold cross-validation, where k could be specified by the user.The default is 10-fold. Folds can be provided as a vector for a custom cross-validation, such as blocked cross-validation.  
 * `forward` executes forward variable selection with cross-validation.  
 * `kendallTau` computes the Kendall-tau rank correlation coefficient between two rankings [@kendall_1938].  
 * `kendallW` computes Kendall's W (coefficient of concordance) among observed rankings and those predicted by the Plackett-Luce model.  
-*   `pseudoR2` computes goodness-of-fit measure McFadden's pseudo-R2 [@mcfadden1973conditional].
-
+*   `pseudoR2` computes goodness-of-fit measure McFadden's pseudo-R2 [@mcfadden1973conditional].  
 
 ### Visualization and results presentation
 
-* `plot` provides an alternative to the default plot function of the PlackettLuce package.
+* `plot` provides an alternative to the default plot function of the PlackettLuce package.  
 
-* `regret`  
+* `regret` computes the regret [@Loomes_1982;  ].  
 
-* `reliability`  
+* `reliability` computes the reliability of crop varieties, the probability to outperform the reference variety [@eskridge_1992].  
 
-* `worth_bar`  
+* `worth_bar`  creates a bar plot of the estimated worth values for each evaluated variety.  
 
-* `worth_map`
+* `worth_map` creates a heatmap plot of the estimated worth values for all varieties considering each of the
+evaluated traits.
 
 
 # Illustrative Examples
@@ -161,7 +145,8 @@ for (i in seq_along(traits)) {
 
 ```
 
-The following lines show the first 10 rankings in the format used by the PlackettLuce package. 
+The following lines show the first 10 rankings for the trait vigor, 
+in the format used by the PlackettLuce package. 
 
 ```{r fetch, message = FALSE, eval = TRUE, echo = TRUE}
 head(R[[1]], 5)
@@ -184,7 +169,8 @@ print(kendall)
 ```
 
 
-We fit a series of Plackett-Luce models using the function `PlackettLuce` from the package of the same name as input in the lapply function.
+For each trait, we fit a Plackett-Luce model using the function `PlackettLuce` from the package of the same name.
+We use ``lapply`` with the list of rankings and the `PlackettLuce` function as input parameters.
 
 ```{r, message=FALSE, eval=TRUE, echo=TRUE}
 
@@ -192,7 +178,7 @@ mod <- lapply(R, PlackettLuce)
 
 ```
 
-The `worth_map` function can be used to visually assess variety performance based on different traits. The values represented in a worth_map are worth estimates in log scale. 
+The `worth_map` function can be used to visually assess variety performance based on different traits. The values represented in a worth_map are worth estimates in the log scale. 
 
 
 ```{r, message=FALSE, eval=TRUE, echo=TRUE}
@@ -204,29 +190,15 @@ worth_map(mod[-baseline],
 ```
 
 
+
 \newpage  
 
 
 # Impact
 
-***This is the main section of the article and the reviewers weight the description here appropriately***
-
-*Indicate in what way new research questions can be pursued as a result of the software (if any).*
-
-*Indicate in what way, and to what extent, the pursuit of existing research questions is improved (if so).*
-
-*Indicate in what way the software has changed the daily practice of its users (if so).*
-
-*Indicate how widespread the use of the software is within and outside the intended user group.*
-
-*Indicate in what way the software is used in commercial settings and/or how it led to the creation of spin-off companies (if so).*
-
-
 Reproducible and efficient workflows are fundamental in scientific research (Lowndes et al. 2017). The gosset package provides functionality that was not previously available from other R packages and which enabled scientific studies based on the analysis of ranking data. This functionality enables making the entire workflow to be reproducible and more efficient. The utility of the gosset package has been demonstrated by enabling studies based on the analysis of ranking data. For instance, @vanEtten2019, @Moyo_2021  and @deSousa2021 applied the Plackett-Luce model in combination with recursive partitioning [@Turner2020;@Zeileis2008]. In these studies, the gosset package supported data preparation, model validation and results presentation tasks.
 
 # Conclusions
-
-*Set out the conclusion of this original software publication.*
 
 We described the functionality of the R package gosset to support the synthesis and analysis of ranking data. The package provide functions not available in existing R packages for analyzing ranking data. We provided an illustrative example covering the main functionality across the stages involved in the analysis workflow.
 
