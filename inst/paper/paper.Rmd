@@ -157,25 +157,31 @@ the Plackett-Luce model.
 
 
 # Illustrative Examples
-We demonstrate the functionality of the gosset package using the 
-trial dataset "nicabean", which consists of trial data collected in
-Nicaragua. In this example we present a suggested workflow to assess trait prioritization and crop performance using decentralized on-farm data generated with the tricot approach [@vanetten_beza_2019]. 
+To demonstrate the functionality of the gosset package, we use the `nicabean` dataset,
+which was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.)
+varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot 
+approach [@vanetten_beza_2019], farmers were asked to test in their farms three varieties
+of common bean. The varieties were randomly assigned as incomplete blocks of size three 
+(out of 10 varieties). The farmers assessed which of the three varieties has the best and
+worst performance in nine traits (vigor, architecture, resistance to pests, resistance to 
+diseases, tolerance to drought, yield, marketability, taste) and overall appreciation). 
+The farmers also provided their overall appreciation about the varieties, i.e., which
+variety has the best and the worst performance based on the overall performance considering
+all the traits.
 
-We use the `nicabean` dataset, which was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot approach, farmers were asked to test in their farms three varieties of common bean. The varieties were randomly assigned as incomplete blocks of size three (out of 10 varieties). The farmers assessed which of the three varieties has the best and worst performance in nine traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, taste) and overall appreciation). The farmers also provided their overall appreciation about the varieties, i.e., which
-variety has the best and the worst performance based on the overall performance considering all the traits.
-
-We use the Plackett-Luce model implemented in the R package *PlackettLuce*[@Turner2020]. 
-To consider the effecto of climate on the variety performance, we use climate data
-For obtaining the climate data, we used the *nasapower* package[@nasapower]. 
-Climatic indices were computed with the *climatrends* package[@climatrendspkg].
+We used the Plackett-Luce model implemented in the R package *PlackettLuce* [@Turner2020]. 
+To consider the effect of climate on the variety performance, we used climate data
+For obtaining the climate data, we used the *nasapower* package [@nasapower]. 
+Climatic indices were computed with the *climatrends* package [@climatrendspkg].
 
 First, we load the required packages and data. The ``nicabean`` dataset contains the 
 tricot rankings (``trial``), the climate covariates (``covar``) and the traits observations (``traits``).
-``` {r fetch, message=FALSE, eval=TRUE, echo=TRUE}
+``` {r, message = FALSE, eval = TRUE, echo = TRUE}
 library("gosset")
 library("PlackettLuce")
 library("climatrends")
 library("nasapower")
+library("ggplot2")
 
 data("nicabean", package = "gosset")
 
@@ -187,7 +193,7 @@ traits <- unique(dat$trait)
 
 ```
 Make a PlackettLuce rank using the function ``rank_numeric``.
-```{r}
+```{r, message = FALSE, eval = TRUE, echo = TRUE}
 R <- vector(mode = "list", length = length(traits))
 
 for (i in seq_along(traits)) {
@@ -202,21 +208,50 @@ for (i in seq_along(traits)) {
 }
 
 ```
-
-```{r}
+The following lines show the first 10 rankings in the format 
+used by the PlackettLuce package.  
+```{r fetch, message = FALSE, eval = TRUE, echo = TRUE}
 head(R[[1]], 5)
 ```
+The correlation among rankings can be assessed using the function ``kendallTau``.  
+```{r}
+baseline <- which(grepl("OverallAppreciation", traits))
 
+kendall <- lapply(R[-baseline], function(X){
+  kendallTau(x = X, y = R[[baseline]])
+})
 
-Kendall correlation between traits using kendallTau()
+kendall <- do.call("rbind", kendall)
+
+kendall$trait <- traits[-baseline]
+
+print(kendall)
 ```
 
+
+We fit a series of Plackett-Luce models using the function ``PlackettLuce``
+from the package of the same name as input in the lapply function.
+
+```{r, message=FALSE, eval=TRUE, echo=TRUE}
+
+mod <- lapply(R, PlackettLuce)
+
 ```
 
-Worth map 
+The ``worth_map`` function can be used to visually assess variety performance
+based on different traits. The values represented in a worth_map are worth estimates
+in log scale. 
+
+
+```{r, message=FALSE, eval=TRUE, echo=TRUE}
+worth_map(mod[-baseline],
+          labels = traits[-baseline], 
+          ref = "Amadeus 77") +
+  labs(x = "Variety",
+       y = "Trait")
 ```
 
-```
+
 
 Plackett-Luce tree using environmental data 
 ```
@@ -271,12 +306,10 @@ The gosset package provides functionality that was not previously available from
 other R packages and which enabled scientific studies based on the analysis of
 ranking data. This functionality enables making the entire workflow to be reproducible
 and more efficient. The utility of the gosset package has been demonstrated by enabling 
-studies based on the analysis of ranking data. For instance, both @vanEtten2019 and  @deSousa2021
+studies based on the analysis of ranking data. For instance, @vanEtten2019, @Moyo_2021  and @deSousa2021
 applied the Plackett-Luce model in combination with recursive partitioning [@Turner2020;@Zeileis2008].
-In both studies, the gosset package supported the data preparation, model validation and results presentation
-tasks. The gosset package is freely available and can be downloaded from 
-CRAN https://cran.r-project.org/package=gosset.
-
+In these studies, the gosset package supported data preparation, model validation and results presentation
+tasks.
 
 # Conclusions
 
