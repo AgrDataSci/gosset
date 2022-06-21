@@ -1,6 +1,5 @@
 ---
-title: 'gosset: An R package for analysis and synthesis of ranking data in agricultural
-  experimentation'
+title: '`gosset`: An R package for analysis and synthesis of ranking data in agricultural experimentation'
 abstract: null
 output:
   pdf_document: default
@@ -56,126 +55,77 @@ Appropriate data management and analysis are necessary to produce practical info
 
 # Motivation and significance
 
-*Introduce the scientific background and the motivation for developing
-the software.*
+*Introduce the scientific background and the motivation for developing the software.*
 
-*Explain why the software is important, and describe the exact
-(scientific) problem(s) it solves.*
+*Explain why the software is important, and describe the exact (scientific) problem(s) it solves.*
 
-*Indicate in what way the software has contributed (or how it will
-contribute in the future) to the process of scientific discovery; if
-available, this is to be supported by citing a research paper using the
-software.*
+*Indicate in what way the software has contributed (or how it will contribute in the future) to the process of scientific discovery; if available, this is to be supported by citing a research paper using the software.*
 
-*Provide a description of the experimental setting (how does the user
-use the software?).*
+*Provide a description of the experimental setting (how does the user use the software?).*
 
-*Introduce related work in literature (cite or list algorithms used,
-other software etc.).*
+*Introduce related work in literature (cite or list algorithms used, other software etc.).*
 
-Participatory experimentation approaches have been increasingly applied in agricultural
-research [@deRoo2019farm]. While collecting data in ranking format is uncommon in general
-agricultural research settings, it is often collected in participatory experiments [@Coe2002AnalyzingRA].
-Recently developed approaches for on-farm experimentation,
-such as the tricot methodology are based on the collection of data in ranking format [@vanetten_beza_2019].
-On the other hand, newly proposed approaches for synthesis of crop variety evaluation data 
-largely depend on the analysis of ranking data [@brown2020data].
-The analysis of ranking data requires the use of appropriate statistical models such as Plackett-Luce  [@luce_individual_1959;@Plackett] or Bradley-Terry [@bradley1952rank]. Functionality for fitting Bradley-Terry and 
-Plackett-Luce models are available in R with the packages BradleyTerry2 and PlackettLuce
-respectively [@BradleyTerry2; @Turner2020]. However, extended functionality was required for the entire 
-data science workflow, which usually includes: (1) Data preparation and cleaning, 
-(2) modelling and validation, and (3) results presentation. For (1) gosset provides functions for 
-converting and preparing data into ranking or pairwise format required by the packages PlackettLuce and BradleyTerry2
-respectively. For (2), gosset provides functions for model selection and validation using cross-validation. In the 
-case of (3), enhanced functionality for plotting model results is provided by the gosset package.
+Participatory experimentation approaches have been increasingly applied in agricultural research [@deRoo2019farm]. While collecting data in ranking format is uncommon in general
+agricultural research settings, it is often collected in participatory experiments [@Coe2002AnalyzingRA]. Recently developed approaches for on-farm experimentation,
+such as the tricot methodology are based on the collection of data in ranking format [@vanetten_beza_2019]. On the other hand, newly proposed approaches for synthesis of crop variety evaluation data largely depend on the analysis of ranking data [@brown2020data].
+The analysis of ranking data requires the use of appropriate statistical models such as Plackett-Luce [@luce_individual_1959; @Plackett] or Bradley-Terry [@bradley1952rank]. Functionality for fitting Bradley-Terry and Plackett-Luce models are available in R with the packages BradleyTerry2 and PlackettLuce respectively [@BradleyTerry2; @Turner2020]. However, extended functionality was required for the entire data science workflow, which usually includes: (1) Data preparation and cleaning, (2) modelling and validation, and (3) results presentation. For (1) gosset provides functions for converting and preparing data into ranking or pairwise format required by the packages PlackettLuce and BradleyTerry2
+respectively. For (2), gosset provides functions for model selection and validation using cross-validation. In the case of (3), enhanced functionality for plotting model results is provided by the gosset package.
 
 # Software description
 
-*Describe the software in as much as is necessary to establish a
-vocabulary needed to explain its impact.*
+*Describe the software in as much as is necessary to establish a vocabulary needed to explain its impact.*
 
-The R package gosset provides functionality supporting the analysis
-workflows in agricultural experimentation, especially with rank-based
-approaches. The package is available in The Comprehensive R Archive Network (CRAN)
-and can be installed by executing ``install.packages("gosset")``. The package is named 
-in honor to William Sealy Gosset, known by the pen name ‘Student’, a pioneer of modern statistics
-in small sample experimental design and analysis [@Ziliak_2019].
+The R package gosset provides functionality supporting the analysis workflows in agricultural experimentation, especially with rank-based approaches. The package is available in The Comprehensive R Archive Network (CRAN) and can be installed by executing `install.packages("gosset")`. The package is named in honor to William Sealy Gosset, known by the pen name ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis [@Ziliak_2019].
 
 ## Software Architecture
 
-*Give a short overview of the overall software architecture; provide a
-pictorial component overview or similar (if possible). If necessary
-provide implementation details.*
+*Give a short overview of the overall software architecture; provide a pictorial component overview or similar (if possible). If necessary provide implementation details.*
 
-The R package gosset is structured following the guidelines described in the manual
-for creating R add-on packages [@r_extensions_2022]. This structure basically consist of 
-files DESCRTIPTION, LICENSE, NAMESPACE and NEWS, and directories data, dev, docs, inst,
-man, R, and vignettes. The package functions were developed following the S3 methods
-style [@r_extensions_2022] and are contained in the R sub-directory.
+The R package gosset is structured following the guidelines described in the manual for creating R add-on packages [@r_extensions_2022]. This structure basically consist of files DESCRTIPTION, LICENSE, NAMESPACE and NEWS, and directories data, dev, docs, inst, man, R, and vignettes. The package functions were developed following the S3 methods style [@r_extensions_2022] and are contained in the R sub-directory.
 
 ## Software Functionalities
 
 *Present the major functionalities of the software.*
 
+### Data management and preparation
 
-**Data management and preparation**
+* `rank_binomial` transforms a ranking object into a binary comparisons, as required by package BradleyTerry2 [@BradleyTerry2].  
+* `rank_numeric` converts numeric values into rankings. The parameter `ascending = ` indicates if the rankings should be made considering the numeric values in ascending order. The default is `asceding = FALSE`. This function is useful when the data were collected as numerical observations, for instance, in a experiment measuring crop yield.  
+* `rank_tricot` transforms data in tricot format into rankings.
 
-*   **``rank_binomial``** transforms a ranking object into a binary comparisons, as required
-by package BradleyTerry2 [@BradleyTerry2].  
-*   **``rank_numeric``** converts numeric values into rankings. The parameter ``ascending``
-indicates if the rankings should be made considering the numeric values in ascending order. 
-The default is ``asceding = FALSE``. This function is useful when the data were collected 
-as numerical observations, for instance, in a experiment measuring crop yield.  
-*   **``rank_tricot``** transforms data in tricot format into rankings.
+### Modelling
 
-**Modelling**
-
-*   **``AIC``** computes the Akaike Information Criterion @akaike1974] for a Bradley-Terry model fitted with
-BradleyTerry2 [@BradleyTerry2] or a Plackett-Luce model fitted with [@Turner2020].  
-*   **``btpermute``** deviance-based forward variable selection [@lysen2009permuted] procedure for Bradley-Terry models.  
-*   **``compare``** compare the agreenment between methods.  
-*   **``crossvalidation``** performs k-fold cross-validation, where k could be specified by the user.The default is
-10-fold. Folds can be provided as a vector for a custom cross-validation, such as blocked cross-validation.
-*   **``forward``** executes forward variable selection with cross-validation.  
-*   **``kendallTau``** computes the Kendall-tau rank correlation coefficient between two rankings [@kendall_1938].  
-*   **``kendallW``** computes Kendall's W (coefficient of concordance) among observed rankings and those predicted by
-the Plackett-Luce model.  
-*   **``pseudoR2``** computes goodness-of-fit measure McFadden's pseudo-R2 [@mcfadden1973conditional].
+* `AIC` computes the Akaike Information Criterion @akaike1974] for a Bradley-Terry model fitted with BradleyTerry2 [@BradleyTerry2] or a Plackett-Luce model fitted with [@Turner2020].  
+* `btpermute` deviance-based forward variable selection [@lysen2009permuted] procedure for Bradley-Terry models.
+* `compare` compare the agreenment between methods.  
+* `crossvalidation` performs k-fold cross-validation, where k could be specified by the user.The default is 10-fold. Folds can be provided as a vector for a custom cross-validation, such as blocked cross-validation.
+* `forward` executes forward variable selection with cross-validation.  
+* `kendallTau` computes the Kendall-tau rank correlation coefficient between two rankings [@kendall_1938].  
+* `kendallW` computes Kendall's W (coefficient of concordance) among observed rankings and those predicted by the Plackett-Luce model.  
+*   `pseudoR2` computes goodness-of-fit measure McFadden's pseudo-R2 [@mcfadden1973conditional].
 
 
-**Visualization and results presentation**  
+### Visualization and results presentation
 
-*   **``plot``** provides an alternative to the default plot function of the PlackettLuce package.  
+* `plot` provides an alternative to the default plot function of the PlackettLuce package.
 
-*   **``regret``**  
+* `regret`  
 
-*   **``reliability``**  
+* `reliability`  
 
-*   **``worth_bar``**  
+* `worth_bar`  
 
-*   **``worth_map``**
+* `worth_map`
 
 
 # Illustrative Examples
-To demonstrate the functionality of the gosset package, we use the `nicabean` dataset,
-which was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.)
-varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot 
-approach [@vanetten_beza_2019], farmers were asked to test in their farms three varieties
-of common bean. The varieties were randomly assigned as incomplete blocks of size three 
-(out of 10 varieties). The farmers assessed which of the three varieties has the best and
-worst performance in nine traits (vigor, architecture, resistance to pests, resistance to 
-diseases, tolerance to drought, yield, marketability, taste) and overall appreciation). 
-The farmers also provided their overall appreciation about the varieties, i.e., which
-variety has the best and the worst performance based on the overall performance considering
-all the traits.
 
-We used the Plackett-Luce model implemented in the R package *PlackettLuce* [@Turner2020]. 
-To consider the effect of climate on the variety performance, we used climate data
-For obtaining the climate data, we used the *nasapower* package [@nasapower]. 
-Climatic indices were computed with the *climatrends* package [@climatrendspkg].
+To demonstrate the functionality of the gosset package, we use the `nicabean` dataset, which was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot  approach [@vanetten_beza_2019], farmers were asked to test in their farms three varieties of common bean. The varieties were randomly assigned as incomplete blocks of size three (out of 10 varieties). The farmers assessed which of the three varieties has the best and worst performance in nine traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, taste) and overall appreciation). The farmers also provided their overall appreciation about the varieties, i.e., which variety has the best and the worst performance based on the overall performance considering all the traits.
 
-First, we load the required packages and data. The ``nicabean`` dataset contains the 
-tricot rankings (``trial``), the climate covariates (``covar``) and the traits observations (``traits``).
+We used the Plackett-Luce model implemented in the R package *PlackettLuce* [@Turner2020]. To consider the effect of climate on the variety performance, we used climate data. For obtaining the climate data, we used the *nasapower* package [@nasapower]. Climatic indices were computed with the *climatrends* package [@climatrendspkg].
+
+First, we load the required packages and data. The `nicabean` dataset contains the tricot rankings (`trial`), the climate covariates (`covar`) and the traits observations (`traits`).
+
 ``` {r, message = FALSE, eval = TRUE, echo = TRUE}
 library("gosset")
 library("PlackettLuce")
@@ -192,7 +142,9 @@ covar <- nicabean$covar
 traits <- unique(dat$trait)
 
 ```
-Make a PlackettLuce rank using the function ``rank_numeric``.
+
+Make a PlackettLuce rank using the function `rank_numeric`.
+
 ```{r, message = FALSE, eval = TRUE, echo = TRUE}
 R <- vector(mode = "list", length = length(traits))
 
@@ -208,12 +160,15 @@ for (i in seq_along(traits)) {
 }
 
 ```
-The following lines show the first 10 rankings in the format 
-used by the PlackettLuce package.  
+
+The following lines show the first 10 rankings in the format used by the PlackettLuce package. 
+
 ```{r fetch, message = FALSE, eval = TRUE, echo = TRUE}
 head(R[[1]], 5)
 ```
-The correlation among rankings can be assessed using the function ``kendallTau``.  
+
+The correlation among rankings can be assessed using the function `kendallTau`.  
+
 ```{r}
 baseline <- which(grepl("OverallAppreciation", traits))
 
@@ -229,8 +184,7 @@ print(kendall)
 ```
 
 
-We fit a series of Plackett-Luce models using the function ``PlackettLuce``
-from the package of the same name as input in the lapply function.
+We fit a series of Plackett-Luce models using the function `PlackettLuce` from the package of the same name as input in the lapply function.
 
 ```{r, message=FALSE, eval=TRUE, echo=TRUE}
 
@@ -238,9 +192,7 @@ mod <- lapply(R, PlackettLuce)
 
 ```
 
-The ``worth_map`` function can be used to visually assess variety performance
-based on different traits. The values represented in a worth_map are worth estimates
-in log scale. 
+The `worth_map` function can be used to visually assess variety performance based on different traits. The values represented in a worth_map are worth estimates in log scale. 
 
 
 ```{r, message=FALSE, eval=TRUE, echo=TRUE}
@@ -252,89 +204,40 @@ worth_map(mod[-baseline],
 ```
 
 
-
-Plackett-Luce tree using environmental data 
-```
-
-```
-
-
-Model selection using crossvalidation
-```
-
-```
-
-pseudoR2
-
-```r
-
-```
-
-``regret``
-```r
-
-```
- 
- ``reliability``
-
 \newpage  
 
 
 # Impact
 
-***This is the main section of the article and the reviewers weight the
-description here appropriately***
+***This is the main section of the article and the reviewers weight the description here appropriately***
 
-*Indicate in what way new research questions can be pursued as a result
-of the software (if any).*
+*Indicate in what way new research questions can be pursued as a result of the software (if any).*
 
-*Indicate in what way, and to what extent, the pursuit of existing
-research questions is improved (if so).*
+*Indicate in what way, and to what extent, the pursuit of existing research questions is improved (if so).*
 
-*Indicate in what way the software has changed the daily practice of its
-users (if so).*
+*Indicate in what way the software has changed the daily practice of its users (if so).*
 
-*Indicate how widespread the use of the software is within and outside
-the intended user group.*
+*Indicate how widespread the use of the software is within and outside the intended user group.*
 
-*Indicate in what way the software is used in commercial settings and/or
-how it led to the creation of spin-off companies (if so).*
+*Indicate in what way the software is used in commercial settings and/or how it led to the creation of spin-off companies (if so).*
 
 
-Reproducible and efficient workflows are fundamental in scientific research (Lowndes et al. 2017).
-The gosset package provides functionality that was not previously available from 
-other R packages and which enabled scientific studies based on the analysis of
-ranking data. This functionality enables making the entire workflow to be reproducible
-and more efficient. The utility of the gosset package has been demonstrated by enabling 
-studies based on the analysis of ranking data. For instance, @vanEtten2019, @Moyo_2021  and @deSousa2021
-applied the Plackett-Luce model in combination with recursive partitioning [@Turner2020;@Zeileis2008].
-In these studies, the gosset package supported data preparation, model validation and results presentation
-tasks.
+Reproducible and efficient workflows are fundamental in scientific research (Lowndes et al. 2017). The gosset package provides functionality that was not previously available from other R packages and which enabled scientific studies based on the analysis of ranking data. This functionality enables making the entire workflow to be reproducible and more efficient. The utility of the gosset package has been demonstrated by enabling studies based on the analysis of ranking data. For instance, @vanEtten2019, @Moyo_2021  and @deSousa2021 applied the Plackett-Luce model in combination with recursive partitioning [@Turner2020;@Zeileis2008]. In these studies, the gosset package supported data preparation, model validation and results presentation tasks.
 
 # Conclusions
 
 *Set out the conclusion of this original software publication.*
 
-We described the functionality of the R package gosset to support 
-the synthesis and analysis of ranking data. The package provide functions not available in
-existing R packages for analyzing ranking data. We provided an illustrative example 
-covering the main functionality across the stages involved in the analysis workflow.
-
+We described the functionality of the R package gosset to support the synthesis and analysis of ranking data. The package provide functions not available in existing R packages for analyzing ranking data. We provided an illustrative example covering the main functionality across the stages involved in the analysis workflow.
 
 # Conflict of Interest
 
-No conflict of interest exists: We wish to confirm that there are no
-known conflicts of interest associated with this publication and there
-has been no significant financial support for this work that could have
-influenced its outcome.
-
-
+No conflict of interest exists: We wish to confirm that there are no known conflicts of interest associated with this publication and there has been no significant financial support for this work that could have influenced its outcome.
 
 # Acknowledgements {#acknowledgements .unnumbered}
 
-We acknowledge Olga Spellman (Science Writing Service of the Alliance of
-Bioversity International and CIAT) for English editing of this
-manuscript
+We acknowledge Olga Spellman (Science Writing Service of the Alliance of Bioversity International and CIAT) for English editing of this manuscript
+
 \newpage  
 
 # References
@@ -344,8 +247,5 @@ manuscript
 ::: thebibliography
 :::
 
-*Please add the reference to the software repository if DOI for software
-is available.*  
-
-
+*Please add the reference to the software repository if DOI for software is available.*  
 
