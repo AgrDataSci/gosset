@@ -2,8 +2,8 @@
 title: '`gosset`: An R package for analysis and synthesis of ranking data in agricultural experimentation'
 abstract: null
 output:
-  word_document: default
   pdf_document: default
+  word_document: default
   html_document:
     df_print: paged
 editor_options:
@@ -75,18 +75,18 @@ The R package gosset is structured following the guidelines described in the man
 
 * `rank_binomial` transforms a ranking object into a binary comparisons, as required by package BradleyTerry2 [@BradleyTerry2].  
 * `rank_numeric` converts numeric values into rankings. The parameter `ascending = ` indicates if the rankings should be made considering the numeric values in ascending order. The default is `asceding = FALSE`. This function is useful when the data were collected as numerical observations, for instance, in a experiment measuring crop yield.  
-* `rank_tricot` transforms data in tricot format into rankings.
+* `rank_tricot` transforms data in tricot format into ``PlackettLuce`` rankings.
 
 ### Modelling
 
 * `AIC` computes the Akaike Information Criterion @akaike1974] for a Bradley-Terry model fitted with BradleyTerry2 [@BradleyTerry2] or a Plackett-Luce model fitted with [@Turner2020].  
 * `btpermute` deviance-based forward variable selection [@lysen2009permuted] procedure for Bradley-Terry models.  
-* `compare` compare the agreenment between methods.  
+* `compare` compare the agreement between methods.  
 * `crossvalidation` performs k-fold cross-validation, where k could be specified by the user.The default is 10-fold. Folds can be provided as a vector for a custom cross-validation, such as blocked cross-validation.  
 * `forward` executes forward variable selection with cross-validation.  
 * `kendallTau` computes the Kendall-tau rank correlation coefficient between two rankings [@kendall_1938].  
-* `kendallW` computes Kendall's W (coefficient of concordance) among observed rankings and those predicted by the Plackett-Luce model.  
-*   `pseudoR2` computes goodness-of-fit measure McFadden's pseudo-R2 [@mcfadden1973conditional].  
+* `kendallW` computes Kendall's W (coefficient of concordance) among observed rankings and those predicted by the Plackett-Luce model [@Kendall_1939].  
+*   `pseudoR2` computes goodness-of-fit metrics, such as McFadden's pseudo-R2 [@mcfadden1973conditional].  
 
 ### Visualization and results presentation
 
@@ -104,9 +104,8 @@ evaluated traits.
 
 # Illustrative Examples
 
-To demonstrate the functionality of the gosset package, we use the `nicabean` dataset, which was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot  approach [@vanetten_beza_2019], farmers were asked to test in their farms three varieties of common bean. The varieties were randomly assigned as incomplete blocks of size three (out of 10 varieties). The farmers assessed which of the three varieties has the best and worst performance in nine traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, taste) and overall appreciation). The farmers also provided their overall appreciation about the varieties, i.e., which variety has the best and the worst performance based on the overall performance considering all the traits.
+To demonstrate the functionality of the gosset package, we use the `nicabean` dataset, which was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot  approach [@vanetten_beza_2019], farmers were asked to test in their farms three varieties of common bean. The varieties were randomly assigned as incomplete blocks of size three (out of 10 varieties). The farmers assessed which of the three varieties has the best and worst performance in nine traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, taste) and overall appreciation). The farmers also provided their overall appreciation about the varieties, i.e., which variety has the best and the worst performance based on the overall performance considering all the traits. We used the Plackett-Luce model implemented in the R package *PlackettLuce* [@Turner2020].
 
-We used the Plackett-Luce model implemented in the R package *PlackettLuce* [@Turner2020]. To consider the effect of climate on the variety performance, we used climate data. For obtaining the climate data, we used the *nasapower* package [@nasapower]. Climatic indices were computed with the *climatrends* package [@climatrendspkg].
 
 First, we load the required packages and data. The `nicabean` dataset contains the tricot rankings (`trial`), the climate covariates (`covar`) and the traits observations (`traits`).
 
@@ -189,7 +188,58 @@ worth_map(mod[-baseline],
        y = "Trait")
 ```
 
+To consider the effect of climate factors on variety performance, we used the climatic covariates to fit a 
+Plackett-Luce tree. For brevity, we used the variables maximum nighttime temperature (maxNT) and  maximum daytime temperature, but more variables can be used in a Plackett-Luce tree. Temperature data were obtained from the NASA POWER dataset, using the R package *nasapower* [@nasapower]. The temperature data downloaded from NASA POWER were used for
+computing the climatic variables with the package *climatrends* [@climatrendspkg]. In this case, we only use the rankings
+corresponding to the overall performance of varieties.
 
+```{r , message=FALSE, eval=FALSE, echo=TRUE}
+# temp <- temperature(covar[, c("longitude","latitude")], 
+#                     day.one = covar[, "planting_date"],
+#                     span = 80)
+# 
+# head(temp[, 1:2])
+```
+
+To be coupled with climatic covariates, the rankings should be made formatted as grouped rankings. For this
+we used the function ``rank_numeric`` with the parameter ``group = TRUE``.
+
+```{r , message=FALSE, eval=FALSE, echo=TRUE}
+R <- vector(mode = "list", length = length(traits))
+
+for (i in seq_along(traits)) {
+  
+  dat_i <- subset(dat, dat$trait == traits[i])
+  
+  R[[i]] <- rank_numeric(data = dat_i,
+                         items = "item",
+                         input = "rank", 
+                         id = "id", 
+                         ascending = TRUE,
+                         group = TRUE)
+}
+```
+
+Now we can fit the Plackett-Luce tree with climate covariates. Notice that we used the 9^th^ element in the list
+of rankings as we are only using the overall appreciation ranking.
+
+```{r , message=FALSE, eval=FALSE, echo=TRUE}
+
+R <- R[[9]]
+
+pld <- cbind(R, temp)
+
+pl <- pltree(R ~ maxNT + maxDT, 
+             alpha = .05,
+             data = pld)
+```
+
+The following is an example of the plot made with the function ``plot`` in the gosset package.
+```{r , message=FALSE, eval=FALSE, echo=TRUE}
+
+plot.pltree(pl)
+
+```
 
 \newpage  
 
