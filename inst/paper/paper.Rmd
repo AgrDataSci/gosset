@@ -2,16 +2,35 @@
 title: '`gosset`: An R package for analysis and synthesis of ranking data in agricultural experimentation'
 abstract: null
 output:
-  pdf_document: default
-  word_document: default
-  html_document:
-    df_print: paged
+   pdf_document:
+     fig_caption: true
+     number_sections: false
+     keep_tex: false
+latex_engine: pdflatex
+#output:
+# word_document: default
 editor_options:
   markdown:
     wrap: 72
 bibliography: paper.bib
-header-includes: \usepackage{caption} \captionsetup[figure]{labelformat=empty}
+csl: citationstyle.csl
+header-includes:
+  - \usepackage{pdfpages}
+  - \usepackage{caption}
+  - \usepackage{xcolor}
+  - \captionsetup[figure]{font=small}
+  - \captionsetup[table]{font=small}
 ---
+
+```{r setup_opts, include=FALSE}
+library("knitr")
+knitr::opts_chunk$set(echo = FALSE,
+                      error = FALSE,
+                      message=FALSE,
+                      warning = FALSE)
+```
+
+
 
 >Kauê de Sousa^1,2[*]^, David Brown^3,4^, Jonathan Steinke^2,5^, Jacob van Etten^2^  
 >-
@@ -51,7 +70,7 @@ Appropriate data management and analysis are necessary to produce practical info
 | C8      | If available Link to developer documentation/manual             | <https://agrdatasci.github.io/gosset/>                     |
 | C9      | Support email for questions                                     | [kaue.desousa@inn.no](mailto:kaue.desousa@inn.no){.email} |
 
-: *Code metadata (mandatory)*
+: *Code metadata*
 
 # Motivation and significance  
 
@@ -90,24 +109,20 @@ The R package gosset is structured following the guidelines described in the man
 
 ### Visualization and results presentation
 
-* `plot` provides an alternative to the default plot function of the PlackettLuce package.  
-
+* `plot` provides an alternative method to the default plot function of the PlackettLuce package.  
 * `regret` computes the regret [@Loomes_1982;  ].  
-
 * `reliability` computes the reliability of crop varieties, the probability to outperform the reference variety [@eskridge_1992].  
-
 * `worth_bar`  creates a bar plot of the estimated worth values for each evaluated variety.  
-
 * `worth_map` creates a heatmap plot of the estimated worth values for all varieties considering each of the
 evaluated traits.
 
 
-# Illustrative Examples
+# Illustrative example
 
-To demonstrate the functionality of the gosset package, we use the `nicabean` dataset, which was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot  approach [@vanetten_beza_2019], farmers were asked to test in their farms three varieties of common bean. The varieties were randomly assigned as incomplete blocks of size three (out of 10 varieties). The farmers assessed which of the three varieties has the best and worst performance in nine traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, taste) and overall appreciation). The farmers also provided their overall appreciation about the varieties, i.e., which variety has the best and the worst performance based on the overall performance considering all the traits. We used the Plackett-Luce model implemented in the R package *PlackettLuce* [@Turner2020].
+To demonstrate the functionality of the gosset package, we use the `nicabean` dataset, which was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot  approach [@vanetten_beza_2019], farmers were asked to test in their farms three varieties of common bean. The varieties were randomly assigned as incomplete blocks of size three (out of 10 varieties). The farmers assessed which of the three varieties had the best and worst performance in eight traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, taste). The farmers also provided their overall appreciation about the varieties, i.e., which variety had the best and the worst performance based on the overall performance considering all the traits. To analyze the data, we use the Plackett-Luce model implemented in the R package *PlackettLuce* [@Turner2020].
 
 
-First, we load the required packages and data. The `nicabean` dataset contains the tricot rankings (`trial`), the climate covariates (`covar`) and the traits observations (`traits`).
+The `nicabean` is a list with two data frames: i) `trial`, contains the trial data with farmers' evaluations, ranked from 1 to 3, with 1 being the higher ranked variety and 3 the lowest ranked variety for the given trait and incomplete block; ii) `covar`, contains the covariates associated to the on-farm trial plots and farmers. This example will require the packages PlackettLuce [@Turner2020], climatrends [@climatrends], nasapower [@nasapower] and ggplot2 [@ggplot2].
 
 ``` {r, message = FALSE, eval = TRUE, echo = TRUE}
 library("gosset")
@@ -126,7 +141,7 @@ traits <- unique(dat$trait)
 
 ```
 
-Make a PlackettLuce rank using the function `rank_numeric`.
+To start the analysis of the data, we transform the rankings into Plackett-Luce rankings using the function `rank_numeric()`. We run iteratively over the traits adding the rankings to a list called `R`. Since the varieties are ranked in an ascending order, with 1 being the higher ranked and 3 the lower ranked, we use the argument `asceding = TRUE` to indicate which order should be used.
 
 ```{r, message = FALSE, eval = TRUE, echo = TRUE}
 R <- vector(mode = "list", length = length(traits))
@@ -144,16 +159,9 @@ for (i in seq_along(traits)) {
 
 ```
 
-The following lines show the first 10 rankings for the trait vigor, 
-in the format used by the PlackettLuce package. 
+Then, using the function `kendallTau()` we can assess the correlation between rankings. This approach can be support at least two decision making processes by, for example i) indicating the traits 
 
-```{r fetch, message = FALSE, eval = TRUE, echo = TRUE}
-head(R[[1]], 5)
-```
-
-The correlation among rankings can be assessed using the function `kendallTau`.  
-
-```{r}
+```{r kendall1, message=FALSE, eval=TRUE, echo=TRUE}
 baseline <- which(grepl("OverallAppreciation", traits))
 
 kendall <- lapply(R[-baseline], function(X){
@@ -163,13 +171,22 @@ kendall <- lapply(R[-baseline], function(X){
 kendall <- do.call("rbind", kendall)
 
 kendall$trait <- traits[-baseline]
+```
 
-print(kendall)
+```{r kendall2, message=FALSE, eval=TRUE, echo=FALSE}
+
+kendall <- kendall[,c(3, 1)]
+kendall[,2] <- round(kendall[,2], 3)
+
+kable(kendall, 
+          caption = "Kendall correlation between 'overall performance' and the other traits assessed in the Nicaragua bean on-farm trials.",
+          align = "l",
+          row.names = FALSE)
+
 ```
 
 
-For each trait, we fit a Plackett-Luce model using the function `PlackettLuce` from the package of the same name.
-We use ``lapply`` with the list of rankings and the `PlackettLuce` function as input parameters.
+For each trait, we fit a Plackett-Luce model using the function `PlackettLuce` from the package of the same name. We use ``lapply`` with the list of rankings and the `PlackettLuce` function as input parameters.
 
 ```{r, message=FALSE, eval=TRUE, echo=TRUE}
 
@@ -180,7 +197,7 @@ mod <- lapply(R, PlackettLuce)
 The `worth_map` function can be used to visually assess variety performance based on different traits. The values represented in a worth_map are worth estimates in the log scale. 
 
 
-```{r, message=FALSE, eval=TRUE, echo=TRUE}
+```{r, message=FALSE, eval=TRUE, echo=TRUE, fig.cap="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Blue values indicate a superior performance of varieties for a given trait, compared to the reference.  Red values indicate a variety with weak performance for the given trait, compared to the reference."}
 worth_map(mod[-baseline],
           labels = traits[-baseline], 
           ref = "Amadeus 77") +
@@ -189,9 +206,7 @@ worth_map(mod[-baseline],
 ```
 
 To consider the effect of climate factors on variety performance, we used the climatic covariates to fit a 
-Plackett-Luce tree. For brevity, we used the variables maximum nighttime temperature (maxNT) and  maximum daytime temperature, but more variables can be used in a Plackett-Luce tree. Temperature data were obtained from the NASA POWER dataset, using the R package *nasapower* [@nasapower]. The temperature data downloaded from NASA POWER were used for
-computing the climatic variables with the package *climatrends* [@climatrendspkg]. In this case, we only use the rankings
-corresponding to the overall performance of varieties.
+Plackett-Luce tree. For brevity, we used the variables maximum nighttime temperature (maxNT) and  maximum daytime temperature, but more variables can be used in a Plackett-Luce tree. Temperature data were obtained from the NASA POWER dataset, using the R package *nasapower* [@nasapower]. The temperature data downloaded from NASA POWER were used for computing the climatic variables with the package *climatrends* [@climatrends]. In this case, we only use the rankings corresponding to the overall performance of varieties.
 
 ```{r , message=FALSE, eval=FALSE, echo=TRUE}
 # temp <- temperature(covar[, c("longitude","latitude")], 
@@ -264,10 +279,5 @@ We acknowledge Olga Spellman (Science Writing Service of the Alliance of Biovers
 
 # References
 
-**Zenodo repository for the gosset package:** <https://doi.org/10.5281/zenodo.6339989>
-
-::: thebibliography
+::: {#refs}
 :::
-
-*Please add the reference to the software repository if DOI for software is available.*  
-
