@@ -1,7 +1,7 @@
 ---
 title: '`gosset`: An R package for analysis and synthesis of ranking data in agricultural experimentation'
 abstract: null
-output:
+output: 
    pdf_document:
      fig_caption: true
      number_sections: false
@@ -13,7 +13,7 @@ editor_options:
   markdown:
     wrap: 72
 bibliography: paper.bib
-csl: citationstyle.csl
+csl: apa.csl
 header-includes:
   - \usepackage{pdfpages}
   - \usepackage{caption}
