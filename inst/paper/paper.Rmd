@@ -3,11 +3,11 @@ title: '`gosset`: An R package for analysis and synthesis of ranking data in agr
   experimentation'
 abstract: null
 output:
-  word_document: default
   pdf_document:
     fig_caption: yes
     number_sections: no
     keep_tex: no
+  word_document: default
 latex_engine: pdflatex
 editor_options:
   markdown:
@@ -206,7 +206,7 @@ worth_map(mod[-baseline],
 ```
 
 To consider the effect of climate factors on variety performance, we used climatic covariates to fit a 
-Plackett-Luce tree. For brevity, we used the variables maximum nighttime temperature (maxNT) and  maximum daytime temperature, but more variables can be used in a Plackett-Luce tree. Temperature data were obtained from the NASA POWER dataset, using the R package *nasapower* [@nasapower]. The temperature data downloaded from NASA POWER were used for computing the climatic variables with the package *climatrends* [@climatrends]. In this case, we only use the rankings corresponding to the overall performance of varieties.
+Plackett-Luce tree. For brevity, we used the variables maximum nighttime temperature (maxNT) and  maximum daytime temperature, but more variables can be used in a Plackett-Luce tree. Temperature data were obtained from the AgERA5 dataset, using the R package *ag5Tools* [@ag5tools]. The temperature data downloaded from NASA POWER were used for computing the climatic variables with the package *climatrends* [@climatrends]. In this case, we only use the rankings corresponding to the overall performance of varieties.
 
 ```{r , message=FALSE, eval=FALSE, echo=TRUE}
 # temp <- temperature(covar[, c("longitude","latitude")], 
@@ -245,7 +245,7 @@ R <- R[[9]]
 pld <- cbind(R, nicabean_temp_ind)
 
 pl <- pltree(R ~ ., 
-             alpha = .9,
+             alpha = .6,
              data = pld)
 ```
 
