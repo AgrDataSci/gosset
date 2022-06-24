@@ -122,13 +122,12 @@ evaluated traits.
 To demonstrate the functionality of the gosset package, we use the `nicabean` dataset, which was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot  approach [@vanetten_beza_2019], farmers were asked to test in their farms three varieties of common bean. The varieties were randomly assigned as incomplete blocks of size three (out of 10 varieties). The farmers assessed which of the three varieties had the best and worst performance in eight traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, taste). The farmers also provided their overall appreciation about the varieties, i.e., which variety had the best and the worst performance based on the overall performance considering all the traits. To analyze the data, we use the Plackett-Luce model implemented in the R package *PlackettLuce* [@Turner2020].
 
 
-The `nicabean` is a list with two data frames: i) `trial`, contains the trial data with farmers' evaluations, ranked from 1 to 3, with 1 being the higher ranked variety and 3 the lowest ranked variety for the given trait and incomplete block; ii) `covar`, contains the covariates associated to the on-farm trial plots and farmers. This example will require the packages PlackettLuce [@Turner2020], climatrends [@climatrends], nasapower [@nasapower] and ggplot2 [@ggplot2].
+The `nicabean` is a list with two data frames: i) `trial`, contains the trial data with farmers' evaluations, ranked from 1 to 3, with 1 being the higher ranked variety and 3 the lowest ranked variety for the given trait and incomplete block; ii) `covar`, contains the covariates associated to the on-farm trial plots and farmers. This example will require the packages PlackettLuce [@Turner2020], climatrends [@climatrends], and ggplot2 [@ggplot2].
 
 ``` {r, message = FALSE, eval = TRUE, echo = TRUE}
 library("gosset")
 library("PlackettLuce")
 library("climatrends")
-library("nasapower")
 library("ggplot2")
 
 data("nicabean", package = "gosset")
@@ -206,7 +205,7 @@ worth_map(mod[-baseline],
 ```
 
 To consider the effect of climate factors on variety performance, we used climatic covariates to fit a 
-Plackett-Luce tree. For brevity, we used the variables maximum nighttime temperature (maxNT) and  maximum daytime temperature, but more variables can be used in a Plackett-Luce tree. Temperature data were obtained from the AgERA5 dataset, using the R package *ag5Tools* [@ag5tools]. The temperature data downloaded from NASA POWER were used for computing the climatic variables with the package *climatrends* [@climatrends]. In this case, we only use the rankings corresponding to the overall performance of varieties.
+Plackett-Luce tree. For brevity, we used the variables maximum nighttime temperature (maxNT) and  maximum daytime temperature, but more variables can be used in a Plackett-Luce tree. Temperature data were obtained from the AgERA5 dataset, using the R package *ag5Tools* [@ag5tools]. The temperature data downloaded from AgERA5 were used for computing the climatic variables with the package *climatrends* [@climatrends]. In this case, we only use the rankings corresponding to the overall performance of varieties.
 
 ```{r , message=FALSE, eval=FALSE, echo=TRUE}
 # temp <- temperature(covar[, c("longitude","latitude")], 
