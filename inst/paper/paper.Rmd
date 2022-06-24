@@ -3,11 +3,11 @@ title: '`gosset`: An R package for analysis and synthesis of ranking data in agr
   experimentation'
 abstract: null
 output:
+  word_document: default
   pdf_document:
     fig_caption: yes
     number_sections: no
     keep_tex: no
-  word_document: default
 latex_engine: pdflatex
 editor_options:
   markdown:
@@ -110,7 +110,7 @@ The R package gosset is structured following the guidelines described in the man
 ### Visualization and results presentation
 
 * `plot` provides an alternative method to the default plot function of the PlackettLuce package.  
-* `regret` computes the regret [@Loomes_1982;  ].  
+* `regret` computes the regret [@Loomes_1982].  
 * `reliability` computes the reliability of crop varieties, the probability to outperform the reference variety [@eskridge_1992].  
 * `worth_bar`  creates a bar plot of the estimated worth values for each evaluated variety.  
 * `worth_map` creates a heatmap plot of the estimated worth values for all varieties considering each of the
@@ -131,6 +131,7 @@ library("climatrends")
 library("ggplot2")
 
 data("nicabean", package = "gosset")
+load("nicabean_temp_ind.rda")
 
 dat <- nicabean$trial
 
@@ -218,7 +219,7 @@ Plackett-Luce tree. For brevity, we used the variables maximum nighttime tempera
 To be coupled with climatic covariates, the rankings should be made formatted as grouped rankings. For this
 we used the function ``rank_numeric`` with the parameter ``group = TRUE``.
 
-```{r , message=FALSE, eval=FALSE, echo=TRUE}
+```{r , message=FALSE, eval=TRUE, echo=TRUE}
 R <- vector(mode = "list", length = length(traits))
 
 for (i in seq_along(traits)) {
@@ -237,7 +238,7 @@ for (i in seq_along(traits)) {
 Now we can fit the Plackett-Luce tree with climate covariates. Notice that we used the 9^th^ element in the list
 of rankings as we are only using the overall appreciation ranking.
 
-```{r , message=FALSE, eval=FALSE, echo=TRUE}
+```{r , message=FALSE, eval=TRUE, echo=TRUE}
 
 R <- R[[9]]
 
@@ -258,6 +259,19 @@ plot(pl)
 
 \newpage  
 
+Table 3 shows the results of reliability for the evaluated common bean varieties in each of 
+the resulting nodes of the Plackett-Luce tree.  
+
+
+```{r rel1, message=FALSE, eval=TRUE, echo=FALSE}
+nicabean_rel <- reliability(pl, ref = "Amadeus 77")
+
+kable(t(nicabean_rel), col.names = c("node 2", "node 3"), caption = "Reliability of evaluated varieties
+      in each of the resulting nodes of the Plackett-Luce tree")
+
+
+
+```
 
 # Impact
 
