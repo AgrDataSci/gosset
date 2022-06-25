@@ -48,10 +48,12 @@ worth_map(mod[-baseline],
 dates <- c(min(covar[, "planting_date"]),
            max(covar[, "planting_date"]) + 70)
 
-chirps <- get_chirps(covar[, c("longitude","latitude")], 
-                     dates = as.character(dates),
-                     as.matrix = TRUE,
-                     server = "ClimateSERV")
+# chirps <- get_chirps(covar[, c("longitude","latitude")], 
+#                      dates = as.character(dates),
+#                      as.matrix = TRUE,
+#                      server = "ClimateSERV")
+
+load("inst/paper/nicabean_chirps.rda")
 
 # rename the matrix
 newnames <- dimnames(chirps)[[2]]
@@ -62,18 +64,17 @@ dimnames(chirps)[[2]] <- newnames
 
 rain <- rainfall(chirps, day.one = covar$planting_date, span = 45)
 
-Y <- which(grepl("Yield", traits))
+G <- which(grepl("Yield", traits))
 
-Y <- group(R[[Y]], index = 1:length(R[[Y]]))
+G <- group(R[[G]], index = 1:length(R[[G]]))
 
-pldY <- cbind(Y, rain)
+pldG <- cbind(G, rain)
 
-treeY <- pltree(Y ~ Rtotal, data = pldY, alpha = 0.1)
+tree <- pltree(G ~ SDII, data = pldG, alpha = 0.1)
 
-plot(treeY)
+plot(tree)
 
-reliability(treeY, ref = "Amadeus 77")
-
+reliability(tree, ref = "Amadeus 77")
 
 
 

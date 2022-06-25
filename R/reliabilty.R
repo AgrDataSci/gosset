@@ -107,7 +107,7 @@ reliability.PlackettLuce <- function(x, ref, ...) {
   
   rownames(x) <- 1:nrow(x)
   
-  names(x) <- c("item", "reliabity", "reliabilitySE", "worth", "Zvalue", "Pr(>|z|)", "")
+  names(x) <- c("item", "reliability", "reliabilitySE", "worth", "Zvalue", "Pr(>|z|)", "")
   
   return(x)
   

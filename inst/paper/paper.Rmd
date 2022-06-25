@@ -224,95 +224,49 @@ load("nicabean_chirps.rda")
 
 ```
 
-Than we prepare the matrix to compute the rainfall indices using the function `rainfall()` from package climatrends.
+Than we prepare the matrix to compute the rainfall indices using the function `rainfall()` from package climatrends. We compute rainfall indices for the first 45 days after planting. 
 
-```{r chirps3, message=FALSE, eval=FALSE, echo=TRUE}
-dates <- c(min(covar[, "planting_date"]),
-           max(covar[, "planting_date"]) + 70)
+```{r chirps3, message=FALSE, eval=TRUE, echo=TRUE}
+newnames <- dimnames(chirps)[[2]]
+newnames <- gsub("chirps-v2.0.", "", newnames)
+newnames <- gsub("[.]", "-", newnames)
 
-chirps <- get_chirps(covar[, c("longitude","latitude")], 
-                     dates = as.character(dates),
-                     as.matrix = TRUE,
-                     server = "ClimateSERV")
+dimnames(chirps)[[2]] <- newnames
+
+rain <- rainfall(chirps, day.one = covar$planting_date, span = 45)
 ```
 
+To be linked to covariates, the rankings should be coerced to a 'grouped_rankings' object. For this we use the function `group()` from PlackettLuce. We retain the ranking corresponding to yield.
 
+```{r grouped_ranking, message=FALSE, eval=TRUE, echo=TRUE}
+G <- which(grepl("Yield", traits))
 
-To be linket to covariates, the rankings should be coerced to 'grouped rankings'. For this we used the function `group()` from PlackettLuce. We retain the ranking corresponding to yield.
-
-```{r , message=FALSE, eval=TRUE, echo=TRUE}
-R <- vector(mode = "list", length = length(traits))
-
-for (i in seq_along(traits)) {
-
-  dat_i <- subset(dat, dat$trait == traits[i])
-
-  R[[i]] <- rank_numeric(data = dat_i,
-                         items = "item",
-                         input = "rank",
-                         id = "id",
-                         ascending = TRUE,
-                         group = TRUE)
-}
+G <- group(R[[G]], index = 1:length(R[[G]]))
 ```
 
 Now we can fit the Plackett-Luce tree with climate covariates. Notice that we used the 9^th^ element in the list
 of rankings as we are only using the overall appreciation ranking.
 
-```{r , message=FALSE, eval=TRUE, echo=TRUE}
+```{r pltree, message=FALSE, eval=TRUE, echo=TRUE}
+pldG <- cbind(G, rain)
 
-R <- R[[9]]
-
-pld <- cbind(R, nicabean_temp_ind)
-
-pl <- pltree(R ~ .,
-             alpha = .6,
-             data = pld)
+tree <- pltree(G ~ Rtotal, data = pldG, alpha = 0.1)
 ```
 
-The following is an example of the plot made with the function ``plot`` in the gosset package.
-```{r , message=FALSE, eval=FALSE, echo=TRUE}
-plot(pl)
+The following is an example of the plot made with the function `plot()` in the gosset package.
 
+```{r , message=FALSE, eval=TRUE, echo=TRUE, fig.width=4, fig.height=4, fig.cap="Plackett-Luce tree of bean yield in on-farm trials"}
+plot(tree)
 ```
-!["Plackett-Luce tree plot with gosset function *plot*"](pltree_01.png)
 
-
-\newpage  
-
-We can use the function ``reliability`` to compute the reliability of the evaluated common bean
+We can use the function `reliability()` to compute the reliability of the evaluated common bean
 varieties in each of the resulting nodes of the Plackett-Luce tree (Table 3).  
 
 
 ```{r rel1, message=FALSE, eval=TRUE, echo=FALSE}
-# nicabean_rel <- reliability(pl, ref = "Amadeus 77")
-# 
-# kable(t(nicabean_rel), col.names = c("node 2", "node 3"), caption = "Reliability of evaluated varieties
-#       in each of the resulting nodes of the Plackett-Luce tree")
-
-
-
+rel <- reliability(tree, ref = "Amadeus 77")
 ```
 
-With the function ``crossvalidation`` we can validate the model.
-
-
-```{r, message=FALSE, eval=TRUE, echo=FALSE}
-nb_cv <- crossvalidation(R ~ .,
-                         alpha = .6,
-                         data = pld)
-
-
-
-```
-```{r cv, message=FALSE, eval=TRUE, echo=FALSE}
-
-
-kable(nb_cv$coeffs[,c(1:4, 7, 8)], caption = "Results of 10-fold random cross-validation")
-
-
-
-```
 
 # Impact
 
