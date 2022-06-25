@@ -3,7 +3,11 @@ title: '`gosset`: An R package for analysis and synthesis of ranking data in agr
   experimentation'
 abstract: null
 output:
+<<<<<<< HEAD
 #  word_document: default
+=======
+  word_document:
+>>>>>>> d615078010dc3f515953503c29b1e267386cdda5
   pdf_document:
     fig_caption: yes
     number_sections: no
@@ -144,13 +148,13 @@ To start the analysis of the data, we transform the rankings into Plackett-Luce 
 R <- vector(mode = "list", length = length(traits))
 
 for (i in seq_along(traits)) {
-  
+
   dat_i <- subset(dat, dat$trait == traits[i])
-  
+
   R[[i]] <- rank_numeric(data = dat_i,
                          items = "item",
-                         input = "rank", 
-                         id = "id", 
+                         input = "rank",
+                         id = "id",
                          ascending = TRUE)
 }
 
@@ -178,7 +182,7 @@ The kendall correlation shows that farmers prioritized the traits yield ($\tau$ 
 kendall <- kendall[,c(3, 1)]
 kendall[,2] <- round(kendall[,2], 3)
 
-kable(kendall, 
+kable(kendall,
           caption = "Kendall tau correlation between 'overall performance' and the other traits assessed in the Nicaragua bean on-farm trials.",
           align = "l",
           row.names = FALSE)
@@ -198,17 +202,17 @@ The `worth_map()` function can be used to visually assess item performance based
 
 ```{r worthmap, message=FALSE, eval=TRUE, echo=TRUE, fig.cap="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Blue values indicate a superior performance of varieties for a given trait, compared to the reference.  Red values indicate a variety with weak performance for the given trait, compared to the reference."}
 worth_map(mod[-baseline],
-          labels = traits[-baseline], 
+          labels = traits[-baseline],
           ref = "Amadeus 77") +
   labs(x = "Variety",
        y = "Trait")
 ```
 
-To consider the effect of climate factors on yield, we used climatic covariates to fit a Plackett-Luce tree. For simplicity, we used the total rainfall (Rtotal) derived from CHIRPS data [@Funk2015], and computed using the R packages chirps [@chirps] and [@climatrends]. However, additional covariates can be used in a Plackett-Luce tree, for example using temperature data from R package ag5Tools [@ag5tools] or nasapower [@nasapower]. 
+To consider the effect of climate factors on yield, we use agro-climatic covariates to fit a Plackett-Luce tree. For simplicity, we use the total rainfall (Rtotal) derived from CHIRPS data [@Funk2015], and computed using the R packages chirps [@chirps] and [@climatrends]. However, additional covariates can be used in a Plackett-Luce tree, for example using temperature data from R package ag5Tools [@ag5tools] or nasapower [@nasapower]. 
 
 We request the CHIRPS data using the package chirps. Data should be returned as a matrix. This process can take some minutes to be implemented.
 
-```{r , message=FALSE, eval=FALSE, echo=TRUE}
+```{r chirps, message=FALSE, eval=FALSE, echo=TRUE}
 dates <- c(min(covar[, "planting_date"]),
            max(covar[, "planting_date"]) + 70)
 
@@ -226,13 +230,13 @@ To be linket to covariates, the rankings should be coerced to 'grouped rankings'
 R <- vector(mode = "list", length = length(traits))
 
 for (i in seq_along(traits)) {
-  
+
   dat_i <- subset(dat, dat$trait == traits[i])
-  
+
   R[[i]] <- rank_numeric(data = dat_i,
                          items = "item",
-                         input = "rank", 
-                         id = "id", 
+                         input = "rank",
+                         id = "id",
                          ascending = TRUE,
                          group = TRUE)
 }
@@ -247,7 +251,7 @@ R <- R[[9]]
 
 pld <- cbind(R, nicabean_temp_ind)
 
-pl <- pltree(R ~ ., 
+pl <- pltree(R ~ .,
              alpha = .6,
              data = pld)
 ```
@@ -262,8 +266,8 @@ plot(pl)
 
 \newpage  
 
-Table 3 shows the results of reliability for the evaluated common bean varieties in each of 
-the resulting nodes of the Plackett-Luce tree.  
+We can use the function ``reliability`` to compute the reliability of the evaluated common bean
+varieties in each of the resulting nodes of the Plackett-Luce tree (Table 3).  
 
 
 ```{r rel1, message=FALSE, eval=TRUE, echo=FALSE}
@@ -271,6 +275,26 @@ the resulting nodes of the Plackett-Luce tree.
 # 
 # kable(t(nicabean_rel), col.names = c("node 2", "node 3"), caption = "Reliability of evaluated varieties
 #       in each of the resulting nodes of the Plackett-Luce tree")
+
+
+
+```
+
+With the function ``crossvalidation`` we can validate the model.
+
+
+```{r, message=FALSE, eval=TRUE, echo=FALSE}
+nb_cv <- crossvalidation(R ~ .,
+                         alpha = .6,
+                         data = pld)
+
+
+
+```
+```{r cv, message=FALSE, eval=TRUE, echo=FALSE}
+
+
+kable(nb_cv$coeffs[,c(1:4, 7, 8)], caption = "Results of 10-fold random cross-validation")
 
 
 
