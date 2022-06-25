@@ -3,7 +3,7 @@ title: '`gosset`: An R package for analysis and synthesis of ranking data in agr
   experimentation'
 abstract: null
 output:
-  word_document: default
+#  word_document: default
   pdf_document:
     fig_caption: yes
     number_sections: no
@@ -54,31 +54,26 @@ Appropriate data management and analysis are necessary to produce practical info
 
 \newpage
 
-# Required Metadata {#required-metadata .unnumbered}
+# Code metadata {#required-metadata .unnumbered}
 
-# Current code version {#current-code-version .unnumbered}
-
-| **Nr.** | **Code metadata description**                                   | **Please fill in this column**                             |
-|:-----------------|:--------------------------|:-------------------------|
-| C1      | Current code version                                            | 0.4                                                    |
-| C2      | Permanent link to code/repository used for this code version    | <https://github.com/AgrDataSci/gosset>                     |
-| C3      | Code Ocean compute capsule                                      |                                                            |
-| C4      | Legal Code License                                              | MIT                                                        |
-| C5      | Code versioning system used                                     | Git                                                        |
-| C6      | Software code languages, tools, and services used               | R                                                          |
-| C7      | Compilation requirements, operating environments & dependencies |                                                            |
-| C8      | If available Link to developer documentation/manual             | <https://agrdatasci.github.io/gosset/>                     |
-| C9      | Support email for questions                                     | [kaue.desousa@inn.no](mailto:kaue.desousa@inn.no){.email} |
+| **Code metadata description**                 | **Please fill in this column**                             |
+|:--------------------------|:--------------------------|
+| Current code version                                            | 0.4                                                       |
+| Code repository    | <https://github.com/AgrDataSci/gosset>                    |
+| Legal code license                                              | MIT                                                       |
+| Code versioning system used                                     | git                                                       |
+| Software code languages, tools, and services used               | R                                                         |
+| Compilation requirements, operating environments & dependencies | R                                                         |
+| Link to developer documentation             | <https://agrdatasci.github.io/gosset/>                    |
+| Support email for questions                                     | [kaue.desousa@inn.no](mailto:kaue.desousa@inn.no){.email} |
 
 : *Code metadata*
 
-# Motivation and significance  
+# Motivation and significance
 
-Participatory experimentation approaches have been increasingly applied in agricultural research [@deRoo2019farm]. While collecting data in ranking format is uncommon in general
-agricultural research settings, it is often collected in participatory experiments [@Coe2002AnalyzingRA]. Recently developed approaches for on-farm experimentation,
-such as the tricot methodology are based on the collection of data in ranking format [@vanetten_beza_2019]. On the other hand, newly proposed approaches for synthesis of crop variety evaluation data largely depend on the analysis of ranking data [@brown2020data].
-The analysis of ranking data requires the use of appropriate statistical models such as Plackett-Luce [@luce_individual_1959; @Plackett] or Bradley-Terry [@bradley1952rank]. Functionality for fitting Bradley-Terry and Plackett-Luce models are available in R with the packages BradleyTerry2 and PlackettLuce respectively [@BradleyTerry2; @Turner2020]. However, extended functionality was required for the entire data science workflow, which usually includes: (1) Data preparation and cleaning, (2) modelling and validation, and (3) results presentation. For (1) gosset provides functions for converting and preparing data into ranking or pairwise format required by the packages PlackettLuce and BradleyTerry2
-respectively. For (2), gosset provides functions for model selection and validation using cross-validation. In the case of (3), enhanced functionality for plotting model results is provided by the gosset package.
+Participatory experimentation approaches have been increasingly applied in agricultural research [@deRoo2019farm]. While collecting data in ranking format is uncommon in general agricultural research settings, it is often collected in participatory experiments [@Coe2002AnalyzingRA]. Recently developed approaches for on-farm experimentation, such as the tricot methodology are based on the collection of data in ranking format [@vanetten_beza_2019]. On the other hand, newly proposed approaches for synthesis of crop variety evaluation data largely depend on the analysis of ranking data [@brown2020data].
+
+The analysis of ranking data requires the use of appropriate statistical models such as Plackett-Luce [@luce_individual_1959; @Plackett] or Bradley-Terry [@bradley1952rank]. Functionality for fitting Bradley-Terry and Plackett-Luce models are available in R with the packages BradleyTerry2 [@BradleyTerry2] and PlackettLuce [@Turner2020] respectively. However, extended functionality was required for the entire data science workflow, which usually includes: (1) Data preparation and cleaning, (2) modelling and validation, and (3) results presentation. For (1) gosset provides functions for converting and preparing data into ranking or pairwise format required by the packages PlackettLuce and BradleyTerry2 respectively. For (2), gosset provides functions for model selection and validation using cross-validation. In the case of (3), enhanced functionality for plotting model results is provided by the gosset package.
 
 # Software description
 
@@ -98,7 +93,7 @@ The R package gosset is structured following the guidelines described in the man
 
 ### Modelling
 
-* `AIC` computes the Akaike Information Criterion @akaike1974] for a Bradley-Terry model fitted with BradleyTerry2 [@BradleyTerry2] or a Plackett-Luce model fitted with [@Turner2020].  
+* `AIC` computes the Akaike Information Criterion [@akaike1974] for a Bradley-Terry model [@BradleyTerry2] or a Plackett-Luce model [@Turner2020].  
 * `btpermute` deviance-based forward variable selection [@lysen2009permuted] procedure for Bradley-Terry models.
 * `crossvalidation` performs k-fold cross-validation, where k could be specified by the user.The default is 10-fold. Folds can be provided as a vector for a custom cross-validation, such as blocked cross-validation.  
 * `forward` executes forward variable selection with cross-validation.  
@@ -120,15 +115,16 @@ evaluated traits.
 
 # Illustrative example
 
-To demonstrate the functionality of the gosset package, we use the `nicabean` dataset, which was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot  approach [@vanetten_beza_2019], farmers were asked to test in their farms three varieties of common bean. The varieties were randomly assigned as incomplete blocks of size three (out of 10 varieties). The farmers assessed which of the three varieties had the best and worst performance in eight traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, taste). The farmers also provided their overall appreciation about the varieties, i.e., which variety had the best and the worst performance based on the overall performance considering all the traits. To analyze the data, we use the Plackett-Luce model implemented in the R package *PlackettLuce* [@Turner2020].
+To demonstrate the functionality of the gosset package, we use the `nicabean` dataset, which was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot  approach [@vanetten_beza_2019], farmers were asked to test in their farms three varieties of common bean. The varieties were randomly assigned as incomplete blocks of size three (out of 10 varieties). The farmers assessed which of the three varieties had the best and worst performance in eight traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, and taste). The farmers also provided their overall appreciation about the varieties, i.e., which variety had the best and the worst performance based on the overall performance considering all the traits. To analyze the data, we use the Plackett-Luce model implemented in the R package *PlackettLuce* [@Turner2020].
 
 
-The `nicabean` is a list with two data frames. The first, `trial`, contains the trial data with farmers’ evaluations, ranked from 1 to 3, with 1 being the higher ranked variety and 3 the lowest ranked variety for the given trait and incomplete block. The rankings in this dataset were previously transformed from tricot rankings (where participants indicate best and worst) to ordinal rankings using the function `rank_tricot()`. The second data frame, `covar`, contains the covariates associated to the on-farm trial plots and farmers. This example will require the packages PlackettLuce [@Turner2020], climatrends [@climatrends], and ggplot2 [@ggplot2].
+The `nicabean` is a list with two data frames. The first, `trial`, contains the trial data with farmers’ evaluations, ranked from 1 to 3, with 1 being the higher ranked variety and 3 the lowest ranked variety for the given trait and incomplete block. The rankings in this dataset were previously transformed from tricot rankings (where participants indicate best and worst) to ordinal rankings using the function `rank_tricot()`. The second data frame, `covar`, contains the covariates associated to the on-farm trial plots and farmers. This example will require the packages PlackettLuce [@Turner2020], climatrends [@climatrends], chirps [@chirps] and ggplot2 [@ggplot2].
 
-``` {r, message = FALSE, eval = TRUE, echo = TRUE}
+``` {r starting, message = FALSE, eval = TRUE, echo = TRUE}
 library("gosset")
 library("PlackettLuce")
 library("climatrends")
+library("chirps")
 library("ggplot2")
 
 data("nicabean", package = "gosset")
@@ -144,7 +140,7 @@ traits <- unique(dat$trait)
 
 To start the analysis of the data, we transform the rankings into Plackett-Luce rankings using the function `rank_numeric()`. We run iteratively over the traits adding the rankings to a list called `R`. Since the varieties are ranked in an ascending order, with 1 being the higher ranked and 3 the lower ranked, we use the argument `asceding = TRUE` to indicate which order should be used.
 
-```{r, message = FALSE, eval = TRUE, echo = TRUE}
+```{r rankings, message = FALSE, eval = TRUE, echo = TRUE}
 R <- vector(mode = "list", length = length(traits))
 
 for (i in seq_along(traits)) {
@@ -192,7 +188,7 @@ kable(kendall,
 
 Then, for each trait, we fit a Plackett-Luce model using the function `PlackettLuce()` from the package of the same name. This will allow us to continue the analysis of the trial data using the other functions in the package gosset.
 
-```{r, message=FALSE, eval=TRUE, echo=TRUE}
+```{r PLmodel, message=FALSE, eval=TRUE, echo=TRUE}
 
 mod <- lapply(R, PlackettLuce)
 
@@ -200,7 +196,7 @@ mod <- lapply(R, PlackettLuce)
 
 The `worth_map()` function can be used to visually assess item performance based on different characteristics. The values represented in a worth_map are log-worth estimates. From the breeder or product developer perspective the function `worth_map()` offers a visualization tool to help in identifying item performance based on different characteristics.
 
-```{r, message=FALSE, eval=TRUE, echo=TRUE, fig.cap="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Blue values indicate a superior performance of varieties for a given trait, compared to the reference.  Red values indicate a variety with weak performance for the given trait, compared to the reference."}
+```{r worthmap, message=FALSE, eval=TRUE, echo=TRUE, fig.cap="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Blue values indicate a superior performance of varieties for a given trait, compared to the reference.  Red values indicate a variety with weak performance for the given trait, compared to the reference."}
 worth_map(mod[-baseline],
           labels = traits[-baseline], 
           ref = "Amadeus 77") +
@@ -208,19 +204,23 @@ worth_map(mod[-baseline],
        y = "Trait")
 ```
 
-To consider the effect of climate factors on variety performance, we used climatic covariates to fit a 
-Plackett-Luce tree. For brevity, we used the variables maximum night time temperature (maxNT) and  maximum day time temperature, but more variables can be used in a Plackett-Luce tree. Temperature data were obtained from the AgERA5 dataset, using the R package ag5Tools [@ag5tools]. The temperature data downloaded from AgERA5 were used for computing the climatic variables with the package *climatrends* [@climatrends]. In this case, we only use the rankings corresponding to the overall performance of varieties.
+To consider the effect of climate factors on yield, we used climatic covariates to fit a Plackett-Luce tree. For simplicity, we used the total rainfall (Rtotal) derived from CHIRPS data [@Funk2015], and computed using the R packages chirps [@chirps] and [@climatrends]. However, additional covariates can be used in a Plackett-Luce tree, for example using temperature data from R package ag5Tools [@ag5tools] or nasapower [@nasapower]. 
+
+We request the CHIRPS data using the package chirps. Data should be returned as a matrix. This process can take some minutes to be implemented.
 
 ```{r , message=FALSE, eval=FALSE, echo=TRUE}
-# temp <- temperature(covar[, c("longitude","latitude")], 
-#                     day.one = covar[, "planting_date"],
-#                     span = 80)
-# 
-# head(temp[, 1:2])
+dates <- c(min(covar[, "planting_date"]),
+           max(covar[, "planting_date"]) + 70)
+
+chirps <- get_chirps(covar[, c("longitude","latitude")], 
+                     dates = as.character(dates),
+                     as.matrix = TRUE,
+                     server = "ClimateSERV")
 ```
 
-To be coupled with climatic covariates, the rankings should be made formatted as grouped rankings. For this
-we used the function ``rank_numeric`` with the parameter ``group = TRUE``.
+Than we prepare the matrix to compute the rainfall indices using the function `rainfall()` from package climatrends.
+
+To be linket to covariates, the rankings should be coerced to 'grouped rankings'. For this we used the function `group()` from PlackettLuce. We retain the ranking corresponding to yield.
 
 ```{r , message=FALSE, eval=TRUE, echo=TRUE}
 R <- vector(mode = "list", length = length(traits))
@@ -267,10 +267,10 @@ the resulting nodes of the Plackett-Luce tree.
 
 
 ```{r rel1, message=FALSE, eval=TRUE, echo=FALSE}
-nicabean_rel <- reliability(pl, ref = "Amadeus 77")
-
-kable(t(nicabean_rel), col.names = c("node 2", "node 3"), caption = "Reliability of evaluated varieties
-      in each of the resulting nodes of the Plackett-Luce tree")
+# nicabean_rel <- reliability(pl, ref = "Amadeus 77")
+# 
+# kable(t(nicabean_rel), col.names = c("node 2", "node 3"), caption = "Reliability of evaluated varieties
+#       in each of the resulting nodes of the Plackett-Luce tree")
 
 
 

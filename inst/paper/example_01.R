@@ -2,6 +2,8 @@ library("gosset")
 library("PlackettLuce")
 library("climatrends")
 library("nasapower")
+library("ggplot2")
+library("chirps")
 
 data("nicabean", package = "gosset")
 
@@ -11,7 +13,7 @@ covar <- nicabean$covar
 
 traits <- unique(dat$trait)
 
-R <- list()
+R <- vector(mode = "list", length = length(traits))
 
 for (i in seq_along(traits)) {
   
@@ -24,23 +26,6 @@ for (i in seq_along(traits)) {
                          ascending = TRUE)
 }
 
-head(R[[1]])
-
-r <- R[[1]]
-
-class(r)
-
-r2 <- unclass(r)
-
-class(r2)
-
-mod <- PlackettLuce(r2)
-
-mod
-
-
-
-# kendall 
 baseline <- which(grepl("OverallAppreciation", traits))
 
 kendall <- lapply(R[-baseline], function(X){
@@ -51,10 +36,6 @@ kendall <- do.call("rbind", kendall)
 
 kendall$trait <- traits[-baseline]
 
-kendall
-
-# worth map
-
 mod <- lapply(R, PlackettLuce)
 
 worth_map(mod[-baseline],
@@ -62,6 +43,36 @@ worth_map(mod[-baseline],
           ref = "Amadeus 77") +
   labs(x = "Variety",
        y = "Trait")
+
+
+dates <- c(min(covar[, "planting_date"]),
+           max(covar[, "planting_date"]) + 70)
+
+chirps <- get_chirps(covar[, c("longitude","latitude")], 
+                     dates = as.character(dates),
+                     as.matrix = TRUE,
+                     server = "ClimateSERV")
+
+# rename the matrix
+newnames <- dimnames(chirps)[[2]]
+newnames <- gsub("chirps-v2.0.", "", newnames)
+newnames <- gsub("[.]", "-", newnames)
+
+dimnames(chirps)[[2]] <- newnames
+
+rain <- rainfall(chirps, day.one = covar$planting_date, span = 45)
+
+Y <- which(grepl("Yield", traits))
+
+Y <- group(R[[Y]], index = 1:length(R[[Y]]))
+
+pldY <- cbind(Y, rain)
+
+treeY <- pltree(Y ~ Rtotal, data = pldY, alpha = 0.1)
+
+plot(treeY)
+
+reliability(treeY, ref = "Amadeus 77")
 
 
 
