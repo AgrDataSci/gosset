@@ -3,15 +3,11 @@ title: '`gosset`: An R package for analysis and synthesis of ranking data in agr
   experimentation'
 abstract: null
 output:
-<<<<<<< HEAD
-#  word_document: default
-=======
-  word_document:
->>>>>>> d615078010dc3f515953503c29b1e267386cdda5
   pdf_document:
     fig_caption: yes
     number_sections: no
     keep_tex: no
+#output: word_document: default
 latex_engine: pdflatex
 editor_options:
   markdown:
@@ -222,7 +218,25 @@ chirps <- get_chirps(covar[, c("longitude","latitude")],
                      server = "ClimateSERV")
 ```
 
+```{r chirps2, message=FALSE, eval=TRUE, echo=FALSE}
+
+load("nicabean_chirps.rda")
+
+```
+
 Than we prepare the matrix to compute the rainfall indices using the function `rainfall()` from package climatrends.
+
+```{r chirps3, message=FALSE, eval=FALSE, echo=TRUE}
+dates <- c(min(covar[, "planting_date"]),
+           max(covar[, "planting_date"]) + 70)
+
+chirps <- get_chirps(covar[, c("longitude","latitude")], 
+                     dates = as.character(dates),
+                     as.matrix = TRUE,
+                     server = "ClimateSERV")
+```
+
+
 
 To be linket to covariates, the rankings should be coerced to 'grouped rankings'. For this we used the function `group()` from PlackettLuce. We retain the ranking corresponding to yield.
 
