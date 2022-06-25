@@ -3,7 +3,7 @@ title: '`gosset`: An R package for analysis and synthesis of ranking data in agr
   experimentation'
 abstract: null
 output:
-  word_document: 
+  word_document:
   pdf_document:
     fig_caption: yes
     number_sections: no
@@ -14,7 +14,7 @@ editor_options:
   markdown:
     wrap: 72
 bibliography: paper.bib
-csl: apa.csl
+csl: citationstyle.csl
 header-includes:
 - \usepackage{pdfpages}
 - \usepackage{caption}
@@ -61,7 +61,7 @@ Appropriate data management and analysis are necessary to produce practical info
 
 | **Nr.** | **Code metadata description**                                   | **Please fill in this column**                             |
 |:-----------------|:--------------------------|:-------------------------|
-| C1      | Current code version                                            | 0.4.003                                                    |
+| C1      | Current code version                                            | 0.4                                                    |
 | C2      | Permanent link to code/repository used for this code version    | <https://github.com/AgrDataSci/gosset>                     |
 | C3      | Code Ocean compute capsule                                      |                                                            |
 | C4      | Legal Code License                                              | MIT                                                        |
@@ -95,35 +95,36 @@ The R package gosset is structured following the guidelines described in the man
 
 * `rank_binomial` transforms a ranking object into a binary comparisons, as required by package BradleyTerry2 [@BradleyTerry2].  
 * `rank_numeric` converts numeric values into rankings. The parameter `ascending = ` indicates if the rankings should be made considering the numeric values in ascending order. The default is `asceding = FALSE`. This function is useful when the data were collected as numerical observations, for instance, in a experiment measuring crop yield.  
-* `rank_tricot` transforms data in tricot format into ``PlackettLuce`` rankings.
+* `rank_tricot` transforms data in tricot format into PlackettLuce rankings.
 
 ### Modelling
 
 * `AIC` computes the Akaike Information Criterion @akaike1974] for a Bradley-Terry model fitted with BradleyTerry2 [@BradleyTerry2] or a Plackett-Luce model fitted with [@Turner2020].  
-* `btpermute` deviance-based forward variable selection [@lysen2009permuted] procedure for Bradley-Terry models.  
-* `compare` compare the agreement between methods.  
+* `btpermute` deviance-based forward variable selection [@lysen2009permuted] procedure for Bradley-Terry models.
 * `crossvalidation` performs k-fold cross-validation, where k could be specified by the user.The default is 10-fold. Folds can be provided as a vector for a custom cross-validation, such as blocked cross-validation.  
 * `forward` executes forward variable selection with cross-validation.  
 * `kendallTau` computes the Kendall-tau rank correlation coefficient between two rankings [@kendall_1938].  
 * `kendallW` computes Kendall's W (coefficient of concordance) among observed rankings and those predicted by the Plackett-Luce model [@Kendall_1939].  
-*   `pseudoR2` computes goodness-of-fit metrics, such as McFadden's pseudo-R2 [@mcfadden1973conditional].  
+* `pseudoR2` computes goodness-of-fit metrics, such as McFadden's pseudo-R2 [@mcfadden1973conditional].  
 
 ### Visualization and results presentation
 
-* `plot` provides an alternative method to the default plot function of the PlackettLuce package.  
-* `regret` computes the regret [@Loomes_1982].  
-* `reliability` computes the reliability of crop varieties, the probability to outperform the reference variety [@eskridge_1992].  
-* `worth_bar`  creates a bar plot of the estimated worth values for each evaluated variety.  
-* `worth_map` creates a heatmap plot of the estimated worth values for all varieties considering each of the
+* `compare` is a visualization approach to compare measures from two different methods [@MartinBland1986].
+* `plot` provides an alternative S3 method to `plot.pltree()` method implemented by the PlackettLuce package.  
+* `regret` computes the regret coefficients, the loss under the worst possible outcome. A common heuristic
+in risk assessment strategy [@Loomes_1982].  
+* `reliability` computes the probability of a set of items to outperform a reference item. A common
+heuristic in plant breeding [@eskridge_1992].  
+* `worth_bar` creates a bar plot of the estimated *worth* for each evaluated item.  
+* `worth_map` creates a heatmap plot of the estimated log-worth for all items considering each of the
 evaluated traits.
-
 
 # Illustrative example
 
 To demonstrate the functionality of the gosset package, we use the `nicabean` dataset, which was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot  approach [@vanetten_beza_2019], farmers were asked to test in their farms three varieties of common bean. The varieties were randomly assigned as incomplete blocks of size three (out of 10 varieties). The farmers assessed which of the three varieties had the best and worst performance in eight traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, taste). The farmers also provided their overall appreciation about the varieties, i.e., which variety had the best and the worst performance based on the overall performance considering all the traits. To analyze the data, we use the Plackett-Luce model implemented in the R package *PlackettLuce* [@Turner2020].
 
 
-The `nicabean` is a list with two data frames: i) `trial`, contains the trial data with farmers' evaluations, ranked from 1 to 3, with 1 being the higher ranked variety and 3 the lowest ranked variety for the given trait and incomplete block; ii) `covar`, contains the covariates associated to the on-farm trial plots and farmers. This example will require the packages PlackettLuce [@Turner2020], climatrends [@climatrends], and ggplot2 [@ggplot2].
+The `nicabean` is a list with two data frames. The first, `trial`, contains the trial data with farmers’ evaluations, ranked from 1 to 3, with 1 being the higher ranked variety and 3 the lowest ranked variety for the given trait and incomplete block. The rankings in this dataset were previously transformed from tricot rankings (where participants indicate best and worst) to ordinal rankings using the function `rank_tricot()`. The second data frame, `covar`, contains the covariates associated to the on-farm trial plots and farmers. This example will require the packages PlackettLuce [@Turner2020], climatrends [@climatrends], and ggplot2 [@ggplot2].
 
 ``` {r, message = FALSE, eval = TRUE, echo = TRUE}
 library("gosset")
@@ -148,19 +149,19 @@ To start the analysis of the data, we transform the rankings into Plackett-Luce 
 R <- vector(mode = "list", length = length(traits))
 
 for (i in seq_along(traits)) {
-  
+
   dat_i <- subset(dat, dat$trait == traits[i])
-  
+
   R[[i]] <- rank_numeric(data = dat_i,
                          items = "item",
-                         input = "rank", 
-                         id = "id", 
+                         input = "rank",
+                         id = "id",
                          ascending = TRUE)
 }
 
 ```
 
-Then, using the function `kendallTau()` we can assess the correlation between rankings. This approach can be support at least two decision making processes by, for example i) indicating the traits 
+Then, using the function `kendallTau()` we can assess the Kendall tau ($\tau$) coefficient [@kendall_1938]. This approach can be used, for example, to assess the drivers of farmers choices or to prioritize traits to be tested in a next stage of tricot trials (e.g. a lite version of tricot with no more than 4 traits to assess). We use the overall appreciation as the reference trait, and compare the Kendall tau with the other 8 traits.
 
 ```{r kendall1, message=FALSE, eval=TRUE, echo=TRUE}
 baseline <- which(grepl("OverallAppreciation", traits))
@@ -174,20 +175,23 @@ kendall <- do.call("rbind", kendall)
 kendall$trait <- traits[-baseline]
 ```
 
+The kendall correlation shows that farmers prioritized the traits yield ($\tau$ = 0.749), taste ($\tau$ = 0.653) and marketability ($\tau$ = 0.639) when assessing overall appreciation.
+
+
 ```{r kendall2, message=FALSE, eval=TRUE, echo=FALSE}
 
 kendall <- kendall[,c(3, 1)]
 kendall[,2] <- round(kendall[,2], 3)
 
-kable(kendall, 
-          caption = "Kendall correlation between 'overall performance' and the other traits assessed in the Nicaragua bean on-farm trials.",
+kable(kendall,
+          caption = "Kendall tau correlation between 'overall performance' and the other traits assessed in the Nicaragua bean on-farm trials.",
           align = "l",
           row.names = FALSE)
 
 ```
 
 
-For each trait, we fit a Plackett-Luce model using the function `PlackettLuce` from the package of the same name. We use ``lapply`` with the list of rankings and the `PlackettLuce` function as input parameters.
+Then, for each trait, we fit a Plackett-Luce model using the function `PlackettLuce()` from the package of the same name. This will allow us to continue the analysis of the trial data using the other functions in the package gosset.
 
 ```{r, message=FALSE, eval=TRUE, echo=TRUE}
 
@@ -195,36 +199,28 @@ mod <- lapply(R, PlackettLuce)
 
 ```
 
-The `worth_map` function can be used to visually assess variety performance based on different traits. The values represented in a worth_map are worth estimates in the log scale. 
-
+The `worth_map()` function can be used to visually assess item performance based on different characteristics. The values represented in a worth_map are log-worth estimates. From the breeder or product developer perspective the function `worth_map()` offers a visualization tool to help in identifying item performance based on different characteristics.
 
 ```{r, message=FALSE, eval=TRUE, echo=TRUE, fig.cap="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Blue values indicate a superior performance of varieties for a given trait, compared to the reference.  Red values indicate a variety with weak performance for the given trait, compared to the reference."}
 worth_map(mod[-baseline],
-          labels = traits[-baseline], 
+          labels = traits[-baseline],
           ref = "Amadeus 77") +
   labs(x = "Variety",
        y = "Trait")
 ```
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-To consider the effect of climate factors on variety performance, we used climatic covariates to fit a 
-Plackett-Luce tree. For brevity, we used the variables maximum nighttime temperature (maxNT) and  maximum daytime temperature, but more variables can be used in a Plackett-Luce tree. Temperature data were obtained from the AgERA5 dataset, using the R package *ag5Tools* [@ag5tools]. The temperature data downloaded from AgERA5 were used for computing the climatic variables with the package *climatrends* [@climatrends]. In this case, we only use the rankings corresponding to the overall performance of varieties.
-=======
-
-To consider the effect of climate factors on variety performance, we used the climatic covariates to fit a 
-Plackett-Luce tree. For brevity, we used the variables maximum night time temperature (maxNT) and  maximum daytime temperature, but more variables can be used in a Plackett-Luce tree. Temperature data were obtained from the NASA POWER dataset, using the R package *nasapower* [@nasapower]. The temperature data downloaded from NASA POWER were used for computing the climatic variables with the package *climatrends* [@climatrends]. In this case, we only use the rankings corresponding to the overall performance of varieties.
->>>>>>> Stashed changes
+To consider the effect of climate factors on variety performance, we used climatic covariates to fit a
+Plackett-Luce tree. For brevity, we used the variables maximum night time temperature (maxNT) and  maximum day time temperature, but more variables can be used in a Plackett-Luce tree. Temperature data were obtained from the AgERA5 dataset, using the R package ag5Tools [@ag5tools]. The temperature data downloaded from AgERA5 were used for computing the climatic variables with the package *climatrends* [@climatrends]. In this case, we only use the rankings corresponding to the overall performance of varieties.
 
 ```{r , message=FALSE, eval=FALSE, echo=TRUE}
-# temp <- temperature(covar[, c("longitude","latitude")], 
+# temp <- temperature(covar[, c("longitude","latitude")],
 #                     day.one = covar[, "planting_date"],
 #                     span = 80)
-# 
+#
 # head(temp[, 1:2])
 ```
 =======
-To consider the effect of climatic factors on variety performance, we used temperature-derived covariates to fit a 
+To consider the effect of climatic factors on variety performance, we used temperature-derived covariates to fit a
 Plackett-Luce tree. For brevity, we used the variables maximum nighttime temperature (maxNT) and  maximum daytime temperature, but more variables can be used in a Plackett-Luce tree. Temperature data were obtained from the AgERA5 dataset [@boogaard_2020], using the R package *ag5Tools* [@ag5tools]. The temperature data downloaded from AgERA5 were used for computing the climatic variables with the package *climatrends* [@climatrends]. In this case, we only use the rankings corresponding to the overall performance of varieties.
 >>>>>>> Stashed changes
 
@@ -235,13 +231,13 @@ we used the function ``rank_numeric`` with the parameter ``group = TRUE``.
 R <- vector(mode = "list", length = length(traits))
 
 for (i in seq_along(traits)) {
-  
+
   dat_i <- subset(dat, dat$trait == traits[i])
-  
+
   R[[i]] <- rank_numeric(data = dat_i,
                          items = "item",
-                         input = "rank", 
-                         id = "id", 
+                         input = "rank",
+                         id = "id",
                          ascending = TRUE,
                          group = TRUE)
 }
@@ -256,7 +252,7 @@ R <- R[[9]]
 
 pld <- cbind(R, nicabean_temp_ind)
 
-pl <- pltree(R ~ ., 
+pl <- pltree(R ~ .,
              alpha = .6,
              data = pld)
 ```
