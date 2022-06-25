@@ -8,7 +8,6 @@ output:
     fig_caption: yes
     number_sections: no
     keep_tex: no
-  reference_docx: paper_template_format.docx
 latex_engine: pdflatex
 editor_options:
   markdown:
