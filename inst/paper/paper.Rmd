@@ -205,8 +205,14 @@ worth_map(mod[-baseline],
        y = "Trait")
 ```
 
+<<<<<<< Updated upstream
 To consider the effect of climate factors on variety performance, we used climatic covariates to fit a 
 Plackett-Luce tree. For brevity, we used the variables maximum nighttime temperature (maxNT) and  maximum daytime temperature, but more variables can be used in a Plackett-Luce tree. Temperature data were obtained from the AgERA5 dataset, using the R package *ag5Tools* [@ag5tools]. The temperature data downloaded from AgERA5 were used for computing the climatic variables with the package *climatrends* [@climatrends]. In this case, we only use the rankings corresponding to the overall performance of varieties.
+=======
+
+To consider the effect of climate factors on variety performance, we used the climatic covariates to fit a 
+Plackett-Luce tree. For brevity, we used the variables maximum night time temperature (maxNT) and  maximum daytime temperature, but more variables can be used in a Plackett-Luce tree. Temperature data were obtained from the NASA POWER dataset, using the R package *nasapower* [@nasapower]. The temperature data downloaded from NASA POWER were used for computing the climatic variables with the package *climatrends* [@climatrends]. In this case, we only use the rankings corresponding to the overall performance of varieties.
+>>>>>>> Stashed changes
 
 ```{r , message=FALSE, eval=FALSE, echo=TRUE}
 # temp <- temperature(covar[, c("longitude","latitude")], 

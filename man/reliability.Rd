@@ -36,10 +36,10 @@ Measures the precision of estimated values, and
 }
 \examples{
 # vector example
-x <- c(9.5, 12, 12.3, 15)
+x <- c(9.5, 12, 12.3, 17)
 y <- 11.2
 reliability(x, y)
- 
+
 # PlackettLuce example
 library("PlackettLuce") 
 
@@ -53,5 +53,8 @@ colnames(R) <- c("apple", "banana", "orange", "pear")
 
 mod <- PlackettLuce(R)
 
-reliability(mod, ref = "apple")
+reliability(mod, ref = "orange")
+}
+\author{
+Kauê de Sousa, David Brown, Jacob van Etten
 }

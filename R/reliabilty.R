@@ -11,12 +11,13 @@
 #'  element containing reference values in \var{x}
 #' @param ... additional arguments passed to methods
 #' @return the reliability based on the worth parameters
+#' @author Kauê de Sousa, David Brown, Jacob van Etten
 #' @examples
 #' # vector example
-#' x <- c(9.5, 12, 12.3, 15)
+#' x <- c(9.5, 12, 12.3, 17)
 #' y <- 11.2
 #' reliability(x, y)
-#'  
+#' 
 #' # PlackettLuce example
 #' library("PlackettLuce") 
 #' 
@@ -30,8 +31,10 @@
 #' 
 #' mod <- PlackettLuce(R)
 #' 
-#' reliability(mod, ref = "apple")
+#' reliability(mod, ref = "orange")
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
+#' @importFrom qvcalc qvcalc
+#' @importFrom stats update
 #' @export
 reliability <- function(x, ...) {
     
@@ -57,7 +60,7 @@ reliability.default <- function(x, y = NULL, ...) {
     ref_worth <- worth[ref]
   }
   
-  1 - ((ref_worth - worth) / worth)
+  worth / (ref_worth + worth)
   
 }
 
@@ -66,10 +69,48 @@ reliability.default <- function(x, y = NULL, ...) {
 #' @export
 reliability.PlackettLuce <- function(x, ref, ...) {
   
-  worth <- coef(x, log = FALSE) 
+  x <- qvcalc::qvcalc(x, ref = ref)$qvframe
   
-  reliability(x = worth, y = NULL, ref = ref)
+  items <- rownames(x)
+  
+  whichref <- which(items %in% ref)
+  
+  worth <- exp(x$estimate) / sum(exp(x$estimate)) 
+  
+  rel <- worth / (worth[whichref] + worth)
+  
+  x$reliability <- rel
+  
+  rel_upper <- (exp(log(worth) + x$quasiSE) / (worth[whichref] + exp(log(worth) + x$quasiSE)))  
+  
+  rel_lower <- (exp(log(worth) - x$quasiSE) / (worth[whichref] + exp(log(worth) - x$quasiSE)))  
+  
+  rel_se <-  rel - rel_lower
 
+  x$rel_se <- rel_se
+  
+  x$worth <- worth
+  
+  # #formulas from summary Plackett-Luce package
+  # #https://github.com/hturner/PlackettLuce/blob/master/R/summary.R
+  x$Z <- x$estimate/x$SE
+
+  x$p_value <- 2 * pnorm(-abs(x$Z))
+  
+  x$item <- rownames(x)
+  
+  x <- x[,c("item", "reliability", "rel_se","worth", "Z", "p_value")]
+  
+  x[is.na(x)] <- NA
+  
+  x[,7] <- .add_pstars(x[,6])[[1]]
+  
+  rownames(x) <- 1:nrow(x)
+  
+  names(x) <- c("item", "reliabity", "reliabilitySE", "worth", "Zvalue", "Pr(>|z|)", "")
+  
+  return(x)
+  
 }
 
 #' @rdname reliability
@@ -77,11 +118,39 @@ reliability.PlackettLuce <- function(x, ref, ...) {
 #' @export 
 reliability.pltree <- function(x, ref, ...) {
   
-  worth <- coef(x, log = FALSE) 
+  # Extract ids from terminal nodes
+  node_id <- partykit::nodeids(x, terminal = TRUE)
   
-  t(apply(worth, 1, function(z){
-    reliability(x = z, y = NULL, ref = ref)
-  }))
+  # get models from each node
+  nodes <- list()
+  for (i in seq_along(node_id)) {
+    mod_i <- x[[ node_id[i] ]]$node$info$object
+    # r <- mod_i$rankings
+    # r <- pseudo_rank(r)
+    # mod_i <- stats::update(mod_i, rankings = r)
+    nodes[[i]] <- mod_i
+  }
+  
+  rel <- lapply(nodes, function(y){
+    reliability.PlackettLuce(y, ref = ref)
+  })
+  
+  nitems <- nrow(rel[[1]])
+  
+  rel <- do.call("rbind", rel)
+  
+  rel <- cbind(node = rep(node_id, each = nitems), rel)
+  
+  names(rel)[8] <- ""
+  
+  return(rel)
   
 }
 
+#' Add p-value stars
+#' @noRd
+.add_pstars <- function(x) {
+  unclass(symnum(x, corr = FALSE, na = FALSE,
+                 cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1), 
+                 symbols = c("***", "**", "*", ".", " ")))
+}
