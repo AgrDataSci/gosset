@@ -10,12 +10,14 @@ kendallW(x, ...)
 
 \method{kendallW}{default}(x, y, ...)
 
-\method{kendallW}{pltree}(x, newdata = NULL)
+\method{kendallW}{pltree}(x, newdata = NULL, ...)
 }
 \arguments{
 \item{x}{an object of class \code{pltree}}
 
 \item{...}{additional arguments passed to methods}
+
+\item{y}{an object of class \code{pltree}}
 
 \item{newdata}{data for predictions}
 }

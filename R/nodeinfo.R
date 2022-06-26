@@ -318,7 +318,10 @@ build_tree_branches <- function(x, ...){
 #' Build tree nodes
 #' This function makes the panels 
 #' @param x a list with PlackettLuce objects
+#' @param node.ids a vector of integers with node ids
+#' @param n.obs a vector of integers with N per node
 #' @inheritParams plot.pltree
+#' @noRd
 build_tree_nodes <- function(x, 
                              log = TRUE, 
                              ref = NULL, 

@@ -79,6 +79,7 @@
 #' @importFrom partykit nodeids
 #' @importFrom psychotools itempar
 #' @importFrom qvcalc qvcalc.itempar
+#' @importFrom stats rexp
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @export
 regret <- function(object, ..., bootstrap = TRUE, normalize = TRUE) {
@@ -368,7 +369,7 @@ bayes_boot <- function(data, statistic,
   # Draw from a uniform Dirichlet dist. with alpha set to rep(1, n_dim).
   # Using the facts that you can transform gamma distributed draws into 
   # Dirichlet draws and that rgamma(n, 1) <=> rexp(n, 1)
-  dirichlet_weights <- matrix( rexp(NROW(data) * n1, 1) , ncol = NROW(data), byrow = TRUE)
+  dirichlet_weights <- matrix(stats::rexp(NROW(data) * n1, 1) , ncol = NROW(data), byrow = TRUE)
   dirichlet_weights <- dirichlet_weights / rowSums(dirichlet_weights)
   
   if(use_weights) {

@@ -34,7 +34,7 @@
 #' reliability(mod, ref = "orange")
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom qvcalc qvcalc
-#' @importFrom stats update
+#' @importFrom stats update pnorm
 #' @export
 reliability <- function(x, ...) {
     
@@ -95,7 +95,7 @@ reliability.PlackettLuce <- function(x, ref, ...) {
   # #https://github.com/hturner/PlackettLuce/blob/master/R/summary.R
   x$Z <- x$estimate/x$SE
 
-  x$p_value <- 2 * pnorm(-abs(x$Z))
+  x$p_value <- 2 * stats::pnorm(-abs(x$Z))
   
   x$item <- rownames(x)
   
@@ -103,11 +103,9 @@ reliability.PlackettLuce <- function(x, ref, ...) {
   
   x[is.na(x)] <- NA
   
-  x[,7] <- .add_pstars(x[,6])[[1]]
-  
   rownames(x) <- 1:nrow(x)
   
-  names(x) <- c("item", "reliability", "reliabilitySE", "worth", "Zvalue", "Pr(>|z|)", "")
+  names(x) <- c("item", "reliability", "reliabilitySE", "worth", "Zvalue", "Pr(>|z|)")
   
   return(x)
   
@@ -145,12 +143,4 @@ reliability.pltree <- function(x, ref, ...) {
   
   return(rel)
   
-}
-
-#' Add p-value stars
-#' @noRd
-.add_pstars <- function(x) {
-  unclass(symnum(x, corr = FALSE, na = FALSE,
-                 cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1), 
-                 symbols = c("***", "**", "*", ".", " ")))
 }

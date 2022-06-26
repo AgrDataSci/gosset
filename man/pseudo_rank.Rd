@@ -8,6 +8,8 @@ pseudo_rank(object, ...)
 }
 \arguments{
 \item{object}{a matrix or PlackettLuce rank}
+
+\item{...}{additional arguments passed to methods}
 }
 \value{
 a matrix or PlackettLuce rank

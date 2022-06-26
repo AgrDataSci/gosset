@@ -24,6 +24,7 @@
 #'  Lancet (8476):307-10.
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom ggplot2 geom_hline geom_point
+#' @importFrom stats coefficients sd
 #' @importFrom ggrepel geom_text_repel
 #' @export
 compare <- function(x, y, ...){
@@ -48,11 +49,14 @@ compare.default <- function(x, y, labels = NULL, ...){
   d <- mean(comp$diff)
   
   # the standard deviation of the difference
-  s <- sd(comp$diff)
+  s <- stats::sd(comp$diff)
   
   # limits of agreement
   llim <- d - (2 * s)
   ulim <- d + (2 * s)
+  
+  aver <- comp$aver
+  item <- comp$item
   
   diff_plot <- 
     ggplot2::ggplot(comp,
@@ -80,9 +84,9 @@ compare.default <- function(x, y, labels = NULL, ...){
 compare.PlackettLuce <- function(x, y, ...){
   
   # get the probability of winning and than set back as log
-  X <- log(coefficients(x, log = FALSE))
+  X <- log(stats::coefficients(x, log = FALSE))
   
-  Y <- log(coefficients(y, log = FALSE))
+  Y <- log(stats::coefficients(y, log = FALSE))
   
   lab <- names(X)
   

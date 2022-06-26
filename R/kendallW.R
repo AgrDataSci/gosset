@@ -11,6 +11,7 @@
 #' @author David Brown, Kauê de Sousa and Jacob van Etten
 #' @family goodness-of-fit functions
 #' @param x an object of class \code{pltree}
+#' @param y an object of class \code{pltree}
 #' @param newdata data for predictions
 #' @param ... additional arguments passed to methods
 #' @return Kendall's W (coefficient of concordance) 
@@ -50,7 +51,7 @@ kendallW.default <- function(x, y, ...) {
   kw <- mean(unlist(lapply(X = seq_len(nrow(pred_ranks)),
                            FUN = function(X){
                              DescTools::KendallW(data.frame("pred" = pred_ranks[X, ],
-                                                            "obs" = obs_ranks_mtx[X, ]),
+                                                            "obs" = obs_ranks[X, ]),
                                                  correct = TRUE,
                                                  test = TRUE)$estimate
                            })))
@@ -63,7 +64,7 @@ kendallW.default <- function(x, y, ...) {
 #' @rdname kendallW
 #' @method kendallW pltree
 #' @export
-kendallW.pltree <- function(x, newdata = NULL) {
+kendallW.pltree <- function(x, newdata = NULL, ...) {
   
   if(class(x)[1] != "pltree"){
     stop("x is not an object of class pltree")

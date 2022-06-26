@@ -1,6 +1,7 @@
 #' Add pseudo-rank to missing values 
 #' 
 #' @param object a matrix or PlackettLuce rank
+#' @param ... additional arguments passed to methods
 #' @return a matrix or PlackettLuce rank
 #' @examples 
 #' R <- matrix(c(1, 2, 0, 0,
