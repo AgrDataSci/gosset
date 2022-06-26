@@ -35,3 +35,5 @@ vignettes/*.tex
 *.knit.md
 .Rproj.user
 *.pdf
+*.doc
+*.docx

@@ -64,9 +64,9 @@ dimnames(chirps)[[2]] <- newnames
 
 rain <- rainfall(chirps, day.one = covar$planting_date, span = 45)
 
-G <- which(grepl("Yield", traits))
+yield <- which(grepl("Yield", traits))
 
-G <- group(R[[G]], index = 1:length(R[[G]]))
+G <- group(R[[yield]], index = 1:length(R[[yield]]))
 
 pldG <- cbind(G, rain)
 
@@ -81,8 +81,10 @@ top_items(tree, top = 3)
 
 ggsave("inst/paper/pltree_01.png", 
        last_plot(),
-       width = 10,
-       height = 10)
+       width = 25,
+       height = 20,
+       dpi = 300,
+       units = "cm")
 
 
 reliability(tree, ref = "Amadeus 77")
@@ -97,3 +99,25 @@ rel <- rel[c(1:5)]
 rel[c(3:5)] <- lapply(rel[c(3:5)], function(x){round(x, 3)})
 
 rel
+
+regret(tree)
+
+Overall <- PlackettLuce(R[[baseline]])
+Yield <- PlackettLuce(R[[yield]])
+
+compare(Overall, Yield) +
+  labs(x = "Average log(worth)",
+       y = "Difference (Overall Appreciation - Yield)")
+
+
+comp <- compare(Overall, Yield) +
+  labs(x = "Average log(worth)",
+       y = "Difference (Overall Appreciation - Yield)")
+
+
+ggsave("inst/paper/compare_02.png", 
+      comp,
+      width = 15,
+      height = 15,
+      dpi = 300,
+      units = "cm")

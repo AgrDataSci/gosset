@@ -182,9 +182,8 @@ regret.pltree <- function(object, bootstrap = TRUE, normalize = TRUE, ...) {
     ci_level <- 1 - object$info$control$alpha
     # get worth from models using qvcalc
     coeffs <- lapply(coeffs, function(X) {
-      pars <- psychotools::itempar(X, vcov = FALSE, alias = TRUE)
-      pars <- qvcalc::qvcalc.itempar(pars)
-      pars <- pars[[2]]
+      pars <- psychotools::itempar(X, log = FALSE)
+      pars <- qvcalc::qvcalc(pars)$qvframe
       pars <- as.data.frame(as.matrix(pars))
       pars$items <- rownames(pars)
       # add confidence intervals as "new" data sets for bootstrapping 

@@ -2,12 +2,13 @@
 title: '`gosset`: An R package for analysis and synthesis of ranking data in agricultural
   experimentation'
 abstract: null
-output:
-  pdf_document:
-    fig_caption: yes
-    number_sections: no
-    keep_tex: no
-#output: word_document: default
+# output:
+#   pdf_document:
+#     fig_caption: yes
+#     number_sections: no
+#     keep_tex: no
+output: 
+ word_document: default
 latex_engine: pdflatex
 editor_options:
   markdown:
@@ -44,11 +45,11 @@ knitr::opts_chunk$set(echo = FALSE,
 
 # Abstract
 
-Appropriate data management and analysis are necessary to produce practical information from agricultural experimentation data. There is also an ongoing trend advocating for programmatic tools that supports reproducible workflows in scientific research. We developed the R package gosset, providing functionality to support analysis workflows with rank-based models, such as Plackett-Luce and Bradley-Terry. The gosset package facilitates data preparation, modelling and results presentation stages. We demonstrate the functionality of the package with a case of on-farm evaluations of common bean (*Phaseolus vulgaris* L.) genotypes in Nicaragua.
+Appropriate data management and analysis are necessary to produce practical information from agricultural experimentation data. There is also an ongoing trend advocating for programmatic tools that supports reproducible workflows in scientific research. We developed the R package `gosset`, providing functionality to support analysis workflows with rank-based models. The gosset package facilitates data preparation, modelling and results presentation stages. We demonstrate the functionality of the package with a case of a decentralized on-farm trial of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua.
 
 ::: frontmatter
 ::: keyword
-**Keywords**: Bradley-Terry, Plackett-Luce, data science, on-farm trials, participatory-research, tricot
+**Keywords**: Bradley-Terry, data science, Plackett-Luce, on-farm trials, tricot approach
 :::
 :::
 
@@ -71,7 +72,7 @@ Appropriate data management and analysis are necessary to produce practical info
 
 # Motivation and significance
 
-Participatory experimentation approaches have been increasingly applied in agricultural research [@deRoo2019farm]. While collecting data in ranking format is uncommon in general agricultural research settings, it is often collected in participatory experiments [@Coe2002AnalyzingRA]. Recently developed approaches for on-farm experimentation, such as the tricot methodology are based on the collection of data in ranking format [@vanetten_beza_2019]. On the other hand, newly proposed approaches for synthesis of crop variety evaluation data largely depend on the analysis of ranking data [@brown2020data].
+Participatory experimentation approaches have been increasingly applied in agricultural research [@deRoo2019farm]. While collecting data in ranking format is uncommon in general agricultural research settings, it is often collected in participatory experiments [@Coe2002AnalyzingRA]. Recently developed approaches for on-farm experimentation, such as the tricot approach are based on the collection of data in ranking format [@vanetten_beza_2019]. On the other hand, newly proposed approaches for synthesis of crop variety evaluation data largely depend on the analysis of ranking data [@brown2020data].
 
 The analysis of ranking data requires the use of appropriate statistical models such as Plackett-Luce [@luce_individual_1959; @Plackett] or Bradley-Terry [@bradley1952rank]. Functionality for fitting Bradley-Terry and Plackett-Luce models are available in R with the packages BradleyTerry2 [@BradleyTerry2] and PlackettLuce [@Turner2020] respectively. However, extended functionality was required for the entire data science workflow, which usually includes: (1) Data preparation and cleaning, (2) modelling and validation, and (3) results presentation. For (1) gosset provides functions for converting and preparing data into ranking or pairwise format required by the packages PlackettLuce and BradleyTerry2 respectively. For (2), gosset provides functions for model selection and validation using cross-validation. In the case of (3), enhanced functionality for plotting model results is provided by the gosset package.
 
@@ -137,7 +138,7 @@ traits <- unique(dat$trait)
 
 ```
 
-To start the analysis of the data, we transform the rankings into Plackett-Luce rankings using the function `rank_numeric()`. We run iteratively over the traits adding the rankings to a list called `R`. Since the varieties are ranked in an ascending order, with 1 being the higher ranked and 3 the lower ranked, we use the argument `asceding = TRUE` to indicate which order should be used.
+To start the analysis of the data, we transform the ordinal rankings into Plackett-Luce rankings (a sparse matrix) using the function `rank_numeric()`. We run iteratively over the traits adding the rankings to a list called `R`. Since the varieties are ranked in an ascending order, with 1 being the higher ranked and 3 the lower ranked, we use the argument `asceding = TRUE` to indicate which order should be used.
 
 ```{r rankings, message = FALSE, eval = TRUE, echo = TRUE}
 R <- vector(mode = "list", length = length(traits))
@@ -193,7 +194,7 @@ mod <- lapply(R, PlackettLuce)
 
 ```
 
-The `worth_map()` function can be used to visually assess item performance based on different characteristics. The values represented in a worth_map are log-worth estimates. From the breeder or product developer perspective the function `worth_map()` offers a visualization tool to help in identifying item performance based on different characteristics.
+The `worth_map()` function can be used to visually assess and compare item performance based on different characteristics. The values represented in a worth_map are log-worth estimates. From the breeder or product developer perspective the function `worth_map()` offers a visualization tool to help in identifying item performance based on different characteristics and select crossing materials.
 
 ```{r worthmap, message=FALSE, eval=TRUE, echo=TRUE, fig.cap="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Blue values indicate a superior performance of varieties for a given trait, compared to the reference.  Red values indicate a variety with weak performance for the given trait, compared to the reference."}
 worth_map(mod[-baseline],
@@ -203,7 +204,7 @@ worth_map(mod[-baseline],
        y = "Trait")
 ```
 
-To consider the effect of climate factors on yield, we use agro-climatic covariates to fit a Plackett-Luce tree. For simplicity, we use the total rainfall (Rtotal) derived from CHIRPS data [@Funk2015], and computed using the R packages chirps [@chirps] and [@climatrends]. However, additional covariates can be used in a Plackett-Luce tree, for example using temperature data from R package ag5Tools [@ag5tools] or nasapower [@nasapower]. 
+To consider the effect of climate factors on yield, we use agro-climatic covariates to fit a Plackett-Luce tree. For simplicity, we use the total rainfall (Rtotal) derived from CHIRPS data [@Funk2015], obtained in R using the R package chirps [@chirps]. Additional covariates can be used in a Plackett-Luce tree, for example using temperature data from R package ag5Tools [@ag5tools] or nasapower [@nasapower]. 
 
 We request the CHIRPS data using the package chirps. Data should be returned as a matrix. This process can take some minutes to be implemented.
 
@@ -223,7 +224,7 @@ load("nicabean_chirps.rda")
 
 ```
 
-Than we prepare the matrix to compute the rainfall indices using the function `rainfall()` from package climatrends. We compute rainfall indices for the first 45 days after planting. 
+Than we prepare the matrix to compute the rainfall indices using the function `rainfall()` from package climatrends [@climatrends]. We compute rainfall indices for the first 45 days after planting. 
 
 ```{r chirps3, message=FALSE, eval=TRUE, echo=TRUE}
 newnames <- dimnames(chirps)[[2]]
@@ -238,13 +239,12 @@ rain <- rainfall(chirps, day.one = covar$planting_date, span = 45)
 To be linked to covariates, the rankings should be coerced to a 'grouped_rankings' object. For this we use the function `group()` from PlackettLuce. We retain the ranking corresponding to yield.
 
 ```{r grouped_ranking, message=FALSE, eval=TRUE, echo=TRUE}
-G <- which(grepl("Yield", traits))
+yield <- which(grepl("Yield", traits))
 
-G <- group(R[[G]], index = 1:length(R[[G]]))
+G <- group(R[[yield]], index = 1:length(R[[yield]]))
 ```
 
-Now we can fit the Plackett-Luce tree with climate covariates. Notice that we used the 9^th^ element in the list
-of rankings as we are only using the overall appreciation ranking.
+Now we can fit the Plackett-Luce tree with climate covariates. 
 
 ```{r pltree, message=FALSE, eval=TRUE, echo=TRUE}
 pldG <- cbind(G, rain)
@@ -264,7 +264,7 @@ node_rules(tree)
 top_items(tree, top = 3)
 ```
 
-```{r pltree3, message=FALSE, eval=TRUE, echo=FALSE, out.width="50%", fig.align='center', fig.cap="Effect of total rainfall (Rtotal) on yield of common beans in on-farm trials. Agroclimate variables are obtained from planting date to the first 45 days of plant growth. Axis X presents log-worth, the probability of outperforming the other varieties in the set."}
+```{r pltree3, message=FALSE, eval=TRUE, echo=FALSE, out.width="60%", fig.align='center', fig.cap="Effect of total rainfall (Rtotal) on yield of common beans in on-farm trials. Agroclimate variables are obtained from planting date to the first 45 days of plant growth. Axis X presents log-worth, the probability of outperforming the other varieties in the set."}
 knitr::include_graphics("pltree_01.png")
 ```
 
@@ -286,17 +286,36 @@ rel <- rel[c(1:5)]
 rel[c(3:5)] <- lapply(rel[c(3:5)], function(x){round(x, 3)})
 
 kable(rel,
-          caption = "Reliability of common bean varieties based on yield performance under different rainfall conditions from planting date to the first 45 days of plant growth. Variety Amadeus 77 is set as reference.",
-          align = "l",
-          row.names = FALSE)
+      caption = "Reliability of common bean varieties based on yield performance under different rainfall conditions from planting date to the first 45 days of plant growth. Variety Amadeus 77 is set as reference.",
+      align = "l",
+      row.names = FALSE)
 
 ```
 
+The result shows that three varieties can marginally outperform Amadeus 77 under drier growing conditions (Rtotal $\leq$ 193.82 mm) whereas two varieties have a superior yield performance when under higher rainfall conditions (Rtotal $>$ 193.82 mm) compared to the reference. This approach helps in identifying superior varieties for different target population environments. For example, the variety ALS 0532-6 shows weak performance in the whole yield ranking, however for the sub-group of higher rainfall, the variety outperforms all the others. Combining rankings with socio-economic covariates could also support the identification of superior materials for different market segments.
 
+A better approach to assess the performance of varieties can be using the 'Overall Appreciation", since we expect this trait to capture the performance of the variety not only for yield, but for all the other traits prioritized by farmers (Table 2). To support this hypotheses, we use the function `compare()` which applies the approach proposed by Bland and Altman (1986) [@MartinBland1986] to assess the agreement between two different measures. We compare overall vs yield. If both measures completely agree, all the varieties should be centered to 0 in the axis Y.
+
+```{r compare, message=FALSE, echo=TRUE, eval=FALSE, out.width="50%"}
+Overall <- PlackettLuce(R[[baseline]])
+Yield <- PlackettLuce(R[[yield]])
+
+compare(Overall, Yield) +
+  labs(x = "Average log(worth)",
+       y = "Difference (Overall Appreciation - Yield)")
+```
+
+The chart shows no complete agreement between overall appreciation and yield. For example, variety SX 14825-7-1 shows superior performance for overall appreciation when compared with yield. Looking at the log-worth in the heat map of Figure 1, we can argue that the superior performance of the given variety is also related to taste, marketability and diseases resistance. This performance, however, was not captured when assessing only yield.
+
+```{r compare2, message=FALSE, eval=TRUE, echo=FALSE, out.width="50%", fig.align='center', fig.cap="Agreement between overall appreciation and yield for crop variety performance in on-farm trials."}
+knitr::include_graphics("compare_02.png")
+```
+
+Here we presented a simple workflow to assess crop variety performance and trait prioritization in decentralized on-farm trials with the tricot approach. A more complex workflow will also utilize other functions available in gosset, for example, a forward selection combined with `crossvalidation()` to improve model robustness, or model selection with `btpermute()` to consider all possible permutations in Bradley-Terry models, or a risk analysis using `regret()` to support the selection of varieties, or using `rank_numeric()` to combine legacy data and deal with heterogeneous data from different trials. All of these were previously implemented and validated elsewhere [@vanEtten2019; @Moyo_2021; @deSousa2021; @Steinkemindata2019; @brownlegacydata].   
 
 # Impact
 
-Reproducible and efficient workflows are fundamental in scientific research (Lowndes et al. 2017) [@Lowndes2017]. The gosset package provides functionality that was not previously available from other R packages and which enabled scientific studies based on the analysis of ranking data. This functionality enables making the entire workflow to be reproducible and more efficient. The utility of the gosset package has been demonstrated by enabling studies based on the analysis of ranking data. For instance, @vanEtten2019, @Moyo_2021 and @deSousa2021 applied the Plackett-Luce model in combination with recursive partitioning [@Turner2020; @Zeileis2008]. In these studies, the gosset package supported data preparation, model validation and results presentation tasks.
+Reproducible and efficient workflows are fundamental in scientific research (Lowndes et al. 2017) [@Lowndes2017]. The gosset package provides functionality that was not previously available from other R packages and which enabled scientific studies based on the analysis of ranking data. This functionality enables making the entire workflow to be reproducible and more efficient. The utility of the gosset package has been demonstrated by enabling studies based on the analysis of decentralized on-farm trial data and/or  heterogeneous data from different sources. For instance, van Etten et al. (2019) [@vanEtten2019], Moyo et al. (2021) [@Moyo_2021] and de Sousa et al. (2021) [@deSousa2021] applied the Plackett-Luce model in combination with recursive partitioning [@Turner2020; @Zeileis2008]. In these studies, the gosset package supported data preparation, model validation and results presentation tasks.
 
 # Conclusions
 
@@ -304,11 +323,11 @@ We described the functionality of the R package gosset to support the synthesis 
 
 # Conflict of Interest
 
-No conflict of interest exists: We wish to confirm that there are no known conflicts of interest associated with this publication and there has been no significant financial support for this work that could have influenced its outcome.
+The authors declare no conflict of interests.
 
 # Acknowledgements {#acknowledgements .unnumbered}
 
-We acknowledge Olga Spellman (Science Writing Service of the Alliance of Bioversity International and CIAT) for English editing of this manuscript
+We acknowledge Olga Spellman (Science Writing Service of the Alliance of Bioversity International and CIAT) for English editing of this manuscript.
 
 \newpage  
 

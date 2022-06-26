@@ -80,9 +80,9 @@ compare.default <- function(x, y, labels = NULL, ...){
 compare.PlackettLuce <- function(x, y, ...){
   
   # get the probability of winning and than set back as log
-  X <- coefficients(x, ref = 1, log = TRUE)
+  X <- log(coefficients(x, log = FALSE))
   
-  Y <- coefficients(y, ref = 1, log = TRUE)
+  Y <- log(coefficients(y, log = FALSE))
   
   lab <- names(X)
   
