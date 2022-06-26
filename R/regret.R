@@ -335,6 +335,7 @@ regret.list <- function(object, bootstrap = TRUE, normalize = TRUE, ...) {
 #'   weights this could be specified here
 #' @param ... Further arguments passed on to the statistic method
 #' @examples 
+#' \donttest{
 #' # Case 1
 #' set.seed(1337)
 #' exp_data <- rexp(8, rate = 1)
@@ -359,8 +360,8 @@ regret.list <- function(object, bootstrap = TRUE, normalize = TRUE, ...) {
 #' # Finally plotting the posterior mean LOESS line
 #' lines(cars$speed, colMeans(bb_loess, na.rm = TRUE), type ="l",
 #'       col = "tomato", lwd = 4)
-#'  
-#'  @noRd
+#' }
+#' @noRd
 bayes_boot <- function(data, statistic,
                        n1 = 1000, 
                        n2 = 1000, 
