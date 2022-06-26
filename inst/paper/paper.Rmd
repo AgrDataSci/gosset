@@ -2,13 +2,13 @@
 title: '`gosset`: An R package for analysis and synthesis of ranking data in agricultural
   experimentation'
 abstract: null
-# output:
-#   pdf_document:
-#     fig_caption: yes
-#     number_sections: no
-#     keep_tex: no
-output: 
- word_document: default
+output:
+  pdf_document:
+    fig_caption: yes
+    #number_sections: no
+    keep_tex: no
+# output: 
+#  word_document: default
 latex_engine: pdflatex
 editor_options:
   markdown:
@@ -41,7 +41,7 @@ knitr::opts_chunk$set(echo = FALSE,
 ^3^ Laboratory of Geo-Information Science and Remote Sensing, Wageningen University & Research, Droevendaalsesteeg 3, 6708 PB, Wageningen, The Netherlands   
 ^4^ Digital Inclusion, Bioversity International, 30501, Turrialba, Costa Rica   
 ^5^ Humboldt University Berlin, Berlin, Germany  
-^[*]^ Correspondence should be addressed to: <kaue.desousa@inn.no>
+^[*]^ Correspondence should be addressed to: <k.desousa@cgiar.org>
 
 # Abstract
 
@@ -66,7 +66,7 @@ Appropriate data management and analysis are necessary to produce practical info
 | Software code languages, tools, and services used               | R                                                         |
 | Compilation requirements, operating environments & dependencies | R                                                         |
 | Link to developer documentation             | <https://agrdatasci.github.io/gosset/>                    |
-| Support email for questions                                     | [kaue.desousa@inn.no](mailto:kaue.desousa@inn.no){.email} |
+| Support email for questions                                     | [desousa.kaue@gmail.com](mailto:desousa.kaue@gmail.com){.email} |
 
 : *Code metadata*
 
