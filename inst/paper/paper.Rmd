@@ -40,10 +40,10 @@ knitr::opts_chunk$set(echo = FALSE,
 ^3^ Laboratory of Geo-Information Science and Remote Sensing, Wageningen University & Research, Droevendaalsesteeg 3, 6708 PB, Wageningen, The Netherlands   
 ^4^ Digital Inclusion, Bioversity International, 30501, Turrialba, Costa Rica   
 ^5^ Humboldt University Berlin, Berlin, Germany  
-
 ^[*]^ Correspondence should be addressed to: <kaue.desousa@inn.no>
 
 # Abstract
+
 Appropriate data management and analysis are necessary to produce practical information from agricultural experimentation data. There is also an ongoing trend advocating for programmatic tools that supports reproducible workflows in scientific research. We developed the R package gosset, providing functionality to support analysis workflows with rank-based models, such as Plackett-Luce and Bradley-Terry. The gosset package facilitates data preparation, modelling and results presentation stages. We demonstrate the functionality of the package with a case of on-farm evaluations of common bean (*Phaseolus vulgaris* L.) genotypes in Nicaragua.
 
 ::: frontmatter
@@ -128,7 +128,6 @@ library("chirps")
 library("ggplot2")
 
 data("nicabean", package = "gosset")
-load("nicabean_temp_ind.rda")
 
 dat <- nicabean$trial
 
@@ -253,24 +252,51 @@ pldG <- cbind(G, rain)
 tree <- pltree(G ~ Rtotal, data = pldG, alpha = 0.1)
 ```
 
-The following is an example of the plot made with the function `plot()` in the gosset package.
+The following is an example of the plot made with the function `plot()` in the gosset package. The functions `node_labels()`, `node_rules()` and `top_items()` can be used to identify the splitting variables in the tree, the rules used to split the tree and the best items in each node, respectively.
 
-```{r , message=FALSE, eval=TRUE, echo=TRUE, fig.width=4, fig.height=4, fig.cap="Plackett-Luce tree of bean yield in on-farm trials"}
-plot(tree)
+```{r node_info, message=FALSE, eval=FALSE,echo=TRUE}
+plot(tree, ref = "Amadeus 77", ci.level = 0.9)
+
+node_labels(tree)
+
+node_rules(tree)
+
+top_items(tree, top = 3)
+```
+
+```{r pltree3, message=FALSE, eval=TRUE, echo=FALSE, out.width="50%", fig.align='center', fig.cap="Effect of total rainfall (Rtotal) on yield of common beans in on-farm trials. Agroclimate variables are obtained from planting date to the first 45 days of plant growth. Axis X presents log-worth, the probability of outperforming the other varieties in the set."}
+knitr::include_graphics("pltree_01.png")
 ```
 
 We can use the function `reliability()` to compute the reliability of the evaluated common bean
-varieties in each of the resulting nodes of the Plackett-Luce tree (Table 3).  
+varieties in each of the resulting nodes of the Plackett-Luce tree (Table 3). This helps in identifying the varieties with higher probability to outperform a variety check (Amadeus 77). For simplicity, we present only the varieties with reliability $\geq$ 0.5.
 
-
-```{r rel1, message=FALSE, eval=TRUE, echo=FALSE}
-rel <- reliability(tree, ref = "Amadeus 77")
+```{r rel1, message=FALSE, eval=FALSE, echo=TRUE}
+reliability(tree, ref = "Amadeus 77")
 ```
+
+```{r rel2, message=FALSE, eval=TRUE, echo=FALSE}
+
+rel <- reliability(tree, ref = "Amadeus 77")
+
+rel <- rel[rel$reliability >= 0.5, ]
+
+rel <- rel[c(1:5)]
+
+rel[c(3:5)] <- lapply(rel[c(3:5)], function(x){round(x, 3)})
+
+kable(rel,
+          caption = "Reliability of common bean varieties based on yield performance under different rainfall conditions from planting date to the first 45 days of plant growth. Variety Amadeus 77 is set as reference.",
+          align = "l",
+          row.names = FALSE)
+
+```
+
 
 
 # Impact
 
-Reproducible and efficient workflows are fundamental in scientific research (Lowndes et al. 2017). The gosset package provides functionality that was not previously available from other R packages and which enabled scientific studies based on the analysis of ranking data. This functionality enables making the entire workflow to be reproducible and more efficient. The utility of the gosset package has been demonstrated by enabling studies based on the analysis of ranking data. For instance, @vanEtten2019, @Moyo_2021  and @deSousa2021 applied the Plackett-Luce model in combination with recursive partitioning [@Turner2020;@Zeileis2008]. In these studies, the gosset package supported data preparation, model validation and results presentation tasks.
+Reproducible and efficient workflows are fundamental in scientific research (Lowndes et al. 2017) [@Lowndes2017]. The gosset package provides functionality that was not previously available from other R packages and which enabled scientific studies based on the analysis of ranking data. This functionality enables making the entire workflow to be reproducible and more efficient. The utility of the gosset package has been demonstrated by enabling studies based on the analysis of ranking data. For instance, @vanEtten2019, @Moyo_2021 and @deSousa2021 applied the Plackett-Luce model in combination with recursive partitioning [@Turner2020; @Zeileis2008]. In these studies, the gosset package supported data preparation, model validation and results presentation tasks.
 
 # Conclusions
 

@@ -70,13 +70,30 @@ G <- group(R[[G]], index = 1:length(R[[G]]))
 
 pldG <- cbind(G, rain)
 
-tree <- pltree(G ~ SDII, data = pldG, alpha = 0.1)
+pldG$Rtotal <- round(pldG$Rtotal, 2)
 
-plot(tree)
+tree <- pltree(G ~ Rtotal, data = pldG, alpha = 0.1)
+
+plot(tree, ref = "Amadeus 77", ci.level = 0.9)
+node_labels(tree)
+node_rules(tree)
+top_items(tree, top = 3)
+
+ggsave("inst/paper/pltree_01.png", 
+       last_plot(),
+       width = 10,
+       height = 10)
+
 
 reliability(tree, ref = "Amadeus 77")
 
 
+rel <- reliability(tree, ref = "Amadeus 77")
 
+rel <- rel[rel$reliability >= 0.5, ]
 
+rel <- rel[c(1:5)]
 
+rel[c(3:5)] <- lapply(rel[c(3:5)], function(x){round(x, 3)})
+
+rel

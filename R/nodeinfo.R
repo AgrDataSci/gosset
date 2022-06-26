@@ -326,7 +326,7 @@ build_tree_nodes <- function(x,
                              node.ids = NULL,
                              n.obs = NULL){
   
-  if (isTRUE(log)) ref <- NULL
+  if (isFALSE(log)) ref <- NULL
   
   if (is.null(node.ids)) {
     node.ids <- 1:length(x)
