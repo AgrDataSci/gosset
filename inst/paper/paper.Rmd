@@ -5,7 +5,7 @@ abstract: null
 output:
   pdf_document:
     fig_caption: yes
-    #number_sections: no
+    number_sections: no
     keep_tex: no
 # output: 
 #  word_document: default
@@ -224,7 +224,7 @@ load("nicabean_chirps.rda")
 
 ```
 
-Than we prepare the matrix to compute the rainfall indices using the function `rainfall()` from package climatrends [@climatrends]. We compute rainfall indices for the first 45 days after planting. 
+We compute the rainfall indices from planting date to the first 45 days of plant growth using the function `rainfall()` from package climatrends [@climatrends]. 
 
 ```{r chirps3, message=FALSE, eval=TRUE, echo=TRUE}
 newnames <- dimnames(chirps)[[2]]
@@ -327,7 +327,7 @@ The authors declare no conflict of interests.
 
 # Acknowledgements {#acknowledgements .unnumbered}
 
-We acknowledge Olga Spellman (Science Writing Service of the Alliance of Bioversity International and CIAT) for English editing of this manuscript.
+We acknowledge Olga Spellman (Science Writing Service of the Alliance of Bioversity International and CIAT) for English editing of this manuscript. The nicabean data was generated through the Cooperative Agreement AID-OAA-F-14-00035, which was made possible by the generous support of the American people through the US Agency for International Development (USAID). The package was developed as part of the CGIAR Research Programs on Climate Change, Agriculture and Food Security (CCAFS) and the CGIAR Research Program on Roots, Tubers and Bananas (RTB), which were carried out with support from the CGIAR Trust Fund and through bilateral funding agreements (details are at https://www.cgiar.org/funders). New analytical approaches were developed during the projects Accelerated Varietal Improvement and Seed Systems in Africa (AVISA) and 10000FARMS supported by the Bill and Melinda Gates Foundation. The views expressed in this document cannot be taken to reflect the official opinions of these organizations.
 
 \newpage  
 
