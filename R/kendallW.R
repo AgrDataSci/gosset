@@ -89,7 +89,7 @@ kendallW.pltree <- function(x, newdata = NULL, ...) {
      
    }
    
-   kendallW(pred_ranks, obs_ranks)
+   kendallW(pred_ranks, obs_ranks_mtx)
   
 }
 
