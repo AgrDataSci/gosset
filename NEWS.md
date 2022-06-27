@@ -3,7 +3,7 @@ gosset 0.4 (2022-06-30)
 
 ### IMPROVEMENTS
 
-* Add new functions `reliability()`, `btpermute()`, `pseudo_rankings()`, `kendallW()`
+* Add new functions `reliability()`, `btpermute()`, `pseudo_rank()`, `kendallW()`
 * Split `plot.pltree()` to build branches and panels independently
 
 

@@ -380,9 +380,8 @@ node, respectively.</p>
 reliability of the evaluated common bean varieties in each of the
 resulting nodes of the Plackett-Luce tree (Table 3). This helps in
 identifying the varieties with higher probability to outperform a
-variety check (Amadeus 77). For simplicity, we present only the
-varieties with reliability <span class="math inline">\(\geq\)</span>
-0.5.</p>
+variety check (Amadeus 77) <span class="citation">[12]</span>. For
+simplicity, we present only the varieties with reliability <span class="math inline">\(\geq\)</span> 0.5.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/reliability.html">reliability</a></span><span class="op">(</span><span class="va">tree</span>, ref <span class="op">=</span> <span class="st">"Amadeus 77"</span><span class="op">)</span></code></pre></div>
 <pre><code>##      node         item reliability reliabilitySE worth
@@ -414,7 +413,7 @@ the ’Overall Appreciation”, since we expect this trait to capture the
 performance of the variety not only for yield, but for all the other
 traits prioritized by farmers (Table 2). To support this hypotheses, we
 use the function <code><a href="../reference/compare.html">compare()</a></code> which applies the approach
-proposed by Bland and Altman (1986) <span class="citation">[12]</span>
+proposed by Bland and Altman (1986) <span class="citation">[13]</span>
 to assess the agreement between two different measures. We compare
 overall vs yield. If both measures completely agree, all the varieties
 should be centered to 0 in the axis Y.</p>
@@ -447,7 +446,7 @@ all possible permutations in Bradley-Terry models, or a risk analysis
 using <code><a href="../reference/regret.html">regret()</a></code> to support the selection of varieties, or
 using <code><a href="../reference/rank_numeric.html">rank_numeric()</a></code> to combine legacy data and deal with
 heterogeneous data from different trials. All of these were previously
-implemented and validated elsewhere <span class="citation">[13–17]</span>.</p>
+implemented and validated elsewhere <span class="citation">[14–18]</span>.</p>
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
@@ -527,15 +526,22 @@ Meteorology, Surface Solar Energy and Climatology Data Client for r.
 <em>The Journal of Open Source Software</em> <strong>2018</strong>,
 <em>3</em>, 1035, doi:<a href="https://doi.org/10.21105/joss.01035">10.21105/joss.01035</a>.</div>
 </div>
-<div id="ref-MartinBland1986" class="csl-entry">
+<div id="ref-eskridge_1992" class="csl-entry">
 <div class="csl-left-margin">12. </div>
+<div class="csl-right-inline">Eskridge, K.M.; Mumm, R.F. Choosing Plant
+Cultivars Based on the Probability of Outperforming a Check.
+<em>Theoretical and Applied Genetics</em> <strong>1992</strong>,
+<em>84</em>, 494–500, doi:<a href="https://doi.org/10.1007/BF00229512">10.1007/BF00229512</a>.</div>
+</div>
+<div id="ref-MartinBland1986" class="csl-entry">
+<div class="csl-left-margin">13. </div>
 <div class="csl-right-inline">Bland, J.M.; Altman, DouglasG. Statistical
 Methods for Assessing Agreement Between Two Methods of Clinical
 Measurement. <em>The Lancet</em> <strong>1986</strong>, <em>327</em>,
 307–310, doi:<a href="https://doi.org/10.1016/s0140-6736(86)90837-8">10.1016/s0140-6736(86)90837-8</a>.</div>
 </div>
 <div id="ref-vanEtten2019" class="csl-entry">
-<div class="csl-left-margin">13. </div>
+<div class="csl-left-margin">14. </div>
 <div class="csl-right-inline">van
 Etten, J.; de Sousa, K.; Aguilar, A.; Barrios, M.; Coto, A.; Dell’Acqua,
 M.; Fadda, C.; Gebrehawaryat, Y.; van de Gevel, J.; Gupta, A.; et al.
@@ -545,7 +551,7 @@ Academy of Sciences</em> <strong>2019</strong>, <em>116</em>, 4194–4199,
 doi:<a href="https://doi.org/10.1073/pnas.1813720116">10.1073/pnas.1813720116</a>.</div>
 </div>
 <div id="ref-Moyo_2021" class="csl-entry">
-<div class="csl-left-margin">14. </div>
+<div class="csl-left-margin">15. </div>
 <div class="csl-right-inline">Moyo, M.; Ssali, R.; Namanda, S.; Nakitto, M.;
 Dery, E.K.; Akansake, D.; Adjebeng-Danquah, J.; van Etten, J.; de Sousa,
 K.; Lindqvist-Kreuze, H.; et al. <span class="nocase">Consumer
@@ -554,7 +560,7 @@ Science in Ghana and Uganda</span>. <em>Frontiers in Sustainable Food
 Systems</em> <strong>2021</strong>, <em>5</em>, 6, doi:<a href="https://doi.org/10.3389/fsufs.2021.620363">10.3389/fsufs.2021.620363</a>.</div>
 </div>
 <div id="ref-deSousa2021" class="csl-entry">
-<div class="csl-left-margin">15. </div>
+<div class="csl-left-margin">16. </div>
 <div class="csl-right-inline">de
 Sousa, K.; van Etten, J.; Poland, J.; Fadda, C.; Jannink, J.-L.; Kidane,
 Y.G.; Lakew, B.F.; Mengistu, D.K.; Pè, M.E.; Solberg, S.Ø.; et al.
@@ -563,7 +569,7 @@ Challenging Crop Production Environment. <em>Communications biology</em>
 <strong>2021</strong>, <em>4</em>, 1–9.</div>
 </div>
 <div id="ref-Steinkemindata2019" class="csl-entry">
-<div class="csl-left-margin">16. </div>
+<div class="csl-left-margin">17. </div>
 <div class="csl-right-inline">Steinke, J.; Achieng, J.O.; Hammond, J.;
 Kebede, S.S.; Mengistu, D.K.; Mgimiloko, M.G.; Mohammed, J.N.; Musyoka,
 J.; Sieber, S.; van de Gevel, J.; et al. <span class="nocase">Household-specific targeting of agricultural advice via
@@ -572,7 +578,7 @@ context</span>. <em>Computers and Electronics in Agriculture</em>
 <strong>2019</strong>, <em>162</em>, 991–1000, doi:<a href="https://doi.org/10.1016/j.compag.2019.05.026">10.1016/j.compag.2019.05.026</a>.</div>
 </div>
 <div id="ref-brownlegacydata" class="csl-entry">
-<div class="csl-left-margin">17. </div>
+<div class="csl-left-margin">18. </div>
 <div class="csl-right-inline">Brown, D.; Carpentier, S.; de Bruin, S.; de
 Sousa, K.; Machida, L.; van Etten, J. <a href="https://hdl.handle.net/10568/117614"><span class="nocase">Combining legacy data from heterogeneous crop trials to
 identify genotype by environment interactions using model-based

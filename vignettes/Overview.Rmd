@@ -188,7 +188,7 @@ plot(tree, ref = "Amadeus 77", ci.level = 0.9)
 
 # Reliability of superior genotypes
 
-We can use the function `reliability()` to compute the reliability of the evaluated common bean varieties in each of the resulting nodes of the Plackett-Luce tree (Table 3). This helps in identifying the varieties with higher probability to outperform a variety check (Amadeus 77). For simplicity, we present only the varieties with reliability $\geq$ 0.5.
+We can use the function `reliability()` to compute the reliability of the evaluated common bean varieties in each of the resulting nodes of the Plackett-Luce tree (Table 3). This helps in identifying the varieties with higher probability to outperform a variety check (Amadeus 77) [@eskridge_1992]. For simplicity, we present only the varieties with reliability $\geq$ 0.5.
 
 ```{r rel1, message=FALSE, eval=FALSE, echo=TRUE}
 reliability(tree, ref = "Amadeus 77")
