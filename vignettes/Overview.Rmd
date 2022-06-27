@@ -13,31 +13,39 @@ vignette: >
   %\VignetteIndexEntry{Overview}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown_notangle}
-  %\VignetteDepends{nasapower}
   %\VignetteDepends{ggplot2}
   %\VignetteDepends{PlackettLuce}
   %\VignetteDepends{climatrends}
+  %\VignetteDepends{chirps}
+  %\VignetteDepends{knitr}
 bibliography: ["vignette.bib"]
-csl: citation_style.csl
+csl: citationstyle.csl
 ---
+
+```{r setup_opts, include=FALSE}
+library("knitr")
+knitr::opts_chunk$set(echo = FALSE,
+                      error = FALSE,
+                      message=FALSE,
+                      warning = FALSE)
+```
+
 
 # Summary
 
 The gosset package provides a set of tools and methods to implement a workflow to analyse experimental agriculture data, from data synthesis to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.
 
-In this example we show one of the possible workflows to assess trait prioritization and crop performance using decentralized on-farm data generated with the tricot approach[@vanEtten2016tricot]. We use the `nicabean` data. This dataset was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot approach, farmers were asked to test three varieties of common bean randomly assigned as incomplete blocks of three varieties (out of 10 varieties) and assess which of those three had the best and worst performance in nine traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, taste, and overall appreciation).
+In this example we show one of the possible workflows to assess trait prioritization and crop performance using decentralized on-farm data generated with the tricot approach [@vanetten_beza_2019]. We use the `nicabean` data. This dataset was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot  approach [@vanetten_beza_2019], farmers were asked to test in their farms three varieties of common bean. The varieties were randomly assigned as incomplete blocks of size three (out of 10 varieties). The farmers assessed which of the three varieties had the best and worst performance in eight traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, and taste). The farmers also provided their overall appreciation about the varieties, i.e., which variety had the best and the worst performance based on the overall performance considering all the traits. 
 
-Here we use the Plackett-Luce model, jointly proposed by Luce (1959)[@Luce1959] and Plackett (1975)[@Plackett1975]. This model estimates the probability of one variety outperforming all the others (worth) in the trait based on the Luce's axiom[@Luce1959]. The model is implemented in `R` by Turner et al. (2020) with the package `PlackettLuce`[@Turner2020]. 
+Here we use the Plackett-Luce model, jointly proposed by Luce (1959) [@luce_individual_1959] and Plackett (1975) [@Plackett]. This model estimates the probability of one variety outperforming all the others (worth) in the trait based on the Luce's axiom[@luce_individual_1959]. The model is implemented in `R` by Turner et al. (2020) with the package `PlackettLuce` [@Turner2020]. 
 
-# Trait prioritization 
+The `nicabean` is a list with two data frames. The first, `trial`, contains the trial data with farmers’ evaluations, ranked from 1 to 3, with 1 being the higher ranked variety and 3 the lowest ranked variety for the given trait and incomplete block. The rankings in this dataset were previously transformed from tricot rankings (where participants indicate best and worst) to ordinal rankings using the function `rank_tricot()`. The second data frame, `covar`, contains the covariates associated to the on-farm trial plots and farmers. This example will require the packages PlackettLuce [@Turner2020], climatrends [@climatrends], chirps [@chirps] and ggplot2 [@ggplot2].
 
-First we load the packages and the data. The `nicabean` data is a list with two data frames, the first `nicabean[["trial"]]` contains the trial data with farmers' evaluations, ranked from 1 to 3, with 1 being the higher ranked variety and 3 the lowest ranked variety for the given trait and incomplete block. The second `nicabean[["covar"]]` contains the covariates associated with to the plots and farmers. For more information on the dataset use `help("nicabean")`. For better handling, we take both data frames out of the list as separated data frames.
-
-```{r fetch, message=FALSE, eval=TRUE, echo=TRUE}
+``` {r starting, message = FALSE, eval = TRUE, echo = TRUE}
 library("gosset")
 library("PlackettLuce")
 library("climatrends")
-library("nasapower")
+library("chirps")
 library("ggplot2")
 
 data("nicabean", package = "gosset")
@@ -46,38 +54,31 @@ dat <- nicabean$trial
 
 covar <- nicabean$covar
 
-lapply(nicabean, head)
+traits <- unique(dat$trait)
 
 ```
 
-Farmers assessed nine traits, with overall appreciation being the trait that describes farmers' overall evaluation considering all the performance of varieties over the season. The trait is a mix between farmers' appreciation (choice behaviour) and the "overall" variety performance on-farm. Using the evaluations of other traits, which are directly oriented to the trait performance, we can assess the drivers of farmers' appreciation. For this, I use the function `kendallTau()`, which measures the kendall correlation[@Kendall1938] between two traits, with overall appreciation as baseline. 
+To start the analysis of the data, we transform the ordinal rankings into Plackett-Luce rankings (a sparse matrix) using the function `rank_numeric()`. We run iteratively over the traits adding the rankings to a list called `R`. Since the varieties are ranked in an ascending order, with 1 being the higher ranked and 3 the lower ranked, we use the argument `asceding = TRUE` to indicate which order should be used.
 
-First, we transform the rankings into Plackett-Luce rankings using the function `rank_numeric()`. We run iteratively over the traits adding the rankings to a list called `R`. Since the varieties are ranked in an ascending order, with 1 being the higher ranked and 3 the lower ranked, we use the argument `asceding = TRUE` to indicate which order it should be used.
-
-```{r rank, message=FALSE, eval=TRUE, echo=TRUE}
-
-traits <- unique(dat$trait)
-
-R <- list()
+```{r rankings, message = FALSE, eval = TRUE, echo = TRUE}
+R <- vector(mode = "list", length = length(traits))
 
 for (i in seq_along(traits)) {
-  
+
   dat_i <- subset(dat, dat$trait == traits[i])
-  
+
   R[[i]] <- rank_numeric(data = dat_i,
                          items = "item",
-                         input = "rank", 
-                         id = "id", 
+                         input = "rank",
+                         id = "id",
                          ascending = TRUE)
 }
 
-head(R[[1]])
-
 ```
 
-We estimate the kendall correlation, first identifying the position of overall appreciation in the list. Then using `lapply()` we apply the function `kendallTau()` to the list of rankings. 
+Then, using the function `kendallTau()` we can assess the Kendall tau ($\tau$) coefficient [@kendall_1938]. This approach can be used, for example, to assess the drivers of farmers choices or to prioritize traits to be tested in a next stage of tricot trials (e.g. a lite version of tricot with no more than 4 traits to assess). We use the overall appreciation as the reference trait, and compare the Kendall tau with the other 8 traits.
 
-```{r kendall, message=FALSE, eval=TRUE, echo=TRUE}
+```{r kendall1, message=FALSE, eval=TRUE, echo=TRUE}
 baseline <- which(grepl("OverallAppreciation", traits))
 
 kendall <- lapply(R[-baseline], function(X){
@@ -87,69 +88,145 @@ kendall <- lapply(R[-baseline], function(X){
 kendall <- do.call("rbind", kendall)
 
 kendall$trait <- traits[-baseline]
-
-print(kendall)
 ```
 
-The kendall correlation shows that farmers prioritized the traits yield ($\tau$ = 0.749), taste ($\tau$ = 0.653) and marketability ($\tau$ = 0.639) when assessing overall appreciation. 
+The kendall correlation shows that farmers prioritized the traits yield ($\tau$ = 0.749), taste ($\tau$ = 0.653) and marketability ($\tau$ = 0.639) when assessing overall appreciation.
 
-From the breeder perspective, we can visually assess the trait performance using the function `worth_map()`. 
-The function is a visualization tool to help in identifying variety performance based on different traits. It plots the log-worth (worth in log scale) of each trait indicating the variety performance. Positive values indicate a superior performance for a given trait, while negative values a under performance.
 
-We first fit the Plackett-Luce models to get the log-worth estimates, then use the function `worth_plot()` assigning the variety Amadeus 77 as the reference. The output is a ggplot object which can be modified using arguments and functions from the package `ggpplot2`[@ggplot2].
+```{r kendall2, message=FALSE, eval=TRUE, echo=FALSE}
 
-```{r worth, message=FALSE, eval=TRUE, echo=TRUE}
+kendall <- kendall[,c(3, 1)]
+kendall[,2] <- round(kendall[,2], 3)
+
+kable(kendall,
+          caption = "Kendall tau correlation between 'overall performance' and the other traits assessed in the Nicaragua bean on-farm trials.",
+          align = "l",
+          row.names = FALSE)
+
+```
+
+
+Then, for each trait, we fit a Plackett-Luce model using the function `PlackettLuce()` from the package of the same name. This will allow us to continue the analysis of the trial data using the other functions in the package gosset.
+
+```{r PLmodel, message=FALSE, eval=TRUE, echo=TRUE}
 
 mod <- lapply(R, PlackettLuce)
 
+```
+
+The `worth_map()` function can be used to visually assess and compare item performance based on different characteristics. The values represented in a worth_map are log-worth estimates. From the breeder or product developer perspective the function `worth_map()` offers a visualization tool to help in identifying item performance based on different characteristics and select crossing materials.
+
+```{r worthmap, message=FALSE, eval=TRUE, echo=TRUE, fig.cap="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Blue values indicate a superior performance of varieties for a given trait, compared to the reference.  Red values indicate a variety with weak performance for the given trait, compared to the reference."}
 worth_map(mod[-baseline],
-          labels = traits[-baseline], 
+          labels = traits[-baseline],
           ref = "Amadeus 77") +
   labs(x = "Variety",
        y = "Trait")
+```
+
+To consider the effect of climate factors on yield, we use agro-climatic covariates to fit a Plackett-Luce tree. For simplicity, we use the total rainfall (Rtotal) derived from CHIRPS data [@Funk2015], obtained in R using the R package chirps [@chirps]. Additional covariates can be used in a Plackett-Luce tree, for example using temperature data from R package ag5Tools [@ag5tools] or nasapower [@nasapower]. 
+
+We request the CHIRPS data using the package chirps. Data should be returned as a matrix. This process can take some minutes to be implemented.
+
+```{r chirps, message=FALSE, eval=FALSE, echo=TRUE}
+dates <- c(min(covar[, "planting_date"]),
+           max(covar[, "planting_date"]) + 70)
+
+chirps <- get_chirps(covar[, c("longitude","latitude")], 
+                     dates = as.character(dates),
+                     as.matrix = TRUE,
+                     server = "ClimateSERV")
+```
+
+```{r chirps2, message=FALSE, eval=TRUE, echo=FALSE}
+
+load("nicabean_chirps.rda")
 
 ```
 
+We compute the rainfall indices from planting date to the first 45 days of plant growth using the function `rainfall()` from package climatrends [@climatrends]. 
 
-# Crop performance with environmental data
+```{r chirps3, message=FALSE, eval=TRUE, echo=TRUE}
+newnames <- dimnames(chirps)[[2]]
+newnames <- gsub("chirps-v2.0.", "", newnames)
+newnames <- gsub("[.]", "-", newnames)
 
-Here I use the overall performance of varieties combined with environmental data to to assess crop variety performance. This approach was also used by van Etten et al. (2019)[@vanEtten2019]. I use the function `temperature()` from the climatrends[@climatrends] package to compute temperature indices for the first 80 days after planting in each data point. The climate data used is NASA POWER data supported by the package nasapower[@Sparks2018].
+dimnames(chirps)[[2]] <- newnames
 
-```{r , message=FALSE, eval=FALSE, echo=TRUE}
-temp <- temperature(dat[, c("lon","lat")], 
-                    day.one = dat[, "planting_date"],
-                    span = 80)
+rain <- rainfall(chirps, day.one = covar$planting_date, span = 45)
 ```
 
-Then I build the rankings using the function `rank_tricot()` but now as a `grouped_rankings` by adding the argument group = TRUE. This enables the ranking to be linked to covariates, in that case the temperature indices. Then with the function `pltree()` I fit a Plackett-Luce tree using the maximum night temperature (maxNT) and maximum day temperature (maxDT).
+To be linked to covariates, the rankings should be coerced to a 'grouped_rankings' object. For this we use the function `group()` from PlackettLuce. We retain the ranking corresponding to yield.
 
-```{r , message=FALSE, eval=FALSE, echo=TRUE}
-R <- rank_tricot(dat, 
-                 items = c("variety_a","variety_b","variety_c"), 
-                 input = c("overall_best","overall_worst"),
-                 group = TRUE)
+```{r grouped_ranking, message=FALSE, eval=TRUE, echo=TRUE}
+yield <- which(grepl("Yield", traits))
 
-pld <- cbind(R, temp)
-
-pl <- pltree(R ~ maxNT + maxDT, 
-             alpha = 0.1,
-             gamma = TRUE,
-             data = pld)
+G <- group(R[[yield]], index = 1:length(R[[yield]]))
 ```
 
-The sets of functions below help in the visualization and identification of varieties with better performance in each node of the tree. 
+Now we can fit the Plackett-Luce tree with climate covariates. 
 
-```{r , message=FALSE, eval=FALSE, echo=TRUE}
-plot(pl)
+```{r pltree, message=FALSE, eval=TRUE, echo=TRUE}
+pldG <- cbind(G, rain)
 
-node_rules(pl)
-
-top_items(pl, top = 5)
-
-worst_regret(pl)
-
-worth_map(pl)
+tree <- pltree(G ~ Rtotal, data = pldG, alpha = 0.1)
 ```
+
+The following is an example of the plot made with the function `plot()` in the gosset package. The functions `node_labels()`, `node_rules()` and `top_items()` can be used to identify the splitting variables in the tree, the rules used to split the tree and the best items in each node, respectively.
+
+```{r node_info, message=FALSE, eval=FALSE,echo=TRUE}
+plot(tree, ref = "Amadeus 77", ci.level = 0.9)
+
+node_labels(tree)
+
+node_rules(tree)
+
+top_items(tree, top = 3)
+```
+
+```{r pltree3, message=FALSE, eval=TRUE, echo=FALSE, out.width="60%", fig.align='center', fig.cap="Effect of total rainfall (Rtotal) on yield of common beans in on-farm trials. Agroclimate variables are obtained from planting date to the first 45 days of plant growth. Axis X presents log-worth, the probability of outperforming the other varieties in the set."}
+knitr::include_graphics("pltree_01.png")
+```
+
+We can use the function `reliability()` to compute the reliability of the evaluated common bean
+varieties in each of the resulting nodes of the Plackett-Luce tree (Table 3). This helps in identifying the varieties with higher probability to outperform a variety check (Amadeus 77). For simplicity, we present only the varieties with reliability $\geq$ 0.5.
+
+```{r rel1, message=FALSE, eval=FALSE, echo=TRUE}
+reliability(tree, ref = "Amadeus 77")
+```
+
+```{r rel2, message=FALSE, eval=TRUE, echo=FALSE}
+
+rel <- reliability(tree, ref = "Amadeus 77")
+
+rel <- rel[rel$reliability >= 0.5, ]
+
+rel <- rel[c(1:5)]
+
+rel
+
+```
+
+The result shows that three varieties can marginally outperform Amadeus 77 under drier growing conditions (Rtotal $\leq$ 193.82 mm) whereas two varieties have a superior yield performance when under higher rainfall conditions (Rtotal $>$ 193.82 mm) compared to the reference. This approach helps in identifying superior varieties for different target population environments. For example, the variety ALS 0532-6 shows weak performance in the whole yield ranking, however for the sub-group of higher rainfall, the variety outperforms all the others. Combining rankings with socio-economic covariates could also support the identification of superior materials for different market segments.
+
+A better approach to assess the performance of varieties can be using the 'Overall Appreciation", since we expect this trait to capture the performance of the variety not only for yield, but for all the other traits prioritized by farmers (Table 2). To support this hypotheses, we use the function `compare()` which applies the approach proposed by Bland and Altman (1986) [@MartinBland1986] to assess the agreement between two different measures. We compare overall vs yield. If both measures completely agree, all the varieties should be centered to 0 in the axis Y.
+
+```{r compare, message=FALSE, echo=TRUE, eval=FALSE, out.width="50%"}
+Overall <- PlackettLuce(R[[baseline]])
+Yield <- PlackettLuce(R[[yield]])
+
+compare(Overall, Yield) +
+  labs(x = "Average log(worth)",
+       y = "Difference (Overall Appreciation - Yield)")
+```
+
+The chart shows no complete agreement between overall appreciation and yield. For example, variety SX 14825-7-1 shows superior performance for overall appreciation when compared with yield. Looking at the log-worth in the heat map of Figure 1, we can argue that the superior performance of the given variety is also related to taste, marketability and diseases resistance. This performance, however, was not captured when assessing only yield.
+
+```{r compare2, message=FALSE, eval=TRUE, echo=FALSE, out.width="50%", fig.align='center', fig.cap="Agreement between overall appreciation and yield for crop variety performance in on-farm trials."}
+knitr::include_graphics("compare_02.png")
+```
+
+Here we presented a simple workflow to assess crop variety performance and trait prioritization in decentralized on-farm trials with the tricot approach. A more complex workflow will also utilize other functions available in gosset, for example, a forward selection combined with `crossvalidation()` to improve model robustness, or model selection with `btpermute()` to consider all possible permutations in Bradley-Terry models, or a risk analysis using `regret()` to support the selection of varieties, or using `rank_numeric()` to combine legacy data and deal with heterogeneous data from different trials. All of these were previously implemented and validated elsewhere [@vanEtten2019; @Moyo_2021; @deSousa2021; @Steinkemindata2019; @brownlegacydata].   
 
 ## References
 

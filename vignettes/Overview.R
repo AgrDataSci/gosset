@@ -1,8 +1,15 @@
-## ----fetch, message=FALSE, eval=TRUE, echo=TRUE-------------------------------
+## ----setup_opts, include=FALSE------------------------------------------------
+library("knitr")
+knitr::opts_chunk$set(echo = FALSE,
+                      error = FALSE,
+                      message=FALSE,
+                      warning = FALSE)
+
+## ----starting, message = FALSE, eval = TRUE, echo = TRUE----------------------
 library("gosset")
 library("PlackettLuce")
 library("climatrends")
-library("nasapower")
+library("chirps")
 library("ggplot2")
 
 data("nicabean", package = "gosset")
@@ -11,30 +18,25 @@ dat <- nicabean$trial
 
 covar <- nicabean$covar
 
-lapply(nicabean, head)
-
-
-## ----rank, message=FALSE, eval=TRUE, echo=TRUE--------------------------------
-
 traits <- unique(dat$trait)
 
-R <- list()
+
+## ----rankings, message = FALSE, eval = TRUE, echo = TRUE----------------------
+R <- vector(mode = "list", length = length(traits))
 
 for (i in seq_along(traits)) {
-  
+
   dat_i <- subset(dat, dat$trait == traits[i])
-  
+
   R[[i]] <- rank_numeric(data = dat_i,
                          items = "item",
-                         input = "rank", 
-                         id = "id", 
+                         input = "rank",
+                         id = "id",
                          ascending = TRUE)
 }
 
-head(R[[1]])
 
-
-## ----kendall, message=FALSE, eval=TRUE, echo=TRUE-----------------------------
+## ----kendall1, message=FALSE, eval=TRUE, echo=TRUE----------------------------
 baseline <- which(grepl("OverallAppreciation", traits))
 
 kendall <- lapply(R[-baseline], function(X){
@@ -45,45 +47,101 @@ kendall <- do.call("rbind", kendall)
 
 kendall$trait <- traits[-baseline]
 
-print(kendall)
+## ----kendall2, message=FALSE, eval=TRUE, echo=FALSE---------------------------
 
-## ----worth, message=FALSE, eval=TRUE, echo=TRUE-------------------------------
+kendall <- kendall[,c(3, 1)]
+kendall[,2] <- round(kendall[,2], 3)
+
+kable(kendall,
+          caption = "Kendall tau correlation between 'overall performance' and the other traits assessed in the Nicaragua bean on-farm trials.",
+          align = "l",
+          row.names = FALSE)
+
+
+## ----PLmodel, message=FALSE, eval=TRUE, echo=TRUE-----------------------------
 
 mod <- lapply(R, PlackettLuce)
 
+
+## ----worthmap, message=FALSE, eval=TRUE, echo=TRUE, fig.cap="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Blue values indicate a superior performance of varieties for a given trait, compared to the reference.  Red values indicate a variety with weak performance for the given trait, compared to the reference."----
 worth_map(mod[-baseline],
-          labels = traits[-baseline], 
+          labels = traits[-baseline],
           ref = "Amadeus 77") +
   labs(x = "Variety",
        y = "Trait")
 
+## ----chirps, message=FALSE, eval=FALSE, echo=TRUE-----------------------------
+#  dates <- c(min(covar[, "planting_date"]),
+#             max(covar[, "planting_date"]) + 70)
+#  
+#  chirps <- get_chirps(covar[, c("longitude","latitude")],
+#                       dates = as.character(dates),
+#                       as.matrix = TRUE,
+#                       server = "ClimateSERV")
 
-## ---- message=FALSE, eval=FALSE, echo=TRUE------------------------------------
-#  temp <- temperature(dat[, c("lon","lat")],
-#                      day.one = dat[, "planting_date"],
-#                      span = 80)
+## ----chirps2, message=FALSE, eval=TRUE, echo=FALSE----------------------------
 
-## ---- message=FALSE, eval=FALSE, echo=TRUE------------------------------------
-#  R <- rank_tricot(dat,
-#                   items = c("variety_a","variety_b","variety_c"),
-#                   input = c("overall_best","overall_worst"),
-#                   group = TRUE)
-#  
-#  pld <- cbind(R, temp)
-#  
-#  pl <- pltree(R ~ maxNT + maxDT,
-#               alpha = 0.1,
-#               gamma = TRUE,
-#               data = pld)
+load("nicabean_chirps.rda")
 
-## ---- message=FALSE, eval=FALSE, echo=TRUE------------------------------------
-#  plot(pl)
+
+## ----chirps3, message=FALSE, eval=TRUE, echo=TRUE-----------------------------
+newnames <- dimnames(chirps)[[2]]
+newnames <- gsub("chirps-v2.0.", "", newnames)
+newnames <- gsub("[.]", "-", newnames)
+
+dimnames(chirps)[[2]] <- newnames
+
+rain <- rainfall(chirps, day.one = covar$planting_date, span = 45)
+
+## ----grouped_ranking, message=FALSE, eval=TRUE, echo=TRUE---------------------
+yield <- which(grepl("Yield", traits))
+
+G <- group(R[[yield]], index = 1:length(R[[yield]]))
+
+## ----pltree, message=FALSE, eval=TRUE, echo=TRUE------------------------------
+pldG <- cbind(G, rain)
+
+tree <- pltree(G ~ Rtotal, data = pldG, alpha = 0.1)
+
+## ----node_info, message=FALSE, eval=FALSE,echo=TRUE---------------------------
+#  plot(tree, ref = "Amadeus 77", ci.level = 0.9)
 #  
-#  node_rules(pl)
+#  node_labels(tree)
 #  
-#  top_items(pl, top = 5)
+#  node_rules(tree)
 #  
-#  worst_regret(pl)
+#  top_items(tree, top = 3)
+
+## ----pltree3, message=FALSE, eval=TRUE, echo=FALSE, out.width="60%", fig.align='center', fig.cap="Effect of total rainfall (Rtotal) on yield of common beans in on-farm trials. Agroclimate variables are obtained from planting date to the first 45 days of plant growth. Axis X presents log-worth, the probability of outperforming the other varieties in the set."----
+knitr::include_graphics("pltree_01.png")
+
+## ----rel1, message=FALSE, eval=FALSE, echo=TRUE-------------------------------
+#  reliability(tree, ref = "Amadeus 77")
+
+## ----rel2, message=FALSE, eval=TRUE, echo=FALSE-------------------------------
+
+rel <- reliability(tree, ref = "Amadeus 77")
+
+rel <- rel[rel$reliability >= 0.5, ]
+
+rel <- rel[c(1:5)]
+
+rel[c(3:5)] <- lapply(rel[c(3:5)], function(x){round(x, 3)})
+
+kable(rel,
+      caption = "Reliability of common bean varieties based on yield performance under different rainfall conditions from planting date to the first 45 days of plant growth. Variety Amadeus 77 is set as reference.",
+      align = "l",
+      row.names = FALSE)
+
+
+## ----compare, message=FALSE, echo=TRUE, eval=FALSE, out.width="50%"-----------
+#  Overall <- PlackettLuce(R[[baseline]])
+#  Yield <- PlackettLuce(R[[yield]])
 #  
-#  worth_map(pl)
+#  compare(Overall, Yield) +
+#    labs(x = "Average log(worth)",
+#         y = "Difference (Overall Appreciation - Yield)")
+
+## ----compare2, message=FALSE, eval=TRUE, echo=FALSE, out.width="50%", fig.align='center', fig.cap="Agreement between overall appreciation and yield for crop variety performance in on-farm trials."----
+knitr::include_graphics("compare_02.png")
 

@@ -107,6 +107,8 @@ reliability.PlackettLuce <- function(x, ref, ...) {
   
   names(x) <- c("item", "reliability", "reliabilitySE", "worth", "Zvalue", "Pr(>|z|)")
   
+  class(x) <- union("gosset_df", class(x))
+  
   return(x)
   
 }
@@ -139,7 +141,7 @@ reliability.pltree <- function(x, ref, ...) {
   
   rel <- cbind(node = rep(node_id, each = nitems), rel)
   
-  names(rel)[8] <- ""
+  class(rel) <- union("gosset_df", class(rel))
   
   return(rel)
   
