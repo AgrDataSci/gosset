@@ -4,6 +4,7 @@
 #' @param ... additional arguments passed to methods
 #' @return a matrix or PlackettLuce rank
 #' @examples 
+#' library("PlackettLuce")
 #' R <- matrix(c(1, 2, 0, 0,
 #'               4, 1, 0, 3,
 #'               2, 1, 0, 3,

@@ -18,6 +18,7 @@ a matrix or PlackettLuce rank
 Add pseudo-rank to missing values
 }
 \examples{
+library("PlackettLuce")
 R <- matrix(c(1, 2, 0, 0,
               4, 1, 0, 3,
               2, 1, 0, 3,
