@@ -83,7 +83,7 @@ to risk analysis in diversification strategies." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4</span>
       </span>
     </div>
 
@@ -106,7 +106,7 @@ to risk analysis in diversification strategies." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Overview.html">Trait prioritization and crop performance with decentralized on-farm data</a>
+      <a href="../articles/Overview.html">Trait prioritization and crop performance with decentralized on-farm trial data</a>
     </li>
   </ul>
 </li>
@@ -152,6 +152,9 @@ to risk analysis in diversification strategies.</p>
 <span class='fu'>regret</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span>, <span class='va'>values</span>, <span class='va'>items</span>, <span class='va'>group</span>, bootstrap <span class='op'>=</span> <span class='cn'>TRUE</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 <span class='co'># S3 method for pltree</span>
+<span class='fu'>regret</span><span class='op'>(</span><span class='va'>object</span>, bootstrap <span class='op'>=</span> <span class='cn'>TRUE</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for list</span>
 <span class='fu'>regret</span><span class='op'>(</span><span class='va'>object</span>, bootstrap <span class='op'>=</span> <span class='cn'>TRUE</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -159,7 +162,8 @@ to risk analysis in diversification strategies.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>a data.frame or an object of class <code>pltree</code></p></td>
+      <td><p>a data.frame, an object of class <code>pltree</code>, or a 
+list with <code>PlackettLuce</code> models</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -175,7 +179,7 @@ to risk analysis in diversification strategies.</p>
     </tr>
     <tr>
       <th>values</th>
-      <td><p>an index in (object) with the values to compute regret</p></td>
+      <td><p>an index in <var>object</var> with the values to compute regret</p></td>
     </tr>
     <tr>
       <th>items</th>
@@ -209,6 +213,7 @@ doi: <a href='https://doi.org/10.1111/ecoj.12200'>10.1111/ecoj.12200</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
+<span class='co'># Case 1 ####</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://hturner.github.io/PlackettLuce/'>"PlackettLuce"</a></span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"breadwheat"</span>, package <span class='op'>=</span> <span class='st'>"gosset"</span><span class='op'>)</span>
 
@@ -229,7 +234,31 @@ doi: <a href='https://doi.org/10.1111/ecoj.12200'>10.1111/ecoj.12200</a></p>
 
 <span class='fu'>regret</span><span class='op'>(</span><span class='va'>mod</span><span class='op'>)</span>
 
+<span class='co'># Case 2 ####</span>
+<span class='co'># list of PlackettLuce models</span>
+<span class='va'>R</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>0</span>,
+              <span class='fl'>4</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>,
+              <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>4</span>,
+              <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>0</span>,
+              <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>0</span>,
+              <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>3</span>, <span class='fl'>2</span><span class='op'>)</span>, nrow <span class='op'>=</span> <span class='fl'>6</span>, byrow <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>R</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apple"</span>, <span class='st'>"banana"</span>, <span class='st'>"orange"</span>, <span class='st'>"pear"</span><span class='op'>)</span>
 
+<span class='va'>mod1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html'>PlackettLuce</a></span><span class='op'>(</span><span class='va'>R</span><span class='op'>)</span>
+
+<span class='va'>R2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>0</span>, <span class='fl'>3</span>,
+               <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>3</span>,
+               <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>3</span>,
+               <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>0</span>, <span class='fl'>3</span>,
+               <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>3</span>,
+               <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>2</span><span class='op'>)</span>, nrow <span class='op'>=</span> <span class='fl'>6</span>, byrow <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>R2</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apple"</span>, <span class='st'>"banana"</span>, <span class='st'>"orange"</span>, <span class='st'>"pear"</span><span class='op'>)</span>
+
+<span class='va'>mod2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html'>PlackettLuce</a></span><span class='op'>(</span><span class='va'>R2</span><span class='op'>)</span>
+
+<span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>mod1</span>, <span class='va'>mod2</span><span class='op'>)</span>
+
+<span class='fu'>regret</span><span class='op'>(</span><span class='va'>mod</span>, n1 <span class='op'>=</span> <span class='fl'>500</span><span class='op'>)</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Preferred bread wheat varieties — breadwheat • gosset</title>
+<title>Common bean on-farm trial in Nicaragua — nicabean • gosset</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,14 +46,16 @@
 
 
 
-<meta property="og:title" content="Preferred bread wheat varieties — breadwheat" />
-<meta property="og:description" content="Data from decentralized on-farm trials of bread wheat 
-(Triticum aestivum L.) varieties in Vaishali, India over the 
-2014's Rabi season. Farmers were asked to test three varieties 
-of bread wheat randomly assigned as incomplete blocks of 
-three varieties (out of 16 varieties) and assess which one had
-the best and worst performance considering 
-four traits, germination, grain quality, yield and overall performance." />
+<meta property="og:title" content="Common bean on-farm trial in Nicaragua — nicabean" />
+<meta property="og:description" content="Data from decentralized on-farm trials of common bean 
+(Phaseolus vulgaris L.) varieties in Nicaragua over
+five seasons between 2015 and 2016. Following the tricot approach, 
+farmers were asked to test three varieties of common bean randomly 
+assigned as incomplete blocks of three varieties (out of 10 varieties) 
+and assess which of those three had the best and worst performance in 
+nine traits (Vigor, Architecture, Resistance to Pests, Resistance to 
+Diseases, Tolerance to Drought, Yield, Marketability, Taste, and Overall 
+Appreciation)." />
 <meta property="og:image" content="/logo.svg" />
 
 
@@ -137,62 +139,58 @@ four traits, germination, grain quality, yield and overall performance." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Preferred bread wheat varieties</h1>
-    <small class="dont-index">Source: <a href='https://github.com/agrdatasci/gosset/blob/master/R/breadwheat.R'><code>R/breadwheat.R</code></a></small>
-    <div class="hidden name"><code>breadwheat.Rd</code></div>
+    <h1>Common bean on-farm trial in Nicaragua</h1>
+    <small class="dont-index">Source: <a href='https://github.com/agrdatasci/gosset/blob/master/R/nicabean.R'><code>R/nicabean.R</code></a></small>
+    <div class="hidden name"><code>nicabean.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Data from decentralized on-farm trials of bread wheat 
-(<em>Triticum aestivum</em> L.) varieties in Vaishali, India over the 
-2014's Rabi season. Farmers were asked to test three varieties 
-of bread wheat randomly assigned as incomplete blocks of 
-three varieties (out of 16 varieties) and assess which one had
-the best and worst performance considering 
-four traits, germination, grain quality, yield and overall performance.</p>
+    <p>Data from decentralized on-farm trials of common bean 
+(<em>Phaseolus vulgaris</em> L.) varieties in Nicaragua over
+five seasons between 2015 and 2016. Following the tricot approach, 
+farmers were asked to test three varieties of common bean randomly 
+assigned as incomplete blocks of three varieties (out of 10 varieties) 
+and assess which of those three had the best and worst performance in 
+nine traits (Vigor, Architecture, Resistance to Pests, Resistance to 
+Diseases, Tolerance to Drought, Yield, Marketability, Taste, and Overall 
+Appreciation).</p>
     </div>
 
-    <pre class="usage"><span class='va'>breadwheat</span></pre>
+    <pre class="usage"><span class='va'>nicabean</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A data frame with 493 records and 19 variables:</p><dl>
-    <dt><code>variety_a</code></dt><dd><p>The name of variety A in the comparison.</p></dd>
-    <dt><code>variety_b</code></dt><dd><p>The name of variety B in the comparison.</p></dd>
-    <dt><code>variety_c</code></dt><dd><p>The name of variety C in the comparison.</p></dd>
-    <dt><code>district</code></dt><dd><p>The administrative region where the experiment was stablished.</p></dd>
-    <dt><code>village</code></dt><dd><p>The village within the administrative region where the 
-     experiment was stablished.</p></dd>
-    <dt><code>participant_name</code></dt><dd><p>The participant name (ommited for protection and privacy).</p></dd>
-    <dt><code>age</code></dt><dd><p>The participant age.</p></dd>
-    <dt><code>gender</code></dt><dd><p>The participant gender M = Male; F = Female.</p></dd>
-    <dt><code>planting_date</code></dt><dd><p>The date which the experiment started.</p></dd>
-    <dt><code>lon</code></dt><dd><p>The longitude in which the experiment was stablished.</p></dd>
-    <dt><code>lat</code></dt><dd><p>The latitude in which the experiment was stablished.</p></dd>
-    <dt><code>germination_best</code></dt><dd><p>The variety ranked as best for germination ("A",
-    "B" or "C").</p></dd>
-    <dt><code>germination_worst</code></dt><dd><p>The variety ranked as worst for germination ("A",
-    "B" or "C").</p></dd>
-    <dt><code>grainquality_best</code></dt><dd><p>The variety ranked as best for grain quality ("A",
-    "B" or "C").</p></dd>
-    <dt><code>grainquality_worst</code></dt><dd><p>The variety ranked as worst for grain quality ("A",
-    "B" or "C").</p></dd>
-    <dt><code>yield_best</code></dt><dd><p>The variety ranked as best for yield ("A",
-    "B" or "C").</p></dd>
-    <dt><code>yield_worst</code></dt><dd><p>The variety ranked as worst for yield ("A",
-    "B" or "C").</p></dd>
-    <dt><code>overall_best</code></dt><dd><p>The variety ranked as best for overall perfomance ("A",
-    "B" or "C").</p></dd>
-    <dt><code>overall_worst</code></dt><dd><p>The variety ranked as worst for overall perfomance ("A",
-    "B" or "C").</p></dd>
-
+    <p>A list with two data frames, 
+ <code>nicabean[["trial"]]</code> contains the trial data:</p><dl>
+ <dt><code>id</code></dt><dd><p>the plot id</p></dd>
+ <dt><code>item</code></dt><dd><p>the variety name</p></dd>
+ <dt><code>trait</code></dt><dd><p>the trait for the given variety and plot id</p></dd>
+ <dt><code>rank</code></dt><dd><p>the rank for the given variety and trait, with 1 being higher and 3 the lowest</p></dd>
+ 
+</dl><p><code>nicabean[["bean_covar"]]</code> contains the covariates associated with the data:</p><dl>
+ <dt><code>id</code></dt><dd><p>the plot id</p></dd>
+ <dt><code>adm0</code></dt><dd><p>the country name where trials were set</p></dd>
+ <dt><code>longitude</code></dt><dd><p>the longitude of the trial plot</p></dd>
+ <dt><code>latitude</code></dt><dd><p>the latitude of the trial plot</p></dd>
+ <dt><code>trial</code></dt><dd><p>the trial name as registered on ClimMob</p></dd>
+ <dt><code>variety_a</code></dt><dd><p>the variety assigned as label A in the incomplete block</p></dd>
+ <dt><code>variety_b</code></dt><dd><p>the variety assigned as label B in the incomplete block</p></dd>
+ <dt><code>variety_c</code></dt><dd><p>the variety assigned as label C in the incomplete block</p></dd>
+ <dt><code>planting_date</code></dt><dd><p>the planting date</p></dd>
+ <dt><code>gender</code></dt><dd><p>the farmer gender</p></dd>
+ <dt><code>age</code></dt><dd><p>the farmer age</p></dd>
+ 
 </dl>
 
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
-    <p>The data were provided by Bioversity International <a href='https://www.bioversityinternational.org/'>https://www.bioversityinternational.org/</a>, 
-a CGIAR Research Centre, through the ClimMob platform <a href='https://climmob.net'>https://climmob.net</a>.</p>
+    <p>van Etten, J., et. al. (2016). 
+Experimental Agriculture, 55, 275-296.
+doi: <a href='https://doi.org/10.1017/S0014479716000739'>10.1017/S0014479716000739</a></p>
+<p>van Etten, J., et. al. (2019). 
+PNAS 116(10) 4194-4199
+doi: <a href='https://doi.org/10.1073/pnas.1813720116'>10.1073/pnas.1813720116</a></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

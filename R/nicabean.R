@@ -12,15 +12,26 @@
 #'  
 #' @keywords dataset
 #' @format A list with two data frames, 
-#'  \code{nicabean[["bean_covar"]]} contains the covariates associated with the data
-#'  Codes for contests are described:
+#'  \code{nicabean[["trial"]]} contains the trial data:
 #'  \describe{
-#'  \item{\code{id}}{the trial id}
+#'  \item{\code{id}}{the plot id}
+#'  \item{\code{item}}{the variety name}
+#'  \item{\code{trait}}{the trait for the given variety and plot id}
+#'  \item{\code{rank}}{the rank for the given variety and trait, with 1 being higher and 3 the lowest}
+#'  }
+#'  \code{nicabean[["bean_covar"]]} contains the covariates associated with the data:
+#'  \describe{
+#'  \item{\code{id}}{the plot id}
 #'  \item{\code{adm0}}{the country name where trials were set}
 #'  \item{\code{longitude}}{the longitude of the trial plot}
 #'  \item{\code{latitude}}{the latitude of the trial plot}
 #'  \item{\code{trial}}{the trial name as registered on ClimMob}
-#'  \code{nicabean[["bean_rank"]]} contains the trial data.
+#'  \item{\code{variety_a}}{the variety assigned as label A in the incomplete block}
+#'  \item{\code{variety_b}}{the variety assigned as label B in the incomplete block}
+#'  \item{\code{variety_c}}{the variety assigned as label C in the incomplete block}
+#'  \item{\code{planting_date}}{the planting date}
+#'  \item{\code{gender}}{the farmer gender}
+#'  \item{\code{age}}{the farmer age}
 #'  }
 #' @source
 #' van Etten, J., et. al. (2016). 

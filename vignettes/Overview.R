@@ -1,10 +1,3 @@
-## ----setup_opts, include=FALSE------------------------------------------------
-library("knitr")
-knitr::opts_chunk$set(echo = FALSE,
-                      error = FALSE,
-                      message=FALSE,
-                      warning = FALSE)
-
 ## ----starting, message = FALSE, eval = TRUE, echo = TRUE----------------------
 library("gosset")
 library("PlackettLuce")
@@ -19,6 +12,8 @@ dat <- nicabean$trial
 covar <- nicabean$covar
 
 traits <- unique(dat$trait)
+
+dat
 
 
 ## ----rankings, message = FALSE, eval = TRUE, echo = TRUE----------------------
@@ -52,10 +47,7 @@ kendall$trait <- traits[-baseline]
 kendall <- kendall[,c(3, 1)]
 kendall[,2] <- round(kendall[,2], 3)
 
-kable(kendall,
-          caption = "Kendall tau correlation between 'overall performance' and the other traits assessed in the Nicaragua bean on-farm trials.",
-          align = "l",
-          row.names = FALSE)
+kendall
 
 
 ## ----PLmodel, message=FALSE, eval=TRUE, echo=TRUE-----------------------------
@@ -98,22 +90,26 @@ yield <- which(grepl("Yield", traits))
 
 G <- group(R[[yield]], index = 1:length(R[[yield]]))
 
+head(G)
+
+
 ## ----pltree, message=FALSE, eval=TRUE, echo=TRUE------------------------------
 pldG <- cbind(G, rain)
 
 tree <- pltree(G ~ Rtotal, data = pldG, alpha = 0.1)
 
-## ----node_info, message=FALSE, eval=FALSE,echo=TRUE---------------------------
-#  plot(tree, ref = "Amadeus 77", ci.level = 0.9)
-#  
-#  node_labels(tree)
-#  
-#  node_rules(tree)
-#  
-#  top_items(tree, top = 3)
+print(tree)
 
-## ----pltree3, message=FALSE, eval=TRUE, echo=FALSE, out.width="60%", fig.align='center', fig.cap="Effect of total rainfall (Rtotal) on yield of common beans in on-farm trials. Agroclimate variables are obtained from planting date to the first 45 days of plant growth. Axis X presents log-worth, the probability of outperforming the other varieties in the set."----
-knitr::include_graphics("pltree_01.png")
+
+## ----node_info, message=FALSE, eval=TRUE, echo=TRUE---------------------------
+node_labels(tree)
+
+node_rules(tree)
+
+top_items(tree, top = 3)
+
+## ----node_info2, message=FALSE, eval=TRUE,echo=TRUE---------------------------
+plot(tree, ref = "Amadeus 77", ci.level = 0.9)
 
 ## ----rel1, message=FALSE, eval=FALSE, echo=TRUE-------------------------------
 #  reliability(tree, ref = "Amadeus 77")
@@ -126,22 +122,14 @@ rel <- rel[rel$reliability >= 0.5, ]
 
 rel <- rel[c(1:5)]
 
-rel[c(3:5)] <- lapply(rel[c(3:5)], function(x){round(x, 3)})
-
-kable(rel,
-      caption = "Reliability of common bean varieties based on yield performance under different rainfall conditions from planting date to the first 45 days of plant growth. Variety Amadeus 77 is set as reference.",
-      align = "l",
-      row.names = FALSE)
+rel
 
 
-## ----compare, message=FALSE, echo=TRUE, eval=FALSE, out.width="50%"-----------
-#  Overall <- PlackettLuce(R[[baseline]])
-#  Yield <- PlackettLuce(R[[yield]])
-#  
-#  compare(Overall, Yield) +
-#    labs(x = "Average log(worth)",
-#         y = "Difference (Overall Appreciation - Yield)")
+## ----compare, message=FALSE, echo=TRUE, eval=TRUE, out.width="50%"------------
+Overall <- PlackettLuce(R[[baseline]])
+Yield <- PlackettLuce(R[[yield]])
 
-## ----compare2, message=FALSE, eval=TRUE, echo=FALSE, out.width="50%", fig.align='center', fig.cap="Agreement between overall appreciation and yield for crop variety performance in on-farm trials."----
-knitr::include_graphics("compare_02.png")
+compare(Overall, Yield) +
+  labs(x = "Average log(worth)",
+       y = "Difference (Overall Appreciation - Yield)")
 

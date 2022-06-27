@@ -1,8 +1,9 @@
-gosset 0.4 (2022-04-08)
+gosset 0.4 (2022-06-30)
 =========================
 
 # IMPROVEMENTS
 
+* Add `reliability()`
 * Add `btpermute()`
 * Add `pseudo_rankings()`
 * Split `plot.pltree()` to build branches and panels independently
