@@ -1,11 +1,9 @@
 gosset 0.4 (2022-06-30)
 =========================
 
-# IMPROVEMENTS
+### IMPROVEMENTS
 
-* Add `reliability()`
-* Add `btpermute()`
-* Add `pseudo_rankings()`
+* Add new functions `reliability()`, `btpermute()`, `pseudo_rankings()`, `kendallW()`
 * Split `plot.pltree()` to build branches and panels independently
 
 
@@ -19,6 +17,7 @@ gosset 0.2.5.9000 (2020-09-16)
 =========================
 
 ### IMPROVEMENTS
+
 * add argument qve to skip quasi-variance to plot coefficients in `plot_tree()`
 * `rank_numeric()` deals with ids of class characters
 * argument `ref` can be used in `multicompPL()` to select the reference item

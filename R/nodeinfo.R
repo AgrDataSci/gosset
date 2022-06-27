@@ -432,6 +432,8 @@ build_tree_nodes <- function(x,
   }
   
   xlabs <- as.character(round(xbreaks, 2))
+  xmin <- xmin + (xmin * 0.15)
+  xmax <- xmax + (xmax * 0.15)
   
   # Check font size for axis X and Y, and plot title
   ggplot2::ggplot(coeffs, 
@@ -453,7 +455,7 @@ build_tree_nodes <- function(x,
     ggplot2::theme_bw() +
     ggplot2::labs(x = "", y = "") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(size = 13, angle = 0,
-                                                       hjust = 0.5, vjust = 1, 
+                                                       hjust = 0.5, vjust = 0.5, 
                                                        face = "plain",
                                                        colour = "black"),
                    axis.text.y = ggplot2::element_text(size = 13, angle = 0,
@@ -472,5 +474,20 @@ build_tree_nodes <- function(x,
   
 }
 
-
+# coeffs <- data.frame(estimate = c(-0.6, 0, 0.4, 0.2, -0.1, 0.4),
+#                      items = rep(c("banana", "apple", "orange"), 2),
+#                      groups = "",
+#                      node = rep(c(1,2), each = 3))
+# 
+# coeffs
+# 
+# xinter = 0
+# bmin = 0
+# bmax = 0
+# xbreaks <- c(-0.78, 0, 0.89)
+# xlabs <- xbreaks
+# xmin = -0.78
+# xmin = xmin + (xmin * 0.15)
+# xmax = 0.89
+# xmax = xmax + (xmax * 0.15)
 
