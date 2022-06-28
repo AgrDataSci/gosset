@@ -1,8 +1,8 @@
-#' Reliability based on worth parameters
+#' Probability of outperforming a check
 #' 
 #' Measures the precision of estimated values, and
 #'  the potential response to selection on those 
-#'  estimated values
+#'  estimated values compared to a check
 #'  
 #' @param x a numeric vector, or an object  
 #'  of class \code{PlackettLuce} or \code{pltree}
@@ -15,12 +15,16 @@
 #' @references 
 #'  Eskridge and Mumm (1992). Theoret. Appl. Genetics 84, 494–500 \doi{10.1007/BF00229512}.
 #' @examples
-#' # vector example
+#' # Case 1. vector example
+#' 
 #' x <- c(9.5, 12, 12.3, 17)
+#' 
 #' y <- 11.2
+#' 
 #' reliability(x, y)
 #' 
-#' # PlackettLuce example
+#' # Case 2. PlackettLuce model
+#' 
 #' library("PlackettLuce") 
 #' 
 #' R <- matrix(c(1, 2, 4, 3,
@@ -34,6 +38,23 @@
 #' mod <- PlackettLuce(R)
 #' 
 #' reliability(mod, ref = "orange")
+#' 
+#' # Case 3. PlackettLuce tree
+#' 
+#' data("beans", package = "PlackettLuce")
+#' 
+#' G <- rank_tricot(data = beans,
+#'                  items = c(1:3),
+#'                  input = c(4:5),
+#'                  group = TRUE,
+#'                  additional.rank = beans[c(6:8)])
+#' 
+#' pld <- cbind(G, beans[,c("maxTN", "season", "lon")])
+#' 
+#' tree <- pltree(G ~ maxTN + season + lon, data = pld)
+#' 
+#' reliability(tree, ref = "INTA Matagalpa")
+#' 
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom qvcalc qvcalc
 #' @importFrom stats update pnorm
