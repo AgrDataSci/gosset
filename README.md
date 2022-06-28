@@ -1,6 +1,3 @@
-
-# gosset
-
 <!-- badges: start -->
 [![CRAN](https://www.r-pkg.org/badges/version/gosset)](https://cran.r-project.org/package=gosset)
 [![cran checks](https://cranchecks.info/badges/worst/gosset)](https://cran.r-project.org/web/checks/check_results_gosset.html)
@@ -29,12 +26,11 @@ The development version can be installed via
 library("remotes")
 remotes::install_github("agrdatasci/gosset")
 ```
+## Examples
 
-## Example
+The functionality of **gosset** is illustrated in the package's vignettes
 
-## Going further
-
-The full functionality of **gosset** is illustrated in the [package website](https://AgrDataSci.github.io/gosset/) 
+* [Trait prioritization and crop performance](https://agrdatasci.github.io/gosset/articles/Overview.html)
 
 
 ## Meta
