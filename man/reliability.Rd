@@ -44,6 +44,7 @@ y <- 11.2
 reliability(x, y)
 
 # Case 2. PlackettLuce model
+
 library("PlackettLuce") 
 
 R <- matrix(c(1, 2, 4, 3,
