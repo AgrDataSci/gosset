@@ -7,8 +7,7 @@ output:
     fig_caption: yes
     number_sections: no
     keep_tex: no
-# output: 
-#  word_document: default
+  word_document: default
 latex_engine: pdflatex
 editor_options:
   markdown:
