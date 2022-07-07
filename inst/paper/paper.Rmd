@@ -39,7 +39,7 @@ knitr::opts_chunk$set(echo = FALSE,
 ^2^ Digital Inclusion, Bioversity International, Parc Scientifique Agropolis II, 34397, Montpellier Cedex 5, France   
 ^3^ Laboratory of Geo-Information Science and Remote Sensing, Wageningen University & Research, Droevendaalsesteeg 3, 6708 PB, Wageningen, The Netherlands   
 ^4^ Digital Inclusion, Bioversity International, 30501, Turrialba, Costa Rica   
-^5^ Humboldt University Berlin, Berlin, Germany  
+^5^ Thaer Institute of Agricultural and Horticultural Sciences, Humboldt University Berlin, Unter den Linden 6, 10099 Berlin, Germany  
 ^[*]^ Correspondence should be addressed to: <k.desousa@cgiar.org>
 
 # Abstract
