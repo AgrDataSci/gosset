@@ -73,7 +73,7 @@ To derive insights from data, researchers working on agricultural experiments ne
 
 Participatory on-farm experimentation approaches are reaching scale in agricultural research [@deRoo2019farm]. Participatory experiments often collect data as rankings, a format that is less common in other agricultural research settings [@Coe2002AnalyzingRA]. A recently developed approach for on-farm experimentation, triadic comparison of technologies (tricot), makes intensive use of data in ranking format [@vanetten_beza_2019]. Also, a newly proposed approach for synthesizing crop variety evaluation data largely depends on the analysis of ranking data [@brown2020data].
 
-The analysis of ranking data requires the use of appropriate statistical models such as the Plackett-Luce model [@luce_individual_1959; @Plackett] or the Bradley-Terry model [@bradley1952rank]. Functionality for fitting these models are available in R with the packages BradleyTerry2 [@BradleyTerry2] and PlackettLuce [@Turner2020] respectively. However, extended functionality was required for the entire data science workflow, which usually includes: (1) Data preparation and cleaning, (2) modelling and validation, and (3) results presentation. For (1) gosset provides functions for converting and preparing data into a ranking or pairwise format required by the packages PlackettLuce and BradleyTerry2 respectively. For (2), gosset provides functions for model selection and validation using cross-validation. In the case of (3), enhanced functionality for plotting model results is provided by the gosset package.
+The analysis of ranking data requires the use of appropriate statistical models such as the Plackett-Luce model [@luce_individual_1959; @Plackett] or the Bradley-Terry model [@bradley1952rank]. Functionality for fitting these models is available in R with the packages BradleyTerry2 [@BradleyTerry2] and PlackettLuce [@Turner2020] respectively. However, extended functionality was required for the entire data science workflow, which usually includes: (1) Data preparation and cleaning, (2) modelling and validation, and (3) results presentation. For (1) gosset provides functions for converting and preparing data into a ranking or pairwise format required by the packages PlackettLuce and BradleyTerry2 respectively. For (2), gosset provides functions for model selection and validation using cross-validation. In the case of (3), enhanced functionality for plotting model results is provided by the gosset package.
 
 # Software description
 
@@ -203,7 +203,7 @@ worth_map(mod[-baseline],
        y = "Trait")
 ```
 
-To consider the effect of climate factors on yield, we use agro-climatic covariates to fit a Plackett-Luce tree. For simplicity, we use the total rainfall (Rtotal) derived from CHIRPS data [@Funk2015], obtained in R using the R package chirps [@chirps]. Additional covariates can be used in a Plackett-Luce tree, for example using temperature data from R package ag5Tools [@ag5tools] or nasapower [@nasapower]. 
+To consider the effect of climate factors on yield, we use agro-climatic covariates to fit a Plackett-Luce tree. For simplicity, we use the total rainfall (Rtotal) derived from CHIRPS data [@Funk2015], obtained using the R package chirps [@chirps]. Additional covariates can be used in a Plackett-Luce tree, for example using temperature data from R package ag5Tools [@ag5tools] or nasapower [@nasapower]. 
 
 We request the CHIRPS data using the package chirps. Data should be returned as a matrix. This process can take some minutes to be implemented.
 
