@@ -33,7 +33,7 @@
 #' 
 #' plot(tree, log = TRUE)
 #' }
-#' @importFrom stats model.frame
+#' @importFrom stats model.frame reorder
 #' @importFrom partykit nodeids data_party node_party breaks_split partynode
 #'  kids_node id_node split_node varid_split index_split right_split
 #' @export
@@ -265,10 +265,11 @@ plot.pltree <- function(x,
                             ci.level = ci.level,
                             ref = ref,
                             node.ids = node_id,
-                            n.obs = nobs), silent = TRUE)
+                            n.obs = nobs, 
+                            ...), silent = TRUE)
   
   if (isTRUE("try-error" %in% class(p))) {
-    return(NextMethod(x, ...))
+    return(NextMethod(x))
   } 
   
   # get the tree structure
@@ -320,6 +321,7 @@ build_tree_branches <- function(x, ...){
 #' @param x a list with PlackettLuce objects
 #' @param node.ids a vector of integers with node ids
 #' @param n.obs a vector of integers with N per node
+#' @param multcomp TRUE adds multi-comparison groups
 #' @inheritParams plot.pltree
 #' @noRd
 build_tree_nodes <- function(x, 
@@ -327,7 +329,9 @@ build_tree_nodes <- function(x,
                              ref = NULL, 
                              ci.level = 0.95, 
                              node.ids = NULL,
-                             n.obs = NULL){
+                             n.obs = NULL,
+                             multcomp = TRUE, 
+                             ...){
   
   if (isFALSE(log)) ref <- NULL
   
@@ -385,11 +389,19 @@ build_tree_nodes <- function(x,
   })
   
   # Add node information and number of observations
+  # and if required add multicomp letters
   for (i in seq_along(node.ids)) {
     coeffs[[i]] <- within(coeffs[[i]], {
       nobs <- n.obs[i]
       node <- node.ids[i]}
     )
+    
+    if(isTRUE(multcomp)) {
+      mc <- multcompPL(x[[i]])
+      coeffs[[i]] <- merge(coeffs[[i]], mc[,c("items", "group")], by = "items")
+    }else{
+      coeffs[[i]]$group <- ""
+    }
   }
   
   coeffs <- do.call("rbind", coeffs)
@@ -402,8 +414,6 @@ build_tree_nodes <- function(x,
   coeffs$id <- paste0(coeffs$node, "_", coeffs$items)
   
   groups <- ""
-  
-  coeffs$groups <- groups
   
   node_lev <- unique(paste0("Node ", coeffs$node, " (n=", coeffs$nobs, ")"))
   
@@ -438,11 +448,12 @@ build_tree_nodes <- function(x,
   # Check font size for axis X and Y, and plot title
   ggplot2::ggplot(coeffs, 
                   ggplot2::aes(x = estimate, 
-                               y = items)) +
+                               y = items,
+                               label = group)) +
     ggplot2::geom_vline(xintercept = xinter, 
                         colour = "#E5E7E9", size = 0.8) +
-    ggplot2::geom_text(ggplot2::aes(label = groups),
-                       position = ggplot2::position_nudge(y = 0.35, x = 0)) +
+    ggplot2::geom_text(ggplot2::aes(label = group),
+                       hjust = 0.5, vjust = -1) +
     ggplot2::geom_point(pch = 21, size = 2, 
                         fill = "black",colour = "black") +
     ggplot2::geom_errorbarh(ggplot2::aes(xmin = bmin,
@@ -490,4 +501,74 @@ build_tree_nodes <- function(x,
 # xmin = xmin + (xmin * 0.15)
 # xmax = 0.89
 # xmax = xmax + (xmax * 0.15)
+
+
+#' @rdname multcompPL
+#' @noRd
+multcompPL <- function(mod, items = NULL, threshold = 0.05, adjust = "none", ...){
+  
+  #get estimates with quasi-SEs
+  qv1 <- qvcalc::qvcalc(mod, ...)$qvframe
+  
+  #reduce frame to only selected items if not all comparisons are desired
+  if (!is.null(items)) {
+    qv1 <- subset(qv1, rownames(qv1) %in% items)
+    # give error if less than 2 items can be identified
+    if (nrow(qv1) < 3) {
+      stop("Less than 2 items selected")
+    }
+  }
+  
+  #set up matrices for all differences and pooled errors
+  diffs <- mat.or.vec(nrow(qv1),nrow(qv1))
+  ses <- mat.or.vec(nrow(qv1),nrow(qv1))
+  
+  for(i in 1:nrow(qv1)){
+    for(j in 1:nrow(qv1)){
+      #get differences and pooled ses
+      diffs[i,j] <- qv1$estimate[i] - qv1$estimate[j]
+      ses[i,j] <- sqrt(qv1$quasiVar[i] + qv1$quasiVar[j])
+    }
+  }
+  
+  #calculate z scores
+  z <- diffs/ses
+  #TO DO: What DF to use to use here? Is it just the resid DF?
+  p <- 2 * (1 - stats::pt(abs(z), mod$df.residual))
+  
+  #adjust p-value if you want to adjust. make sure to only take each p once for adjustment
+  p[upper.tri(p)] <- stats::p.adjust(p[upper.tri(p)], method = adjust)
+  
+  #make sure lower triangular is mirror of upper
+  p[lower.tri(p)] <- t(p)[lower.tri(p)]
+  
+  #set rownames
+  rownames(p) <- colnames(p) <- rownames(qv1)
+  
+  #re-order qv output to ensure letters are produced in a sensible order
+  qv1$items <- stats::reorder(factor(rownames(qv1)), qv1$estimate, mean)
+  qv1 <- qv1[order(qv1$estimate, decreasing = TRUE), ]
+  
+  #get mean seperation letter groupings
+  args <- list(formula = estimate ~ items, 
+               x = p, 
+               data = qv1,
+               compare = "<",
+               threshold =  threshold,
+               Letters = letters,
+               reversed = FALSE)
+  
+  let <- do.call("multcompLetters2", args)
+  
+  qv1$group <- let$Letters
+  
+  qv1 <- qv1[, union("items", names(qv1))]
+  
+  row.names(qv1) <- seq_along(qv1$group)
+  
+  class(qv1) <- union("multcompPL", class(qv1))
+  
+  return(qv1)
+  
+}
 
