@@ -2,18 +2,18 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "gosset",
-  "description": "Toolkit for a workflow to analyse experimental agriculture data, \n    from data synthesis to model selection and visualisation. \n    The package is named after W.S. Gosset aka ‘Student’, a pioneer \n    of modern statistics in small sample experimental design and analysis.",
+  "description": "Toolkit for a workflow to analyse experimental agriculture data, from data synthesis to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.",
   "name": "gosset: Tools for Data Analysis in Experimental Agriculture",
   "codeRepository": "https://agrdatasci.github.io/gosset/",
   "issueTracker": "https://github.com/agrdatasci/gosset/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.4",
+  "version": "0.5",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.1.3 (2022-03-10)",
+  "runtimePlatform": "R version 4.2.1 (2022-06-23)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -92,6 +92,18 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=chirps"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "gnm",
+      "name": "gnm",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=gnm"
     },
     {
       "@type": "SoftwareApplication",
@@ -180,18 +192,6 @@
     },
     "5": {
       "@type": "SoftwareApplication",
-      "identifier": "gnm",
-      "name": "gnm",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=gnm"
-    },
-    "6": {
-      "@type": "SoftwareApplication",
       "identifier": "ggplot2",
       "name": "ggplot2",
       "provider": {
@@ -202,7 +202,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=ggplot2"
     },
-    "7": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "ggparty",
       "name": "ggparty",
@@ -214,7 +214,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=ggparty"
     },
-    "8": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "ggrepel",
       "name": "ggrepel",
@@ -226,7 +226,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=ggrepel"
     },
-    "9": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "partykit",
       "name": "partykit",
@@ -238,7 +238,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=partykit"
     },
-    "10": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "PlackettLuce",
       "name": "PlackettLuce",
@@ -250,7 +250,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=PlackettLuce"
     },
-    "11": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "psychotools",
       "name": "psychotools",
@@ -262,7 +262,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=psychotools"
     },
-    "12": {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "qvcalc",
       "name": "qvcalc",
@@ -274,12 +274,12 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=qvcalc"
     },
-    "13": {
+    "12": {
       "@type": "SoftwareApplication",
       "identifier": "stats",
       "name": "stats"
     },
-    "14": {
+    "13": {
       "@type": "SoftwareApplication",
       "identifier": "tidyr",
       "name": "tidyr",
@@ -291,12 +291,12 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tidyr"
     },
-    "15": {
+    "14": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
-    "16": {
+    "15": {
       "@type": "SoftwareApplication",
       "identifier": "patchwork",
       "name": "patchwork",
@@ -310,5 +310,36 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "4321.318KB"
+  "fileSize": "2864.448KB",
+  "citation": [
+    {
+      "@type": "SoftwareSourceCode",
+      "datePublished": "2022",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Kauê",
+          "familyName": "de Sousa"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Jacob",
+          "familyName": "van Etten"
+        },
+        {
+          "@type": "Person",
+          "givenName": "David",
+          "familyName": "Brown"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Jonathan",
+          "familyName": "Steinke"
+        }
+      ],
+      "name": "{gosset: Tools for Data Analysis in Experimental Agriculture}",
+      "url": "https://CRAN.R-project.org/package=gosset",
+      "description": "R package v0.4"
+    }
+  ]
 }

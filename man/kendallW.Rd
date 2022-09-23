@@ -34,23 +34,6 @@ on the observed and predicted rankings.
  
 Kendall's W values range between 0 (no agreement) to 1 (full agreement)
 }
-\examples{
-
-library("PlackettLuce")
-G <- rank_tricot(data = beans,
-                 items = c(1:3),
-                 input = c(4:5),
-                 additional.rank = beans[c(6:8)],
-                 group = TRUE)
-                 
-beans <- cbind(G, beans)
-
-beans_plt <- pltree(G ~ maxTN,
-                    data = beans)
-                   
-
-kendallW(beans_plt)
-}
 \seealso{
 Other goodness-of-fit functions: 
 \code{\link{kendallTau}()},

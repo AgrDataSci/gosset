@@ -1,3 +1,10 @@
+gosset 0.5 (2022-09-23)
+=========================
+
+### IMPROVEMENTS
+
+* Fix issues in CRAN cmd checks
+
 gosset 0.4 (2022-06-30)
 =========================
 

@@ -39,6 +39,7 @@
 #' 
 #' reliability(mod, ref = "orange")
 #' 
+#' \donttest{
 #' # Case 3. PlackettLuce tree
 #' 
 #' data("beans", package = "PlackettLuce")
@@ -53,8 +54,9 @@
 #' 
 #' tree <- pltree(G ~ maxTN + season + lon, data = pld)
 #' 
-#' reliability(tree, ref = "INTA Matagalpa")
+#' reliability(tree, ref = "Local")
 #' 
+#' }
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom qvcalc qvcalc
 #' @importFrom stats update pnorm

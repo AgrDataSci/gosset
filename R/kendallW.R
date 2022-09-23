@@ -16,22 +16,6 @@
 #' @param ... additional arguments passed to methods
 #' @return Kendall's W (coefficient of concordance) 
 #' @details 
-#' @examples
-#' 
-#' library("PlackettLuce")
-#' G <- rank_tricot(data = beans,
-#'                  items = c(1:3),
-#'                  input = c(4:5),
-#'                  additional.rank = beans[c(6:8)],
-#'                  group = TRUE)
-#'                  
-#' beans <- cbind(G, beans)
-#' 
-#' beans_plt <- pltree(G ~ maxTN,
-#'                     data = beans)
-#'                    
-#' 
-#' kendallW(beans_plt)
 #' @importFrom DescTools KendallW
 #' @export
 kendallW <- function(x, ...) {
@@ -92,5 +76,4 @@ kendallW.pltree <- function(x, newdata = NULL, ...) {
    kendallW(pred_ranks, obs_ranks_mtx)
   
 }
-
 

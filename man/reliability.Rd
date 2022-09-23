@@ -59,6 +59,7 @@ mod <- PlackettLuce(R)
 
 reliability(mod, ref = "orange")
 
+\donttest{
 # Case 3. PlackettLuce tree
 
 data("beans", package = "PlackettLuce")
@@ -73,8 +74,9 @@ pld <- cbind(G, beans[,c("maxTN", "season", "lon")])
 
 tree <- pltree(G ~ maxTN + season + lon, data = pld)
 
-reliability(tree, ref = "INTA Matagalpa")
+reliability(tree, ref = "Local")
 
+}
 }
 \references{
 Eskridge and Mumm (1992). Theoret. Appl. Genetics 84, 494–500 \doi{10.1007/BF00229512}.

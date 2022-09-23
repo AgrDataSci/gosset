@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,18 +40,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -71,7 +67,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/agrdatasci/gosset/">
+  <a href="https://github.com/agrdatasci/gosset/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -86,27 +82,28 @@
 
       
 
-      </header><script src="Overview_files/header-attrs-2.13/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Trait prioritization and crop performance with
 decentralized on-farm trial data</h1>
-                        <h4 class="author">Kauê de Sousa</h4>
+                        <h4 data-toc-skip class="author">Kauê de
+Sousa</h4>
             <address class="author_afil">
       Department of Agricultural Sciences, Inland Norway University,
 Hamar, Norway  Digital Inclusion, Bioversity International,
 Montpellier,
-France<br><h4 class="author">David
+France<br><h4 data-toc-skip class="author">David
 Brown</h4>
             <address class="author_afil">
       Laboratory of Geo-Information Science and Remote Sensing,
 Wageningen University &amp; Research, Wageningen, The Netherlands 
 Digital Inclusion, Bioversity International, Turrialba, Costa
-Rica<br><h4 class="author">Jacob van
-Etten</h4>
+Rica<br><h4 data-toc-skip class="author">Jacob
+van Etten</h4>
             <address class="author_afil">
       Digital Inclusion, Bioversity International, Montpellier,
-France<br><small class="dont-index">Source: <a href="https://github.com/agrdatasci/gosset/blob/master/vignettes/Overview.Rmd"><code>vignettes/Overview.Rmd</code></a></small>
+France<br><small class="dont-index">Source: <a href="https://github.com/agrdatasci/gosset/blob/HEAD/vignettes/Overview.Rmd" class="external-link"><code>vignettes/Overview.Rmd</code></a></small>
       <div class="hidden name"><code>Overview.Rmd</code></div>
 
     </address>
@@ -116,9 +113,9 @@ France<br><small class="dont-index">Source: <a href="https://github.com/agrdatas
 
     
     
-<div id="summary" class="section level1">
-<h1 class="hasAnchor">
-<a href="#summary" class="anchor"></a>Summary</h1>
+<div class="section level2">
+<h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+</h2>
 <p>The gosset package provides a set of tools and methods to implement a
 workflow to analyse experimental agriculture data, from data synthesis
 to model selection and visualisation. The package is named after W.S.
@@ -158,34 +155,34 @@ on-farm trial plots and farmers. This example will require the packages
 PlackettLuce <span class="citation">[4]</span>, climatrends <span class="citation">[5]</span>, chirps <span class="citation">[6]</span>
 and ggplot2 <span class="citation">[7]</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://agrdatasci.github.io/gosset/">"gosset"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://hturner.github.io/PlackettLuce/">"PlackettLuce"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://agrdatasci.github.io/climatrends/">"climatrends"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/chirps/">"chirps"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org">"ggplot2"</a></span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"nicabean"</span>, package <span class="op">=</span> <span class="st">"gosset"</span><span class="op">)</span>
-
-<span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">nicabean</span><span class="op">$</span><span class="va">trial</span>
-
-<span class="va">covar</span> <span class="op">&lt;-</span> <span class="va">nicabean</span><span class="op">$</span><span class="va">covar</span>
-
-<span class="va">traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">trait</span><span class="op">)</span>
-
-<span class="va">dat</span></code></pre></div>
-<pre><code>##           id            item               trait  rank
-##        &lt;int&gt;           &lt;chr&gt;               &lt;chr&gt; &lt;int&gt;
-## 1:      2110      Amadeus 77               Vigor     2
-## 2:      2110      IBC 302-29               Vigor     3
-## 3:      2110    INTA Ferroso               Vigor     1
-## 4:      2110      Amadeus 77        Architecture     3
-## 5:      2110      IBC 302-29        Architecture     2
-## ---                                                   
-## 15035:  3552 INTA Centro Sur               Taste     3
-## 15036:  3552     BRT 103-182               Taste     2
-## 15037:  3552      IBC 302-29 OverallAppreciation     2
-## 15038:  3552 INTA Centro Sur OverallAppreciation     3
-## 15039:  3552     BRT 103-182 OverallAppreciation     1</code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://agrdatasci.github.io/gosset/" class="external-link">"gosset"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://hturner.github.io/PlackettLuce/" class="external-link">"PlackettLuce"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://agrdatasci.github.io/climatrends/" class="external-link">"climatrends"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/chirps/" class="external-link">"chirps"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"nicabean"</span>, package <span class="op">=</span> <span class="st">"gosset"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">nicabean</span><span class="op">$</span><span class="va">trial</span></span>
+<span></span>
+<span><span class="va">covar</span> <span class="op">&lt;-</span> <span class="va">nicabean</span><span class="op">$</span><span class="va">covar</span></span>
+<span></span>
+<span><span class="va">traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">trait</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dat</span></span></code></pre></div>
+<pre><code><span><span class="co">##           id            item               trait  rank</span></span>
+<span><span class="co">##        &lt;int&gt;           &lt;chr&gt;               &lt;chr&gt; &lt;int&gt;</span></span>
+<span><span class="co">## 1:      2110      Amadeus 77               Vigor     2</span></span>
+<span><span class="co">## 2:      2110      IBC 302-29               Vigor     3</span></span>
+<span><span class="co">## 3:      2110    INTA Ferroso               Vigor     1</span></span>
+<span><span class="co">## 4:      2110      Amadeus 77        Architecture     3</span></span>
+<span><span class="co">## 5:      2110      IBC 302-29        Architecture     2</span></span>
+<span><span class="co">## ---                                                   </span></span>
+<span><span class="co">## 15035:  3552 INTA Centro Sur               Taste     3</span></span>
+<span><span class="co">## 15036:  3552     BRT 103-182               Taste     2</span></span>
+<span><span class="co">## 15037:  3552      IBC 302-29 OverallAppreciation     2</span></span>
+<span><span class="co">## 15038:  3552 INTA Centro Sur OverallAppreciation     3</span></span>
+<span><span class="co">## 15039:  3552     BRT 103-182 OverallAppreciation     1</span></span></code></pre>
 <p>To start the analysis of the data, we transform the ordinal rankings
 into Plackett-Luce rankings (a sparse matrix) using the function
 <code><a href="../reference/rank_numeric.html">rank_numeric()</a></code>. We run iteratively over the traits adding
@@ -194,22 +191,22 @@ ranked in an ascending order, with 1 being the higher ranked and 3 the
 lower ranked, we use the argument <code>asceding = TRUE</code> to
 indicate which order should be used.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">vector</a></span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"list"</span>, length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">traits</span><span class="op">)</span><span class="op">)</span>
-
-<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">traits</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-
-  <span class="va">dat_i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">dat</span><span class="op">$</span><span class="va">trait</span> <span class="op">==</span> <span class="va">traits</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>
-
-  <span class="va">R</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rank_numeric.html">rank_numeric</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_i</span>,
-                         items <span class="op">=</span> <span class="st">"item"</span>,
-                         input <span class="op">=</span> <span class="st">"rank"</span>,
-                         id <span class="op">=</span> <span class="st">"id"</span>,
-                         ascending <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a></span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"list"</span>, length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">traits</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">traits</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="va">dat_i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">dat</span><span class="op">$</span><span class="va">trait</span> <span class="op">==</span> <span class="va">traits</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">R</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rank_numeric.html">rank_numeric</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_i</span>,</span>
+<span>                         items <span class="op">=</span> <span class="st">"item"</span>,</span>
+<span>                         input <span class="op">=</span> <span class="st">"rank"</span>,</span>
+<span>                         id <span class="op">=</span> <span class="st">"id"</span>,</span>
+<span>                         ascending <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 </div>
-<div id="the-multi-layers-of-farmers-overall-appreciation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#the-multi-layers-of-farmers-overall-appreciation" class="anchor"></a>The multi-layers of farmers’ overall appreciation</h1>
+<div class="section level2">
+<h2 id="the-multi-layers-of-farmers-overall-appreciation">The multi-layers of farmers’ overall appreciation<a class="anchor" aria-label="anchor" href="#the-multi-layers-of-farmers-overall-appreciation"></a>
+</h2>
 <p>Using the function <code><a href="../reference/kendallTau.html">kendallTau()</a></code> we can compute the
 Kendall tau (<span class="math inline">\(\tau\)</span>) coefficient
 <span class="citation">[8]</span> to identify the correlation between
@@ -220,38 +217,38 @@ trials (e.g. a lite version of tricot with no more than 4 traits to
 assess). We use the overall appreciation as the reference trait, and
 compare the Kendall tau with the other 8 traits.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">baseline</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"OverallAppreciation"</span>, <span class="va">traits</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">kendall</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">R</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span>, <span class="kw">function</span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">{</span>
-  <span class="fu"><a href="../reference/kendallTau.html">kendallTau</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">X</span>, y <span class="op">=</span> <span class="va">R</span><span class="op">[[</span><span class="va">baseline</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span>
-
-<span class="va">kendall</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="st">"rbind"</span>, <span class="va">kendall</span><span class="op">)</span>
-
-<span class="va">kendall</span><span class="op">$</span><span class="va">trait</span> <span class="op">&lt;-</span> <span class="va">traits</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">baseline</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"OverallAppreciation"</span>, <span class="va">traits</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">kendall</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">R</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span>, <span class="kw">function</span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/kendallTau.html">kendallTau</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">X</span>, y <span class="op">=</span> <span class="va">R</span><span class="op">[[</span><span class="va">baseline</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">kendall</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="st">"rbind"</span>, <span class="va">kendall</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">kendall</span><span class="op">$</span><span class="va">trait</span> <span class="op">&lt;-</span> <span class="va">traits</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span></span></code></pre></div>
 <p>The kendall correlation shows that farmers prioritized the traits
 yield (<span class="math inline">\(\tau\)</span> = 0.749), taste (<span class="math inline">\(\tau\)</span> = 0.653) and marketability (<span class="math inline">\(\tau\)</span> = 0.639) when assessing overall
 appreciation.</p>
-<pre><code>##                   trait kendallTau
-##                   &lt;chr&gt;      &lt;dbl&gt;
-## 1:                Vigor      0.439
-## 2:         Architecture      0.393
-## 3:    ResistanceToPests      0.463
-## 4: ResistanceToDiseases      0.449
-## 5:   ToleranceToDrought      0.411
-## 6:                Yield      0.749
-## 7:        Marketability      0.639
-## 8:                Taste      0.653</code></pre>
+<pre><code><span><span class="co">##                   trait kendallTau</span></span>
+<span><span class="co">##                   &lt;chr&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">## 1:                Vigor      0.439</span></span>
+<span><span class="co">## 2:         Architecture      0.393</span></span>
+<span><span class="co">## 3:    ResistanceToPests      0.463</span></span>
+<span><span class="co">## 4: ResistanceToDiseases      0.449</span></span>
+<span><span class="co">## 5:   ToleranceToDrought      0.411</span></span>
+<span><span class="co">## 6:                Yield      0.749</span></span>
+<span><span class="co">## 7:        Marketability      0.639</span></span>
+<span><span class="co">## 8:                Taste      0.653</span></span></code></pre>
 </div>
-<div id="performance-of-varieties-across-traits" class="section level1">
-<h1 class="hasAnchor">
-<a href="#performance-of-varieties-across-traits" class="anchor"></a>Performance of varieties across traits</h1>
+<div class="section level2">
+<h2 id="performance-of-varieties-across-traits">Performance of varieties across traits<a class="anchor" aria-label="anchor" href="#performance-of-varieties-across-traits"></a>
+</h2>
 <p>For each trait, we fit a Plackett-Luce model using the function
-<code><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html">PlackettLuce()</a></code> from the package of the same name. This will
+<code><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce()</a></code> from the package of the same name. This will
 allow us to continue the analysis of the trial data using the other
 functions in the package gosset.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">R</span>, <span class="va">PlackettLuce</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">R</span>, <span class="va">PlackettLuce</span><span class="op">)</span></span></code></pre></div>
 <p>The <code><a href="../reference/worth_map.html">worth_map()</a></code> function can be used to visually assess
 and compare item performance based on different characteristics. The
 values represented in a worth_map are log-worth estimates. From the
@@ -260,11 +257,11 @@ breeder or product developer perspective the function
 identifying item performance based on different characteristics and
 select crossing materials.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/worth_map.html">worth_map</a></span><span class="op">(</span><span class="va">mod</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span>,
-          labels <span class="op">=</span> <span class="va">traits</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span>,
-          ref <span class="op">=</span> <span class="st">"Amadeus 77"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Variety"</span>,
-       y <span class="op">=</span> <span class="st">"Trait"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/worth_map.html">worth_map</a></span><span class="op">(</span><span class="va">mod</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span>,</span>
+<span>          labels <span class="op">=</span> <span class="va">traits</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span>,</span>
+<span>          ref <span class="op">=</span> <span class="st">"Amadeus 77"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Variety"</span>,</span>
+<span>       y <span class="op">=</span> <span class="st">"Trait"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="Overview_files/figure-html/worthmap-1.png" alt="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Blue values indicate a superior performance of varieties for a given trait, compared to the reference.  Red values indicate a variety with weak performance for the given trait, compared to the reference." width="700"><p class="caption">
 Trait performance (log-worth) of bean varieties in Niragua. Variety
@@ -275,9 +272,9 @@ given trait, compared to the reference.
 </p>
 </div>
 </div>
-<div id="the-effect-of-rainfall-on-yield" class="section level1">
-<h1 class="hasAnchor">
-<a href="#the-effect-of-rainfall-on-yield" class="anchor"></a>The effect of rainfall on yield</h1>
+<div class="section level2">
+<h2 id="the-effect-of-rainfall-on-yield">The effect of rainfall on yield<a class="anchor" aria-label="anchor" href="#the-effect-of-rainfall-on-yield"></a>
+</h2>
 <p>To consider the effect of climate factors on yield, we use
 agro-climatic covariates to fit a Plackett-Luce tree. For simplicity, we
 use the total rainfall (Rtotal) derived from CHIRPS data <span class="citation">[9]</span>, obtained in R using the R package chirps
@@ -288,94 +285,94 @@ ag5Tools <span class="citation">[10]</span> or nasapower <span class="citation">
 returned as a matrix. This process can take some minutes to be
 implemented.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">covar</span><span class="op">[</span>, <span class="st">"planting_date"</span><span class="op">]</span><span class="op">)</span>,
-           <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">covar</span><span class="op">[</span>, <span class="st">"planting_date"</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">70</span><span class="op">)</span>
-
-<span class="va">chirps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/chirps/reference/get_chirps.html">get_chirps</a></span><span class="op">(</span><span class="va">covar</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"longitude"</span>,<span class="st">"latitude"</span><span class="op">)</span><span class="op">]</span>, 
-                     dates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">dates</span><span class="op">)</span>,
-                     as.matrix <span class="op">=</span> <span class="cn">TRUE</span>,
-                     server <span class="op">=</span> <span class="st">"ClimateSERV"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">covar</span><span class="op">[</span>, <span class="st">"planting_date"</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>           <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">covar</span><span class="op">[</span>, <span class="st">"planting_date"</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">70</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">chirps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/chirps/reference/get_chirps.html" class="external-link">get_chirps</a></span><span class="op">(</span><span class="va">covar</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"longitude"</span>,<span class="st">"latitude"</span><span class="op">)</span><span class="op">]</span>, </span>
+<span>                     dates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">dates</span><span class="op">)</span>,</span>
+<span>                     as.matrix <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                     server <span class="op">=</span> <span class="st">"ClimateSERV"</span><span class="op">)</span></span></code></pre></div>
 <p>We compute the rainfall indices from planting date to the first 45
-days of plant growth using the function <code><a href="https://agrdatasci.github.io/climatrends/reference/rainfall.html">rainfall()</a></code> from
+days of plant growth using the function <code><a href="https://agrdatasci.github.io/climatrends/reference/rainfall.html" class="external-link">rainfall()</a></code> from
 package climatrends <span class="citation">[5]</span>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">newnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/dimnames.html">dimnames</a></span><span class="op">(</span><span class="va">chirps</span><span class="op">)</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>
-<span class="va">newnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"chirps-v2.0."</span>, <span class="st">""</span>, <span class="va">newnames</span><span class="op">)</span>
-<span class="va">newnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"[.]"</span>, <span class="st">"-"</span>, <span class="va">newnames</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/dimnames.html">dimnames</a></span><span class="op">(</span><span class="va">chirps</span><span class="op">)</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">newnames</span>
-
-<span class="va">rain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://agrdatasci.github.io/climatrends/reference/rainfall.html">rainfall</a></span><span class="op">(</span><span class="va">chirps</span>, day.one <span class="op">=</span> <span class="va">covar</span><span class="op">$</span><span class="va">planting_date</span>, span <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">newnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">chirps</span><span class="op">)</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">newnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"chirps-v2.0."</span>, <span class="st">""</span>, <span class="va">newnames</span><span class="op">)</span></span>
+<span><span class="va">newnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"[.]"</span>, <span class="st">"-"</span>, <span class="va">newnames</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">chirps</span><span class="op">)</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">newnames</span></span>
+<span></span>
+<span><span class="va">rain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://agrdatasci.github.io/climatrends/reference/rainfall.html" class="external-link">rainfall</a></span><span class="op">(</span><span class="va">chirps</span>, day.one <span class="op">=</span> <span class="va">covar</span><span class="op">$</span><span class="va">planting_date</span>, span <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span></code></pre></div>
 <p>To be linked to covariates, the rankings should be coerced to a
 ‘grouped_rankings’ object. For this we use the function
-<code><a href="https://hturner.github.io/PlackettLuce/reference/group.html">group()</a></code> from PlackettLuce. We retain the ranking
+<code><a href="https://hturner.github.io/PlackettLuce/reference/group.html" class="external-link">group()</a></code> from PlackettLuce. We retain the ranking
 corresponding to yield.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">yield</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"Yield"</span>, <span class="va">traits</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">G</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/group.html">group</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">yield</span><span class="op">]</span><span class="op">]</span>, index <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">yield</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">G</span><span class="op">)</span></code></pre></div>
-<pre><code>##                      1                      2                      3 
-## "INTA Ferroso &gt; I ..." "BRT 103-182 &gt; IB ..." "INTA Ferroso &gt; I ..." 
-##                      4                      5                      6 
-## "BRT 103-182 &gt; IB ..." "BRT 103-182 &gt; IB ..." "BRT 103-182 &gt; AL ..."</code></pre>
+<code class="sourceCode R"><span><span class="va">yield</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Yield"</span>, <span class="va">traits</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">G</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/group.html" class="external-link">group</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">yield</span><span class="op">]</span><span class="op">]</span>, index <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">yield</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">G</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##                      1                      2                      3 </span></span>
+<span><span class="co">## "INTA Ferroso &gt; I ..." "BRT 103-182 &gt; IB ..." "INTA Ferroso &gt; I ..." </span></span>
+<span><span class="co">##                      4                      5                      6 </span></span>
+<span><span class="co">## "BRT 103-182 &gt; IB ..." "BRT 103-182 &gt; IB ..." "BRT 103-182 &gt; AL ..."</span></span></code></pre>
 <p>Now we can fit the Plackett-Luce tree with climate covariates.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pldG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">G</span>, <span class="va">rain</span><span class="op">)</span>
-
-<span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/pltree.html">pltree</a></span><span class="op">(</span><span class="va">G</span> <span class="op">~</span> <span class="va">Rtotal</span>, data <span class="op">=</span> <span class="va">pldG</span>, alpha <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></code></pre></div>
-<pre><code>## Plackett-Luce tree
-## 
-## Model formula:
-## G ~ Rtotal
-## 
-## Fitted party:
-## [1] root
-## |   [2] Rtotal &lt;= 193.8153: n = 393
-## |            ALS 0532-6      Amadeus 77     BRT 103-182      IBC 302-29 INTA Centro Sur 
-## |             0.0000000       0.6269536       0.7018178       0.6510282       0.5419017 
-## |          INTA Ferroso  INTA Matagalpa     INTA Precoz      SJC 730-79    SX 14825-7-1 
-## |             0.3993557       0.3775061       0.3858863       0.4045355       0.6933340 
-## |   [3] Rtotal &gt; 193.8153: n = 164
-## |            ALS 0532-6      Amadeus 77     BRT 103-182      IBC 302-29 INTA Centro Sur 
-## |             0.0000000      -0.5307674      -0.6414091      -0.9089877      -0.5821163 
-## |          INTA Ferroso  INTA Matagalpa     INTA Precoz      SJC 730-79    SX 14825-7-1 
-## |            -1.1910556      -0.6922428      -0.8152149      -0.5724198      -0.2688304 
-## 
-## Number of inner nodes:    1
-## Number of terminal nodes: 2
-## Number of parameters per node: 10
-## Objective function (negative log-likelihood): 977.2531</code></pre>
+<code class="sourceCode R"><span><span class="va">pldG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">G</span>, <span class="va">rain</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/pltree.html" class="external-link">pltree</a></span><span class="op">(</span><span class="va">G</span> <span class="op">~</span> <span class="va">Rtotal</span>, data <span class="op">=</span> <span class="va">pldG</span>, alpha <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Plackett-Luce tree</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model formula:</span></span>
+<span><span class="co">## G ~ Rtotal</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Fitted party:</span></span>
+<span><span class="co">## [1] root</span></span>
+<span><span class="co">## |   [2] Rtotal &lt;= 193.8153: n = 393</span></span>
+<span><span class="co">## |            ALS 0532-6      Amadeus 77     BRT 103-182      IBC 302-29 INTA Centro Sur </span></span>
+<span><span class="co">## |             0.0000000       0.6269536       0.7018178       0.6510282       0.5419017 </span></span>
+<span><span class="co">## |          INTA Ferroso  INTA Matagalpa     INTA Precoz      SJC 730-79    SX 14825-7-1 </span></span>
+<span><span class="co">## |             0.3993557       0.3775061       0.3858863       0.4045355       0.6933340 </span></span>
+<span><span class="co">## |   [3] Rtotal &gt; 193.8153: n = 164</span></span>
+<span><span class="co">## |            ALS 0532-6      Amadeus 77     BRT 103-182      IBC 302-29 INTA Centro Sur </span></span>
+<span><span class="co">## |             0.0000000      -0.5307674      -0.6414091      -0.9089877      -0.5821163 </span></span>
+<span><span class="co">## |          INTA Ferroso  INTA Matagalpa     INTA Precoz      SJC 730-79    SX 14825-7-1 </span></span>
+<span><span class="co">## |            -1.1910556      -0.6922428      -0.8152149      -0.5724198      -0.2688304 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Number of inner nodes:    1</span></span>
+<span><span class="co">## Number of terminal nodes: 2</span></span>
+<span><span class="co">## Number of parameters per node: 10</span></span>
+<span><span class="co">## Objective function (negative log-likelihood): 977.2531</span></span></code></pre>
 <p>The following is an example of the plot made with the function
-<code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> in the gosset package. The functions
+<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> in the gosset package. The functions
 <code><a href="../reference/node_labels.html">node_labels()</a></code>, <code><a href="../reference/node_labels.html">node_rules()</a></code> and
 <code><a href="../reference/node_labels.html">top_items()</a></code> can be used to identify the splitting variables
 in the tree, the rules used to split the tree and the best items in each
 node, respectively.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/node_labels.html">node_labels</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "Rtotal"</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/node_labels.html">node_labels</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "Rtotal"</span></span></code></pre>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/node_labels.html">node_rules</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></code></pre></div>
-<pre><code>##   node                      rules
-## 1    2 Rtotal &lt;= 193.815301895142
-## 2    3  Rtotal &gt; 193.815301895142</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/node_labels.html">node_rules</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   node                      rules</span></span>
+<span><span class="co">## 1    2 Rtotal &lt;= 193.815301895142</span></span>
+<span><span class="co">## 2    3  Rtotal &gt; 193.815301895142</span></span></code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/node_labels.html">top_items</a></span><span class="op">(</span><span class="va">tree</span>, top <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
-<pre><code>##          Node2        Node3
-## 1  BRT 103-182   ALS 0532-6
-## 2 SX 14825-7-1 SX 14825-7-1
-## 3   IBC 302-29   Amadeus 77</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/node_labels.html">top_items</a></span><span class="op">(</span><span class="va">tree</span>, top <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##          Node2        Node3</span></span>
+<span><span class="co">## 1  BRT 103-182   ALS 0532-6</span></span>
+<span><span class="co">## 2 SX 14825-7-1 SX 14825-7-1</span></span>
+<span><span class="co">## 3   IBC 302-29   Amadeus 77</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">tree</span>, ref <span class="op">=</span> <span class="st">"Amadeus 77"</span>, ci.level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree</span>, ref <span class="op">=</span> <span class="st">"Amadeus 77"</span>, ci.level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Overview_files/figure-html/node_info2-1.png" width="700"></p>
 </div>
-<div id="reliability-of-superior-genotypes" class="section level1">
-<h1 class="hasAnchor">
-<a href="#reliability-of-superior-genotypes" class="anchor"></a>Reliability of superior genotypes</h1>
+<div class="section level2">
+<h2 id="reliability-of-superior-genotypes">Reliability of superior genotypes<a class="anchor" aria-label="anchor" href="#reliability-of-superior-genotypes"></a>
+</h2>
 <p>We can use the function <code><a href="../reference/reliability.html">reliability()</a></code> to compute the
 reliability of the evaluated common bean varieties in each of the
 resulting nodes of the Plackett-Luce tree (Table 3). This helps in
@@ -383,16 +380,16 @@ identifying the varieties with higher probability to outperform a
 variety check (Amadeus 77) <span class="citation">[12]</span>. For
 simplicity, we present only the varieties with reliability <span class="math inline">\(\geq\)</span> 0.5.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/reliability.html">reliability</a></span><span class="op">(</span><span class="va">tree</span>, ref <span class="op">=</span> <span class="st">"Amadeus 77"</span><span class="op">)</span></code></pre></div>
-<pre><code>##      node         item reliability reliabilitySE worth
-##     &lt;int&gt;        &lt;chr&gt;       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;
-## 2:      2   Amadeus 77       0.500         0.035 0.114
-## 3:      2  BRT 103-182       0.519         0.036 0.123
-## 4:      2   IBC 302-29       0.506         0.035 0.117
-## 10:     2 SX 14825-7-1       0.517         0.033 0.122
-## 11:     3   ALS 0532-6       0.630         0.056 0.177
-## 12:     3   Amadeus 77       0.500         0.058 0.104
-## 20:     3 SX 14825-7-1       0.565         0.053 0.135</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/reliability.html">reliability</a></span><span class="op">(</span><span class="va">tree</span>, ref <span class="op">=</span> <span class="st">"Amadeus 77"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##      node         item reliability reliabilitySE worth</span></span>
+<span><span class="co">##     &lt;int&gt;        &lt;chr&gt;       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">## 2:      2   Amadeus 77       0.500         0.035 0.114</span></span>
+<span><span class="co">## 3:      2  BRT 103-182       0.519         0.036 0.123</span></span>
+<span><span class="co">## 4:      2   IBC 302-29       0.506         0.035 0.117</span></span>
+<span><span class="co">## 10:     2 SX 14825-7-1       0.517         0.033 0.122</span></span>
+<span><span class="co">## 11:     3   ALS 0532-6       0.630         0.056 0.177</span></span>
+<span><span class="co">## 12:     3   Amadeus 77       0.500         0.058 0.104</span></span>
+<span><span class="co">## 20:     3 SX 14825-7-1       0.565         0.053 0.135</span></span></code></pre>
 <p>The result shows that three varieties can marginally outperform
 Amadeus 77 under drier growing conditions (Rtotal <span class="math inline">\(\leq\)</span> 193.82 mm) whereas two varieties
 have a superior yield performance when under higher rainfall conditions
@@ -405,9 +402,9 @@ others. Combining rankings with socio-economic covariates could also
 support the identification of superior materials for different market
 segments.</p>
 </div>
-<div id="going-beyond-yield" class="section level1">
-<h1 class="hasAnchor">
-<a href="#going-beyond-yield" class="anchor"></a>Going beyond yield</h1>
+<div class="section level2">
+<h2 id="going-beyond-yield">Going beyond yield<a class="anchor" aria-label="anchor" href="#going-beyond-yield"></a>
+</h2>
 <p>A better approach to assess the performance of varieties can be using
 the ’Overall Appreciation”, since we expect this trait to capture the
 performance of the variety not only for yield, but for all the other
@@ -418,12 +415,12 @@ to assess the agreement between two different measures. We compare
 overall vs yield. If both measures completely agree, all the varieties
 should be centered to 0 in the axis Y.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Overall</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html">PlackettLuce</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">baseline</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
-<span class="va">Yield</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html">PlackettLuce</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">yield</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/compare.html">compare</a></span><span class="op">(</span><span class="va">Overall</span>, <span class="va">Yield</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Average log(worth)"</span>,
-       y <span class="op">=</span> <span class="st">"Difference (Overall Appreciation - Yield)"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">Overall</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">baseline</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">Yield</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">yield</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/compare.html">compare</a></span><span class="op">(</span><span class="va">Overall</span>, <span class="va">Yield</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Average log(worth)"</span>,</span>
+<span>       y <span class="op">=</span> <span class="st">"Difference (Overall Appreciation - Yield)"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Overview_files/figure-html/compare-1.png" width="50%"></p>
 <p>The chart shows no complete agreement between overall appreciation
 and yield. For example, variety SX 14825-7-1 shows superior performance
@@ -433,9 +430,9 @@ performance of the given variety is also related to taste, marketability
 and diseases resistance. This performance, however, was not captured
 when assessing only yield.</p>
 </div>
-<div id="conclusion" class="section level1">
-<h1 class="hasAnchor">
-<a href="#conclusion" class="anchor"></a>Conclusion</h1>
+<div class="section level2">
+<h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
+</h2>
 <p>Here we presented a simple workflow to assess crop variety
 performance and trait prioritization in decentralized on-farm trials
 with the tricot approach. A more complex workflow will also utilize
@@ -447,9 +444,9 @@ using <code><a href="../reference/regret.html">regret()</a></code> to support th
 using <code><a href="../reference/rank_numeric.html">rank_numeric()</a></code> to combine legacy data and deal with
 heterogeneous data from different trials. All of these were previously
 implemented and validated elsewhere <span class="citation">[14–18]</span>.</p>
-<div id="references" class="section level2 unnumbered">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
+<div class="section level3">
+<h3 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h3>
 <div id="refs" class="references csl-bib-body">
 <div id="ref-vanetten_beza_2019" class="csl-entry">
 <div class="csl-left-margin">1. </div>
@@ -459,7 +456,7 @@ Fantahun, B.; Kidane, Y.G.; Van De Gevel, J.; Gupta, A.; Mengistu, D.K.;
 et al. First Experiences with a Novel Farmer Citizen Science Approach:
 Crowdsourcing Participatory Variety Selection Through on-Farm Triadic
 Comparisons of Technologies (Tricot). <em>Experimental Agriculture</em>
-<strong>2016</strong>, <em>55</em>, 275–296, doi:<a href="https://doi.org/10.1017/S0014479716000739">10.1017/S0014479716000739</a>.</div>
+<strong>2016</strong>, <em>55</em>, 275–296, doi:<a href="https://doi.org/10.1017/S0014479716000739" class="external-link">10.1017/S0014479716000739</a>.</div>
 </div>
 <div id="ref-luce_individual_1959" class="csl-entry">
 <div class="csl-left-margin">2. </div>
@@ -478,12 +475,12 @@ Society. Series C (Applied Statistics)</em> <strong>1975</strong>,
 <div class="csl-right-inline">Turner, H.L.; van Etten, J.; Firth, D.;
 Kosmidis, I. <span class="nocase">Modelling rankings in R: the
 PlackettLuce package</span>. <em>Computational Statistics</em>
-<strong>2020</strong>, doi:<a href="https://doi.org/10.1007/s00180-020-00959-3">10.1007/s00180-020-00959-3</a>.</div>
+<strong>2020</strong>, doi:<a href="https://doi.org/10.1007/s00180-020-00959-3" class="external-link">10.1007/s00180-020-00959-3</a>.</div>
 </div>
 <div id="ref-climatrends" class="csl-entry">
 <div class="csl-left-margin">5. </div>
 <div class="csl-right-inline">de
-Sousa, K.; van Etten, J.; Solberg, S.Ø. <em><a href="https://CRAN.R-project.org/package=climatrends"><span class="nocase">climatrends</span>: Climate Variability Indices for
+Sousa, K.; van Etten, J.; Solberg, S.Ø. <em><a href="https://CRAN.R-project.org/package=climatrends" class="external-link"><span class="nocase">climatrends</span>: Climate Variability Indices for
 Ecological Modelling</a></em>; 2020;</div>
 </div>
 <div id="ref-chirps" class="csl-entry">
@@ -491,11 +488,11 @@ Ecological Modelling</a></em>; 2020;</div>
 <div class="csl-right-inline">de
 Sousa, K.; Sparks, A.H.; Ashmall, W.; van Etten, J.; Solberg, S.Ø. <span class="nocase">chirps: API Client for the CHIRPS Precipitation Data in
 R</span>. <em>The Journal of Open Source Software</em>
-<strong>2020</strong>, <em>5</em>, 2419, doi:<a href="https://doi.org/10.21105/joss.02419">10.21105/joss.02419</a>.</div>
+<strong>2020</strong>, <em>5</em>, 2419, doi:<a href="https://doi.org/10.21105/joss.02419" class="external-link">10.21105/joss.02419</a>.</div>
 </div>
 <div id="ref-ggplot2" class="csl-entry">
 <div class="csl-left-margin">7. </div>
-<div class="csl-right-inline">Wickham, H. <em><a href="https://ggplot2.tidyverse.org"><span class="nocase">ggplot2</span>: Elegant Graphics for Data
+<div class="csl-right-inline">Wickham, H. <em><a href="https://ggplot2.tidyverse.org" class="external-link"><span class="nocase">ggplot2</span>: Elegant Graphics for Data
 Analysis</a></em>; Springer-Verlag New York, 2016; ISBN
 978-3-319-24277-4.</div>
 </div>
@@ -503,7 +500,7 @@ Analysis</a></em>; Springer-Verlag New York, 2016; ISBN
 <div class="csl-left-margin">8. </div>
 <div class="csl-right-inline">Kendall, M.G. <span class="nocase">A new
 measure of rank correlation</span>. <em>Biometrika</em>
-<strong>1938</strong>, <em>30</em>, 81–93, doi:<a href="https://doi.org/10.1093/biomet/30.1-2.81">10.1093/biomet/30.1-2.81</a>.</div>
+<strong>1938</strong>, <em>30</em>, 81–93, doi:<a href="https://doi.org/10.1093/biomet/30.1-2.81" class="external-link">10.1093/biomet/30.1-2.81</a>.</div>
 </div>
 <div id="ref-Funk2015" class="csl-entry">
 <div class="csl-left-margin">9. </div>
@@ -512,11 +509,11 @@ Pedreros, D.; Verdin, J.; Shukla, S.; Husak, G.; Rowland, J.; Harrison,
 L.; Hoell, A.; et al. <span class="nocase">The climate hazards infrared
 precipitation with stations—a new environmental record for monitoring
 extremes</span>. <em>Scientific Data</em> <strong>2015</strong>,
-<em>2</em>, 150066, doi:<a href="https://doi.org/10.1038/sdata.2015.66">10.1038/sdata.2015.66</a>.</div>
+<em>2</em>, 150066, doi:<a href="https://doi.org/10.1038/sdata.2015.66" class="external-link">10.1038/sdata.2015.66</a>.</div>
 </div>
 <div id="ref-ag5tools" class="csl-entry">
 <div class="csl-left-margin">10. </div>
-<div class="csl-right-inline">Brown, D.; de Sousa, K. <em><a href="https://agrdatasci.github.io/ag5Tools/">ag5Tools: Toolbox for
+<div class="csl-right-inline">Brown, D.; de Sousa, K. <em><a href="https://agrdatasci.github.io/ag5Tools/" class="external-link">ag5Tools: Toolbox for
 Downloading and Extracting Copernicus AgERA5 Data</a></em>; 2022;</div>
 </div>
 <div id="ref-nasapower" class="csl-entry">
@@ -524,21 +521,21 @@ Downloading and Extracting Copernicus AgERA5 Data</a></em>; 2022;</div>
 <div class="csl-right-inline">Sparks, A.H. Nasapower: A NASA POWER Global
 Meteorology, Surface Solar Energy and Climatology Data Client for r.
 <em>The Journal of Open Source Software</em> <strong>2018</strong>,
-<em>3</em>, 1035, doi:<a href="https://doi.org/10.21105/joss.01035">10.21105/joss.01035</a>.</div>
+<em>3</em>, 1035, doi:<a href="https://doi.org/10.21105/joss.01035" class="external-link">10.21105/joss.01035</a>.</div>
 </div>
 <div id="ref-eskridge_1992" class="csl-entry">
 <div class="csl-left-margin">12. </div>
 <div class="csl-right-inline">Eskridge, K.M.; Mumm, R.F. Choosing Plant
 Cultivars Based on the Probability of Outperforming a Check.
 <em>Theoretical and Applied Genetics</em> <strong>1992</strong>,
-<em>84</em>, 494–500, doi:<a href="https://doi.org/10.1007/BF00229512">10.1007/BF00229512</a>.</div>
+<em>84</em>, 494–500, doi:<a href="https://doi.org/10.1007/BF00229512" class="external-link">10.1007/BF00229512</a>.</div>
 </div>
 <div id="ref-MartinBland1986" class="csl-entry">
 <div class="csl-left-margin">13. </div>
 <div class="csl-right-inline">Bland, J.M.; Altman, DouglasG. Statistical
 Methods for Assessing Agreement Between Two Methods of Clinical
 Measurement. <em>The Lancet</em> <strong>1986</strong>, <em>327</em>,
-307–310, doi:<a href="https://doi.org/10.1016/s0140-6736(86)90837-8">10.1016/s0140-6736(86)90837-8</a>.</div>
+307–310, doi:<a href="https://doi.org/10.1016/s0140-6736(86)90837-8" class="external-link">10.1016/s0140-6736(86)90837-8</a>.</div>
 </div>
 <div id="ref-vanEtten2019" class="csl-entry">
 <div class="csl-left-margin">14. </div>
@@ -548,7 +545,7 @@ M.; Fadda, C.; Gebrehawaryat, Y.; van de Gevel, J.; Gupta, A.; et al.
 <span class="nocase">Crop variety management for climate adaptation
 supported by citizen science</span>. <em>Proceedings of the National
 Academy of Sciences</em> <strong>2019</strong>, <em>116</em>, 4194–4199,
-doi:<a href="https://doi.org/10.1073/pnas.1813720116">10.1073/pnas.1813720116</a>.</div>
+doi:<a href="https://doi.org/10.1073/pnas.1813720116" class="external-link">10.1073/pnas.1813720116</a>.</div>
 </div>
 <div id="ref-Moyo_2021" class="csl-entry">
 <div class="csl-left-margin">15. </div>
@@ -557,7 +554,7 @@ Dery, E.K.; Akansake, D.; Adjebeng-Danquah, J.; van Etten, J.; de Sousa,
 K.; Lindqvist-Kreuze, H.; et al. <span class="nocase">Consumer
 Preference Testing of Boiled Sweetpotato Using Crowdsourced Citizen
 Science in Ghana and Uganda</span>. <em>Frontiers in Sustainable Food
-Systems</em> <strong>2021</strong>, <em>5</em>, 6, doi:<a href="https://doi.org/10.3389/fsufs.2021.620363">10.3389/fsufs.2021.620363</a>.</div>
+Systems</em> <strong>2021</strong>, <em>5</em>, 6, doi:<a href="https://doi.org/10.3389/fsufs.2021.620363" class="external-link">10.3389/fsufs.2021.620363</a>.</div>
 </div>
 <div id="ref-deSousa2021" class="csl-entry">
 <div class="csl-left-margin">16. </div>
@@ -575,12 +572,12 @@ Kebede, S.S.; Mengistu, D.K.; Mgimiloko, M.G.; Mohammed, J.N.; Musyoka,
 J.; Sieber, S.; van de Gevel, J.; et al. <span class="nocase">Household-specific targeting of agricultural advice via
 mobile phones: Feasibility of a minimum data approach for smallholder
 context</span>. <em>Computers and Electronics in Agriculture</em>
-<strong>2019</strong>, <em>162</em>, 991–1000, doi:<a href="https://doi.org/10.1016/j.compag.2019.05.026">10.1016/j.compag.2019.05.026</a>.</div>
+<strong>2019</strong>, <em>162</em>, 991–1000, doi:<a href="https://doi.org/10.1016/j.compag.2019.05.026" class="external-link">10.1016/j.compag.2019.05.026</a>.</div>
 </div>
 <div id="ref-brownlegacydata" class="csl-entry">
 <div class="csl-left-margin">18. </div>
 <div class="csl-right-inline">Brown, D.; Carpentier, S.; de Bruin, S.; de
-Sousa, K.; Machida, L.; van Etten, J. <a href="https://hdl.handle.net/10568/117614"><span class="nocase">Combining legacy data from heterogeneous crop trials to
+Sousa, K.; Machida, L.; van Etten, J. <a href="https://hdl.handle.net/10568/117614" class="external-link"><span class="nocase">Combining legacy data from heterogeneous crop trials to
 identify genotype by environment interactions using model-based
 recursive partitioning</span></a>. In Proceedings of the ASA/CSSA/SSSA
 international annual meeting; Salt Lake City, USA, 2021.</div>
@@ -601,11 +598,13 @@ international annual meeting; Salt Lake City, USA, 2021.</div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Kauê de Sousa, Jacob van Etten, David Brown, Jonathan Steinke.</p>
+  <p></p>
+<p>Developed by Kauê de Sousa, Jacob van Etten, David Brown, Jonathan Steinke.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -613,6 +612,8 @@ international annual meeting; Salt Lake City, USA, 2021.</div>
 
   
 
+
+  
 
   </body>
 </html>
