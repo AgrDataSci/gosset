@@ -331,6 +331,7 @@ build_tree_nodes <- function(x,
                              node.ids = NULL,
                              n.obs = NULL,
                              multcomp = TRUE, 
+                             levels = NULL,
                              ...){
   
   if (isFALSE(log)) ref <- NULL
@@ -345,6 +346,10 @@ build_tree_nodes <- function(x,
   
   # get item names
   items <- names(coef(x[[1]]))
+  
+  if (is.null(levels)) {
+    levels <- items
+  }
   
   # get item parameters from model
   coeffs <- try(lapply(x, function(y) {
@@ -422,7 +427,7 @@ build_tree_nodes <- function(x,
   coeffs$node <- factor(paste0("Node ", coeffs$node, " (n=", coeffs$nobs, ")"),
                         levels = node_lev)
   
-  coeffs$items <- factor(coeffs$items, levels = rev(sort(items)))
+  coeffs$items <- factor(coeffs$items, levels = levels)
   
   # Get max and min values for the x axis in the plot
   xmax <- round(max(coeffs$bmax, na.rm = TRUE) + 0.01, digits = 4)
