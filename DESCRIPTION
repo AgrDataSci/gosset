@@ -13,7 +13,7 @@ Authors@R: c(person("Kauê", "de Sousa",
         comment = c(ORCID = "0000-0001-5742-702X")))
 URL: https://agrdatasci.github.io/gosset/
 BugReports: https://github.com/agrdatasci/gosset/issues
-Description: Toolkit for a workflow to analyse experimental agriculture data, 
+Description: Toolkit to analyse experimental agriculture data, 
     from data synthesis to model selection and visualisation. 
     The package is named after W.S. Gosset aka ‘Student’, a pioneer 
     of modern statistics in small sample experimental design and analysis.
