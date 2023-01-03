@@ -183,7 +183,7 @@ top_items(tree, top = 3)
 ```
 
 ```{r node_info2, message=FALSE, eval=TRUE,echo=TRUE}
-plot(tree, ref = "Amadeus 77", ci.level = 0.9)
+plot(tree, ref = "Amadeus 77")
 ```
 
 # Reliability of superior genotypes

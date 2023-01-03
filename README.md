@@ -1,6 +1,6 @@
 <!-- badges: start -->
 [![CRAN](https://www.r-pkg.org/badges/version/gosset)](https://cran.r-project.org/package=gosset)
-[![cran checks](https://cranchecks.info/badges/worst/gosset)](https://cran.r-project.org/web/checks/check_results_gosset.html)
+[![cran checks](https://badges.cranchecks.info/worst/gosset.svg)](https://cran.r-project.org/web/checks/check_results_gosset.html)
 [![Downloads](https://cranlogs.r-pkg.org/badges/gosset)](https://cran.r-project.org/package=gosset) 
 [![DOI](https://zenodo.org/badge/173807877.svg)](https://zenodo.org/badge/latestdoi/173807877)
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)

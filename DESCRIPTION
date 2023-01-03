@@ -1,7 +1,7 @@
 Package: gosset
 Type: Package
 Title: Tools for Data Analysis in Experimental Agriculture
-Version: 0.5.1
+Version: 0.5.2
 Authors@R: c(person("Kauê", "de Sousa", 
         email = "desousa.kaue@gmail.com", role = c("aut", "cre"),
         comment = c(ORCID = "0000-0002-7571-7845")),
@@ -44,7 +44,6 @@ Suggests:
     gnm,
     knitr,
     psychotree,
-    nasapower,
     rmarkdown
 Language: en-GB
 RoxygenNote: 7.2.1

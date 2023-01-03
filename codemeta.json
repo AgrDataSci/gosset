@@ -2,12 +2,12 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "gosset",
-  "description": "Toolkit for a workflow to analyse experimental agriculture data, from data synthesis to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.",
+  "description": "Toolkit to analyse experimental agriculture data, from data synthesis to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.",
   "name": "gosset: Tools for Data Analysis in Experimental Agriculture",
   "codeRepository": "https://agrdatasci.github.io/gosset/",
   "issueTracker": "https://github.com/agrdatasci/gosset/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.5",
+  "version": "0.5.2",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -128,18 +128,6 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=psychotree"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "nasapower",
-      "name": "nasapower",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=nasapower"
     },
     {
       "@type": "SoftwareApplication",
@@ -310,7 +298,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "2864.448KB",
+  "fileSize": "2867.377KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",

@@ -9,11 +9,11 @@
 \alias{kendallTau.paircomp}
 \title{Kendall rank correlation coefficient}
 \usage{
-kendallTau(x, y, null.rm = TRUE, ...)
+kendallTau(x, y, null.rm = TRUE, as.vector = FALSE, ...)
 
 \method{kendallTau}{default}(x, y, null.rm = TRUE, ...)
 
-\method{kendallTau}{matrix}(x, y, ...)
+\method{kendallTau}{matrix}(x, y, as.vector = FALSE, ...)
 
 \method{kendallTau}{rankings}(x, y, ...)
 
@@ -27,6 +27,8 @@ kendallTau(x, y, null.rm = TRUE, ...)
 \item{y}{a vector, matrix or data frame with compatible dimensions to \code{x}}
 
 \item{null.rm}{logical, to remove zeros from \code{x} and \code{y}}
+
+\item{as.vector}{logical, to return the kendall for each entry}
 
 \item{...}{further arguments affecting the Kendall tau produced. See details}
 }
@@ -67,6 +69,10 @@ k <- kendallTau(R, preds)
 # also applies to a single observation in the matrix
 
 k <- kendallTau(R[1,], preds[1,])
+
+# or to return it as a vector 
+
+k <- kendallTau(R[1,], preds[1,], as.vector = TRUE)
 
 }
 \references{

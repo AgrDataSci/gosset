@@ -14,6 +14,7 @@
 #' @param x a numeric vector, matrix or data frame
 #' @param y a vector, matrix or data frame with compatible dimensions to \code{x}
 #' @param null.rm logical, to remove zeros from \code{x} and \code{y} 
+#' @param as.vector logical, to return the kendall for each entry
 #' @param ... further arguments affecting the Kendall tau produced. See details 
 #' @return The Kendall correlation coefficient and the Effective N, which 
 #' is the equivalent N needed if all items were compared to all items. 
@@ -46,12 +47,16 @@
 #' 
 #' k <- kendallTau(R[1,], preds[1,])
 #' 
+#' # or to return it as a vector 
+#' 
+#' k <- kendallTau(R[1,], preds[1,], as.vector = TRUE)
+#' 
 #' @seealso \code{\link[stats]{cor}}
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom stats cor
 #' @importFrom PlackettLuce as.grouped_rankings
 #' @export
-kendallTau<- function(x, y, null.rm = TRUE, ...){
+kendallTau<- function(x, y, null.rm = TRUE, as.vector = FALSE, ...){
   
   UseMethod("kendallTau")
   
@@ -129,7 +134,7 @@ kendallTau.default <- function(x, y, null.rm = TRUE, ...){
 #' @rdname kendallTau
 #' @method kendallTau matrix
 #' @export
-kendallTau.matrix <- function(x, y, ...){
+kendallTau.matrix <- function(x, y, as.vector = FALSE, ...){
   
   nc <- ncol(x)
   
@@ -147,6 +152,10 @@ kendallTau.matrix <- function(x, y, ...){
   # Extract the values from the matrix
   tau <- kt[,1]
   N <- kt[,2]
+  
+  if (isTRUE(as.vector)) {
+    return(tau)
+  }
   
   tau_average <- sum(tau * N, na.rm = TRUE) / sum(N)
   

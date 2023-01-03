@@ -24,7 +24,7 @@ and the possibility to remove zeros from incomplete ranks"><meta property="og:im
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
       </span>
     </div>
 
@@ -77,13 +77,13 @@ and the possibility to remove zeros from incomplete ranks</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">kendallTau</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, null.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">kendallTau</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, null.rm <span class="op">=</span> <span class="cn">TRUE</span>, as.vector <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for default</span></span>
 <span><span class="fu">kendallTau</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, null.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for matrix</span></span>
-<span><span class="fu">kendallTau</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">kendallTau</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, as.vector <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for rankings</span></span>
 <span><span class="fu">kendallTau</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span></span>
@@ -107,6 +107,10 @@ and the possibility to remove zeros from incomplete ranks</p>
 
 <dt>null.rm</dt>
 <dd><p>logical, to remove zeros from <code>x</code> and <code>y</code></p></dd>
+
+
+<dt>as.vector</dt>
+<dd><p>logical, to return the kendall for each entry</p></dd>
 
 
 <dt>...</dt>
@@ -161,6 +165,10 @@ Can be used for significance testing.</p>
 <span><span class="co"># also applies to a single observation in the matrix</span></span>
 <span></span>
 <span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fu">kendallTau</span><span class="op">(</span><span class="va">R</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span>, <span class="va">preds</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># or to return it as a vector </span></span>
+<span></span>
+<span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fu">kendallTau</span><span class="op">(</span><span class="va">R</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span>, <span class="va">preds</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span>, as.vector <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span></code></pre></div>
     </div>
   </div>
