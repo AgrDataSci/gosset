@@ -109,7 +109,7 @@ node_rules(tree)
 top_items(tree, top = 3)
 
 ## ----node_info2, message=FALSE, eval=TRUE,echo=TRUE---------------------------
-plot(tree, ref = "Amadeus 77", ci.level = 0.9)
+plot(tree, ref = "Amadeus 77")
 
 ## ----rel1, message=FALSE, eval=FALSE, echo=TRUE-------------------------------
 #  reliability(tree, ref = "Amadeus 77")

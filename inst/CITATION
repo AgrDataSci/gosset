@@ -1,12 +1,14 @@
 citHeader("To cite package ‘gosset’ in publications, please use:")
 
-citEntry(entry = "Manual",
-title = "{gosset: Tools for Data Analysis in Experimental Agriculture}",
-    author = c(person("Kauê", "de Sousa"), 
+citEntry(entry = "Article",
+  title = "{gosset: An R Package for Analysis and Synthesis of Ranking Data in Agricultural Experimentation}",
+  doi = "10.2139/ssrn.4236267",
+  url = "https://doi.org/10.2139/ssrn.4236267",
+  year = "2022",
+  publisher = "{Elsevier BV}",
+  author = c(person("Kauê", "de Sousa"), 
     person("Jacob","van Etten"),
     person("David", "Brown"),
     person("Jonathan", "Steinke")),
-    year = "2022",
-    note = "R package v0.4",
-    url = "https://CRAN.R-project.org/package=gosset",
-    textVersion = "de Sousa, K., van Etten, J., Brown, D., Steinke, J. (2022). gosset: Tools for Data Analysis in Experimental Agriculture. R package v0.4. https://CRAN.R-project.org/package=gosset")
+  journal = "{SSRN} Electronic Journal",
+  textVersion = "Kauê de Sousa and Jacob van Etten and David Brown and Jonathan Steinke (2022). gosset: An R Package for Analysis and Synthesis of Ranking Data in Agricultural Experimentation. SSRN Electronic Journal, https://doi.org/10.2139/ssrn.4236267")
