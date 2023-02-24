@@ -4,7 +4,15 @@
 \alias{rank_tricot}
 \title{Build Plackett-Luce rankings from tricot dataset}
 \usage{
-rank_tricot(data, items, input, group = FALSE, additional.rank = NULL, ...)
+rank_tricot(
+  data,
+  items,
+  input,
+  group = FALSE,
+  validate.rankings = FALSE,
+  additional.rank = NULL,
+  ...
+)
 }
 \arguments{
 \item{data}{a data.frame with columns specified by items and input values}
@@ -17,6 +25,9 @@ containing the values in \code{data} to be ranked}
 
 \item{group}{logical, if \code{TRUE} return an object of class "grouped_rankings"}
 
+\item{validate.rankings}{logical, if \code{TRUE} implements a check on ranking consistency 
+looking for possible ties, NA or letters other than A, B, C. These entries are set to 0}
+
 \item{additional.rank}{optional, a data frame for the comparisons between 
 tricot items and the local item}
 
@@ -27,12 +38,10 @@ a PlackettLuce "rankings" object, which is a matrix of dense rankings
 }
 \description{
 Create an object of class "rankings" from tricot data. Tricot stands 
-for "triadic comparison of technologies". Is a methodology to carry out 
-large agronomic field experiments allowing the comparison between many 
-alternative technologies, in many different environments. Each participant
-evaluates a set of three randomised technologies from a larger set. A 
-comparison with a local item can be added as additional rankings with the 
-argument \code{additional.rank}.
+for "triadic comparison of technology options". Is an approach to carry out 
+large decentralized agronomic field experiments as incomplete blocks. 
+Each incomplete block contains a set of three randomised technologies 
+out of a larger set.
 }
 \details{
 full.output: logical, to return a list with a "rankings", 
@@ -40,36 +49,45 @@ a "grouped_rankings" and the ordered items
 }
 \examples{
 
-# using breadwheat data
-data("breadwheat", package = "gosset")
-
-# convert the tricot rankings from breadwheat data
-# into a object of class 'rankings' from PlackettLuce
-R <- rank_tricot(data = breadwheat,
-                 items = c("variety_a","variety_b","variety_c"),
-                 input = c("overall_best","overall_worst"))
-                 
-############################################################
-  
-# beans data where each observer compares 3 varieties randomly distributed
-# from a list of 11 and additionally compares these 3 varieties
-# with their local variety
 library("PlackettLuce")
 data("beans", package = "PlackettLuce")
 
-# first build rankings with only tricot items
-# and return an object of class 'rankings'
-R <- rank_tricot(data = beans,
+# Using a subset of the bean data
+beans = beans[1:5, 1:5]
+beans[1, 1] = NA
+beans[3, 4:5] = NA
+beans[5, 5] = "Tie"
+
+# The default approach do not validate rankings
+# accepting any entry used in the argument input
+R1 = rank_tricot(beans,
                  items = c(1:3),
-                 input = c(4:5))
-head(R)
+                 input = c(4:5), 
+                 group = FALSE)
+
+# Using validate.rankings = TRUE, the rankings
+# are only considered for those entries without 
+# NAs, Ties and with any of the letters A, B, C
+# this do not affect the lenght of the final ranking 
+R2 = rank_tricot(beans,
+                 items = c(1:3),
+                 input = c(4:5),
+                 validate.rankings = TRUE,
+                 group = FALSE)
+
+coef(PlackettLuce(R1))
+
+coef(PlackettLuce(R2))
 
 ############################################################
 
 # pass the comparison with local item as an additional rankings, then
 # each of the 3 varieties are compared separately with the local item
 # and return an object of class grouped_rankings
-G <- rank_tricot(data = beans,
+
+data("beans", package = "PlackettLuce")
+
+G = rank_tricot(data = beans,
                  items = c(1:3),
                  input = c(4:5),
                  group = TRUE,
