@@ -12,3 +12,5 @@ citEntry(entry = "Article",
     person("Jonathan", "Steinke")),
   journal = "{SSRN} Electronic Journal",
   textVersion = "Kauê de Sousa and Jacob van Etten and David Brown and Jonathan Steinke (2022). gosset: An R Package for Analysis and Synthesis of Ranking Data in Agricultural Experimentation. SSRN Electronic Journal, https://doi.org/10.2139/ssrn.4236267")
+  
+  

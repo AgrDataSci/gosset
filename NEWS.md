@@ -1,3 +1,15 @@
+gosset 0.6 (2023-02-25)
+=========================
+
+### IMPROVEMENTS
+
+* Adds argument `validate.rankings` to `rank_tricot()` to help in identifying possible issues in input tricot ranking like `NA`, ties or letters different than A, B or C
+* Adds argument `average` to `kendallTau()` to allow returning the kendall correlation for each entry in a matrix and PlackettLuce ranking
+
+###  BUG FIXES
+
+* Fixes an issue in `plot.pltree()` when multi-comparison is but multicompView is not loaded.
+
 gosset 0.5 (2022-09-23)
 =========================
 
