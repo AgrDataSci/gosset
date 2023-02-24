@@ -14,7 +14,7 @@
 #' @param x a numeric vector, matrix or data frame
 #' @param y a vector, matrix or data frame with compatible dimensions to \code{x}
 #' @param null.rm logical, to remove zeros from \code{x} and \code{y} 
-#' @param as.vector logical, to return the kendall for each entry
+#' @param average logical, if FALSE returns the kendall and N-effective for each entry
 #' @param ... further arguments affecting the Kendall tau produced. See details 
 #' @return The Kendall correlation coefficient and the Effective N, which 
 #' is the equivalent N needed if all items were compared to all items. 
@@ -25,38 +25,49 @@
 #' \doi{https://doi.org/10.1093/biomet/30.1-2.81}
 #' 
 #' @examples
+#' 
+#' # Vector based example same as stats::cor(x, y, method = "kendall")
+#' # but showing N-effective
+#' x = c(1, 2, 3, 4, 5)
+#' 
+#' y = c(1, 1, 3, 2, NA)
+#' 
+#' w = c(1, 1, 3, 2, 5)
+#' 
+#' kendallTau(x, y)
+#' 
+#' kendallTau(x, w)
+#' 
+#' # Matrix and PlacketLuce ranking example 
+#' 
 #' library("PlackettLuce")
+#'  
+#' R = matrix(c(1, 2, 4, 3,
+#'              1, 4, 2, 3,
+#'              1, 2, NA, 3,
+#'              1, 2, 4, 3,
+#'              1, 3, 4, 2,
+#'              1, 4, 3, 2), nrow = 6, byrow = TRUE)
+#' colnames(R) = LETTERS[1:4]
 #' 
-#' R <- matrix(c(1, 2, 4, 3,
-#'               1, 4, 2, 3,
-#'               1, 2, 4, 3,
-#'               1, 2, 4, 3,
-#'               1, 3, 4, 2,
-#'               1, 4, 3, 2), nrow = 6, byrow = TRUE)
-#' colnames(R) <- LETTERS[1:4]
+#' G = group(as.rankings(R), 1:6)
 #' 
-#' G <- group(as.rankings(R), 1:6)
+#' mod = pltree(G ~ 1, data = G)
 #' 
-#' mod <- pltree(G ~ 1, data = G)
+#' preds = predict(mod)
 #' 
-#' preds <- predict(mod)
+#' k = kendallTau(R, preds)
 #' 
-#' k <- kendallTau(R, preds)
+#' # Also returns raw values (no average) 
 #' 
-#' # also applies to a single observation in the matrix
-#' 
-#' k <- kendallTau(R[1,], preds[1,])
-#' 
-#' # or to return it as a vector 
-#' 
-#' k <- kendallTau(R[1,], preds[1,], as.vector = TRUE)
+#' k = kendallTau(R, preds, average = FALSE)
 #' 
 #' @seealso \code{\link[stats]{cor}}
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom stats cor
 #' @importFrom PlackettLuce as.grouped_rankings
 #' @export
-kendallTau<- function(x, y, null.rm = TRUE, as.vector = FALSE, ...){
+kendallTau<- function(x, y, null.rm = TRUE, average = TRUE, ...){
   
   UseMethod("kendallTau")
   
@@ -64,21 +75,21 @@ kendallTau<- function(x, y, null.rm = TRUE, as.vector = FALSE, ...){
 
 #' @rdname kendallTau
 #' @export
-kendallTau.default <- function(x, y, null.rm = TRUE, ...){
+kendallTau.default = function(x, y, null.rm = TRUE, ...){
   
   
-  keep <- !is.na(x) & !is.na(y)
+  keep = !is.na(x) & !is.na(y)
   
   # if TRUE, remove zeros in both rankings
   if (null.rm) {
     
-    keep <- x != 0 & y != 0 & keep
+    keep = x != 0 & y != 0 & keep
     
   }
   
-  x <- x[keep]
+  x = x[keep]
   
-  y <- y[keep]
+  y = y[keep]
   
   # if any decimal in x or y transform it to integer rankings
   # decimals will be computed as descending rankings
@@ -86,46 +97,46 @@ kendallTau.default <- function(x, y, null.rm = TRUE, ...){
   # negative values are placed as least positions
   if (any(.is_decimal(x))) {
     
-    x <- .rank_decimal(x)$rank
+    x = .rank_decimal(x)$rank
     
   }
   
   if(any(.is_decimal(y))) {
     
-    y <- .rank_decimal(y)$rank
+    y = .rank_decimal(y)$rank
     
   }
   
-  tau_cor <- stats::cor(x, 
+  tau_cor = stats::cor(x, 
                         y, 
                         method = "kendall", 
                         ...)
   
-  n <- length(x)
+  n = length(x)
   
-  weight <- n * (n - 1) / 2
+  weight = n * (n - 1) / 2
   
-  kt <- c(tau_cor, weight)
+  kt = c(tau_cor, weight)
   
   # Extract the values from the vector
-  N <- kt[2]
+  N = kt[2]
   
   # Effective N is the equivalent N needed if all were compared to all
   # N_comparisons = ((N_effective - 1) * N_effective) / 2
   # This is used for significance testing later
-  N_effective <- 0.5 + sqrt(0.25 + 2 * sum(N)) 
+  N_effective = 0.5 + sqrt(0.25 + 2 * sum(N)) 
   
-  kt[2] <- N_effective
+  kt[2] = N_effective
   
-  names(kt) <- c("kendallTau", "N_effective")
+  names(kt) = c("kendallTau", "N_effective")
   
-  kt <- t(as.data.frame(kt))
+  kt = t(as.data.frame(kt))
   
-  kt <- as.data.frame(kt)
+  kt = as.data.frame(kt)
   
-  class(kt) <- union("gosset_df", class(kt))
+  class(kt) = union("gosset_df", class(kt))
   
-  rownames(kt) <- 1:nrow(kt)
+  rownames(kt) = 1:nrow(kt)
   
   return(kt)
   
@@ -134,47 +145,48 @@ kendallTau.default <- function(x, y, null.rm = TRUE, ...){
 #' @rdname kendallTau
 #' @method kendallTau matrix
 #' @export
-kendallTau.matrix <- function(x, y, as.vector = FALSE, ...){
+kendallTau.matrix = function(x, y, average = TRUE, ...){
   
-  nc <- ncol(x)
+  nc = ncol(x)
   
-  kt <- apply(cbind(x, y), 1, function(K){
+  kt = apply(cbind(x, y), 1, function(K){
     
-    X <- K[1:nc]
-    Y <- K[(nc + 1):(nc * 2)]
+    X = K[1:nc]
+    Y = K[(nc + 1):(nc * 2)]
     
     kendallTau(X, Y, ...)
     
   })
   
-  kt <- do.call("rbind", kt)
+  kt = do.call("rbind", kt)
   
-  # Extract the values from the matrix
-  tau <- kt[,1]
-  N <- kt[,2]
-  
-  if (isTRUE(as.vector)) {
-    return(tau)
+  if (isFALSE(average)) {
+    rownames(kt) = 1:nrow(kt)
+    return(kt)
   }
   
-  tau_average <- sum(tau * N, na.rm = TRUE) / sum(N)
+  # Extract the values from the matrix
+  tau = kt[,1]
+  N = kt[,2]
+
+  tau_average = sum(tau * N, na.rm = TRUE) / sum(N)
   
   # Effective N is the equivalent N needed if all were compared to all
   # N_comparisons = ((N_effective - 1) * N_effective) / 2
   # This is used for significance testing later
-  N_effective <- 0.5 + sqrt(0.25 + 2 * sum(N)) 
+  N_effective = 0.5 + sqrt(0.25 + 2 * sum(N)) 
   
-  kt <- c(tau_average, N_effective)
+  kt = c(tau_average, N_effective)
   
-  names(kt) <- c("kendallTau", "N_effective")
+  names(kt) = c("kendallTau", "N_effective")
   
-  kt <- t(as.data.frame(kt))
+  kt = t(as.data.frame(kt))
   
-  kt <- as.data.frame(kt)
+  kt = as.data.frame(kt)
   
-  class(kt) <- union("gosset_df", class(kt))
+  class(kt) = union("gosset_df", class(kt))
   
-  rownames(kt) <- 1:nrow(kt)
+  rownames(kt) = 1:nrow(kt)
   
   return(kt)
   
@@ -183,11 +195,11 @@ kendallTau.matrix <- function(x, y, as.vector = FALSE, ...){
 #' @rdname kendallTau
 #' @method kendallTau rankings
 #' @export
-kendallTau.rankings <- function(x, y, ...){
+kendallTau.rankings = function(x, y, ...){
   
-  X <- x[1:nrow(x), , as.rankings = FALSE]
+  X = x[1:nrow(x), , as.rankings = FALSE]
   
-  Y <- y[1:nrow(y), , as.rankings = FALSE]
+  Y = y[1:nrow(y), , as.rankings = FALSE]
   
   kendallTau(X, Y, ...)
   
@@ -197,11 +209,11 @@ kendallTau.rankings <- function(x, y, ...){
 #' @rdname kendallTau
 #' @method kendallTau grouped_rankings
 #' @export
-kendallTau.grouped_rankings <- function(x, y, ...){
+kendallTau.grouped_rankings = function(x, y, ...){
   
-  X <- x[1:length(x), , as.grouped_rankings = FALSE]
+  X = x[1:length(x), , as.grouped_rankings = FALSE]
   
-  Y <- y[1:length(y), , as.grouped_rankings = FALSE]
+  Y = y[1:length(y), , as.grouped_rankings = FALSE]
   
   kendallTau(X, Y, ...)
   
@@ -210,15 +222,15 @@ kendallTau.grouped_rankings <- function(x, y, ...){
 #' @rdname kendallTau
 #' @method kendallTau paircomp
 #' @export
-kendallTau.paircomp <- function(x, y, ...) {
+kendallTau.paircomp = function(x, y, ...) {
   
-  x <- PlackettLuce::as.grouped_rankings(x)
+  x = PlackettLuce::as.grouped_rankings(x)
   
-  X <- x[1:length(x), as.grouped_rankings = FALSE]
+  X = x[1:length(x), as.grouped_rankings = FALSE]
   
-  y <- PlackettLuce::as.grouped_rankings(y)
+  y = PlackettLuce::as.grouped_rankings(y)
   
-  Y <- y[1:length(y), as.grouped_rankings = FALSE]
+  Y = y[1:length(y), as.grouped_rankings = FALSE]
   
   kendallTau(X, Y, ...)
   

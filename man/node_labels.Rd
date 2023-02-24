@@ -28,7 +28,7 @@ displayed instead of worth}
 
 \item{ci.level}{an integer for the confidence interval levels}
 
-\item{...}{additional arguments passed to methods}
+\item{...}{additional arguments passed to methods. See details}
 }
 \value{
 a vector with the node labels, 
@@ -39,19 +39,22 @@ Returns the covariates used to split a recursive
  partitioning tree and the rules that were applied 
  to build the tree
 }
+\details{
+Argument multcomp = TRUE adds multi-comparison letters from multcompView
+}
 \examples{
 \donttest{
 library("PlackettLuce")
 data("beans", package = "PlackettLuce")
-G <- rank_tricot(data = beans,
+G = rank_tricot(data = beans,
                  items = c(1:3),
                  input = c(4:5),
                  group = TRUE,
                  additional.rank = beans[c(6:8)])
  
-pld <- cbind(G, beans[,c("maxTN", "season", "lon")])
+pld = cbind(G, beans[,c("maxTN", "season", "lon")])
 
-tree <- pltree(G ~ maxTN + season + lon, data = pld)
+tree = pltree(G ~ maxTN + season + lon, data = pld)
 
 node_labels(tree)
 

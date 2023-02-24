@@ -13,15 +13,15 @@
 #' \donttest{
 #' library("PlackettLuce")
 #' data("beans", package = "PlackettLuce")
-#' G <- rank_tricot(data = beans,
+#' G = rank_tricot(data = beans,
 #'                  items = c(1:3),
 #'                  input = c(4:5),
 #'                  group = TRUE,
 #'                  additional.rank = beans[c(6:8)])
 #'  
-#' pld <- cbind(G, beans[,c("maxTN", "season", "lon")])
+#' pld = cbind(G, beans[,c("maxTN", "season", "lon")])
 #'
-#' tree <- pltree(G ~ maxTN + season + lon, data = pld)
+#' tree = pltree(G ~ maxTN + season + lon, data = pld)
 #' 
 #' node_labels(tree)
 #' 
@@ -37,14 +37,14 @@
 #' @importFrom partykit nodeids data_party node_party breaks_split partynode
 #'  kids_node id_node split_node varid_split index_split right_split
 #' @export
-node_labels <- function(x) {
+node_labels = function(x) {
   
-  rules <- .list.rules.party(x)
-  rules <- paste(rules, collapse = "  ")
+  rules = .list.rules.party(x)
+  rules = paste(rules, collapse = "  ")
   
-  var <- names(model.frame(x))
+  var = names(model.frame(x))
   
-  labels <- sapply(var, function(x) {
+  labels = sapply(var, function(x) {
     grepl(x, rules)
   })
   
@@ -55,52 +55,52 @@ node_labels <- function(x) {
 #' Get node rules 
 #' @rdname node_labels
 #' @export
-node_rules <- function(x){
+node_rules = function(x){
   
-  node_ids <- partykit::nodeids(x, terminal = TRUE)
+  node_ids = partykit::nodeids(x, terminal = TRUE)
   
-  result <- data.frame()
+  result = data.frame()
   
   for (i in seq_along(node_ids)) {
-    r <- data.frame(node = node_ids[i],
+    r = data.frame(node = node_ids[i],
                     rules = .list.rules.party(x, node_ids[i]))
     
-    result <- rbind(result, r)
+    result = rbind(result, r)
     
   }
   
-  rule <- result$rules
-  rule <- gsub("%in%","@", rule)
-  rule <- gsub("[(]|[)]| c","", rule)
-  rule <- gsub("  "," ", rule)
-  rule <- gsub('"NA",',"", rule)
-  rule <- gsub(', "NA"',"", rule)
-  rule <- gsub(",", "COMMA", rule)
-  rule <- gsub("[.]", "DOT", rule)
-  rule <- gsub("@", "EQUAL", rule)
-  rule <- gsub("&", " AND ", rule)
-  rule <- gsub("<=", " LOWEQUAL ", rule)
-  rule <- gsub("=>", " HIGHEQUAL ", rule)
-  rule <- gsub("<", " LOW ", rule)
-  rule <- gsub(">", " HIGH ", rule)
+  rule = result$rules
+  rule = gsub("%in%","@", rule)
+  rule = gsub("[(]|[)]| c","", rule)
+  rule = gsub("  "," ", rule)
+  rule = gsub('"NA",',"", rule)
+  rule = gsub(', "NA"',"", rule)
+  rule = gsub(",", "COMMA", rule)
+  rule = gsub("[.]", "DOT", rule)
+  rule = gsub("@", "EQUAL", rule)
+  rule = gsub("&", " AND ", rule)
+  rule = gsub("<=", " LOWEQUAL ", rule)
+  rule = gsub("=>", " HIGHEQUAL ", rule)
+  rule = gsub("<", " LOW ", rule)
+  rule = gsub(">", " HIGH ", rule)
   
   # remove all other special characters
-  rule <- gsub("[[:punct:]]", "", rule)
+  rule = gsub("[[:punct:]]", "", rule)
   
   # reposition the key special characters
-  rule <- gsub("  ", " ", rule)
-  rule <- gsub("LOWEQUAL", "<=", rule)
-  rule <- gsub("HIGHEQUAL", "=>", rule)
-  rule <- gsub("LOW", "<", rule)
-  rule <- gsub("HIGH", ">", rule)
-  rule <- gsub("EQUAL", "= ", rule)
-  rule <- gsub("AND", "&", rule)
-  rule <- gsub("COMMA", ",", rule)
-  rule <- gsub("DOT", ".", rule)
-  rule <- gsub(", NA", "", rule)
-  rule <- gsub("NA,", "", rule)
+  rule = gsub("  ", " ", rule)
+  rule = gsub("LOWEQUAL", "<=", rule)
+  rule = gsub("HIGHEQUAL", "=>", rule)
+  rule = gsub("LOW", "<", rule)
+  rule = gsub("HIGH", ">", rule)
+  rule = gsub("EQUAL", "= ", rule)
+  rule = gsub("AND", "&", rule)
+  rule = gsub("COMMA", ",", rule)
+  rule = gsub("DOT", ".", rule)
+  rule = gsub(", NA", "", rule)
+  rule = gsub("NA,", "", rule)
   
-  result$rules <- rule
+  result$rules = rule
   
   return(result)
   
@@ -110,19 +110,19 @@ node_rules <- function(x){
 #' @param top an integer for the number of items to return
 #' @rdname node_labels
 #' @export 
-top_items <- function(x, top = 5) {
+top_items = function(x, top = 5) {
   
   if (length(x) > 1) {
     
-    coef_x <- coef(x, log = FALSE)
+    coef_x = coef(x, log = FALSE)
     
-    bestitems <- apply(coef_x, 1 , function(y) {
+    bestitems = apply(coef_x, 1 , function(y) {
       names(rev(sort(y)))[1:top]
     })
     
-    bestitems <- as.data.frame(bestitems)
+    bestitems = as.data.frame(bestitems)
     
-    names(bestitems) <- paste0("Node", 
+    names(bestitems) = paste0("Node", 
                                nodeids(x, terminal = TRUE))
     
     return(bestitems)
@@ -131,9 +131,9 @@ top_items <- function(x, top = 5) {
   
   if (length(x) == 1){
     
-    coef_x <- coef(x, log = FALSE)
+    coef_x = coef(x, log = FALSE)
     
-    bestitems <- names(rev(sort(coef_x)))[1:top]
+    bestitems = names(rev(sort(coef_x)))[1:top]
     
     return(bestitems)
     
@@ -144,72 +144,72 @@ top_items <- function(x, top = 5) {
 #' Imported from partykit
 #' @param i node ids
 #' @noRd
-.list.rules.party <- function (x, i = NULL, ...) 
+.list.rules.party = function (x, i = NULL, ...) 
 {
   if (is.null(i)) 
-    i <- partykit::nodeids(x, terminal = TRUE)
+    i = partykit::nodeids(x, terminal = TRUE)
   if (length(i) > 1) {
-    ret <- sapply(i, .list.rules.party, x = x)
-    names(ret) <- if (is.character(i)) 
+    ret = sapply(i, .list.rules.party, x = x)
+    names(ret) = if (is.character(i)) 
       i
     else names(x)[i]
     return(ret)
   }
   if (is.character(i) && !is.null(names(x))) 
-    i <- which(names(x) %in% i)
+    i = which(names(x) %in% i)
   stopifnot(length(i) == 1 & is.numeric(i))
   stopifnot(i <= length(x) & i >= 1)
-  i <- as.integer(i)
-  dat <- partykit::data_party(x, i)
+  i = as.integer(i)
+  dat = partykit::data_party(x, i)
   if (!is.null(x$fitted)) {
-    findx <- which("(fitted)" == names(dat))[1]
-    fit <- dat[, findx:ncol(dat), drop = FALSE]
-    dat <- dat[, -(findx:ncol(dat)), drop = FALSE]
+    findx = which("(fitted)" == names(dat))[1]
+    fit = dat[, findx:ncol(dat), drop = FALSE]
+    dat = dat[, -(findx:ncol(dat)), drop = FALSE]
     if (ncol(dat) == 0) 
-      dat <- x$data
+      dat = x$data
   }
   else {
-    fit <- NULL
-    dat <- x$data
+    fit = NULL
+    dat = x$data
   }
-  rule <- c()
-  recFun <- function(node) {
+  rule = c()
+  recFun = function(node) {
     if (partykit::id_node(node) == i) 
       return(NULL)
-    kid <- sapply(partykit::kids_node(node), partykit::id_node)
-    whichkid <- max(which(kid <= i))
-    split <- partykit::split_node(node)
-    ivar <- partykit::varid_split(split)
-    svar <- names(dat)[ivar]
-    index <- partykit::index_split(split)
+    kid = sapply(partykit::kids_node(node), partykit::id_node)
+    whichkid = max(which(kid <= i))
+    split = partykit::split_node(node)
+    ivar = partykit::varid_split(split)
+    svar = names(dat)[ivar]
+    index = partykit::index_split(split)
     if (is.factor(dat[, svar])) {
       if (is.null(index)) 
-        index <- ((1:nlevels(dat[, svar])) > partykit::breaks_split(split)) + 
+        index = ((1:nlevels(dat[, svar])) > partykit::breaks_split(split)) + 
           1
-      slevels <- levels(dat[, svar])[index == whichkid]
-      srule <- paste(svar, " %in% c(\"", paste(slevels, 
+      slevels = levels(dat[, svar])[index == whichkid]
+      srule = paste(svar, " %in% c(\"", paste(slevels, 
                                                collapse = "\", \"", sep = ""), "\")", sep = "")
     }
     else {
       if (is.null(index)) 
-        index <- 1:length(kid)
-      breaks <- cbind(c(-Inf, partykit::breaks_split(split)), 
+        index = 1:length(kid)
+      breaks = cbind(c(-Inf, partykit::breaks_split(split)), 
                       c(partykit::breaks_split(split), Inf))
-      sbreak <- breaks[index == whichkid, ]
-      right <- partykit::right_split(split)
-      srule <- c()
+      sbreak = breaks[index == whichkid, ]
+      right = partykit::right_split(split)
+      srule = c()
       if (is.finite(sbreak[1])) 
-        srule <- c(srule, paste(svar, ifelse(right, ">", 
+        srule = c(srule, paste(svar, ifelse(right, ">", 
                                              ">="), sbreak[1]))
       if (is.finite(sbreak[2])) 
-        srule <- c(srule, paste(svar, ifelse(right, "<=", 
+        srule = c(srule, paste(svar, ifelse(right, "<=", 
                                              "<"), sbreak[2]))
-      srule <- paste(srule, collapse = " & ")
+      srule = paste(srule, collapse = " & ")
     }
     rule <<- c(rule, srule)
     return(recFun(node[[whichkid]]))
   }
-  node <- recFun(partykit::node_party(x))
+  node = recFun(partykit::node_party(x))
   paste(rule, collapse = " & ")
 }
 
@@ -220,7 +220,9 @@ top_items <- function(x, top = 5) {
 #' @param ref optional, character for the reference item when
 #'  \var{log} = \code{TRUE}
 #' @param ci.level an integer for the confidence interval levels
-#' @param ... additional arguments passed to methods
+#' @param ... additional arguments passed to methods. See details
+#' @details 
+#' Argument multcomp = TRUE adds multi-comparison letters from multcompView
 #' @importFrom stats update
 #' @importFrom PlackettLuce freq
 #' @importFrom partykit nodeids
@@ -231,10 +233,11 @@ top_items <- function(x, top = 5) {
 #' theme_bw labs theme element_text element_blank element_rect element_line facet_grid
 #' @importFrom ggparty ggparty geom_edge geom_edge_label geom_node_label
 #' @import patchwork
+#' @import methods
 #' @rdname node_labels
 #' @method plot pltree
 #' @export
-plot.pltree <- function(x, 
+plot.pltree = function(x, 
                         log = TRUE, 
                         ref = NULL, 
                         ci.level = 0.95, ...){
@@ -245,38 +248,39 @@ plot.pltree <- function(x,
   }
   
   # Extract ids from terminal nodes
-  node_id <- partykit::nodeids(x, terminal = TRUE)
+  node_id = partykit::nodeids(x, terminal = TRUE)
   
   # get number of observations in each inner node
-  nobs <- integer(0L)
+  nobs = integer(0L)
   for (i in seq_along(node_id)) {
-    nobs <- c(nobs, as.integer(x[[ node_id[i] ]]$node$info$nobs))
+    nobs = c(nobs, as.integer(x[[ node_id[i] ]]$node$info$nobs))
   }
   
   # get models from each node
-  nodes <- list()
+  nodes = list()
   for (i in seq_along(node_id)) {
-    nodes[[i]] <- x[[ node_id[i] ]]$node$info$object
+    nodes[[i]] = x[[ node_id[i] ]]$node$info$object
   }
   
   # make panels
-  p <- try(build_tree_nodes(nodes, 
-                            log = log,
-                            ci.level = ci.level,
-                            ref = ref,
-                            node.ids = node_id,
-                            n.obs = nobs, 
-                            ...), silent = TRUE)
+  p = try(build_tree_nodes(nodes, 
+                       log = log,
+                       ci.level = ci.level,
+                       ref = ref,
+                       node.ids = node_id,
+                       n.obs = nobs, 
+                       ...), silent = TRUE)
   
   if (isTRUE("try-error" %in% class(p))) {
+    warning("Error in generating tree from gosset, using plot.party instead \n")
     return(NextMethod(x))
-  } 
+  }
   
   # get the tree structure
-  tree <- build_tree_branches(x, ...)
+  tree = build_tree_branches(x, ...)
   
   # put branches and nodes together 
-  p <- (tree / p)
+  p = (tree / p)
   
   return(p)
   
@@ -286,10 +290,11 @@ plot.pltree <- function(x,
 #' This function builds the party tree
 #' @param x a party object
 #' @noRd
-build_tree_branches <- function(x, ...){
-  splitvar <- 0L
-  p.value <- 0L
-  id <- 0L
+build_tree_branches = function(x, ...){
+  
+  splitvar = 0L
+  p.value = 0L
+  id = 0L
   
   ggparty::ggparty(x, terminal_space = 0) +
     ggparty::geom_edge() +
@@ -324,38 +329,37 @@ build_tree_branches <- function(x, ...){
 #' @param multcomp TRUE adds multi-comparison groups
 #' @inheritParams plot.pltree
 #' @noRd
-build_tree_nodes <- function(x, 
-                             log = TRUE, 
-                             ref = NULL, 
-                             ci.level = 0.95, 
-                             node.ids = NULL,
-                             n.obs = NULL,
-                             multcomp = TRUE, 
-                             levels = NULL,
-                             ...){
+build_tree_nodes = function(x, 
+                            log = TRUE, 
+                            ref = NULL, 
+                            ci.level = 0.95, 
+                            node.ids = NULL,
+                            n.obs = NULL,
+                            multcomp = FALSE, 
+                            ...){
   
-  if (isFALSE(log)) ref <- NULL
+  if (isFALSE(log)) ref = NULL
   
   if (is.null(node.ids)) {
-    node.ids <- 1:length(x)
+    node.ids = 1:length(x)
   }
   
-  estimate <- 0L
-  bmin <- 0L
-  bmax <- 0L
+  if (isTRUE(multcomp)) {
+     require("multcompView")
+  }
+  
+  estimate = 0L
+  bmin = 0L
+  bmax = 0L
   
   # get item names
-  items <- names(coef(x[[1]]))
-  
-  if (is.null(levels)) {
-    levels <- items
-  }
+  items = names(coef(x[[1]]))
   
   # get item parameters from model
-  coeffs <- try(lapply(x, function(y) {
-    z <- psychotools::itempar(y, log = log, ref = ref)
+  coeffs = try(lapply(x, function(y) {
+    z = psychotools::itempar(y, log = log, ref = ref)
     # get estimates from item parameters using qvcalc
-    z <- qvcalc::qvcalc(z, ref = ref)$qvframe
+    z = qvcalc::qvcalc(z, ref = ref)$qvframe
   }), silent = TRUE)
   
   if (isTRUE("try-error" %in% class(coeffs))) {
@@ -363,16 +367,16 @@ build_tree_nodes <- function(x,
     # is likely that the error id due to missing items in one the nodes
     # so we apply the function pseudo_ranking() to add these missing items
     # extract the original rankings, add pseudo_ranking and refit the model
-    coeffs <- lapply(x, function(y){
-      r <- y$rankings
-      r <- pseudo_rank(r)
+    coeffs = lapply(x, function(y){
+      r = y$rankings
+      r = pseudo_rank(r)
       stats::update(y, rankings = r)
     })
     
-    coeffs <- try(lapply(coeffs, function(y) {
-      z <- psychotools::itempar(y, log = log, ref = ref)
+    coeffs = try(lapply(coeffs, function(y) {
+      z = psychotools::itempar(y, log = log, ref = ref)
       # get estimates from item parameters using qvcalc
-      z <- qvcalc::qvcalc(z)$qvframe
+      z = qvcalc::qvcalc(z)$qvframe
     }), silent = TRUE)
     
   }
@@ -384,11 +388,11 @@ build_tree_nodes <- function(x,
   }
   
   # Add limits in error bars and item names
-  coeffs <- lapply(coeffs, function(X){
-    X <- within(X, {
+  coeffs = lapply(coeffs, function(X){
+    X = within(X, {
       bmax = X$estimate + stats::qnorm(1-(1-ci.level)/2) * X$quasiSE
       bmin = X$estimate - stats::qnorm(1-(1-ci.level)/2) * X$quasiSE
-      items <- items
+      items = items
     })
     return(X)
   })
@@ -396,59 +400,59 @@ build_tree_nodes <- function(x,
   # Add node information and number of observations
   # and if required add multicomp letters
   for (i in seq_along(node.ids)) {
-    coeffs[[i]] <- within(coeffs[[i]], {
-      nobs <- n.obs[i]
-      node <- node.ids[i]}
+    coeffs[[i]] = within(coeffs[[i]], {
+      nobs = n.obs[i]
+      node = node.ids[i]}
     )
     
     if(isTRUE(multcomp)) {
-      mc <- multcompPL(x[[i]])
-      coeffs[[i]] <- merge(coeffs[[i]], mc[,c("items", "group")], by = "items")
+      mc = multcompPL(x[[i]])
+      coeffs[[i]] = merge(coeffs[[i]], mc[,c("items", "group")], by = "items")
     }else{
-      coeffs[[i]]$group <- ""
+      coeffs[[i]]$group = ""
     }
   }
   
-  coeffs <- do.call("rbind", coeffs)
+  coeffs = do.call("rbind", coeffs)
   
   if (isFALSE(log)) {
-    coeffs$bmin <- ifelse(coeffs$bmin < 0, 0, coeffs$bmin)
-    coeffs$bmax <- ifelse(coeffs$bmax > 1, 1, coeffs$bmax)
+    coeffs$bmin = ifelse(coeffs$bmin < 0, 0, coeffs$bmin)
+    coeffs$bmax = ifelse(coeffs$bmax > 1, 1, coeffs$bmax)
   }
   
-  coeffs$id <- paste0(coeffs$node, "_", coeffs$items)
+  coeffs$id = paste0(coeffs$node, "_", coeffs$items)
   
-  groups <- ""
+  groups = ""
   
-  node_lev <- unique(paste0("Node ", coeffs$node, " (n=", coeffs$nobs, ")"))
+  node_lev = unique(paste0("Node ", coeffs$node, " (n=", coeffs$nobs, ")"))
   
-  coeffs$id <- coeffs$node
+  coeffs$id = coeffs$node
   
-  coeffs$node <- factor(paste0("Node ", coeffs$node, " (n=", coeffs$nobs, ")"),
+  coeffs$node = factor(paste0("Node ", coeffs$node, " (n=", coeffs$nobs, ")"),
                         levels = node_lev)
   
-  coeffs$items <- factor(coeffs$items, levels = levels)
+  coeffs$items = factor(coeffs$items, levels = rev(sort(items)))
   
   # Get max and min values for the x axis in the plot
-  xmax <- round(max(coeffs$bmax, na.rm = TRUE) + 0.01, digits = 4)
+  xmax = round(max(coeffs$bmax, na.rm = TRUE) + 0.01, digits = 4)
   
   if (isFALSE(log)) {
-    xmin <- 0
-    xinter <- 1/length(items)
-    xbreaks <- round(c(mean(c(0, xmax)), xmax), 2)
-    xbreaks <- c(0, xbreaks)
+    xmin = 0
+    xinter = 1/length(items)
+    xbreaks = round(c(mean(c(0, xmax)), xmax), 2)
+    xbreaks = c(0, xbreaks)
   }
   
   if (isTRUE(log)) {
-    xinter <- 0
-    xmin <- min(coeffs$bmin, na.rm = TRUE)
-    xbreaks <- round(c(mean(c(xmin, xmax)), xmax), 2)
-    xbreaks <- c(xmin, xbreaks)
+    xinter = 0
+    xmin = min(coeffs$bmin, na.rm = TRUE)
+    xbreaks = round(c(mean(c(xmin, xmax)), xmax), 2)
+    xbreaks = c(xmin, xbreaks)
   }
   
-  xlabs <- as.character(round(xbreaks, 2))
-  xmin <- xmin + (xmin * 0.15)
-  xmax <- xmax + (xmax * 0.15)
+  xlabs = as.character(round(xbreaks, 2))
+  xmin = xmin + (xmin * 0.15)
+  xmax = xmax + (xmax * 0.15)
   
   # Check font size for axis X and Y, and plot title
   ggplot2::ggplot(coeffs, 
@@ -490,7 +494,7 @@ build_tree_nodes <- function(x,
   
 }
 
-# coeffs <- data.frame(estimate = c(-0.6, 0, 0.4, 0.2, -0.1, 0.4),
+# coeffs = data.frame(estimate = c(-0.6, 0, 0.4, 0.2, -0.1, 0.4),
 #                      items = rep(c("banana", "apple", "orange"), 2),
 #                      groups = "",
 #                      node = rep(c(1,2), each = 3))
@@ -500,8 +504,8 @@ build_tree_nodes <- function(x,
 # xinter = 0
 # bmin = 0
 # bmax = 0
-# xbreaks <- c(-0.78, 0, 0.89)
-# xlabs <- xbreaks
+# xbreaks = c(-0.78, 0, 0.89)
+# xlabs = xbreaks
 # xmin = -0.78
 # xmin = xmin + (xmin * 0.15)
 # xmax = 0.89
@@ -510,14 +514,14 @@ build_tree_nodes <- function(x,
 
 #' @rdname multcompPL
 #' @noRd
-multcompPL <- function(mod, items = NULL, threshold = 0.05, adjust = "none", ...){
+multcompPL = function(mod, items = NULL, threshold = 0.05, adjust = "none", ...){
   
   #get estimates with quasi-SEs
-  qv1 <- qvcalc::qvcalc(mod, ...)$qvframe
+  qv1 = qvcalc::qvcalc(mod, ...)$qvframe
   
   #reduce frame to only selected items if not all comparisons are desired
   if (!is.null(items)) {
-    qv1 <- subset(qv1, rownames(qv1) %in% items)
+    qv1 = subset(qv1, rownames(qv1) %in% items)
     # give error if less than 2 items can be identified
     if (nrow(qv1) < 3) {
       stop("Less than 2 items selected")
@@ -525,37 +529,37 @@ multcompPL <- function(mod, items = NULL, threshold = 0.05, adjust = "none", ...
   }
   
   #set up matrices for all differences and pooled errors
-  diffs <- mat.or.vec(nrow(qv1),nrow(qv1))
-  ses <- mat.or.vec(nrow(qv1),nrow(qv1))
+  diffs = mat.or.vec(nrow(qv1),nrow(qv1))
+  ses = mat.or.vec(nrow(qv1),nrow(qv1))
   
   for(i in 1:nrow(qv1)){
     for(j in 1:nrow(qv1)){
       #get differences and pooled ses
-      diffs[i,j] <- qv1$estimate[i] - qv1$estimate[j]
-      ses[i,j] <- sqrt(qv1$quasiVar[i] + qv1$quasiVar[j])
+      diffs[i,j] = qv1$estimate[i] - qv1$estimate[j]
+      ses[i,j] = sqrt(qv1$quasiVar[i] + qv1$quasiVar[j])
     }
   }
   
   #calculate z scores
-  z <- diffs/ses
+  z = diffs/ses
   #TO DO: What DF to use to use here? Is it just the resid DF?
-  p <- 2 * (1 - stats::pt(abs(z), mod$df.residual))
+  p = 2 * (1 - stats::pt(abs(z), mod$df.residual))
   
   #adjust p-value if you want to adjust. make sure to only take each p once for adjustment
-  p[upper.tri(p)] <- stats::p.adjust(p[upper.tri(p)], method = adjust)
+  p[upper.tri(p)] = stats::p.adjust(p[upper.tri(p)], method = adjust)
   
   #make sure lower triangular is mirror of upper
-  p[lower.tri(p)] <- t(p)[lower.tri(p)]
+  p[lower.tri(p)] = t(p)[lower.tri(p)]
   
   #set rownames
-  rownames(p) <- colnames(p) <- rownames(qv1)
+  rownames(p) = colnames(p) = rownames(qv1)
   
   #re-order qv output to ensure letters are produced in a sensible order
-  qv1$items <- stats::reorder(factor(rownames(qv1)), qv1$estimate, mean)
-  qv1 <- qv1[order(qv1$estimate, decreasing = TRUE), ]
+  qv1$items = stats::reorder(factor(rownames(qv1)), qv1$estimate, mean)
+  qv1 = qv1[order(qv1$estimate, decreasing = TRUE), ]
   
   #get mean seperation letter groupings
-  args <- list(formula = estimate ~ items, 
+  args = list(formula = estimate ~ items, 
                x = p, 
                data = qv1,
                compare = "<",
@@ -563,15 +567,15 @@ multcompPL <- function(mod, items = NULL, threshold = 0.05, adjust = "none", ...
                Letters = letters,
                reversed = FALSE)
   
-  let <- do.call("multcompLetters2", args)
+  let = do.call("multcompLetters2", args)
   
-  qv1$group <- let$Letters
+  qv1$group = let$Letters
   
-  qv1 <- qv1[, union("items", names(qv1))]
+  qv1 = qv1[, union("items", names(qv1))]
   
-  row.names(qv1) <- seq_along(qv1$group)
+  row.names(qv1) = seq_along(qv1$group)
   
-  class(qv1) <- union("multcompPL", class(qv1))
+  class(qv1) = union("multcompPL", class(qv1))
   
   return(qv1)
   

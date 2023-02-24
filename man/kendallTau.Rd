@@ -9,11 +9,11 @@
 \alias{kendallTau.paircomp}
 \title{Kendall rank correlation coefficient}
 \usage{
-kendallTau(x, y, null.rm = TRUE, as.vector = FALSE, ...)
+kendallTau(x, y, null.rm = TRUE, average = TRUE, ...)
 
 \method{kendallTau}{default}(x, y, null.rm = TRUE, ...)
 
-\method{kendallTau}{matrix}(x, y, as.vector = FALSE, ...)
+\method{kendallTau}{matrix}(x, y, average = TRUE, ...)
 
 \method{kendallTau}{rankings}(x, y, ...)
 
@@ -28,7 +28,7 @@ kendallTau(x, y, null.rm = TRUE, as.vector = FALSE, ...)
 
 \item{null.rm}{logical, to remove zeros from \code{x} and \code{y}}
 
-\item{as.vector}{logical, to return the kendall for each entry}
+\item{average}{logical, if FALSE returns the kendall and N-effective for each entry}
 
 \item{...}{further arguments affecting the Kendall tau produced. See details}
 }
@@ -48,31 +48,42 @@ into ranks (from the higher being the first and negative being the last)
 and the possibility to remove zeros from incomplete ranks
 }
 \examples{
+
+# Vector based example same as stats::cor(x, y, method = "kendall")
+# but showing N-effective
+x = c(1, 2, 3, 4, 5)
+
+y = c(1, 1, 3, 2, NA)
+
+w = c(1, 1, 3, 2, 5)
+
+kendallTau(x, y)
+
+kendallTau(x, w)
+
+# Matrix and PlacketLuce ranking example 
+
 library("PlackettLuce")
+ 
+R = matrix(c(1, 2, 4, 3,
+             1, 4, 2, 3,
+             1, 2, NA, 3,
+             1, 2, 4, 3,
+             1, 3, 4, 2,
+             1, 4, 3, 2), nrow = 6, byrow = TRUE)
+colnames(R) = LETTERS[1:4]
 
-R <- matrix(c(1, 2, 4, 3,
-              1, 4, 2, 3,
-              1, 2, 4, 3,
-              1, 2, 4, 3,
-              1, 3, 4, 2,
-              1, 4, 3, 2), nrow = 6, byrow = TRUE)
-colnames(R) <- LETTERS[1:4]
+G = group(as.rankings(R), 1:6)
 
-G <- group(as.rankings(R), 1:6)
+mod = pltree(G ~ 1, data = G)
 
-mod <- pltree(G ~ 1, data = G)
+preds = predict(mod)
 
-preds <- predict(mod)
+k = kendallTau(R, preds)
 
-k <- kendallTau(R, preds)
+# Also returns raw values (no average) 
 
-# also applies to a single observation in the matrix
-
-k <- kendallTau(R[1,], preds[1,])
-
-# or to return it as a vector 
-
-k <- kendallTau(R[1,], preds[1,], as.vector = TRUE)
+k = kendallTau(R, preds, average = FALSE)
 
 }
 \references{
