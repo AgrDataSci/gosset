@@ -12,10 +12,10 @@
 #' @return a ggplot with the agreement
 #' @examples
 #' set.seed(1)
-#' x <- runif(10, -1, 2)
+#' x = runif(10, -1, 2)
 #' 
 #' set.seed(2)
-#' y <- runif(10, -1, 2)
+#' y = runif(10, -1, 2)
 #' 
 #' compare(x, y)
 #' 
@@ -27,7 +27,7 @@
 #' @importFrom stats coefficients sd
 #' @importFrom ggrepel geom_text_repel
 #' @export
-compare <- function(x, y, ...){
+compare = function(x, y, ...){
   
   UseMethod("compare")
   
@@ -35,30 +35,30 @@ compare <- function(x, y, ...){
 
 #' @rdname compare
 #' @export
-compare.default <- function(x, y, labels = NULL, ...){
+compare.default = function(x, y, labels = NULL, ...){
   
   if (is.null(labels)) {
-    labels <- LETTERS[1:length(x)]
+    labels = LETTERS[1:length(x)]
   }
   
-  comp <- data.frame(diff = x - y,
-                     aver = rowMeans(cbind(x, y)),
-                     item = labels)
+  comp = data.frame(diff = x - y,
+                    aver = rowMeans(cbind(x, y)),
+                    item = labels)
   
   # the mean of the difference
-  d <- mean(comp$diff)
+  d = mean(comp$diff)
   
   # the standard deviation of the difference
-  s <- stats::sd(comp$diff)
+  s = stats::sd(comp$diff)
   
   # limits of agreement
-  llim <- d - (2 * s)
-  ulim <- d + (2 * s)
+  llim = d - (2 * s)
+  ulim = d + (2 * s)
   
-  aver <- comp$aver
-  item <- comp$item
+  aver = comp$aver
+  item = comp$item
   
-  diff_plot <- 
+  diff_plot = 
     ggplot2::ggplot(comp,
                     ggplot2::aes(x = aver, y = diff, label = item)) +
     ggplot2::geom_hline(yintercept = llim, linetype = "dashed", col = "grey30") +
@@ -68,11 +68,11 @@ compare.default <- function(x, y, labels = NULL, ...){
     ggplot2::theme_bw() +
     ggrepel::geom_text_repel() +
     ggplot2::theme(panel.grid = ggplot2::element_blank(),
-          text = ggplot2::element_text(size = 15),
-          axis.text = ggplot2::element_text(size = 13, color = "grey20", face = 2),
-          axis.title = ggplot2::element_text(size = 12, color = "grey20", face = 2)) +
+                   text = ggplot2::element_text(size = 15),
+                   axis.text = ggplot2::element_text(size = 13, color = "grey20", face = 2),
+                   axis.title = ggplot2::element_text(size = 12, color = "grey20", face = 2)) +
     ggplot2::labs(x = "Average", 
-         y = "Difference (x - y)")
+                  y = "Difference (x - y)")
   
   return(diff_plot)
   
@@ -81,14 +81,14 @@ compare.default <- function(x, y, labels = NULL, ...){
 #' @rdname compare
 #' @method compare PlackettLuce
 #' @export
-compare.PlackettLuce <- function(x, y, ...){
+compare.PlackettLuce = function(x, y, ...){
   
   # get the probability of winning and than set back as log
-  X <- log(stats::coefficients(x, log = FALSE))
+  X = log(stats::coefficients(x, log = FALSE))
   
-  Y <- log(stats::coefficients(y, log = FALSE))
+  Y = log(stats::coefficients(y, log = FALSE))
   
-  lab <- names(X)
+  lab = names(X)
   
   compare(x = X, y = Y, labels = lab)
   
