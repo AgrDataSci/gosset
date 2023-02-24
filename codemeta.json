@@ -7,7 +7,7 @@
   "codeRepository": "https://agrdatasci.github.io/gosset/",
   "issueTracker": "https://github.com/agrdatasci/gosset/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.5.2",
+  "version": "0.6",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -298,10 +298,10 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "2867.377KB",
+  "fileSize": "2834.264KB",
   "citation": [
     {
-      "@type": "SoftwareSourceCode",
+      "@type": "ScholarlyArticle",
       "datePublished": "2022",
       "author": [
         {
@@ -325,9 +325,19 @@
           "familyName": "Steinke"
         }
       ],
-      "name": "{gosset: Tools for Data Analysis in Experimental Agriculture}",
-      "url": "https://CRAN.R-project.org/package=gosset",
-      "description": "R package v0.4"
+      "name": "{gosset: An R Package for Analysis and Synthesis of Ranking Data in Agricultural Experimentation}",
+      "identifier": "10.2139/ssrn.4236267",
+      "url": "https://doi.org/10.2139/ssrn.4236267",
+      "@id": "https://doi.org/10.2139/ssrn.4236267",
+      "sameAs": "https://doi.org/10.2139/ssrn.4236267",
+      "isPartOf": {
+        "@type": "PublicationIssue",
+        "datePublished": "2022",
+        "isPartOf": {
+          "@type": ["PublicationVolume", "Periodical"],
+          "name": "{SSRN} Electronic Journal"
+        }
+      }
     }
   ]
 }

@@ -19,7 +19,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6</span>
       </span>
     </div>
 
@@ -102,7 +102,7 @@ displayed instead of worth</p></dd>
 
 
 <dt>...</dt>
-<dd><p>additional arguments passed to methods</p></dd>
+<dd><p>additional arguments passed to methods. See details</p></dd>
 
 </dl></div>
     <div id="value">
@@ -111,6 +111,10 @@ displayed instead of worth</p></dd>
 
 <p>a vector with the node labels, 
  a data.frame with node rules, a ggplot</p>
+    </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>Argument multcomp = TRUE adds multi-comparison letters from multcompView</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -122,15 +126,15 @@ displayed instead of worth</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://hturner.github.io/PlackettLuce/" class="external-link">"PlackettLuce"</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"beans"</span>, package <span class="op">=</span> <span class="st">"PlackettLuce"</span><span class="op">)</span></span>
-<span><span class="va">G</span> <span class="op">&lt;-</span> <span class="fu"><a href="rank_tricot.html">rank_tricot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">beans</span>,</span>
+<span><span class="va">G</span> <span class="op">=</span> <span class="fu"><a href="rank_tricot.html">rank_tricot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">beans</span>,</span>
 <span>                 items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span>
 <span>                 input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>,</span>
 <span>                 group <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                 additional.rank <span class="op">=</span> <span class="va">beans</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span> </span>
-<span><span class="va">pld</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">G</span>, <span class="va">beans</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"maxTN"</span>, <span class="st">"season"</span>, <span class="st">"lon"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">pld</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">G</span>, <span class="va">beans</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"maxTN"</span>, <span class="st">"season"</span>, <span class="st">"lon"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/pltree.html" class="external-link">pltree</a></span><span class="op">(</span><span class="va">G</span> <span class="op">~</span> <span class="va">maxTN</span> <span class="op">+</span> <span class="va">season</span> <span class="op">+</span> <span class="va">lon</span>, data <span class="op">=</span> <span class="va">pld</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/pltree.html" class="external-link">pltree</a></span><span class="op">(</span><span class="va">G</span> <span class="op">~</span> <span class="va">maxTN</span> <span class="op">+</span> <span class="va">season</span> <span class="op">+</span> <span class="va">lon</span>, data <span class="op">=</span> <span class="va">pld</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">node_labels</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span></span>

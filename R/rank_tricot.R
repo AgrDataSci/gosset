@@ -218,7 +218,7 @@ rank_tricot = function(data,
 #' no NAs or ties are mantained in the final PlackettLuce ranking
 #' 
 #' @param x data.frame with two columns indicating the tricot rankings
-#' 
+#' @noRd
 .validate_rankings = function(x) {
   
   ABC <- apply(x, 1, function(y) {
