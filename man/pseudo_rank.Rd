@@ -19,17 +19,17 @@ Add pseudo-rank to missing values
 }
 \examples{
 library("PlackettLuce")
-R <- matrix(c(1, 2, 0, 0,
+R = matrix(c(1, 2, 0, 0,
               4, 1, 0, 3,
               2, 1, 0, 3,
               1, 2, 0, 0,
               2, 1, 0, 0,
               1, 0, 0, 2), nrow = 6, byrow = TRUE)
-colnames(R) <- c("apple", "banana", "orange", "pear")
+colnames(R) = c("apple", "banana", "orange", "pear")
 
 # summary(PlackettLuce(R))
 
-R <- pseudo_rank(R)
+R = pseudo_rank(R)
 
 summary(PlackettLuce(R))
 }

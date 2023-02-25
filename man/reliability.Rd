@@ -37,9 +37,9 @@ Measures the precision of estimated values, and
 \examples{
 # Case 1. vector example
 
-x <- c(9.5, 12, 12.3, 17)
+x = c(9.5, 12, 12.3, 17)
 
-y <- 11.2
+y = 11.2
 
 reliability(x, y)
 
@@ -47,15 +47,15 @@ reliability(x, y)
 
 library("PlackettLuce") 
 
-R <- matrix(c(1, 2, 4, 3,
+R = matrix(c(1, 2, 4, 3,
               4, 1, 2, 3,
               2, 3, 1, 4,
               4, 2, 3, 1,
               2, 1, 4, 3,
               1, 4, 3, 2), nrow = 6, byrow = TRUE)
-colnames(R) <- c("apple", "banana", "orange", "pear")
+colnames(R) = c("apple", "banana", "orange", "pear")
 
-mod <- PlackettLuce(R)
+mod = PlackettLuce(R)
 
 reliability(mod, ref = "orange")
 
@@ -64,15 +64,15 @@ reliability(mod, ref = "orange")
 
 data("beans", package = "PlackettLuce")
 
-G <- rank_tricot(data = beans,
+G = rank_tricot(data = beans,
                  items = c(1:3),
                  input = c(4:5),
                  group = TRUE,
                  additional.rank = beans[c(6:8)])
 
-pld <- cbind(G, beans[,c("maxTN", "season", "lon")])
+pld = cbind(G, beans[,c("maxTN", "season", "lon")])
 
-tree <- pltree(G ~ maxTN + season + lon, data = pld)
+tree = pltree(G ~ maxTN + season + lon, data = pld)
 
 reliability(tree, ref = "Local")
 

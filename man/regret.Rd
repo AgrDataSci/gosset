@@ -53,43 +53,43 @@ data("breadwheat", package = "gosset")
 # convert the tricot rankings from breadwheat data
 # into a object of class 'grouped_rankings'
 
-G <- rank_tricot(breadwheat,
+G = rank_tricot(breadwheat,
                  items = c("variety_a","variety_b","variety_c"),
                  input = c("overall_best","overall_worst"),
                  group = TRUE)
 
 
 # combine grouped rankings with temperature indices
-mydata <- cbind(G, breadwheat[c("lon","lat")])
+mydata = cbind(G, breadwheat[c("lon","lat")])
 
 # fit a pltree model using geographic data
-mod <- pltree(G ~ ., data = mydata)
+mod = pltree(G ~ ., data = mydata)
 
 regret(mod)
 
 # Case 2 ####
 # list of PlackettLuce models
-R <- matrix(c(1, 2, 3, 0,
+R = matrix(c(1, 2, 3, 0,
               4, 1, 2, 3,
               2, 1, 3, 4,
               1, 2, 3, 0,
               2, 1, 3, 0,
               1, 0, 3, 2), nrow = 6, byrow = TRUE)
-colnames(R) <- c("apple", "banana", "orange", "pear")
+colnames(R) = c("apple", "banana", "orange", "pear")
 
-mod1 <- PlackettLuce(R)
+mod1 = PlackettLuce(R)
 
-R2 <- matrix(c(1, 2, 0, 3,
+R2 = matrix(c(1, 2, 0, 3,
                2, 1, 0, 3,
                2, 1, 0, 3,
                1, 2, 0, 3,
                2, 1, 0, 3,
                1, 3, 4, 2), nrow = 6, byrow = TRUE)
-colnames(R2) <- c("apple", "banana", "orange", "pear")
+colnames(R2) = c("apple", "banana", "orange", "pear")
 
-mod2 <- PlackettLuce(R2)
+mod2 = PlackettLuce(R2)
 
-mod <- list(mod1, mod2)
+mod = list(mod1, mod2)
 
 regret(mod, n1 = 500)
 }

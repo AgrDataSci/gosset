@@ -75,7 +75,7 @@ kendallTau<- function(x, y, null.rm = TRUE, average = TRUE, ...){
 
 #' @rdname kendallTau
 #' @export
-kendallTau.default = function(x, y, null.rm = TRUE, ...){
+kendallTau.default = function(x, y, null.rm = TRUE, average = TRUE, ...){
   
   
   keep = !is.na(x) & !is.na(y)
@@ -145,7 +145,7 @@ kendallTau.default = function(x, y, null.rm = TRUE, ...){
 #' @rdname kendallTau
 #' @method kendallTau matrix
 #' @export
-kendallTau.matrix = function(x, y, average = TRUE, ...){
+kendallTau.matrix = function(x, y, null.rm = TRUE, average = TRUE, ...){
   
   nc = ncol(x)
   

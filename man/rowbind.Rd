@@ -32,7 +32,7 @@ Combine R objects when number and names of columns do not match
 rowbind(airquality, mtcars)
 
 # a list of data frames
-l <- list(airquality, mtcars)
+l = list(airquality, mtcars)
 rowbind(l)
 
 }

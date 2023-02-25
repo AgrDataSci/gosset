@@ -44,18 +44,18 @@ Group and coerce numeric values into Plackett-Luce rankings.
 # A matrix with 10 rankings of 5 items (A, B, C, D, E)
 # with numeric values as "rank"
 set.seed(123)
-df <- cbind(id = rep(1:10, each = 5),
+df = cbind(id = rep(1:10, each = 5),
             items = rep(LETTERS[1:5], times = 10),
             input = runif(50, 1, 3))
 
 # return an object of class 'rankings'
-R <- rank_numeric(df,
+R = rank_numeric(df,
                   items = 2,
                   input = 3,
                   id = 1)
 
 # rankings can be computed in ascending order
-R <- rank_numeric(df,
+R = rank_numeric(df,
                   items = 2,
                   input = 3,
                   id = 1,
@@ -63,7 +63,7 @@ R <- rank_numeric(df,
 
 
 # return an object of class 'grouped_rankings'
-R <- rank_numeric(df,
+R = rank_numeric(df,
                   items = 2,
                   input = 3,
                   id = 1,

@@ -40,6 +40,6 @@ Other goodness-of-fit functions:
 \code{\link{pseudoR2}()}
 }
 \author{
-David Brown, Kauê de Sousa and Jacob van Etten
+David Brown and Jacob van Etten
 }
 \concept{goodness-of-fit functions}

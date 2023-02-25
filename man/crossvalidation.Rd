@@ -66,7 +66,7 @@ Generalized Nonlinear models from \pkg{gnm}, and Plackett-Luce model from
 if (require("gnm")) {
 data("airquality")
 
-cv <- crossvalidation(Temp ~ Wind + Solar.R,
+cv = crossvalidation(Temp ~ Wind + Solar.R,
                       data = airquality,
                       k = 3,
                       seed = 999,
@@ -77,19 +77,19 @@ if(require("PlackettLuce")) {
 # beans data from PlackettLuce
 data("beans", package = "PlackettLuce")
 
-G <- rank_tricot(data = beans,
+G = rank_tricot(data = beans,
                  items = c(1:3),
                  input = c(4:5),
                  additional.rank = beans[c(6:8)],
                  group = TRUE)
 
-beans <- cbind(G, beans)
+beans = cbind(G, beans)
 
 # take seasons as bins
-k <- length(unique(beans$season))
-folds <- as.integer(as.factor(beans$season))
+k = length(unique(beans$season))
+folds = as.integer(as.factor(beans$season))
 
-cv <- crossvalidation(G ~ maxTN,
+cv = crossvalidation(G ~ maxTN,
                       data = beans,
                       k = k,
                       folds = folds,

@@ -22,16 +22,16 @@ taken into account, then they are added as NA's.
  
 library("PlackettLuce")
 
-R <- matrix(c(1, 2, 0, 0,
+R = matrix(c(1, 2, 0, 0,
               4, 1, 2, 3,
               2, 4, 3, 1,
               1, 2, 3, 0,
               2, 1, 1, 0,
               1, 0, 3, 2), nrow = 6, byrow = TRUE)
-colnames(R) <- c("apple", "banana", "orange", "pear")
-R <- as.rankings(R)
+colnames(R) = c("apple", "banana", "orange", "pear")
+R = as.rankings(R)
 
-PC <- rank_paircomp(R)
+PC = rank_paircomp(R)
 
 #############################################
 
@@ -40,12 +40,12 @@ data("breadwheat", package = "gosset")
 
 # convert the tricot rankings from breadwheat data
 # into a object of class 'rankings' from PlackettLuce
-R <- rank_tricot(breadwheat,
+R = rank_tricot(breadwheat,
                  items = c("variety_a","variety_b","variety_c"),
                  input = c("overall_best","overall_worst"))
 
 
-PC <- rank_paircomp(R)
+PC = rank_paircomp(R)
 
 }
 \references{

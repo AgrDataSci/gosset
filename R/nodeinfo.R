@@ -344,10 +344,6 @@ build_tree_nodes = function(x,
     node.ids = 1:length(x)
   }
   
-  if (isTRUE(multcomp)) {
-     require("multcompView")
-  }
-  
   estimate = 0L
   bmin = 0L
   bmax = 0L

@@ -32,10 +32,10 @@ Measures the agreement between two methods
 }
 \examples{
 set.seed(1)
-x <- runif(10, -1, 2)
+x = runif(10, -1, 2)
 
 set.seed(2)
-y <- runif(10, -1, 2)
+y = runif(10, -1, 2)
 
 compare(x, y)
 

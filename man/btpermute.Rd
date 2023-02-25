@@ -64,7 +64,8 @@ The selection procedure consists of two steps. In the first step, \code{btpermut
  explanatory power for pairwise rankings than the random variables.
 }
 \examples{
-\donttest{
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+
 require("BradleyTerry2")
 
 data("kenyachoice", package = "gosset")
@@ -75,7 +76,7 @@ mod <- btpermute(contests = kenyachoice$contests,
                  seed = 1)
 
 mod
-}
+\dontshow{\}) # examplesIf}
 }
 \references{
 Lysen, S. (2009) Permuted inclusion criterion: A variable selection technique. 

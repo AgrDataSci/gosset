@@ -31,15 +31,15 @@ taken into account, then they are added as NA's.
 \examples{
 library("PlackettLuce")
 
-R <- matrix(c(1, 2, 0, 0,
+R = matrix(c(1, 2, 0, 0,
               4, 1, 2, 3,
               2, 4, 3, 1,
               1, 2, 3, 0,
               2, 1, 1, 0,
               1, 0, 3, 2), nrow = 6, byrow = TRUE)
-colnames(R) <- c("apple", "banana", "orange", "pear")
+colnames(R) = c("apple", "banana", "orange", "pear")
 
-R <- as.rankings(R)
+R = as.rankings(R)
 
 rank_binomial(R)
 

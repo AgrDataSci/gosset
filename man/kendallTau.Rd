@@ -11,9 +11,9 @@
 \usage{
 kendallTau(x, y, null.rm = TRUE, average = TRUE, ...)
 
-\method{kendallTau}{default}(x, y, null.rm = TRUE, ...)
+\method{kendallTau}{default}(x, y, null.rm = TRUE, average = TRUE, ...)
 
-\method{kendallTau}{matrix}(x, y, average = TRUE, ...)
+\method{kendallTau}{matrix}(x, y, null.rm = TRUE, average = TRUE, ...)
 
 \method{kendallTau}{rankings}(x, y, ...)
 

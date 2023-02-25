@@ -37,43 +37,43 @@
 #' # convert the tricot rankings from breadwheat data
 #' # into a object of class 'grouped_rankings'
 #' 
-#' G <- rank_tricot(breadwheat,
+#' G = rank_tricot(breadwheat,
 #'                  items = c("variety_a","variety_b","variety_c"),
 #'                  input = c("overall_best","overall_worst"),
 #'                  group = TRUE)
 #' 
 #' 
 #' # combine grouped rankings with temperature indices
-#' mydata <- cbind(G, breadwheat[c("lon","lat")])
+#' mydata = cbind(G, breadwheat[c("lon","lat")])
 #' 
 #' # fit a pltree model using geographic data
-#' mod <- pltree(G ~ ., data = mydata)
+#' mod = pltree(G ~ ., data = mydata)
 #' 
 #' regret(mod)
 #' 
 #' # Case 2 ####
 #' # list of PlackettLuce models
-#' R <- matrix(c(1, 2, 3, 0,
+#' R = matrix(c(1, 2, 3, 0,
 #'               4, 1, 2, 3,
 #'               2, 1, 3, 4,
 #'               1, 2, 3, 0,
 #'               2, 1, 3, 0,
 #'               1, 0, 3, 2), nrow = 6, byrow = TRUE)
-#' colnames(R) <- c("apple", "banana", "orange", "pear")
+#' colnames(R) = c("apple", "banana", "orange", "pear")
 #' 
-#' mod1 <- PlackettLuce(R)
+#' mod1 = PlackettLuce(R)
 #' 
-#' R2 <- matrix(c(1, 2, 0, 3,
+#' R2 = matrix(c(1, 2, 0, 3,
 #'                2, 1, 0, 3,
 #'                2, 1, 0, 3,
 #'                1, 2, 0, 3,
 #'                2, 1, 0, 3,
 #'                1, 3, 4, 2), nrow = 6, byrow = TRUE)
-#' colnames(R2) <- c("apple", "banana", "orange", "pear")
+#' colnames(R2) = c("apple", "banana", "orange", "pear")
 #' 
-#' mod2 <- PlackettLuce(R2)
+#' mod2 = PlackettLuce(R2)
 #' 
-#' mod <- list(mod1, mod2)
+#' mod = list(mod1, mod2)
 #' 
 #' regret(mod, n1 = 500)
 #' @importFrom partykit nodeids
@@ -82,7 +82,7 @@
 #' @importFrom stats rexp
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @export
-regret <- function(object, ..., bootstrap = TRUE, normalize = TRUE) {
+regret = function(object, ..., bootstrap = TRUE, normalize = TRUE) {
   
   UseMethod("regret")
   
@@ -91,65 +91,65 @@ regret <- function(object, ..., bootstrap = TRUE, normalize = TRUE) {
 
 #' @rdname regret
 #' @export
-regret.default <- function(object, ..., values, items, group,
-                           bootstrap = TRUE, normalize = TRUE){
+regret.default = function(object, ..., values, items, group,
+                          bootstrap = TRUE, normalize = TRUE){
   
-  coeffs <- object[, c(items, values, group)]
+  coeffs = object[, c(items, values, group)]
   
-  names(coeffs) <- c("items", "estimate", "node")
+  names(coeffs) = c("items", "estimate", "node")
   
-  items <- unique(coeffs$items)
+  items = unique(coeffs$items)
   
   if (isTRUE(bootstrap)) {
     
     # now the bayes bootstrapping
-    coeffs <- split(coeffs, paste0(coeffs$node, coeffs$items))
+    coeffs = split(coeffs, paste0(coeffs$node, coeffs$items))
     
-    coeffs <- lapply(coeffs, function(x){
+    coeffs = lapply(coeffs, function(x){
       
-      boots <- bayes_boot(x$estimate, mean, ...)
+      boots = bayes_boot(x$estimate, mean, ...)
       
       data.frame(estimate = mean(boots), node = x$node[1], items = x$items[1])
       
     })
     
-    coeffs <- do.call("rbind", coeffs)
+    coeffs = do.call("rbind", coeffs)
     
   }
   
   # regret is difference with the best variety in each node
-  coeffs$regret <- unlist(tapply(coeffs$estimate, coeffs$node, function(x) {
+  coeffs$regret = unlist(tapply(coeffs$estimate, coeffs$node, function(x) {
     max(x) - x
   }))
-
+  
   # worst regret is the highest regret across the nodes
-  wr <- tapply(coeffs$regret, coeffs$items, max)
-
+  wr = tapply(coeffs$regret, coeffs$items, max)
+  
   # regret is the sum of the squared values of all items regret
-  regret <- unlist(tapply(coeffs$regret, coeffs$items, function(x) {
+  regret = unlist(tapply(coeffs$regret, coeffs$items, function(x) {
     sum(x)^2
   }))
   
-  worth <- tapply(coeffs$estimate, coeffs$items, mean)
+  worth = tapply(coeffs$estimate, coeffs$items, mean)
   
-  w <- data.frame(items = items, 
-                  worth = worth[items], 
-                  worst_regret = wr[items], 
-                  regret = regret[items])
-
-  w <- w[order(w$regret), ]
+  w = data.frame(items = items, 
+                 worth = worth[items], 
+                 worst_regret = wr[items], 
+                 regret = regret[items])
+  
+  w = w[order(w$regret), ]
   
   if (isTRUE(normalize)) {
     # normalize to sum to 1
-    w[2:4] <- lapply(w[2:4], function(x) {
-      nrm <- 1 / sum(x)
+    w[2:4] = lapply(w[2:4], function(x) {
+      nrm = 1 / sum(x)
       x * nrm
     })
   }
   
-  rownames(w) <- 1:nrow(w)
+  rownames(w) = 1:nrow(w)
   
-  class(w) <- union("gosset_df", class(w))
+  class(w) = union("gosset_df", class(w))
   
   return(w)
   
@@ -158,73 +158,73 @@ regret.default <- function(object, ..., values, items, group,
 #' @rdname regret
 #' @method regret pltree
 #' @export
-regret.pltree <- function(object, bootstrap = TRUE, normalize = TRUE, ...) {
+regret.pltree = function(object, bootstrap = TRUE, normalize = TRUE, ...) {
   
   # get ids of terminal nodes
-  nodes <- partykit::nodeids(object, terminal = TRUE)
+  nodes = partykit::nodeids(object, terminal = TRUE)
   
   # get the models from each terminal node
-  coeffs <- list()
+  coeffs = list()
   for(i in seq_along(nodes)) {
-    coeffs[[i]] <- object[[ nodes[i] ]]$node$info$object
+    coeffs[[i]] = object[[ nodes[i] ]]$node$info$object
   }
   
   # probability of the scenario is the weigthed values of 
   # number of observations in the nodes
   # get number of observations in each inner node
-  nobs <- integer(0L)
+  nobs = integer(0L)
   for (i in seq_along(nodes)) {
-    nobs <- c(nobs, as.integer(object[[nodes[i]]]$node$info$nobs))
+    nobs = c(nobs, as.integer(object[[nodes[i]]]$node$info$nobs))
   }
   
-  probs <- nobs / sum(nobs)
+  probs = nobs / sum(nobs)
   
   if (isTRUE(bootstrap)) {
-    ci_level <- 1 - object$info$control$alpha
+    ci_level = 1 - object$info$control$alpha
     # get worth from models using qvcalc
-    coeffs <- lapply(coeffs, function(X) {
-      pars <- psychotools::itempar(X, log = FALSE)
-      pars <- qvcalc::qvcalc(pars)$qvframe
-      pars <- as.data.frame(as.matrix(pars))
-      pars$items <- rownames(pars)
+    coeffs = lapply(coeffs, function(X) {
+      pars = psychotools::itempar(X, log = FALSE)
+      pars = qvcalc::qvcalc(pars)$qvframe
+      pars = as.data.frame(as.matrix(pars))
+      pars$items = rownames(pars)
       # add confidence intervals as "new" data sets for bootstrapping 
-      pars1 <- pars
-      pars1$estimate <- pars1$estimate + stats::qnorm(1 - (1 - ci_level) / 2) * pars1$quasiSE
-      pars2 <- pars
-      pars2$estimate <- pars2$estimate - stats::qnorm(1 - (1 - ci_level) / 2) * pars2$quasiSE
-      pars <- rbind(pars, pars1, pars2)
+      pars1 = pars
+      pars1$estimate = pars1$estimate + stats::qnorm(1 - (1 - ci_level) / 2) * pars1$quasiSE
+      pars2 = pars
+      pars2$estimate = pars2$estimate - stats::qnorm(1 - (1 - ci_level) / 2) * pars2$quasiSE
+      pars = rbind(pars, pars1, pars2)
       pars
     })
     
     # get names of items
-    items <- unique(coeffs[[1]]$items)
+    items = unique(coeffs[[1]]$items)
     
     # combine the worth by rows into a single data.frame
-    coeffs <- do.call("rbind", coeffs)
+    coeffs = do.call("rbind", coeffs)
     
     # add node id to the data.frame
-    coeffs$node <- rep(nodes, each = length(items) * 3)
+    coeffs$node = rep(nodes, each = length(items) * 3)
   }
   
   if (isFALSE(bootstrap)) {
     # get worth from models using qvcalc
-    coeffs <- lapply(coeffs, function(X) {
-      pars <- psychotools::itempar(X, vcov = FALSE, alias = TRUE)
-      pars <- qvcalc::qvcalc.itempar(pars)
-      pars <- pars[[2]]
-      pars <- as.data.frame(as.matrix(pars))
-      pars$items <- rownames(pars)
+    coeffs = lapply(coeffs, function(X) {
+      pars = psychotools::itempar(X, vcov = FALSE, alias = TRUE)
+      pars = qvcalc::qvcalc.itempar(pars)
+      pars = pars[[2]]
+      pars = as.data.frame(as.matrix(pars))
+      pars$items = rownames(pars)
       pars
     })
     
     # get names of items
-    items <- unique(coeffs[[1]]$items)
+    items = unique(coeffs[[1]]$items)
     
     # combine the worth by rows into a single data.frame
-    coeffs <- do.call("rbind", coeffs)
+    coeffs = do.call("rbind", coeffs)
     
     # add node id to the data.frame
-    coeffs$node <- rep(nodes, each = length(items))
+    coeffs$node = rep(nodes, each = length(items))
   }
   
   regret(object = coeffs,
@@ -240,73 +240,73 @@ regret.pltree <- function(object, bootstrap = TRUE, normalize = TRUE, ...) {
 #' @rdname regret
 #' @method regret list
 #' @export
-regret.list <- function(object, bootstrap = TRUE, normalize = TRUE, ...) {
+regret.list = function(object, bootstrap = TRUE, normalize = TRUE, ...) {
   
-  isPlackettLuce <- unlist(lapply(object, class))
+  isPlackettLuce = unlist(lapply(object, class))
   
   if (!"PlackettLuce" %in% isPlackettLuce) {
     stop("Only objects of class 'PlackettLuce' are accepted for this method \n")
   }
   
   if (isTRUE(bootstrap)) {
-    ci_level <- 1 - 0.05
+    ci_level = 1 - 0.05
     # is likely that the error id due to missing items in one the nodes
     # so we apply the function pseudo_ranking() to add these missing items
     # extract the original rankings, add pseudo_ranking and refit the model
-    coeffs <- lapply(object, function(y){
-      r <- y$rankings
-      r <- pseudo_rank(r)
+    coeffs = lapply(object, function(y){
+      r = y$rankings
+      r = pseudo_rank(r)
       stats::update(y, rankings = r)
     })
     
     # get worth from models using qvcalc
-    coeffs <- lapply(coeffs, function(X) {
-      pars <- psychotools::itempar(X, log = FALSE)
+    coeffs = lapply(coeffs, function(X) {
+      pars = psychotools::itempar(X, log = FALSE)
       # get estimates from item parameters using qvcalc
-      pars <- qvcalc::qvcalc(pars)$qvframe
-      pars$quasiSE[is.na(pars$quasiSE)] <- min(pars$quasiSE, na.rm = TRUE)
-      pars$items <- rownames(pars)
+      pars = qvcalc::qvcalc(pars)$qvframe
+      pars$quasiSE[is.na(pars$quasiSE)] = min(pars$quasiSE, na.rm = TRUE)
+      pars$items = rownames(pars)
       # add confidence intervals as "new" data sets for bootstrapping
-      pars1 <- pars
-      pars1$estimate <- pars1$estimate + stats::qnorm(1 - (1 - ci_level) / 2) * pars1$quasiSE
-      pars2 <- pars
-      pars2$estimate <- pars2$estimate - stats::qnorm(1 - (1 - ci_level) / 2) * pars2$quasiSE
-      pars <- rbind(pars, pars1, pars2)
+      pars1 = pars
+      pars1$estimate = pars1$estimate + stats::qnorm(1 - (1 - ci_level) / 2) * pars1$quasiSE
+      pars2 = pars
+      pars2$estimate = pars2$estimate - stats::qnorm(1 - (1 - ci_level) / 2) * pars2$quasiSE
+      pars = rbind(pars, pars1, pars2)
       pars
     })
     
     # get names of items
-    items <- unique(coeffs[[1]]$items)
+    items = unique(coeffs[[1]]$items)
     
     # combine the worth by rows into a single data.frame
-    coeffs <- do.call("rbind", coeffs)
+    coeffs = do.call("rbind", coeffs)
     
     # add node id to the data.frame
-    coeffs$node <- rep(1:length(object), each = length(items) * 3)
+    coeffs$node = rep(1:length(object), each = length(items) * 3)
     
   }
   
   if (isFALSE(bootstrap)) {
     # get worth from models using qvcalc
-    coeffs <- lapply(object, function(y){
-      r <- y$rankings
-      r <- pseudo_rank(r)
-      m <- stats::update(y, rankings = r)
-      pars <- psychotools::itempar(m, log = FALSE)
-      pars <- qvcalc::qvcalc(pars)$qvframe
-      pars$quasiSE[is.na(pars$quasiSE)] <- min(pars$quasiSE, na.rm = TRUE)
-      pars$items <- rownames(pars)
+    coeffs = lapply(object, function(y){
+      r = y$rankings
+      r = pseudo_rank(r)
+      m = stats::update(y, rankings = r)
+      pars = psychotools::itempar(m, log = FALSE)
+      pars = qvcalc::qvcalc(pars)$qvframe
+      pars$quasiSE[is.na(pars$quasiSE)] = min(pars$quasiSE, na.rm = TRUE)
+      pars$items = rownames(pars)
       pars
     })
     
     # get names of items
-    items <- unique(coeffs[[1]]$items)
+    items = unique(coeffs[[1]]$items)
     
     # combine the worth by rows into a single data.frame
-    coeffs <- do.call("rbind", coeffs)
+    coeffs = do.call("rbind", coeffs)
     
     # add node id to the data.frame
-    coeffs$node <- rep(1:length(object), each = length(items))
+    coeffs$node = rep(1:length(object), each = length(items))
     
   }
   
@@ -338,16 +338,16 @@ regret.list <- function(object, bootstrap = TRUE, normalize = TRUE, ...) {
 #' \donttest{
 #' # Case 1
 #' set.seed(1337)
-#' exp_data <- rexp(8, rate = 1)
+#' exp_data = rexp(8, rate = 1)
 #' exp_data
-#' bb_sample <- bayes_boot(exp_data, mean, n1 = 10000, n2 = 1000)
+#' bb_sample = bayes_boot(exp_data, mean, n1 = 10000, n2 = 1000)
 #' 
 #' # Case 2
-#' boot_fn <- function(cars, weights) {
+#' boot_fn = function(cars, weights) {
 #'   loess(dist ~ speed, cars, weights = weights)$fitted
 #' }
 #' 
-#' bb_loess <- bayes_boot(cars, boot_fn, n1 = 1000, use_weights = TRUE, weight_arg = "weights")
+#' bb_loess = bayes_boot(cars, boot_fn, n1 = 1000, use_weights = TRUE, weight_arg = "weights")
 #' 
 #' # Plotting the data
 #' plot(cars$speed, cars$dist, pch = 20, col = "tomato4", xlab = "Car speed in mph",
@@ -362,32 +362,32 @@ regret.list <- function(object, bootstrap = TRUE, normalize = TRUE, ...) {
 #'       col = "tomato", lwd = 4)
 #' }
 #' @noRd
-bayes_boot <- function(data, statistic,
-                       n1 = 1000, 
-                       n2 = 1000, 
-                       use_weights = FALSE, 
-                       weight_arg = NULL, ...) {
+bayes_boot = function(data, statistic,
+                      n1 = 1000, 
+                      n2 = 1000, 
+                      use_weights = FALSE, 
+                      weight_arg = NULL, ...) {
   # Draw from a uniform Dirichlet dist. with alpha set to rep(1, n_dim).
   # Using the facts that you can transform gamma distributed draws into 
   # Dirichlet draws and that rgamma(n, 1) <=> rexp(n, 1)
-  dirichlet_weights <- matrix(stats::rexp(NROW(data) * n1, 1) , ncol = NROW(data), byrow = TRUE)
-  dirichlet_weights <- dirichlet_weights / rowSums(dirichlet_weights)
+  dirichlet_weights = matrix(stats::rexp(NROW(data) * n1, 1) , ncol = NROW(data), byrow = TRUE)
+  dirichlet_weights = dirichlet_weights / rowSums(dirichlet_weights)
   
   if(use_weights) {
-    stat_call <- quote(statistic(data, w, ...))
-    names(stat_call)[3] <- weight_arg
-    boot_sample <- apply(dirichlet_weights, 1, function(w) {
+    stat_call = quote(statistic(data, w, ...))
+    names(stat_call)[3] = weight_arg
+    boot_sample = apply(dirichlet_weights, 1, function(w) {
       eval(stat_call)
     })
   } else {
     if(is.null(dim(data)) || length(dim(data)) < 2) { # data is a list type of object
-      boot_sample <- apply(dirichlet_weights, 1, function(w) {
-        data_sample <- sample(data, size = n2, replace = TRUE, prob = w)
+      boot_sample = apply(dirichlet_weights, 1, function(w) {
+        data_sample = sample(data, size = n2, replace = TRUE, prob = w)
         statistic(data_sample, ...)
       })
     } else { # data is a table type of object
-      boot_sample <- apply(dirichlet_weights, 1, function(w) {
-        index_sample <- sample(nrow(data), size = n2, replace = TRUE, prob = w)
+      boot_sample = apply(dirichlet_weights, 1, function(w) {
+        index_sample = sample(nrow(data), size = n2, replace = TRUE, prob = w)
         statistic(data[index_sample, ,drop = FALSE], ...)
       })
     }

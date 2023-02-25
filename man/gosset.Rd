@@ -13,6 +13,8 @@ Toolkit to analyse experimental agriculture data, from data synthesis to model s
 \seealso{
 \strong{Useful links:}
 \itemize{
+\item{gosset paper: 
+ \doi{10.2139/ssrn.4236267}}
 \item{Development repository: 
  \url{https://github.com/AgrDataSci/gosset}}
 \item{Static documentation: 

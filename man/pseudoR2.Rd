@@ -41,7 +41,7 @@ a similar scale (from 0 to 1), with higher values indicating better model fit.
 
 data("airquality")
 
-mod <- glm(Temp ~ Wind + Solar.R,
+mod = glm(Temp ~ Wind + Solar.R,
            data = airquality,
            family = poisson())
 
