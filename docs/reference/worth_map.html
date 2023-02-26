@@ -19,7 +19,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7</span>
       </span>
     </div>
 
@@ -97,66 +97,75 @@ a list objects of class <code>PlackettLuce</code></p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"psychotree"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://hturner.github.io/PlackettLuce/" class="external-link">"PlackettLuce"</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"Topmodel2007"</span>, package <span class="op">=</span> <span class="st">"psychotree"</span><span class="op">)</span></span>
-<span><span class="va">R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/group.html" class="external-link">as.grouped_rankings</a></span><span class="op">(</span><span class="va">Topmodel2007</span><span class="op">$</span><span class="va">preference</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">tm_tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/pltree.html" class="external-link">pltree</a></span><span class="op">(</span><span class="va">R</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">Topmodel2007</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>, </span>
-<span>                  minsize <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                  npseudo <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">worth_map</span><span class="op">(</span><span class="va">tm_tree</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">##########################################</span></span>
-<span></span>
-<span><span class="co"># Ranking of preference on four fruits </span></span>
-<span><span class="co"># based on traits taste, texture, </span></span>
-<span><span class="co"># price and storability</span></span>
-<span></span>
-<span><span class="co"># taste</span></span>
-<span><span class="va">R1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>,</span>
-<span>               <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">2</span>,</span>
-<span>               <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>,</span>
-<span>               <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">R1</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span>, <span class="st">"pear"</span><span class="op">)</span></span>
-<span><span class="va">mod1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R1</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># texture</span></span>
-<span><span class="va">R2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">3</span>,</span>
-<span>               <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">2</span>,</span>
-<span>               <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">3</span>,</span>
-<span>               <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">R2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span>, <span class="st">"pear"</span><span class="op">)</span></span>
-<span><span class="va">mod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R2</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># price</span></span>
-<span><span class="va">R3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">1</span>,</span>
-<span>               <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>,</span>
-<span>               <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">1</span>,</span>
-<span>               <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">R3</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span>, <span class="st">"pear"</span><span class="op">)</span></span>
-<span><span class="va">mod3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R3</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># storability</span></span>
-<span><span class="va">R4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">2</span>,</span>
-<span>               <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">2</span>,</span>
-<span>               <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">4</span>,</span>
-<span>               <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">1</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">R4</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span>, <span class="st">"pear"</span><span class="op">)</span></span>
-<span><span class="va">mod4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R4</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># models in a list</span></span>
-<span><span class="va">mods</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mod1</span>, <span class="va">mod2</span>, <span class="va">mod3</span>, <span class="va">mod4</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># name for each model</span></span>
-<span><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Taste"</span>, <span class="st">"Texture"</span>, <span class="st">"Price"</span>, <span class="st">"Storability"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">worth_map</span><span class="op">(</span><span class="va">mods</span>, <span class="va">labels</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># plot only one model as bar </span></span>
-<span><span class="fu">worth_bar</span><span class="op">(</span><span class="va">mod1</span><span class="op">)</span></span>
-<span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"psychotree"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: partykit</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: grid</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: libcoin</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: mvtnorm</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: psychotools</span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://hturner.github.io/PlackettLuce/" class="external-link">"PlackettLuce"</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"Topmodel2007"</span>, package <span class="op">=</span> <span class="st">"psychotree"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">R</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/group.html" class="external-link">as.grouped_rankings</a></span><span class="op">(</span><span class="va">Topmodel2007</span><span class="op">$</span><span class="va">preference</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tm_tree</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/pltree.html" class="external-link">pltree</a></span><span class="op">(</span><span class="va">R</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">Topmodel2007</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>, </span></span>
+<span class="r-in"><span>                  minsize <span class="op">=</span> <span class="fl">5</span>,</span></span>
+<span class="r-in"><span>                  npseudo <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">worth_map</span><span class="op">(</span><span class="va">tm_tree</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="worth_map-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##########################################</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Ranking of preference on four fruits </span></span></span>
+<span class="r-in"><span><span class="co"># based on traits taste, texture, </span></span></span>
+<span class="r-in"><span><span class="co"># price and storability</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># taste</span></span></span>
+<span class="r-in"><span><span class="va">R1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">R1</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span>, <span class="st">"pear"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mod1</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># texture</span></span></span>
+<span class="r-in"><span><span class="va">R2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">R2</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span>, <span class="st">"pear"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mod2</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R2</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># price</span></span></span>
+<span class="r-in"><span><span class="va">R3</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">R3</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span>, <span class="st">"pear"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mod3</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R3</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># storability</span></span></span>
+<span class="r-in"><span><span class="va">R4</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">4</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">1</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">R4</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span>, <span class="st">"pear"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mod4</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R4</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># models in a list</span></span></span>
+<span class="r-in"><span><span class="va">mods</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mod1</span>, <span class="va">mod2</span>, <span class="va">mod3</span>, <span class="va">mod4</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># name for each model</span></span></span>
+<span class="r-in"><span><span class="va">labels</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Taste"</span>, <span class="st">"Texture"</span>, <span class="st">"Price"</span>, <span class="st">"Storability"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">worth_map</span><span class="op">(</span><span class="va">mods</span>, <span class="va">labels</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="worth_map-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># plot only one model as bar </span></span></span>
+<span class="r-in"><span><span class="fu">worth_bar</span><span class="op">(</span><span class="va">mod1</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="worth_map-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

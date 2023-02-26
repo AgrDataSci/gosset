@@ -14,7 +14,8 @@
 #' @param x a numeric vector, matrix or data frame
 #' @param y a vector, matrix or data frame with compatible dimensions to \code{x}
 #' @param null.rm logical, to remove zeros from \code{x} and \code{y} 
-#' @param average logical, if FALSE returns the kendall and N-effective for each entry
+#' @param average logical, if \code{FALSE} returns the kendall and N-effective for each entry
+#' @param na.omit logical, if \code{TRUE} ignores entries with kendall = NA when computing the average
 #' @param ... further arguments affecting the Kendall tau produced. See details 
 #' @return The Kendall correlation coefficient and the Effective N, which 
 #' is the equivalent N needed if all items were compared to all items. 
@@ -67,7 +68,7 @@
 #' @importFrom stats cor
 #' @importFrom PlackettLuce as.grouped_rankings
 #' @export
-kendallTau<- function(x, y, null.rm = TRUE, average = TRUE, ...){
+kendallTau = function(x, y, null.rm = TRUE, average = TRUE, na.omit = FALSE, ...){
   
   UseMethod("kendallTau")
   
@@ -75,7 +76,7 @@ kendallTau<- function(x, y, null.rm = TRUE, average = TRUE, ...){
 
 #' @rdname kendallTau
 #' @export
-kendallTau.default = function(x, y, null.rm = TRUE, average = TRUE, ...){
+kendallTau.default = function(x, y, null.rm = TRUE, ...){
   
   
   keep = !is.na(x) & !is.na(y)
@@ -145,7 +146,7 @@ kendallTau.default = function(x, y, null.rm = TRUE, average = TRUE, ...){
 #' @rdname kendallTau
 #' @method kendallTau matrix
 #' @export
-kendallTau.matrix = function(x, y, null.rm = TRUE, average = TRUE, ...){
+kendallTau.matrix = function(x, y, null.rm = TRUE, average = TRUE, na.omit = FALSE, ...){
   
   nc = ncol(x)
   
@@ -164,6 +165,10 @@ kendallTau.matrix = function(x, y, null.rm = TRUE, average = TRUE, ...){
     rownames(kt) = 1:nrow(kt)
     return(kt)
   }
+  
+  if (isTRUE(na.omit)) {
+    kt = kt[!is.na(kt[,1]), ]
+  } 
   
   # Extract the values from the matrix
   tau = kt[,1]

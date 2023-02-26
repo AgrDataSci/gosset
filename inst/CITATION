@@ -1,6 +1,4 @@
-citHeader("To cite package ‘gosset’ in publications, please use:")
-
-citEntry(entry = "Article",
+bibentry(bibtype = "Article",
   title = "{gosset: An R Package for Analysis and Synthesis of Ranking Data in Agricultural Experimentation}",
   doi = "10.2139/ssrn.4236267",
   url = "https://doi.org/10.2139/ssrn.4236267",

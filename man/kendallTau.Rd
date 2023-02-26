@@ -9,11 +9,11 @@
 \alias{kendallTau.paircomp}
 \title{Kendall rank correlation coefficient}
 \usage{
-kendallTau(x, y, null.rm = TRUE, average = TRUE, ...)
+kendallTau(x, y, null.rm = TRUE, average = TRUE, na.omit = FALSE, ...)
 
-\method{kendallTau}{default}(x, y, null.rm = TRUE, average = TRUE, ...)
+\method{kendallTau}{default}(x, y, null.rm = TRUE, ...)
 
-\method{kendallTau}{matrix}(x, y, null.rm = TRUE, average = TRUE, ...)
+\method{kendallTau}{matrix}(x, y, null.rm = TRUE, average = TRUE, na.omit = FALSE, ...)
 
 \method{kendallTau}{rankings}(x, y, ...)
 
@@ -28,7 +28,9 @@ kendallTau(x, y, null.rm = TRUE, average = TRUE, ...)
 
 \item{null.rm}{logical, to remove zeros from \code{x} and \code{y}}
 
-\item{average}{logical, if FALSE returns the kendall and N-effective for each entry}
+\item{average}{logical, if \code{FALSE} returns the kendall and N-effective for each entry}
+
+\item{na.omit}{logical, if \code{TRUE} ignores entries with kendall = NA when computing the average}
 
 \item{...}{further arguments affecting the Kendall tau produced. See details}
 }

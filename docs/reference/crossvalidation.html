@@ -20,7 +20,7 @@ PlackettLuce"><meta property="og:image" content="/logo.svg"><!-- mathjax --><scr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7</span>
       </span>
     </div>
 
@@ -177,42 +177,46 @@ goodness-of-fit estimates, which are:</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
-<span><span class="co"># Generalized Linear Models</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://github.com/hturner/gnm" class="external-link">"gnm"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"airquality"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">cv</span> <span class="op">&lt;-</span> <span class="fu">crossvalidation</span><span class="op">(</span><span class="va">Temp</span> <span class="op">~</span> <span class="va">Wind</span> <span class="op">+</span> <span class="va">Solar.R</span>,</span>
-<span>                      data <span class="op">=</span> <span class="va">airquality</span>,</span>
-<span>                      k <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>                      seed <span class="op">=</span> <span class="fl">999</span>,</span>
-<span>                      family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">poisson</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">}</span>                    </span>
-<span><span class="co"># Plackett-Luce Model</span></span>
-<span><span class="kw">if</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://hturner.github.io/PlackettLuce/" class="external-link">"PlackettLuce"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span><span class="co"># beans data from PlackettLuce</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"beans"</span>, package <span class="op">=</span> <span class="st">"PlackettLuce"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">G</span> <span class="op">&lt;-</span> <span class="fu"><a href="rank_tricot.html">rank_tricot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">beans</span>,</span>
-<span>                 items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span>
-<span>                 input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>,</span>
-<span>                 additional.rank <span class="op">=</span> <span class="va">beans</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">]</span>,</span>
-<span>                 group <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">beans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">G</span>, <span class="va">beans</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># take seasons as bins</span></span>
-<span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">beans</span><span class="op">$</span><span class="va">season</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">folds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">beans</span><span class="op">$</span><span class="va">season</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">cv</span> <span class="op">&lt;-</span> <span class="fu">crossvalidation</span><span class="op">(</span><span class="va">G</span> <span class="op">~</span> <span class="va">maxTN</span>,</span>
-<span>                      data <span class="op">=</span> <span class="va">beans</span>,</span>
-<span>                      k <span class="op">=</span> <span class="va">k</span>,</span>
-<span>                      folds <span class="op">=</span> <span class="va">folds</span>,</span>
-<span>                      minsize <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="co"># }</span></span>
-<span>                </span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="co"># Generalized Linear Models</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://github.com/hturner/gnm" class="external-link">"gnm"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"airquality"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">cv</span> <span class="op">=</span> <span class="fu">crossvalidation</span><span class="op">(</span><span class="va">Temp</span> <span class="op">~</span> <span class="va">Wind</span> <span class="op">+</span> <span class="va">Solar.R</span>,</span></span>
+<span class="r-in"><span>                      data <span class="op">=</span> <span class="va">airquality</span>,</span></span>
+<span class="r-in"><span>                      k <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>                      seed <span class="op">=</span> <span class="fl">999</span>,</span></span>
+<span class="r-in"><span>                      family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">poisson</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span>                    </span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: gnm</span>
+<span class="r-in"><span><span class="co"># Plackett-Luce Model</span></span></span>
+<span class="r-in"><span><span class="kw">if</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://hturner.github.io/PlackettLuce/" class="external-link">"PlackettLuce"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># beans data from PlackettLuce</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"beans"</span>, package <span class="op">=</span> <span class="st">"PlackettLuce"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">G</span> <span class="op">=</span> <span class="fu"><a href="rank_tricot.html">rank_tricot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">beans</span>,</span></span>
+<span class="r-in"><span>                 items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 additional.rank <span class="op">=</span> <span class="va">beans</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>                 group <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">beans</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">G</span>, <span class="va">beans</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># take seasons as bins</span></span></span>
+<span class="r-in"><span><span class="va">k</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">beans</span><span class="op">$</span><span class="va">season</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">folds</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">beans</span><span class="op">$</span><span class="va">season</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">cv</span> <span class="op">=</span> <span class="fu">crossvalidation</span><span class="op">(</span><span class="va">G</span> <span class="op">~</span> <span class="va">maxTN</span>,</span></span>
+<span class="r-in"><span>                      data <span class="op">=</span> <span class="va">beans</span>,</span></span>
+<span class="r-in"><span>                      k <span class="op">=</span> <span class="va">k</span>,</span></span>
+<span class="r-in"><span>                      folds <span class="op">=</span> <span class="va">folds</span>,</span></span>
+<span class="r-in"><span>                      minsize <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: PlackettLuce</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using Plackett-Luce model</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span>                </span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
