@@ -57,11 +57,25 @@
 #' 
 #' preds = predict(mod)
 #' 
-#' k = kendallTau(R, preds)
+#' kendallTau(R, preds)
 #' 
 #' # Also returns raw values (no average) 
 #' 
-#' k = kendallTau(R, preds, average = FALSE)
+#' kendallTau(R, preds, average = FALSE)
+#' 
+#' # Choose to ignore entries with NA
+#' R2 = matrix(c(1, 2, 4, 3,
+#'               1, 4, 2, 3,
+#'               NA, NA, NA, NA,
+#'               1, 2, 4, 3,
+#'               1, 3, 4, 2,
+#'               1, 4, 3, 2), nrow = 6, byrow = TRUE)
+#' 
+#' kendallTau(R, R2, average = FALSE)
+#' 
+#' kendallTau(R, R2, average = TRUE)
+#' 
+#' kendallTau(R, R2, average = TRUE, na.omit = TRUE)
 #' 
 #' @seealso \code{\link[stats]{cor}}
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
