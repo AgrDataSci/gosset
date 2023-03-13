@@ -104,7 +104,7 @@ van Etten J., et al. (2016). Experimental Agriculture, 55(S1), 275–296.
 \code{\link[PlackettLuce]{rankings}}, \code{\link{breadwheat}}
 
 Other rank functions: 
-\code{\link{rank_binomial}()},
+\code{\link{break_rank}()},
 \code{\link{rank_numeric}()},
 \code{\link{rank_paircomp}()}
 }
