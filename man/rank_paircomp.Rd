@@ -58,7 +58,7 @@ doi:10.3102/1076998609359791
 \code{\link[psychotools]{paircomp}}
 
 Other rank functions: 
-\code{\link{break_rank}()},
+\code{\link{rank_binomial}()},
 \code{\link{rank_numeric}()},
 \code{\link{rank_tricot}()}
 }

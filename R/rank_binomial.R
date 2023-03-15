@@ -1,4 +1,4 @@
-#' Break rankings into pairwise comparisons
+#' Binary rankings from pairwise contests
 #'
 #' Binary comparisons from a ranking object. Ties are not 
 #' taken into account, then they are added as NA's.
@@ -35,12 +35,12 @@
 #' 
 #' R = as.rankings(R)
 #' 
-#' break_rank(R)
+#' rank_binomial(R)
 #' 
-#' break_rank(R, disaggregate = TRUE)
+#' rank_binomial(R, disaggregate = TRUE)
 #' 
 #' @export
-break_rank = function(object, 
+rank_binomial = function(object, 
                          drop.null = FALSE, 
                          disaggregate = FALSE) {
   
