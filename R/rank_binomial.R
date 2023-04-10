@@ -1,4 +1,4 @@
-#' Binary rankings from pairwise contests
+#' Binomial frequency rankings from pairwise contests
 #'
 #' Binary comparisons from a ranking object. Ties are not 
 #' taken into account, then they are added as NA's.
@@ -35,14 +35,14 @@
 #' 
 #' R = as.rankings(R)
 #' 
-#' rank_binomial(R)
+#' set_binomialfreq(R)
 #' 
-#' rank_binomial(R, disaggregate = TRUE)
+#' set_binomialfreq(R, disaggregate = TRUE)
 #' 
 #' @export
-rank_binomial = function(object, 
-                         drop.null = FALSE, 
-                         disaggregate = FALSE) {
+set_binomialfreq = function(object, 
+                           drop.null = FALSE, 
+                           disaggregate = FALSE) {
   
   if (isFALSE(disaggregate)) {
     

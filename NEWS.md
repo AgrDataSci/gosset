@@ -1,3 +1,15 @@
+gosset 0.8 (2023-04-11)
+=========================
+
+### IMPROVEMENTS
+
+* `kendallTau()` returns Z-value and p-values
+
+### Changes in behaviour
+
+* Functions `rank_binomial()` and `rank_paircomp()` are renamed as `set_binomialfreq()` and `set_paircomp()`, respectively
+
+
 gosset 0.7 (2023-02-26)
 =========================
 

@@ -40,11 +40,11 @@ library("ggplot2")
 
 data("nicabean", package = "gosset")
 
-dat <- nicabean$trial
+dat = nicabean$trial
 
-covar <- nicabean$covar
+covar = nicabean$covar
 
-traits <- unique(dat$trait)
+traits = unique(dat$trait)
 
 dat
 
@@ -53,13 +53,13 @@ dat
 To start the analysis of the data, we transform the ordinal rankings into Plackett-Luce rankings (a sparse matrix) using the function `rank_numeric()`. We run iteratively over the traits adding the rankings to a list called `R`. Since the varieties are ranked in an ascending order, with 1 being the higher ranked and 3 the lower ranked, we use the argument `asceding = TRUE` to indicate which order should be used.
 
 ```{r rankings, message = FALSE, eval = TRUE, echo = TRUE}
-R <- vector(mode = "list", length = length(traits))
+R = vector(mode = "list", length = length(traits))
 
 for (i in seq_along(traits)) {
 
-  dat_i <- subset(dat, dat$trait == traits[i])
+  dat_i = subset(dat, dat$trait == traits[i])
 
-  R[[i]] <- rank_numeric(data = dat_i,
+  R[[i]] = rank_numeric(data = dat_i,
                          items = "item",
                          input = "rank",
                          id = "id",
@@ -73,15 +73,15 @@ for (i in seq_along(traits)) {
 Using the function `kendallTau()` we can compute the Kendall tau ($\tau$) coefficient [@kendall_1938] to identify the correlation between farmers' overall appreciation and the other traits in the trial. This approach can be used, for example, to assess the drivers of farmers choices or to prioritize traits to be tested in a next stage of tricot trials (e.g. a lite version of tricot with no more than 4 traits to assess). We use the overall appreciation as the reference trait, and compare the Kendall tau with the other 8 traits.
 
 ```{r kendall1, message=FALSE, eval=TRUE, echo=TRUE}
-baseline <- which(grepl("OverallAppreciation", traits))
+baseline = which(grepl("OverallAppreciation", traits))
 
-kendall <- lapply(R[-baseline], function(X){
+kendall = lapply(R[-baseline], function(X){
   kendallTau(x = X, y = R[[baseline]])
 })
 
-kendall <- do.call("rbind", kendall)
+kendall = do.call("rbind", kendall)
 
-kendall$trait <- traits[-baseline]
+kendall$trait = traits[-baseline]
 ```
 
 The kendall correlation shows that farmers prioritized the traits yield ($\tau$ = 0.749), taste ($\tau$ = 0.653) and marketability ($\tau$ = 0.639) when assessing overall appreciation.
@@ -89,8 +89,10 @@ The kendall correlation shows that farmers prioritized the traits yield ($\tau$ 
 
 ```{r kendall2, message=FALSE, eval=TRUE, echo=FALSE}
 
-kendall <- kendall[,c(3, 1)]
-kendall[,2] <- round(kendall[,2], 3)
+kendall = kendall[,c(5, 1:4)]
+kendall[,2:4] = lapply(kendall[,2:4], function(x) round(x, 3))
+
+kendall[,5] = formatC(kendall[,5], format = "e")
 
 kendall
 
@@ -102,7 +104,7 @@ For each trait, we fit a Plackett-Luce model using the function `PlackettLuce()`
 
 ```{r PLmodel, message=FALSE, eval=TRUE, echo=TRUE}
 
-mod <- lapply(R, PlackettLuce)
+mod = lapply(R, PlackettLuce)
 
 ```
 
@@ -123,10 +125,10 @@ To consider the effect of climate factors on yield, we use agro-climatic covaria
 We request the CHIRPS data using the package chirps. Data should be returned as a matrix. This process can take some minutes to be implemented.
 
 ```{r chirps, message=FALSE, eval=FALSE, echo=TRUE}
-dates <- c(min(covar[, "planting_date"]),
+dates = c(min(covar[, "planting_date"]),
            max(covar[, "planting_date"]) + 70)
 
-chirps <- get_chirps(covar[, c("longitude","latitude")], 
+chirps = get_chirps(covar[, c("longitude","latitude")], 
                      dates = as.character(dates),
                      as.matrix = TRUE,
                      server = "ClimateSERV")
@@ -141,21 +143,21 @@ load("nicabean_chirps.rda")
 We compute the rainfall indices from planting date to the first 45 days of plant growth using the function `rainfall()` from package climatrends [@climatrends]. 
 
 ```{r chirps3, message=FALSE, eval=TRUE, echo=TRUE}
-newnames <- dimnames(chirps)[[2]]
-newnames <- gsub("chirps-v2.0.", "", newnames)
-newnames <- gsub("[.]", "-", newnames)
+newnames = dimnames(chirps)[[2]]
+newnames = gsub("chirps-v2.0.", "", newnames)
+newnames = gsub("[.]", "-", newnames)
 
-dimnames(chirps)[[2]] <- newnames
+dimnames(chirps)[[2]] = newnames
 
-rain <- rainfall(chirps, day.one = covar$planting_date, span = 45)
+rain = rainfall(chirps, day.one = covar$planting_date, span = 45)
 ```
 
 To be linked to covariates, the rankings should be coerced to a 'grouped_rankings' object. For this we use the function `group()` from PlackettLuce. We retain the ranking corresponding to yield.
 
 ```{r grouped_ranking, message=FALSE, eval=TRUE, echo=TRUE}
-yield <- which(grepl("Yield", traits))
+yield = which(grepl("Yield", traits))
 
-G <- group(R[[yield]], index = 1:length(R[[yield]]))
+G = group(R[[yield]], index = 1:length(R[[yield]]))
 
 head(G)
 
@@ -164,9 +166,9 @@ head(G)
 Now we can fit the Plackett-Luce tree with climate covariates. 
 
 ```{r pltree, message=FALSE, eval=TRUE, echo=TRUE}
-pldG <- cbind(G, rain)
+pldG = cbind(G, rain)
 
-tree <- pltree(G ~ Rtotal, data = pldG, alpha = 0.1)
+tree = pltree(G ~ Rtotal, data = pldG, alpha = 0.1)
 
 print(tree)
 
@@ -196,11 +198,11 @@ reliability(tree, ref = "Amadeus 77")
 
 ```{r rel2, message=FALSE, eval=TRUE, echo=FALSE}
 
-rel <- reliability(tree, ref = "Amadeus 77")
+rel = reliability(tree, ref = "Amadeus 77")
 
-rel <- rel[rel$reliability >= 0.5, ]
+rel = rel[rel$reliability >= 0.5, ]
 
-rel <- rel[c(1:5)]
+rel = rel[c(1:5)]
 
 rel
 
@@ -213,8 +215,8 @@ The result shows that three varieties can marginally outperform Amadeus 77 under
 A better approach to assess the performance of varieties can be using the 'Overall Appreciation", since we expect this trait to capture the performance of the variety not only for yield, but for all the other traits prioritized by farmers (Table 2). To support this hypotheses, we use the function `compare()` which applies the approach proposed by Bland and Altman (1986) [@MartinBland1986] to assess the agreement between two different measures. We compare overall vs yield. If both measures completely agree, all the varieties should be centered to 0 in the axis Y.
 
 ```{r compare, message=FALSE, echo=TRUE, eval=TRUE, out.width="50%"}
-Overall <- PlackettLuce(R[[baseline]])
-Yield <- PlackettLuce(R[[yield]])
+Overall = PlackettLuce(R[[baseline]])
+Yield = PlackettLuce(R[[yield]])
 
 compare(Overall, Yield) +
   labs(x = "Average log(worth)",

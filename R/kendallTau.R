@@ -143,7 +143,17 @@ kendallTau.default = function(x, y, null.rm = TRUE, ...){
   
   kt[2] = N_effective
   
-  names(kt) = c("kendallTau", "N_effective")
+  n = N_effective
+  
+  # calculate z-value using n effective
+  z = (3 * tau_cor * sqrt(n * (n - 1))) / sqrt(2 * (2 * n + 5))
+  
+  # then p-value
+  p = stats::pnorm(z, lower.tail = FALSE)
+  
+  kt = c(kt, z, p)
+  
+  names(kt) = c("kendallTau", "N_effective", "Zvalue", "Pr(>|z|)")
   
   kt = t(as.data.frame(kt))
   
@@ -195,9 +205,17 @@ kendallTau.matrix = function(x, y, null.rm = TRUE, average = TRUE, na.omit = FAL
   # This is used for significance testing later
   N_effective = 0.5 + sqrt(0.25 + 2 * sum(N)) 
   
-  kt = c(tau_average, N_effective)
+  n = N_effective
   
-  names(kt) = c("kendallTau", "N_effective")
+  # calculate z-value using n effective
+  z = (3 * tau_average * sqrt(n * (n - 1))) / sqrt(2 * (2 * n + 5))
+  
+  # then p-value
+  p = stats::pnorm(z, lower.tail = FALSE)
+  
+  kt = c(tau_average, N_effective, z, p)
+  
+  names(kt) = c("kendallTau", "N_effective", "Zvalue", "Pr(>|z|)")
   
   kt = t(as.data.frame(kt))
   

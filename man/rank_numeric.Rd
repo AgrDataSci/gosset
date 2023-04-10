@@ -74,9 +74,9 @@ R = rank_numeric(df,
 \code{\link[PlackettLuce]{rankings}}
 
 Other rank functions: 
-\code{\link{rank_binomial}()},
-\code{\link{rank_paircomp}()},
-\code{\link{rank_tricot}()}
+\code{\link{rank_tricot}()},
+\code{\link{set_binomialfreq}()},
+\code{\link{set_paircomp}()}
 }
 \author{
 Kauê de Sousa

@@ -44,8 +44,8 @@ kendall$trait <- traits[-baseline]
 
 ## ----kendall2, message=FALSE, eval=TRUE, echo=FALSE---------------------------
 
-kendall <- kendall[,c(3, 1)]
-kendall[,2] <- round(kendall[,2], 3)
+kendall <- kendall[,c(5, 1, 2, 3)]
+kendall[,2:4] <- lapply(kendall[,2:4], function(x) round(x, 3))
 
 kendall
 

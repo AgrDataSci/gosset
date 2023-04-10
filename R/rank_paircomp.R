@@ -1,7 +1,7 @@
 #' Pairwise comparison rankings
 #'
-#' Pairwise comparisons from a ranking object. Ties are not 
-#' taken into account, then they are added as NA's.
+#' Pairwise comparisons from a PlackettLuce ranking object. 
+#'  Ties are not taken into account, then coerced to NA's.
 #'
 #' @author Kauê de Sousa and Jacob van Etten
 #' @family rank functions
@@ -43,12 +43,12 @@
 #'                  input = c("overall_best","overall_worst"))
 #' 
 #' 
-#' PC = rank_paircomp(R)
+#' PC = set_paircomp(R)
 #' 
 #' @importFrom psychotools paircomp
 #' @importFrom utils combn
 #' @export
-rank_paircomp = function(object){
+set_paircomp = function(object){
   
   R = object
   
