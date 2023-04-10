@@ -47,7 +47,7 @@ set_binomialfreq = function(object,
   if (isFALSE(disaggregate)) {
     
     if (.is_grouped_rankings(object) | .is_rankings(object)) {
-      object = rank_paircomp(object)
+      object = set_paircomp(object)
     }
     
     # take all possible combinations between items

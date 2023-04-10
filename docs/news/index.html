@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0</span>
       </span>
     </div>
 
@@ -58,7 +58,19 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.7" id="gosset-07-2023-02-26">gosset 0.7 (2023-02-26)<a class="anchor" aria-label="anchor" href="#gosset-07-2023-02-26"></a></h2>
+<h2 class="page-header" data-toc-text="0.8" id="gosset-08-2023-04-11">gosset 0.8 (2023-04-11)<a class="anchor" aria-label="anchor" href="#gosset-08-2023-04-11"></a></h2>
+<div class="section level4">
+<h4 id="improvements-0-8">IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#improvements-0-8"></a></h4>
+<ul><li>
+<code><a href="../reference/kendallTau.html">kendallTau()</a></code> returns Z-value and p-values</li>
+</ul></div>
+<div class="section level4">
+<h4 id="changes-in-behaviour-0-8">Changes in behaviour<a class="anchor" aria-label="anchor" href="#changes-in-behaviour-0-8"></a></h4>
+<ul><li>Functions <code>rank_binomial()</code> and <code>rank_paircomp()</code> are renamed as <code><a href="../reference/set_binomialfreq.html">set_binomialfreq()</a></code> and <code><a href="../reference/set_paircomp.html">set_paircomp()</a></code>, respectively</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.7" id="gosset-07-2023-02-26">gosset 0.7 (2023-02-26)<small>2023-02-26</small><a class="anchor" aria-label="anchor" href="#gosset-07-2023-02-26"></a></h2>
 <div class="section level4">
 <h4 id="improvements-0-7">IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#improvements-0-7"></a></h4>
 <ul><li>Adds argument <code>validate.rankings</code> to <code><a href="../reference/rank_tricot.html">rank_tricot()</a></code> to help in identifying possible issues in input tricot ranking like <code>NA</code>, ties or letters different than A, B or C</li>
@@ -107,7 +119,7 @@
 </ul></div>
 <div class="section level4">
 <h4 id="bug-fixes-0-2-5-9000">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-5-9000"></a></h4>
-<ul><li>Fix an issue in <code><a href="../reference/rank_binomial.html">rank_binomial()</a></code> in assigning the ids when argument <code>disaggregate = TRUE</code>
+<ul><li>Fix an issue in <code>rank_binomial()</code> in assigning the ids when argument <code>disaggregate = TRUE</code>
 </li>
 <li>Fix an issue in setting up the permuted formulas in <code><a href="../reference/btpermute.html">btpermute()</a></code>, with the fix n.formula = n.vars + 1</li>
 </ul></div>
@@ -214,7 +226,7 @@
 <code><a href="../reference/pseudoR2.html">pseudoR2()</a></code> for object of class “pltree” extracts null loglik from PlackettLuce</li>
 <li>replace <code>to_rankings()</code> by <code>rank_PL()</code>. Warning message added</li>
 <li>replace <code>num2rank()</code> by <code>rank_decimal()</code>. No warning message added</li>
-<li>replace <code>to_paircomp()</code> by <code><a href="../reference/rank_paircomp.html">rank_paircomp()</a></code>. No warning message added</li>
+<li>replace <code>to_paircomp()</code> by <code>rank_paircomp()</code>. No warning message added</li>
 </ul></div>
 </div>
     <div class="section level2">

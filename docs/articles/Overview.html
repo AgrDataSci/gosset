@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0</span>
       </span>
     </div>
 
@@ -163,11 +163,11 @@ and ggplot2 <span class="citation">[7]</span>.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"nicabean"</span>, package <span class="op">=</span> <span class="st">"gosset"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">nicabean</span><span class="op">$</span><span class="va">trial</span></span>
+<span><span class="va">dat</span> <span class="op">=</span> <span class="va">nicabean</span><span class="op">$</span><span class="va">trial</span></span>
 <span></span>
-<span><span class="va">covar</span> <span class="op">&lt;-</span> <span class="va">nicabean</span><span class="op">$</span><span class="va">covar</span></span>
+<span><span class="va">covar</span> <span class="op">=</span> <span class="va">nicabean</span><span class="op">$</span><span class="va">covar</span></span>
 <span></span>
-<span><span class="va">traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">trait</span><span class="op">)</span></span>
+<span><span class="va">traits</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">trait</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dat</span></span></code></pre></div>
 <pre><code><span><span class="co">##           id            item               trait  rank</span></span>
@@ -191,13 +191,13 @@ ranked in an ascending order, with 1 being the higher ranked and 3 the
 lower ranked, we use the argument <code>asceding = TRUE</code> to
 indicate which order should be used.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a></span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"list"</span>, length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">traits</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">R</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a></span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"list"</span>, length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">traits</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">traits</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span></span>
-<span>  <span class="va">dat_i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">dat</span><span class="op">$</span><span class="va">trait</span> <span class="op">==</span> <span class="va">traits</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="va">dat_i</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">dat</span><span class="op">$</span><span class="va">trait</span> <span class="op">==</span> <span class="va">traits</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
-<span>  <span class="va">R</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rank_numeric.html">rank_numeric</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_i</span>,</span>
+<span>  <span class="va">R</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="../reference/rank_numeric.html">rank_numeric</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_i</span>,</span>
 <span>                         items <span class="op">=</span> <span class="st">"item"</span>,</span>
 <span>                         input <span class="op">=</span> <span class="st">"rank"</span>,</span>
 <span>                         id <span class="op">=</span> <span class="st">"id"</span>,</span>
@@ -217,28 +217,28 @@ trials (e.g. a lite version of tricot with no more than 4 traits to
 assess). We use the overall appreciation as the reference trait, and
 compare the Kendall tau with the other 8 traits.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">baseline</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"OverallAppreciation"</span>, <span class="va">traits</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">baseline</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"OverallAppreciation"</span>, <span class="va">traits</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">kendall</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">R</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span>, <span class="kw">function</span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">{</span></span>
+<span><span class="va">kendall</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">R</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span>, <span class="kw">function</span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="../reference/kendallTau.html">kendallTau</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">X</span>, y <span class="op">=</span> <span class="va">R</span><span class="op">[[</span><span class="va">baseline</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">kendall</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="st">"rbind"</span>, <span class="va">kendall</span><span class="op">)</span></span>
+<span><span class="va">kendall</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="st">"rbind"</span>, <span class="va">kendall</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">kendall</span><span class="op">$</span><span class="va">trait</span> <span class="op">&lt;-</span> <span class="va">traits</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span></span></code></pre></div>
+<span><span class="va">kendall</span><span class="op">$</span><span class="va">trait</span> <span class="op">=</span> <span class="va">traits</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span></span></code></pre></div>
 <p>The kendall correlation shows that farmers prioritized the traits
 yield (<span class="math inline">\(\tau\)</span> = 0.749), taste (<span class="math inline">\(\tau\)</span> = 0.653) and marketability (<span class="math inline">\(\tau\)</span> = 0.639) when assessing overall
 appreciation.</p>
-<pre><code><span><span class="co">##                   trait kendallTau</span></span>
-<span><span class="co">##                   &lt;chr&gt;      &lt;dbl&gt;</span></span>
-<span><span class="co">## 1:                Vigor      0.439</span></span>
-<span><span class="co">## 2:         Architecture      0.393</span></span>
-<span><span class="co">## 3:    ResistanceToPests      0.463</span></span>
-<span><span class="co">## 4: ResistanceToDiseases      0.449</span></span>
-<span><span class="co">## 5:   ToleranceToDrought      0.411</span></span>
-<span><span class="co">## 6:                Yield      0.749</span></span>
-<span><span class="co">## 7:        Marketability      0.639</span></span>
-<span><span class="co">## 8:                Taste      0.653</span></span></code></pre>
+<pre><code><span><span class="co">##                   trait kendallTau N_effective Zvalue   Pr(&gt;|z|)</span></span>
+<span><span class="co">##                   &lt;chr&gt;      &lt;dbl&gt;       &lt;dbl&gt;  &lt;dbl&gt;      &lt;chr&gt;</span></span>
+<span><span class="co">## 1:                Vigor      0.439      58.312  4.878 5.3630e-07</span></span>
+<span><span class="co">## 2:         Architecture      0.393      58.312  4.372 6.1534e-06</span></span>
+<span><span class="co">## 3:    ResistanceToPests      0.463      58.312  5.144 1.3446e-07</span></span>
+<span><span class="co">## 4: ResistanceToDiseases      0.449      58.312  4.998 2.9022e-07</span></span>
+<span><span class="co">## 5:   ToleranceToDrought      0.411      58.312  4.572 2.4187e-06</span></span>
+<span><span class="co">## 6:                Yield      0.749      58.312  8.325 4.2193e-17</span></span>
+<span><span class="co">## 7:        Marketability      0.639      58.312  7.100 6.2167e-13</span></span>
+<span><span class="co">## 8:                Taste      0.653      58.312  7.260 1.9329e-13</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="performance-of-varieties-across-traits">Performance of varieties across traits<a class="anchor" aria-label="anchor" href="#performance-of-varieties-across-traits"></a>
@@ -248,7 +248,7 @@ appreciation.</p>
 allow us to continue the analysis of the trial data using the other
 functions in the package gosset.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">R</span>, <span class="va">PlackettLuce</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">mod</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">R</span>, <span class="va">PlackettLuce</span><span class="op">)</span></span></code></pre></div>
 <p>The <code><a href="../reference/worth_map.html">worth_map()</a></code> function can be used to visually assess
 and compare item performance based on different characteristics. The
 values represented in a worth_map are log-worth estimates. From the
@@ -285,10 +285,10 @@ ag5Tools <span class="citation">[10]</span> or nasapower <span class="citation">
 returned as a matrix. This process can take some minutes to be
 implemented.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">covar</span><span class="op">[</span>, <span class="st">"planting_date"</span><span class="op">]</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">dates</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">covar</span><span class="op">[</span>, <span class="st">"planting_date"</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>           <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">covar</span><span class="op">[</span>, <span class="st">"planting_date"</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">70</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">chirps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/chirps/reference/get_chirps.html" class="external-link">get_chirps</a></span><span class="op">(</span><span class="va">covar</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"longitude"</span>,<span class="st">"latitude"</span><span class="op">)</span><span class="op">]</span>, </span>
+<span><span class="va">chirps</span> <span class="op">=</span> <span class="fu"><a href="https://docs.ropensci.org/chirps/reference/get_chirps.html" class="external-link">get_chirps</a></span><span class="op">(</span><span class="va">covar</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"longitude"</span>,<span class="st">"latitude"</span><span class="op">)</span><span class="op">]</span>, </span>
 <span>                     dates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">dates</span><span class="op">)</span>,</span>
 <span>                     as.matrix <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                     server <span class="op">=</span> <span class="st">"ClimateSERV"</span><span class="op">)</span></span></code></pre></div>
@@ -296,21 +296,21 @@ implemented.</p>
 days of plant growth using the function <code><a href="https://agrdatasci.github.io/climatrends/reference/rainfall.html" class="external-link">rainfall()</a></code> from
 package climatrends <span class="citation">[5]</span>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">newnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">chirps</span><span class="op">)</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="va">newnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"chirps-v2.0."</span>, <span class="st">""</span>, <span class="va">newnames</span><span class="op">)</span></span>
-<span><span class="va">newnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"[.]"</span>, <span class="st">"-"</span>, <span class="va">newnames</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">newnames</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">chirps</span><span class="op">)</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">newnames</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"chirps-v2.0."</span>, <span class="st">""</span>, <span class="va">newnames</span><span class="op">)</span></span>
+<span><span class="va">newnames</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"[.]"</span>, <span class="st">"-"</span>, <span class="va">newnames</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">chirps</span><span class="op">)</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">newnames</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">chirps</span><span class="op">)</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="va">newnames</span></span>
 <span></span>
-<span><span class="va">rain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://agrdatasci.github.io/climatrends/reference/rainfall.html" class="external-link">rainfall</a></span><span class="op">(</span><span class="va">chirps</span>, day.one <span class="op">=</span> <span class="va">covar</span><span class="op">$</span><span class="va">planting_date</span>, span <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">rain</span> <span class="op">=</span> <span class="fu"><a href="https://agrdatasci.github.io/climatrends/reference/rainfall.html" class="external-link">rainfall</a></span><span class="op">(</span><span class="va">chirps</span>, day.one <span class="op">=</span> <span class="va">covar</span><span class="op">$</span><span class="va">planting_date</span>, span <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span></code></pre></div>
 <p>To be linked to covariates, the rankings should be coerced to a
 ‘grouped_rankings’ object. For this we use the function
 <code><a href="https://hturner.github.io/PlackettLuce/reference/group.html" class="external-link">group()</a></code> from PlackettLuce. We retain the ranking
 corresponding to yield.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">yield</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Yield"</span>, <span class="va">traits</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">yield</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Yield"</span>, <span class="va">traits</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">G</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/group.html" class="external-link">group</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">yield</span><span class="op">]</span><span class="op">]</span>, index <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">yield</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">G</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/group.html" class="external-link">group</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">yield</span><span class="op">]</span><span class="op">]</span>, index <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">yield</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">G</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##                      1                      2                      3 </span></span>
@@ -319,9 +319,9 @@ corresponding to yield.</p>
 <span><span class="co">## "BRT 103-182 &gt; IB ..." "BRT 103-182 &gt; IB ..." "BRT 103-182 &gt; AL ..."</span></span></code></pre>
 <p>Now we can fit the Plackett-Luce tree with climate covariates.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pldG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">G</span>, <span class="va">rain</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">pldG</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">G</span>, <span class="va">rain</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/pltree.html" class="external-link">pltree</a></span><span class="op">(</span><span class="va">G</span> <span class="op">~</span> <span class="va">Rtotal</span>, data <span class="op">=</span> <span class="va">pldG</span>, alpha <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/pltree.html" class="external-link">pltree</a></span><span class="op">(</span><span class="va">G</span> <span class="op">~</span> <span class="va">Rtotal</span>, data <span class="op">=</span> <span class="va">pldG</span>, alpha <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Plackett-Luce tree</span></span>
@@ -415,8 +415,8 @@ to assess the agreement between two different measures. We compare
 overall vs yield. If both measures completely agree, all the varieties
 should be centered to 0 in the axis Y.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Overall</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">baseline</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="va">Yield</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">yield</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">Overall</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">baseline</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">Yield</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">yield</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/compare.html">compare</a></span><span class="op">(</span><span class="va">Overall</span>, <span class="va">Yield</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Average log(worth)"</span>,</span>
