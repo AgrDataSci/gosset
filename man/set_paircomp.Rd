@@ -31,7 +31,7 @@ R = matrix(c(1, 2, 0, 0,
 colnames(R) = c("apple", "banana", "orange", "pear")
 R = as.rankings(R)
 
-PC = rank_paircomp(R)
+PC = set_paircomp(R)
 
 #############################################
 

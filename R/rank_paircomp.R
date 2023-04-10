@@ -29,7 +29,7 @@
 #' colnames(R) = c("apple", "banana", "orange", "pear")
 #' R = as.rankings(R)
 #' 
-#' PC = rank_paircomp(R)
+#' PC = set_paircomp(R)
 #' 
 #' #############################################
 #' 
