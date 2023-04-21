@@ -84,7 +84,7 @@ University of Pennsylvania
 \url{https://repository.upenn.edu/edissertations/28/}
 }
 \seealso{
-\code{\link{rank_binomial}}, \code{\link[BradleyTerry2]{BTm}}
+\code{\link{set_binomialfreq}}, \code{\link[BradleyTerry2]{BTm}}
 
 Other model selection functions: 
 \code{\link{crossvalidation}()}

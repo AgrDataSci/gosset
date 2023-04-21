@@ -20,7 +20,7 @@
 #' @param ... additional arguments passed to \pkg{BradleyTerry2} methods
 #' @return an object of class \code{gosset_btpermute} with the final \code{BTm()} model,
 #' selected variables, seeds (random numbers) used for permutations and deviances 
-#' @seealso \code{\link{rank_binomial}}, \code{\link[BradleyTerry2]{BTm}}
+#' @seealso \code{\link{set_binomialfreq}}, \code{\link[BradleyTerry2]{BTm}}
 #' @details 
 #' The selection procedure consists of two steps. In the first step, \code{btpermute} 
 #'  adds to the set of original (candidate) \code{predictors} variables

@@ -18,10 +18,11 @@ order2 <- data.frame(Winner = ifelse(outcome == "Worse",
                      Loser = ifelse(outcome == "Worse",
                                     trial_variety, "Local"),
                      stringsAsFactors = FALSE, row.names = NULL)
+
 R <- rbind(as.rankings(order3, input = "orderings"),
            as.rankings(order2, input = "orderings"))
 
-
+R
 
 # Inputs
 n <- 100 # number of points to calculate
