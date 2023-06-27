@@ -1,5 +1,4 @@
 # LOESS regression with Plackett-Luce model
-
 library(PlackettLuce)
 library(ggplot2)
 
@@ -31,7 +30,8 @@ n_r <- dim(R)[1]
 n_v <- dim(R)[2]
 
 # Order the rankings
-interval0to1 <- seq(from = 0 + 1/n, to = 1 - 1/n, length.out = n) # avoid zero distance values
+# avoid zero distance values
+interval0to1 <- seq(from = 0 + 1/n, to = 1 - 1/n, length.out = n) 
 maxTN <- c(beans$maxTN, rep(beans$maxTN, each=3))
 maxTNrescaled <- (maxTN - min(maxTN)) / (max(maxTN) - min(maxTN))
 cc <- (max(maxTN) - min(maxTN)) / n
@@ -41,19 +41,19 @@ intervalMintoMax <-  seq(from = min(maxTN) + cc, to = max(maxTN) - cc, length.ou
 worth_maxTN <- matrix(NA, nrow=n, ncol=n_v)
 
 for(i in 1:n){
-  
   weights <- (1 - (abs(interval0to1[i] - maxTNrescaled)^d))^d
   weights <- (weights / sum(weights)) * length(weights)
   worths <- qvcalc(PlackettLuce(R, weights=weights))[["qvframe"]]
   worth_maxTN[i,] <- exp(worths[,1]) / sum(exp(worths[,1]))
-  
 }
 
 plot(weights, maxTN)
 
-data1 <- data.frame(maxNT = rep(intervalMintoMax, n_v),                    # Create data frame 
+# Create data frame 
+data1 <- data.frame(maxNT = rep(intervalMintoMax, n_v),                   
                    worth = as.vector(worth_maxTN),
                    variety = rep(rownames(worths), each=n))
 
-ggplot(data1, aes(x = maxNT, y = worth, col = variety)) +           # Draw line plot with ggplot2
+# Draw line plot with ggplot2
+ggplot(data1, aes(x = maxNT, y = worth, col = variety)) +           
   geom_line()

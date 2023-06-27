@@ -1,4 +1,6 @@
+
 library("PlackettLuce")
+library("gosset")
 library("ggplot2")
 
 # In this approach we combine all the rankings across the trial 
@@ -12,125 +14,119 @@ library("ggplot2")
 # Here I show a combination of three traits + overall performance
 # simulating a real trial when not all the traits are assessed by the participant
 
-# marketability
-R1 <- matrix(c(1, 4, 2, 3,
-               4, 1, 2, 3,
-               2, 1, 3, 4,
-               1, 2, 3, 0,
-               2, 1, 3, 4,
-               1, 4, 3, 2), nrow = 6, byrow = TRUE)
-colnames(R1) <- c("apple", "banana", "orange", "pear")
+data("nicabean", package = "gosset")
 
-R1 <- as.rankings(R1)
+dat = nicabean$trial
 
-R1
+traits = unique(dat$trait)
+items = unique(dat$item)
+n = length(unique(dat$id))
 
-i1 <- c(1:6) 
+# a list to keep all the rankings 
+R = list()
 
-# yield
-R2 <- matrix(c(1, 2, 0, 0,
-               3, 1, 2, 4,
-               2, 1, 3, 4,
-               2, 4, 3, 1,
-               3, 1, 4, 2,
-               1, 4, 3, 2), nrow = 6, byrow = TRUE)
-colnames(R2) <- c("apple", "banana", "orange", "pear")
+# a list to keep the indices (ids), this can work 
+# even when an id is missing for a certain trait
+indices = list()
 
-R2 <- as.rankings(R2)
+indices_levels = unique(unique(dat$id))
 
-i2 <- c(1:6) 
+for (i in seq_along(traits)) {
+  
+  dat_i = subset(dat, dat$trait == traits[i])
+  
+  R[[i]] = rank_numeric(data = dat_i,
+                        items = "item",
+                        input = "rank", 
+                        id = "id", 
+                        ascending = TRUE)
+  
+  indices[[i]] = unique(dat_i$id)
+  
+}
 
-# pest resistance
-R3 <- matrix(c(4, 1, 2, 3,
-               4, 1, 3, 2,
-               3, 1, 2, 4,
-               1, 2, 3, 4,
-               3, 4, 1, 2), nrow = 5, byrow = TRUE)
-colnames(R3) <- c("apple", "banana", "orange", "pear")
+# choose some traits related to yield and market 
+G = matrix(NA, ncol = length(items), nrow = 1, dimnames = list(1, items))
 
-R3 <- as.rankings(R3)
+for (i in seq_along(R)) {
+  G = rbind(G, R[[i]])
+}
 
-i3 <- c(1,2,4,5,6)
+G = G[-1, ]
 
-# diseases resistance
-R4 <- matrix(c(2, 1, 3, 4,
-               2, 1, 3, 4,
-               2, 1, 3, 4), nrow = 3, byrow = TRUE)
-colnames(R4) <- c("apple", "banana", "orange", "pear")
+# unlist the indices
+indices = unlist(indices)
+# rescale indices to start with 1
+# so group() will used it as an index in the rows in G
+indices = as.integer(factor(indices, levels = indices_levels))
 
-R4 <- as.rankings(R4)
+G = group(G, index = indices)
 
-i4 <- c(2,4,6)
-
-# as list because is easy to scale in a loop 
-R <- list(R1, R2, R3, R4)
-index <- list(i1, i2, i3, i4)
-
-# rbind the rankings
-R <- do.call("rbind", R)
-
-# and the indices (tricot packages)
-index <- unlist(index)
-
-# with the indices we can combine rankings 
-# even if they are not complete over the trial
-G <- group(R, index = index)
-
-G
-
-# check the rankings for the first index 
-g <- (G[1])
+# check the first grouped ranking
+g = G[1, ]
 
 g[1:length(G), , as.grouped_rankings = F]
+
+coeffsG = coefficients(PlackettLuce(G))
 
 # this can be used for the prioritized traits in each crop 
 # to help in assessing the best genotypes considering trait 
 # performance
-# maybe it can generate even better trees with socio-economic 
-# or environmental covariates
 
+# another example is by adding weights, we consider R as a full rankings
+Rw = matrix(NA, ncol = length(items), nrow = 1, dimnames = list(1, items))
 
-# another example is by adding weights
-nrankers <- 6
-nchars <- 4
+for (i in seq_along(R)) {
+  Rw = rbind(Rw, R[[i]])
+}
 
-w <- as.numeric(table(index) / nchars)
+Rw = Rw[-1, ]
 
-w
+# use kendall tau as a type og weighted
+kendall = lapply(R[-9], function(x){
+  kendallTau(R[[9]], x)
+})
+
+kendall = do.call("rbind", kendall)
+
+weights = c(kendall$kendallTau, 1)
+
+weights = rep(weights, each = n)
+
+plot(weights)
+
+coeffsRw = coefficients(PlackettLuce(Rw, weights = weights))
 
 # put the coefficients together and plot it to see 
-# the differences in worth
-coef1 <- coefficients(PlackettLuce(R1))
-coef2 <- coefficients(PlackettLuce(R2))
-coef3 <- coefficients(PlackettLuce(R3))
-coef4 <- coefficients(PlackettLuce(R4))
-coef5 <- coefficients(PlackettLuce(G))
-coef6 <- coefficients(PlackettLuce(G, weights = w))
+coeffs = vector()
+
+for(i in seq_along(R)){
+  coeffs = c(coeffs, coefficients(PlackettLuce(R[[i]])))
+}
+
+# add the coeffs from the other models 
+coeffs = c(coeffs, coeffsG, coeffsRw)
+
+dat = data.frame(logworth = coeffs,
+                 item = rep(items, times = length(traits) + 2),
+                 model = rep(c(traits, 
+                               "Grouped", 
+                               "R weighted"),
+                             each = length(items)))
 
 
-dat <- data.frame(logworth = c(coef1, coef2, coef3, coef4, coef5, coef6),
-                  item = names(c(coef1, coef2, coef3, coef4, coef5, coef6)),
-                  model = rep(c("Marketability", 
-                                "Yield", 
-                                "Pests", 
-                                "Diseases",
-                                "G",
-                                "G-weighted"), each = 4))
-
-
-dat$model <- factor(dat$model, levels = c("Marketability", 
-                                          "Yield", 
-                                          "Pests", 
-                                          "Diseases",
-                                          "G",
-                                          "G-weighted"))
+dat$model = factor(dat$model, 
+                   levels = c(traits, 
+                              "Grouped", 
+                              "R weighted"))
 
 # plot 
 ggplot(dat, aes(x = logworth,
                 y = item, 
                 group = model, 
-                color = model)) + 
-  geom_point(size = 3) + 
+                shape = model)) + 
+  geom_point(size = 2) +
+  scale_shape_manual(values = 1:length(unique(dat$model))) +
   theme_classic() +
   labs(x = "Log-worth",
        y = "Item")
