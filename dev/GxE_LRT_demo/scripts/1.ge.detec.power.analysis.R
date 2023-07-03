@@ -18,7 +18,7 @@ rm(funs)
 
 sim.results.null <- c()
 sim.results.gxe <- c()
-n.sim=10#00  ###. number of simulations, 1000 takes a bit without parallelisation
+n.sim=2#00  ###. number of simulations, 1000 takes a bit without parallelisation
 
 for(sim in 1:n.sim){
 	

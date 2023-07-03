@@ -14,7 +14,7 @@
 #' G = group(R, rep(seq_len(nrow(beans)), 4))
 #' d = cbind(G, beans)
 #' 
-#' split = ifelse(d$maxTN < 18.7175, T, F)
+#' split = ifelse(d$maxTN < 18.7175, TRUE, FALSE)
 #' 
 #' likelihood_ratio(G, split)
 #' 

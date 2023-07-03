@@ -1,3 +1,12 @@
+gosset 1.2 (2023-07-03)
+=========================
+
+### IMPROVEMENTS
+
+* Implement `anova()` method for PlackettLuce models
+* Implement likelihood-ratio test for PlackettLuce models. Function `likelihood_ratio()` 
+
+
 gosset 1.0 (2023-04-18)
 =========================
 
