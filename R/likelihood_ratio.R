@@ -3,7 +3,8 @@
 #' Assesses the goodness of fit of two competing
 #'  statistical models
 #' 
-#' @param x a object of class rankings or grouped_rankings
+#' @param x an object of class rankings or grouped_rankings
+#' @param object an object of class PlackettLuce
 #' @param split a vector indicating the splitting rule for the test
 #' @param ... additional arguments passed to methods
 #' @author Joost van Heerwaarden and Kauê de Sousa
@@ -15,11 +16,16 @@
 #' 
 #' split = ifelse(d$maxTN < 18.7175, T, F)
 #' 
-#' LR_test(G, split)
+#' likelihood_ratio(G, split)
+#' 
+#' mod = PlackettLuce(G)
+#' 
+#' anova(mod)
+#' 
 #' @importFrom stats pchisq
 #' @importFrom PlackettLuce PlackettLuce
 #' @export
-LR_test = function(x, split, ...) {
+likelihood_ratio = function(x, split, ...) {
   
   # fit model with all data
   PL_all = PlackettLuce::PlackettLuce(x)
@@ -45,7 +51,14 @@ LR_test = function(x, split, ...) {
   # Chisq P value
   p_val_chisq  =  1 - stats::pchisq(Deviance, DF_delta)
   
-  out  =  data.frame(deviance = Deviance, DF_delta = DF_delta, p_chisq = p_val_chisq)
+  stars = .stars_pval(p_val_chisq)[1]
+  
+  out = data.frame("deviance" = Deviance, 
+                   "DF_delta" = DF_delta, 
+                   "Pr(>Chisq)" = p_val_chisq,
+                   " " = stars,
+                   check.names = FALSE,
+                   stringsAsFactors = FALSE)
   
   class(out) = union("gosset_df", class(out))
   

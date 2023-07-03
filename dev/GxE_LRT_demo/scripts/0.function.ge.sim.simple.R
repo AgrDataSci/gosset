@@ -8,7 +8,8 @@ ge.sim.simple<-function(n.env,
                         sigma.env, cov.env, 
                         sigma.plot){
 
-##make mockup worth data with genetic gain, multiple environments, partial overlap for different environments, with SEs and GxY
+# make mockup worth data with genetic gain, multiple environments, 
+# partial overlap for different environments, with SEs and GxY
 
 ###for now genrate multivariate normal with some covarance matrix to get multy environment data
 ##set up random environental gradients covering each farm
@@ -36,7 +37,11 @@ rownames(ge.mat)<-1:n.geno
 ge.mat<-data.frame(geno=rownames(ge.mat), ge.mat)
 
 
-ge.mat.long<-reshape(ge.mat,direction="long",idvar="geno", v.names="environment", varying=2:ncol(ge.mat))
+ge.mat.long <- reshape(ge.mat, 
+                       direction="long", 
+                       idvar="geno", 
+                       v.names="environment", 
+                       varying=2:ncol(ge.mat))
 
 colnames(ge.mat.long)[colnames(ge.mat.long)=="environment"]<-"trait"
 colnames(ge.mat.long)[colnames(ge.mat.long)=="time"]<-"environment"
@@ -60,7 +65,9 @@ tricot.data$trait.true<-ge.mat.long$trait[match(tricot.data$geno.environment, ge
 tricot.data$trait.obs<-tricot.data$trait.true+rnorm(nrow(tricot.data),0, sqrt(sigma.plot))
 
 ##now change rank for actual observed rank
-tricot.data$rank<-unlist(with(tricot.data,tapply(trait.obs, farm,function(x) rank(-1*x))))
+tricot.data$rank<-unlist(with(tricot.data,tapply(trait.obs, 
+                                                 farm,
+                                                 function(x) rank(-1*x))))
 
 
 return(tricot.data)

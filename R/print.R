@@ -23,7 +23,7 @@ print.gosset_df = function(x, ...){
   dbl = abbs %in% "<dbl>"
   
   x[dbl] = lapply(x[dbl], function(y){
-    format(round(y, 3), nsmall = 2)
+    format(round(y, 4), nsmall = 4) 
   })
   
   x[1:nc] = lapply(x, as.character)
@@ -80,3 +80,5 @@ print.gosset_df = function(x, ...){
   else min(n, nrow(x))
   x[seq_len(n), , drop = FALSE]
 }
+
+

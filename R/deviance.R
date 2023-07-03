@@ -1,3 +1,37 @@
+#' @method anova PlackettLuce
+#' @importFrom methods addNextMethod asMethodDefinition assignClassDef
+#' @importFrom stats anova pchisq
+#' @rdname likelihood_ratio
+#' @export
+anova.PlackettLuce = function(object, ...) {
+  
+  model = object
+  
+  LLs = c(model$null.loglik, model$loglik)
+  dfs = c(model$df.null, model$df.residual)
+  df_diff = (-1) * diff(dfs)
+  df_LL = round((-1) * diff(LLs), 3)
+  p = 1 - stats::pchisq(-2 * df_LL, df_diff)
+  stars = .stars_pval(p)[1]
+  stat = -2 * df_LL
+  
+  x = data.frame(model = c("NULL", "Model"),
+                 logLik = LLs,
+                 DF = dfs,
+                 Statistic = c(NA, stat),
+                 PrChisq = c(NA, p),
+                 star = c("", stars),
+                 check.names = FALSE,
+                 stringsAsFactors = FALSE)
+  
+  names(x) = c("", "logLik", "DF", "Statistic", "Pr(>Chisq)", " ")
+  
+  class(x) = union("gosset_df", class(x))
+  
+  return(x)
+}
+
+
 #' @method AIC bttree
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom stats AIC coef formula logLik model.response model.weights

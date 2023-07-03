@@ -460,3 +460,19 @@
   return(v)
   
 }
+
+#' pval stars
+#' @param p.value a numeric vector
+#' @importFrom stats symnum
+#' @noRd
+.stars_pval = function(p.value){
+  
+  unclass(stats::symnum(p.value,
+                        corr = FALSE, 
+                        na = FALSE,
+                        cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1), 
+                        symbols = c("***", "**", 
+                                                                                                          "*", ".", " ")))
+}
+
+
