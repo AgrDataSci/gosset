@@ -8,12 +8,20 @@
 #' @author Jacob van Etten and Kauê de Sousa
 #' @param object a data.frame, an object of class \code{pltree}, or a 
 #'  list with \code{PlackettLuce} models
-#' @param bootstrap logical, to run a bayes bootstrap on \var{object}
+#' @param bootstrap logical, to run a Bayesian bootstrap on \var{object}
 #' @param normalize logical, to normalize values to sum to 1
 #' @param group an index in \var{object} for the different scenarios 
 #' @param items an index in  \var{object} for the different items
 #' @param values an index in \var{object} with the values to compute regret
 #' @param ... further arguments passed to methods
+#' 
+#' @details
+#' Additional details for Bayesian bootstrap: 
+#' \code{statistic} A function that accepts data as its first argument and possibly, 
+#' the weights as its second, if use_weights is TRUE; \code{n1} The size of 
+#' the bootstrap sample; \code{n2} The sample size used to calculate 
+#' the statistic each bootstrap draw
+#' 
 #' @return A data frame with regret estimates
 #' \item{items}{the item names}
 #' \item{worth}{the worth parameters}
@@ -76,6 +84,7 @@
 #' mod = list(mod1, mod2)
 #' 
 #' regret(mod, n1 = 500)
+#' 
 #' @importFrom partykit nodeids
 #' @importFrom psychotools itempar
 #' @importFrom qvcalc qvcalc.itempar

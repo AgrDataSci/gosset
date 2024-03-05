@@ -20,7 +20,7 @@ to risk analysis in diversification strategies."><meta property="og:image" conte
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@ list with <code>PlackettLuce</code> models</p></dd>
 
 
 <dt>bootstrap</dt>
-<dd><p>logical, to run a bayes bootstrap on <var>object</var></p></dd>
+<dd><p>logical, to run a Bayesian bootstrap on <var>object</var></p></dd>
 
 
 <dt>normalize</dt>
@@ -130,6 +130,14 @@ list with <code>PlackettLuce</code> models</p></dd>
 <dd><p>the worst regret</p></dd>
 
 </dl></div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>Additional details for Bayesian bootstrap: 
+<code>statistic</code> A function that accepts data as its first argument and possibly, 
+the weights as its second, if use_weights is TRUE; <code>n1</code> The size of 
+the bootstrap sample; <code>n2</code> The sample size used to calculate 
+the statistic each bootstrap draw</p>
+    </div>
     <div id="references">
     <h2>References</h2>
     <p>Loomes G. &amp; Sugden R. (1982). 
@@ -192,7 +200,8 @@ The Economic Journal, 125(583), 493–532.
 <span></span>
 <span><span class="va">mod</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mod1</span>, <span class="va">mod2</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">regret</span><span class="op">(</span><span class="va">mod</span>, n1 <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">regret</span><span class="op">(</span><span class="va">mod</span>, n1 <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -206,7 +215,7 @@ The Economic Journal, 125(583), 493–532.
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -2,8 +2,8 @@
 % Please edit documentation in R/gosset.R
 \docType{package}
 \name{gosset}
-\alias{gosset}
 \alias{gosset-package}
+\alias{gosset}
 \title{Tools for Data Analysis in Experimental Agriculture}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}

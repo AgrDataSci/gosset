@@ -21,7 +21,7 @@ list with \code{PlackettLuce} models}
 
 \item{...}{further arguments passed to methods}
 
-\item{bootstrap}{logical, to run a bayes bootstrap on \var{object}}
+\item{bootstrap}{logical, to run a Bayesian bootstrap on \var{object}}
 
 \item{normalize}{logical, to normalize values to sum to 1}
 
@@ -43,6 +43,13 @@ Regret is an important heuristic in the behavioural sciences.
 Minimizing worst regret (the loss under the worst possible 
 outcome) is a criterion that takes a conservative approach 
 to risk analysis in diversification strategies.
+}
+\details{
+Additional details for Bayesian bootstrap: 
+\code{statistic} A function that accepts data as its first argument and possibly, 
+the weights as its second, if use_weights is TRUE; \code{n1} The size of 
+the bootstrap sample; \code{n2} The sample size used to calculate 
+the statistic each bootstrap draw
 }
 \examples{
 
@@ -92,6 +99,7 @@ mod2 = PlackettLuce(R2)
 mod = list(mod1, mod2)
 
 regret(mod, n1 = 500)
+
 }
 \references{
 Loomes G. & Sugden R. (1982). 

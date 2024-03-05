@@ -2,10 +2,18 @@ library(mvtnorm)
 library(PlackettLuce)
 library(ClimMobTools)
 
+#' @param n.env integer, the number of environments
+#' @param n.geno integer, the number of genotypes
+#' @param n.farm.env integer, the number of farms (blocks) per n.env
+#' @param sigma.env numeric, the standard deviation of environment 
+#' @param cov.env numeric, 
+#' @param sigma.plot numeric, the standard deviation of block sites (farms)
+
 ge.sim.simple<-function(n.env,
                         n.geno, 
                         n.farms.env, 
-                        sigma.env, cov.env, 
+                        sigma.env, 
+                        cov.env, 
                         sigma.plot){
 
 # make mockup worth data with genetic gain, multiple environments, 
@@ -26,7 +34,7 @@ ge.sim.simple<-function(n.env,
 
 npackages = n.farms.env* n.env
 
-vcov.env<-matrix(cov.env, n.env, n.env)
+vcov.env <- matrix(cov.env, n.env, n.env)
 diag(vcov.env)=sigma.env #covariance matrix   ####
 
 
@@ -50,8 +58,10 @@ ge.mat.long$geno<-as.factor(ge.mat.long$geno)
 ge.mat.long$geno.environment<-paste(ge.mat.long$geno,ge.mat.long$environment)
 
 ####make tricot design and divide farms over environments
-tricot.data<-randomise(npackages = npackages, itemnames =  ge.mat$geno)
-tricot.data<-data.frame(farm=1:nrow(tricot.data),environment=rep(1:n.env,each=ceiling(npackages/n.env)), tricot.data)
+tricot.data <- randomise(npackages = npackages, itemnames =  ge.mat$geno)
+tricot.data <- data.frame(farm = 1:nrow(tricot.data),
+                          environment = rep(1:n.env,each=ceiling(npackages/n.env)), 
+                          tricot.data)
 
 ##convert to long format and order
 tricot.data<-reshape(tricot.data,direction="long",idvar="farm", v.names="item", varying=3:ncol(tricot.data))
