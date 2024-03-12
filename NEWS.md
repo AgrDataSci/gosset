@@ -1,3 +1,11 @@
+gosset 1.3 (2024-03-12)
+=========================
+
+### IMPROVEMENTS
+
+* Implements the function `resample()` to re-sample Plackett-Luce coefficients 
+
+
 gosset 1.2 (2023-07-03)
 =========================
 
