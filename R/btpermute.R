@@ -48,7 +48,7 @@
 #' @references 
 #' Lysen, S. (2009) Permuted inclusion criterion: A variable selection technique. 
 #' University of Pennsylvania
-#' \url{https://repository.upenn.edu/edissertations/28/}
+#' 
 #' @examplesIf interactive()
 #' 
 #' require("BradleyTerry2")

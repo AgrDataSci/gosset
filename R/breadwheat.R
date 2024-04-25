@@ -40,6 +40,12 @@
 #'     \item{\code{overall_worst}}{The variety ranked as worst for overall perfomance ("A",
 #'     "B" or "C").}
 #' }
-#' @source The data were provided by Bioversity International \url{https://www.bioversityinternational.org/}, 
-#' a CGIAR Research Centre, through the ClimMob platform \url{https://climmob.net}.
+#' @source
+#' van Etten, J., et. al. (2016). 
+#' Experimental Agriculture, 55, 275-296.
+#' \doi{https://doi.org/10.1017/S0014479716000739}
+#' 
+#' van Etten, J., et. al. (2019). 
+#' PNAS 116(10) 4194-4199
+#' \doi{https://doi.org/10.1073/pnas.1813720116}
 "breadwheat"

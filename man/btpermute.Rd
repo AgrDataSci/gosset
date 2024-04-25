@@ -81,7 +81,6 @@ mod
 \references{
 Lysen, S. (2009) Permuted inclusion criterion: A variable selection technique. 
 University of Pennsylvania
-\url{https://repository.upenn.edu/edissertations/28/}
 }
 \seealso{
 \code{\link{set_binomialfreq}}, \code{\link[BradleyTerry2]{BTm}}

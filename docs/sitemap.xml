@@ -13,9 +13,6 @@
     <loc>/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>/articles/Overview.html</loc>
-  </url>
-  <url>
     <loc>/articles/index.html</loc>
   </url>
   <url>
@@ -31,13 +28,7 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/LR_test.html</loc>
-  </url>
-  <url>
     <loc>/reference/akaike_weights.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bayes_boot.html</loc>
   </url>
   <url>
     <loc>/reference/breadwheat.html</loc>
@@ -50,12 +41,6 @@
   </url>
   <url>
     <loc>/reference/crossvalidation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-validate_rankings.html</loc>
-  </url>
-  <url>
-    <loc>/reference/forward.html</loc>
   </url>
   <url>
     <loc>/reference/gosset.html</loc>
@@ -76,9 +61,6 @@
     <loc>/reference/likelihood_ratio.html</loc>
   </url>
   <url>
-    <loc>/reference/multcompPL.html</loc>
-  </url>
-  <url>
     <loc>/reference/nicabean.html</loc>
   </url>
   <url>
@@ -88,22 +70,13 @@
     <loc>/reference/pairwise_probs.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_nodes.html</loc>
-  </url>
-  <url>
     <loc>/reference/pseudoR2.html</loc>
   </url>
   <url>
     <loc>/reference/pseudo_rank.html</loc>
   </url>
   <url>
-    <loc>/reference/rank_binomial.html</loc>
-  </url>
-  <url>
     <loc>/reference/rank_numeric.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rank_paircomp.html</loc>
   </url>
   <url>
     <loc>/reference/rank_tricot.html</loc>
@@ -125,21 +98,6 @@
   </url>
   <url>
     <loc>/reference/set_paircomp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/summarise_agreement.html</loc>
-  </url>
-  <url>
-    <loc>/reference/summarise_dominance.html</loc>
-  </url>
-  <url>
-    <loc>/reference/summarise_favourite.html</loc>
-  </url>
-  <url>
-    <loc>/reference/summarise_victories.html</loc>
-  </url>
-  <url>
-    <loc>/reference/worst_regret.html</loc>
   </url>
   <url>
     <loc>/reference/worth_map.html</loc>
