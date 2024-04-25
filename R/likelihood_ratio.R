@@ -1,6 +1,6 @@
 #' Likelihood-ratio test
 #' 
-#' Assesses the goodness of fit of two competing
+#' Assesses the goodness of fit of competing
 #'  statistical models
 #' 
 #' @param x an object of class rankings or grouped_rankings

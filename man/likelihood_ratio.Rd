@@ -19,7 +19,7 @@ likelihood_ratio(x, split, ...)
 \item{split}{a vector indicating the splitting rule for the test}
 }
 \description{
-Assesses the goodness of fit of two competing
+Assesses the goodness of fit of competing
  statistical models
 }
 \examples{

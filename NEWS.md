@@ -1,10 +1,11 @@
-gosset 1.3 (2024-04-12)
+gosset 1.3 (2024-04-26)
 =========================
 
 ### IMPROVEMENTS
 
-* Implements the function `resample()` to re-sample Plackett-Luce coefficients 
+* Implements the function `resample()` to re-sample Plackett-Luce coefficients
 * Adds standard errors in `regret()`  
+* Adds `pairwise_probs()` to compare worth parameters following the Luce's Axiom
 
 ###  BUG FIXES
 * Fix the computation of maximized regret in `regret()`. Using `sum(x^2)` instead of `sum(x)^2`
