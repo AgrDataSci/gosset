@@ -137,7 +137,7 @@ worth_map.list = function(object, labels, ...) {
                                    fill = winprob,
                                    label = as.character(round(winprob, 2)))) +
     ggplot2::geom_tile() + 
-    ggplot2::scale_fill_distiller(palette = "RdBu", 
+    ggplot2::scale_fill_distiller(palette = "BrBG", 
                                   limit = lims,
                                   direction = 1,
                                   na.value = "white",

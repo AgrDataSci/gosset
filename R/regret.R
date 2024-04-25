@@ -134,17 +134,34 @@ regret.default = function(object, ..., values, items, group,
   # worst regret is the highest regret across the nodes
   wr = tapply(coeffs$regret, coeffs$items, max)
   
-  # regret is the sum of the squared values of all items regret
+  # max regret is the sum of the squared values of all items regret
   regret = unlist(tapply(coeffs$regret, coeffs$items, function(x) {
-    sum(x)^2
+    sum(x^2)
+  }))
+  
+  # compute standard error for regret
+  se_regret = unlist(tapply(coeffs$regret, coeffs$items, function(x) {
+    x2 = x^2
+    n = length(x2) # sample size
+    s = sd(x2) # sample standard deviation
+    s / sqrt(n)
   }))
   
   worth = tapply(coeffs$estimate, coeffs$items, mean)
   
+  # compute standard error for worth
+  se_worth = unlist(tapply(coeffs$estimate, coeffs$items, function(x) {
+    n = length(x) # sample size
+    s = sd(x) # sample standard deviation
+    s / sqrt(n)
+  }))
+  
   w = data.frame(items = items, 
                  worth = worth[items], 
                  worst_regret = wr[items], 
-                 regret = regret[items])
+                 regret = regret[items],
+                 worthSE = se_worth,
+                 regretSE = se_regret)
   
   w = w[order(w$regret), ]
   

@@ -38,7 +38,6 @@ the statistic each bootstrap draw
 }
 \examples{
 library("PlackettLuce")
-library("gosset")
 
 data("breadwheat", package = "gosset")
 
