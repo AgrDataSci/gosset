@@ -57,7 +57,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Overview.html">Trait prioritization and crop performance with decentralized on-farm trial data</a>
+      <a href="../articles/vignette-1-trait-prioritization-and-crop-performance.html">Trait prioritization and crop performance with decentralized on-farm trial data</a>
     </li>
   </ul>
 </li>
@@ -103,8 +103,8 @@ Rica<br><h4 data-toc-skip class="author">Jacob
 van Etten</h4>
             <address class="author_afil">
       Digital Inclusion, Bioversity International, Montpellier,
-France<br><small class="dont-index">Source: <a href="https://github.com/agrdatasci/gosset/blob/HEAD/vignettes/Overview.Rmd" class="external-link"><code>vignettes/Overview.Rmd</code></a></small>
-      <div class="hidden name"><code>Overview.Rmd</code></div>
+France<br><small class="dont-index">Source: <a href="https://github.com/agrdatasci/gosset/blob/HEAD/vignettes/vignette-1-trait-prioritization-and-crop-performance.Rmd" class="external-link"><code>vignettes/vignette-1-trait-prioritization-and-crop-performance.Rmd</code></a></small>
+      <div class="hidden name"><code>vignette-1-trait-prioritization-and-crop-performance.Rmd</code></div>
 
     </address>
 </address>
@@ -263,7 +263,7 @@ select crossing materials.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Variety"</span>,</span>
 <span>       y <span class="op">=</span> <span class="st">"Trait"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Overview_files/figure-html/worthmap-1.png" alt="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Blue values indicate a superior performance of varieties for a given trait, compared to the reference.  Red values indicate a variety with weak performance for the given trait, compared to the reference." width="700"><p class="caption">
+<img src="vignette-1-trait-prioritization-and-crop-performance_files/figure-html/worthmap-1.png" alt="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Blue values indicate a superior performance of varieties for a given trait, compared to the reference.  Red values indicate a variety with weak performance for the given trait, compared to the reference." width="700"><p class="caption">
 Trait performance (log-worth) of bean varieties in Niragua. Variety
 ‘Amadeus’ is set as reference (log-worth = 0). Blue values indicate a
 superior performance of varieties for a given trait, compared to the
@@ -368,7 +368,7 @@ node, respectively.</p>
 <span><span class="co">## 3   IBC 302-29   Amadeus 77</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree</span>, ref <span class="op">=</span> <span class="st">"Amadeus 77"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Overview_files/figure-html/node_info2-1.png" width="700"></p>
+<p><img src="vignette-1-trait-prioritization-and-crop-performance_files/figure-html/node_info2-1.png" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="reliability-of-superior-genotypes">Reliability of superior genotypes<a class="anchor" aria-label="anchor" href="#reliability-of-superior-genotypes"></a>
@@ -421,7 +421,7 @@ should be centered to 0 in the axis Y.</p>
 <span><span class="fu"><a href="../reference/compare.html">compare</a></span><span class="op">(</span><span class="va">Overall</span>, <span class="va">Yield</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Average log(worth)"</span>,</span>
 <span>       y <span class="op">=</span> <span class="st">"Difference (Overall Appreciation - Yield)"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Overview_files/figure-html/compare-1.png" width="50%"></p>
+<p><img src="vignette-1-trait-prioritization-and-crop-performance_files/figure-html/compare-1.png" width="50%"></p>
 <p>The chart shows no complete agreement between overall appreciation
 and yield. For example, variety SX 14825-7-1 shows superior performance
 for overall appreciation when compared with yield. Looking at the
@@ -451,10 +451,10 @@ implemented and validated elsewhere <span class="citation">[15–19]</span>.</p>
 <div id="refs" class="references csl-bib-body">
 <div id="ref-deSousa2023gosset" class="csl-entry">
 <div class="csl-left-margin">1. </div>
-<div class="csl-right-inline">Kauê, de S.; Brown, D.; Steinke, J.; van Etten,
-J. <span class="nocase">gosset: An R package for analysis and synthesis
-of ranking data in agricultural experimentation</span>.
-<em>SoftwareX</em> <strong>2023</strong>, <em>22</em>, 101402, doi:<a href="https://doi.org/10.1016/j.softx.2023.101402" class="external-link">10.1016/j.softx.2023.101402</a>.</div>
+<div class="csl-right-inline">de
+Sousa, K.; Brown, D.; Steinke, J.; van Etten, J. <span class="nocase">gosset: An R package for analysis and synthesis of
+ranking data in agricultural experimentation</span>. <em>SoftwareX</em>
+<strong>2023</strong>, <em>22</em>, 101402, doi:<a href="https://doi.org/10.1016/j.softx.2023.101402" class="external-link">10.1016/j.softx.2023.101402</a>.</div>
 </div>
 <div id="ref-deSousa2024" class="csl-entry">
 <div class="csl-left-margin">2. </div>

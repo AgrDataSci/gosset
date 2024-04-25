@@ -32,7 +32,7 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/Overview.html">Trait prioritization and crop performance with decentralized on-farm trial data</a>
+      <a href="../articles/vignette-1-trait-prioritization-and-crop-performance.html">Trait prioritization and crop performance with decentralized on-farm trial data</a>
     </li>
   </ul></li>
 <li>
@@ -57,6 +57,20 @@
       <small>Source: <a href="https://github.com/agrdatasci/gosset/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.3" id="gosset-13-2024-04-26">gosset 1.3 (2024-04-26)<a class="anchor" aria-label="anchor" href="#gosset-13-2024-04-26"></a></h2>
+<div class="section level4">
+<h4 id="improvements-1-3">IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#improvements-1-3"></a></h4>
+<ul><li>Implements the function <code><a href="../reference/resample.html">resample()</a></code> to re-sample Plackett-Luce coefficients</li>
+<li>Adds standard errors in <code><a href="../reference/regret.html">regret()</a></code><br></li>
+<li>Adds <code><a href="../reference/pairwise_probs.html">pairwise_probs()</a></code> to compare worth parameters following the Luce’s Axiom</li>
+</ul></div>
+<div class="section level4">
+<h4 id="bug-fixes-1-3">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-3"></a></h4>
+<ul><li>Fix the computation of maximized regret in <code><a href="../reference/regret.html">regret()</a></code>. Using <code>sum(x^2)</code> instead of <code>sum(x)^2</code>
+</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.2" id="gosset-12-2023-07-03">gosset 1.2 (2023-07-03)<a class="anchor" aria-label="anchor" href="#gosset-12-2023-07-03"></a></h2>
 <div class="section level4">

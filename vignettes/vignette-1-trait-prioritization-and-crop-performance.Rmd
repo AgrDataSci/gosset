@@ -3,14 +3,14 @@ title: "Trait prioritization and crop performance with decentralized on-farm tri
 package: gosset
 author:
 - name: Kauê de Sousa
-  affiliation: Department of Agricultural Sciences, Inland Norway University, Hamar, Norway </br> Digital Inclusion, Bioversity International, Montpellier, France 
+  affiliation: Digital Inclusion, Bioversity International, Montpellier, France </br> Department of Agricultural Sciences, Inland Norway University, Hamar, Norway
 - name: David Brown
   affiliation: Laboratory of Geo-Information Science and Remote Sensing, Wageningen University & Research, Wageningen, The Netherlands </br> Digital Inclusion, Bioversity International, Turrialba, Costa Rica 
 - name: Jacob van Etten
   affiliation: Digital Inclusion, Bioversity International, Montpellier, France 
 output: html_document
 vignette: >
-  %\VignetteIndexEntry{Overview}
+  %\VignetteIndexEntry{Trait prioritization and crop performance}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown_notangle}
   %\VignetteDepends{ggplot2}
@@ -23,9 +23,9 @@ csl: citationstyle.csl
 
 # Summary
 
-The gosset package provides a set of tools and methods to implement a workflow to analyse experimental agriculture data, from data synthesis to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.
+The gosset package [@deSousa2023gosset] provides methods to implement workflows to analyse experimental agriculture data, from data synthesis to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.
 
-In this example we show one of the possible workflows to assess trait prioritization and crop performance using decentralized on-farm data generated with the tricot approach [@vanetten_beza_2019]. We use the `nicabean` data. This dataset was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot  approach [@vanetten_beza_2019], farmers were asked to test in their farms three varieties of common bean. The varieties were randomly assigned as incomplete blocks of size three (out of 10 varieties). The farmers assessed which of the three varieties had the best and worst performance in eight traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, and taste). The farmers also provided their overall appreciation about the varieties, i.e., which variety had the best and the worst performance based on the overall performance considering all the traits. 
+In this example we show one of the possible workflows to assess trait prioritization and crop performance using decentralized on-farm data generated with the tricot approach [@deSousa2024]. We use the `nicabean` data. This dataset was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot  approach [@deSousa2024], farmers were asked to test in their farms three varieties of common bean. The varieties were randomly assigned as incomplete blocks of size three (out of 10 varieties). The farmers assessed which of the three varieties had the best and worst performance in eight traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, and taste). The farmers also provided their overall appreciation about the varieties, i.e., which variety had the best and the worst performance based on the overall performance considering all the traits. 
 
 Here we use the Plackett-Luce model, jointly proposed by Luce (1959) [@luce_individual_1959] and Plackett (1975) [@Plackett]. This model estimates the probability of one variety outperforming all the others (worth) in the trait based on the Luce's axiom[@luce_individual_1959]. The model is implemented in `R` by Turner et al. (2020) with the package PlackettLuce [@Turner2020]. 
 
@@ -229,5 +229,5 @@ The chart shows no complete agreement between overall appreciation and yield. Fo
 
 Here we presented a simple workflow to assess crop variety performance and trait prioritization in decentralized on-farm trials with the tricot approach. A more complex workflow will also utilize other functions available in gosset, for example, a forward selection combined with `crossvalidation()` to improve model robustness, or model selection with `btpermute()` to consider all possible permutations in Bradley-Terry models, or a risk analysis using `regret()` to support the selection of varieties, or using `rank_numeric()` to combine legacy data and deal with heterogeneous data from different trials. All of these were previously implemented and validated elsewhere [@vanEtten2019; @Moyo_2021; @deSousa2021; @Steinkemindata2019; @brownlegacydata].   
 
-## References
+# References
 

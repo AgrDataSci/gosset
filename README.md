@@ -10,7 +10,7 @@
 
 ## Overview
 
-The **gosset** package provides the toolkit reproducible analytical workflows in experimental agriculture, from data synthesis to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.
+The **gosset** package provides methods to implement workflows to analyse experimental agriculture data, from data synthesis to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.
 
 ## Installation
 
