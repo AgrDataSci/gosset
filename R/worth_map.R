@@ -164,7 +164,7 @@ worth_map.list = function(object, labels, ...) {
 #' @param na.replace logical, to replace or keep NAs
 #' @param ... further arguments passed to methods
 #' @noRd
-.combine_coeffs = function(x, na.replace = TRUE, ...) {
+.combine_coeffs = function(x, na.replace = TRUE, rescale = TRUE, ...) {
   
   coeffs = lapply(x, function(y) {psychotools::itempar(y, ...)})
   
@@ -183,6 +183,19 @@ worth_map.list = function(object, labels, ...) {
   
   if (isTRUE(na.replace)) {
     r[is.na(r)] = 0
+  }
+  
+  if (isTRUE(rescale)) {
+    rs = matrix(as.vector(scale(r)), 
+                nrow = nrow(r),
+                ncol = ncol(r))
+    
+    rs = as.data.frame(rs)
+           
+    rownames(rs) = items
+
+    r = rs
+    
   }
   
   return(r)
