@@ -252,8 +252,8 @@ worth_bar = function(object, ...){
                    legend.text = ggplot2::element_text(size = 9),
                    panel.grid.major = ggplot2::element_blank(),
                    axis.text.x = ggplot2::element_text(color = "grey20"),
-                   axis.text.y = ggplot2::element_text(angle = angle, vjust = 1,
-                                                       hjust=1, color = "grey20")) +
+                   axis.text.y = ggplot2::element_text(angle = angle, vjust = 0.5,
+                                                       hjust = 1, color = "grey20")) +
     ggplot2::labs(y = "",
                   x = "") 
   
