@@ -327,6 +327,7 @@ build_tree_branches = function(x, ...){
 #' @param node.ids a vector of integers with node ids
 #' @param n.obs a vector of integers with N per node
 #' @param multcomp TRUE adds multi-comparison groups
+#' @param levels optional, a vector with the order of labels in axis Y
 #' @inheritParams plot.pltree
 #' @noRd
 build_tree_nodes = function(x, 
@@ -336,6 +337,7 @@ build_tree_nodes = function(x,
                             node.ids = NULL,
                             n.obs = NULL,
                             multcomp = FALSE, 
+                            levels = NULL,
                             ...){
   
   if (isFALSE(log)) ref = NULL
@@ -427,7 +429,14 @@ build_tree_nodes = function(x,
   coeffs$node = factor(paste0("Node ", coeffs$node, " (n=", coeffs$nobs, ")"),
                         levels = node_lev)
   
-  coeffs$items = factor(coeffs$items, levels = rev(sort(items)))
+  
+  if (is.null(levels)) {
+    
+    levels = rev(sort(items))
+    
+  }
+  
+  coeffs$items = factor(coeffs$items, levels = levels)
   
   # Get max and min values for the x axis in the plot
   xmax = round(max(coeffs$bmax, na.rm = TRUE) + 0.01, digits = 4)
@@ -489,24 +498,6 @@ build_tree_nodes = function(x,
   
   
 }
-
-# coeffs = data.frame(estimate = c(-0.6, 0, 0.4, 0.2, -0.1, 0.4),
-#                      items = rep(c("banana", "apple", "orange"), 2),
-#                      groups = "",
-#                      node = rep(c(1,2), each = 3))
-# 
-# coeffs
-# 
-# xinter = 0
-# bmin = 0
-# bmax = 0
-# xbreaks = c(-0.78, 0, 0.89)
-# xlabs = xbreaks
-# xmin = -0.78
-# xmin = xmin + (xmin * 0.15)
-# xmax = 0.89
-# xmax = xmax + (xmax * 0.15)
-
 
 #' @rdname multcompPL
 #' @noRd
