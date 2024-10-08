@@ -499,9 +499,99 @@ build_tree_nodes = function(x,
   
 }
 
+
+#' Plot log-worth
+#' @param x an object of class PlackettLuce
+#' @param ci.level the confidence interval level
+#' @param multcomp logical to add group letters 
+#' @param levels an optional vector with factor levels to plot
+#' @param levels optional, a vector with the order of labels in axis Y
+#' @rdname node_labels
+#' @export
+plot_logworth = function(x, ci.level = 0.95, ref = NULL, 
+                         multcomp = FALSE, levels = NULL, ...) {
+  
+  frame = data.frame()
+  
+  if (is.null(ref)) {
+    ref = 1
+  }
+  
+  for (i in seq_along(ref)) {
+    fi = qvcalc::qvcalc(x, ref = ref[i], ...)$qvframe
+    fi$ref = ref[i]
+    fi$items = rownames(fi)
+    frame = rbind(frame, fi)
+  }
+  
+  if (is.null(levels)) {
+    levels = union(ref, sort(unique(frame$items)))
+  }
+  
+  items = factor(frame$items, levels = levels)
+  
+  est = frame$estimate
+  
+  se = frame$quasiSE
+  
+  tops = est + stats::qnorm(1-(1 - ci.level) / 2) * se
+  
+  tails = est - stats::qnorm(1-(1 - ci.level) / 2) * se
+  
+  range = max(tops) - min(tails)
+  
+  pdat = data.frame(est, se, items, 
+                    ref = frame$ref, 
+                    tops, tails)
+  
+  if (isTRUE(multcomp)) {
+    lettersdat = multcompPL(mod = x, ...)
+    lettersdat = lettersdat[, c("items", "group")]
+    pdat = merge(pdat, lettersdat, by = "items")
+  } 
+  
+  if (!isTRUE(multcomp)) {
+    pdat$group = ""
+  }
+  
+  pdat$items = factor(pdat$items, levels = levels)
+  
+  p = ggplot2::ggplot(data = pdat,
+                      ggplot2::aes(y = items, 
+                 x = est,
+                 xmax = tops,
+                 xmin = tails, 
+                 label = group)) +
+    ggplot2::geom_vline(xintercept = 0, 
+               colour = "#E5E7E9",
+               linewidth = 0.8) +
+    ggplot2::geom_point() +
+    ggplot2::geom_errorbar(width = 0.1) +
+    ggplot2::geom_text(hjust = 1.2, vjust = 1.2) +
+    ggplot2::theme_bw() +
+    ggplot2::facet_wrap(~ ref, strip.position = "bottom") +
+    ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+          strip.background.x = element_blank(),
+          axis.text.y = ggplot2::element_text(size = 10, color = "grey20"),
+          axis.text.x = ggplot2::element_text(size = 10, color = "grey20"),
+          text = ggplot2::element_text(color = "grey20"),
+          legend.position = "bottom",
+          legend.title = ggplot2::element_blank(),
+          strip.background.y = ggplot2::element_blank(),
+          strip.placement = "outside") +
+    ggplot2::labs(y = "", x = "Log-worth")
+  
+  return(p)
+  
+}
+
 #' @rdname multcompPL
 #' @noRd
-multcompPL = function(mod, items = NULL, threshold = 0.05, adjust = "none", ...){
+multcompPL = function(mod, 
+                      items = NULL, 
+                      threshold = 0.05, 
+                      adjust = "none", 
+                      ...){
   
   #get estimates with quasi-SEs
   qv1 = qvcalc::qvcalc(mod, ...)$qvframe

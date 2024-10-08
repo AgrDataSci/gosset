@@ -5,6 +5,7 @@
 \alias{node_rules}
 \alias{top_items}
 \alias{plot.pltree}
+\alias{plot_logworth}
 \title{Get node labels and rules used in a party tree}
 \usage{
 node_labels(x)
@@ -14,9 +15,18 @@ node_rules(x)
 top_items(x, top = 5)
 
 \method{plot}{pltree}(x, log = TRUE, ref = NULL, ci.level = 0.95, ...)
+
+plot_logworth(
+  x,
+  ci.level = 0.95,
+  ref = NULL,
+  multcomp = FALSE,
+  levels = NULL,
+  ...
+)
 }
 \arguments{
-\item{x}{an object of class \code{party}}
+\item{x}{an object of class PlackettLuce}
 
 \item{top}{an integer for the number of items to return}
 
@@ -26,9 +36,13 @@ displayed instead of worth}
 \item{ref}{optional, character for the reference item when
 \var{log} = \code{TRUE}}
 
-\item{ci.level}{an integer for the confidence interval levels}
+\item{ci.level}{the confidence interval level}
 
 \item{...}{additional arguments passed to methods. See details}
+
+\item{multcomp}{logical to add group letters}
+
+\item{levels}{optional, a vector with the order of labels in axis Y}
 }
 \value{
 a vector with the node labels, 
