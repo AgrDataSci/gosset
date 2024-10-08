@@ -110,7 +110,7 @@ mod = lapply(R, PlackettLuce)
 
 The `worth_map()` function can be used to visually assess and compare item performance based on different characteristics. The values represented in a worth_map are log-worth estimates. From the breeder or product developer perspective the function `worth_map()` offers a visualization tool to help in identifying item performance based on different characteristics and select crossing materials.
 
-```{r worthmap, message=FALSE, eval=TRUE, echo=TRUE, fig.cap="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Blue values indicate a superior performance of varieties for a given trait, compared to the reference.  Red values indicate a variety with weak performance for the given trait, compared to the reference."}
+```{r worthmap, message=FALSE, eval=TRUE, echo=TRUE, fig.cap="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Green values indicate a superior performance of varieties for a given trait.  Brown values indicate a variety with weak performance for the given trait"}
 worth_map(mod[-baseline],
           labels = traits[-baseline],
           ref = "Amadeus 77") +
@@ -122,7 +122,7 @@ worth_map(mod[-baseline],
 
 To consider the effect of climate factors on yield, we use agro-climatic covariates to fit a Plackett-Luce tree. For simplicity, we use the total rainfall (Rtotal) derived from CHIRPS data [@Funk2015], obtained in R using the R package chirps [@chirps]. Additional covariates can be used in a Plackett-Luce tree, for example using temperature data from R package ag5Tools [@ag5tools] or nasapower [@nasapower]. 
 
-We request the CHIRPS data using the package chirps. Data should be returned as a matrix. This process can take some minutes to be implemented.
+We request the CHIRPS data using the package chirps. Data should be returned as a matrix. This process can take some minutes to be completed.
 
 ```{r chirps, message=FALSE, eval=FALSE, echo=TRUE}
 dates = c(min(covar[, "planting_date"]),

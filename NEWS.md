@@ -1,9 +1,10 @@
-gosset 1.3-2 (2024-09-13)
+gosset 1.4 (2024-10-13)
 =========================
 
 ### IMPROVEMENTS
 
 * manage levels in `plot.pltree()`
+* adds cassava consumer testing data and new vignette
 
 gosset 1.3 (2024-05-26)
 =========================

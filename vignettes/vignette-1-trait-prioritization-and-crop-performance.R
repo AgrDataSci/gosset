@@ -57,7 +57,7 @@ kendall
 mod = lapply(R, PlackettLuce)
 
 
-## ----worthmap, message=FALSE, eval=TRUE, echo=TRUE, fig.cap="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Blue values indicate a superior performance of varieties for a given trait, compared to the reference.  Red values indicate a variety with weak performance for the given trait, compared to the reference."----
+## ----worthmap, message=FALSE, eval=TRUE, echo=TRUE, fig.cap="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Green values indicate a superior performance of varieties for a given trait.  Brown values indicate a variety with weak performance for the given trait"----
 worth_map(mod[-baseline],
           labels = traits[-baseline],
           ref = "Amadeus 77") +

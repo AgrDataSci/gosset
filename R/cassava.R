@@ -1,0 +1,68 @@
+#' Gari-Eba Consumer Acceptability in Cameroon and Nigeria
+#'
+#' Data from decentralized consumer trials of gari-eba, a sub-product of 
+#' cassava (\emph{Manihot esculenta} Crantz). Consumer testing was carried 
+#' out in 2022 in Cameroon and Nigeria using the tricot approach. Diverse consumers in villages,
+#' towns and cities evaluated the overall acceptability of 
+#' gari-eba made from 13 cassava genotypes. Apart from overall preference of the 
+#' samples, the following traits were evaluated for eba based on the 
+#' triangulated insights obtained by earlier survey and participatory work in 
+#' the three areas. Nigeria (Osun and Benue States): colour, smoothness,
+#' mouldability, stretchability, and taste. Cameroon (Littoral zone): colour,
+#' odour, taste, firmness and stretchability. Traits in common are: colour,
+#' taste and stretchability.
+#' 
+#' @keywords dataset
+#' @format A data frame with 1000 records and 27 variables
+#' \describe{
+#'     \item{\code{id}}{The tricot package id.}
+#'     \item{\code{option_a}}{The name of genotype A in the comparison.}
+#'     \item{\code{option_b}}{The name of genotype B in the comparison.}
+#'     \item{\code{option_c}}{The name of genotype C in the comparison.}
+#'     \item{\code{country}}{The country where the experiment was conducted.}
+#'     \item{\code{gender}}{The participant gender.}
+#'     \item{\code{age}}{The participant age.}
+#'     \item{\code{consumption}}{Indicates how often the participant consumes eba.}
+#'     \item{\code{consumptionform}}{Indicates in which meal the participant consumes eba.}
+#'     \item{\code{colour_pos}}{The sample ranked as best for colour ("A",
+#'     "B" or "C").}
+#'     \item{\code{colour_neg}}{The sample ranked as worst for colour ("A",
+#'     "B" or "C").}
+#'     \item{\code{smoothness_pos}}{The sample ranked as best for smoothness ("A",
+#'     "B" or "C").}
+#'     \item{\code{smoothness_neg}}{The sample ranked as worst for smoothness ("A",
+#'     "B" or "C").}
+#'     \item{\code{mouldability_pos}}{The sample ranked as best for mouldability ("A",
+#'     "B" or "C").}
+#'     \item{\code{mouldability_neg}}{The sample ranked as worst for mouldability ("A",
+#'     "B" or "C").}
+#'     \item{\code{stretchability_pos}}{The sample ranked as best for stretchability ("A",
+#'     "B" or "C").}
+#'     \item{\code{stretchability_neg}}{The sample ranked as worst for stretchability ("A",
+#'     "B" or "C").}
+#'     \item{\code{taste_pos}}{The sample ranked as best for taste ("A",
+#'     "B" or "C").}
+#'     \item{\code{taste_neg}}{The sample ranked as worst for taste ("A",
+#'     "B" or "C").}
+#'     \item{\code{odour_pos}}{The sample ranked as best for odour ("A",
+#'     "B" or "C").}
+#'     \item{\code{odour_neg}}{The sample ranked as worst for odour ("A",
+#'     "B" or "C").}
+#'     \item{\code{firmness_pos}}{The sample ranked as best for firmness ("A",
+#'     "B" or "C").}
+#'     \item{\code{firmness_neg}}{The sample ranked as worst for firmness ("A",
+#'     "B" or "C").}
+#'     \item{\code{overall_pos}}{The sample ranked as best overall ("A",
+#'     "B" or "C").}
+#'     \item{\code{overall_neg}}{The sample ranked as worst overall ("A",
+#'     "B" or "C").}
+#'     \item{\code{reason_like}}{Open question for the reason why the participant ranked the best 
+#'     sample as "best".}
+#'     \item{\code{reason_dislike}}{Open question for the reason why the participant ranked the worst 
+#'     sample as "worst".}
+#' }
+#' @source
+#' Olaosebikan, et. al. (2023). 
+#' Journal of the Science of Food and Agriculture.
+#' \doi{https://doi.org/10.1002/jsfa.12867}
+"cassava"

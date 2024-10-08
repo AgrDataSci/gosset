@@ -30,7 +30,7 @@ remotes::install_github("agrdatasci/gosset")
 
 The functionality of **gosset** is illustrated in the package's vignettes
 
-* [Trait prioritization and crop performance](https://agrdatasci.github.io/gosset/articles/Overview.html)
+* [Trait prioritization and crop performance](https://agrdatasci.github.io/gosset/articles/vignette-1-trait-prioritization-and-crop-performance.html)
 
 
 ## Meta
