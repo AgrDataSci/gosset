@@ -1,0 +1,6 @@
+pandoc: '3.2'
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  vignette-1-trait-prioritization-and-crop-performance: vignette-1-trait-prioritization-and-crop-performance.html
+last_built: 2024-10-08T17:09Z
