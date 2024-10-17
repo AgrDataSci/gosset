@@ -39,6 +39,7 @@ lapply(R, function(x){
   likelihood_ratio(x, split = dat$gender)
 })
 
+
 mod = lapply(R, PlackettLuce)
 
 worth_map(mod, 
