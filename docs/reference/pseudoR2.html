@@ -3,7 +3,7 @@
 ordinary least squares (OLS) are not available. The algorithm computes estimates
 from the maximum likelihood through an iterative process. These estimates are called
 'pseudo R-squared' because they look like 'R-squared' in the sense that they are on
-a similar scale (from 0 to 1), with higher values indicating better model fit."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+a similar scale (from 0 to 1), with higher values indicating better model fit."><meta property="og:image" content="/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
@@ -36,10 +36,10 @@ a similar scale (from 0 to 1), with higher values indicating better model fit.">
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/vignette-1-trait-prioritization-and-crop-performance.html">Integrating farmer-led rankings and agro-climate data for variety selection</a>
+      <a href="../articles/vignette-1-trait-prioritization-and-crop-performance.html">Integrating farmer-generated data and agro-climatic data for crop variety selection</a>
     </li>
     <li>
-      <a href="../articles/vignette-2-gari-eba-consumer-testing.html">Consumer preference of gari-eba in Nigeria and Cameroon</a>
+      <a href="../articles/vignette-2-gari-eba-consumer-testing.html">Consumer preference of cassava gari-eba</a>
     </li>
   </ul></li>
 <li>
@@ -144,19 +144,15 @@ Economics 3(3), 386-406. doi:10.2307/133656</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"airquality"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">mod</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">Temp</span> <span class="op">~</span> <span class="va">Wind</span> <span class="op">+</span> <span class="va">Solar.R</span>,</span></span>
-<span class="r-in"><span>           data <span class="op">=</span> <span class="va">airquality</span>,</span></span>
-<span class="r-in"><span>           family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">poisson</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">pseudoR2</span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      logLik logLikNull MaxLik CraggUhler McFadden</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -59.0523   -89.3414 0.3396     0.4811   0.3390</span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"airquality"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mod</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">Temp</span> <span class="op">~</span> <span class="va">Wind</span> <span class="op">+</span> <span class="va">Solar.R</span>,</span>
+<span>           data <span class="op">=</span> <span class="va">airquality</span>,</span>
+<span>           family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">poisson</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pseudoR2</span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

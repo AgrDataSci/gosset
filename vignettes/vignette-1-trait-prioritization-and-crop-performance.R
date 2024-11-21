@@ -57,7 +57,7 @@ kendall
 mod = lapply(R, PlackettLuce)
 
 
-## ----worthmap, message=FALSE, eval=TRUE, echo=TRUE, fig.cap="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Green values indicate a superior performance of varieties for a given trait.  Brown values indicate a variety with weak performance for the given trait"----
+## ----worthmap, message=FALSE, eval=TRUE, echo=TRUE----------------------------
 worth_map(mod[-baseline],
           labels = traits[-baseline],
           ref = "Amadeus 77") +
@@ -133,5 +133,5 @@ Yield = PlackettLuce(R[[yield]])
 
 compare(Overall, Yield) +
   labs(x = "Average log(worth)",
-       y = "Difference (Overall Appreciation - Yield)")
+       y = "Difference (Overall appreciation - Yield)")
 

@@ -30,9 +30,9 @@ remotes::install_github("agrdatasci/gosset")
 
 The functionality of **gosset** is illustrated in the package's vignettes
 
-* [Farmer-led rankings and agro-climate data](https://agrdatasci.github.io/gosset/articles/vignette-1-trait-prioritization-and-crop-performance.html)
+* [Case study 1: common bean on-farm testing](https://agrdatasci.github.io/gosset/articles/vignette-1-trait-prioritization-and-crop-performance.html)
 
-* [Consumer preference of gari-eba](https://agrdatasci.github.io/gosset/articles/vignette-2-gari-eba-consumer-testing.html)
+* [Case study 2: consumer evaluation cassava](https://agrdatasci.github.io/gosset/articles/vignette-2-gari-eba-consumer-testing.html)
 
 ## Meta
 

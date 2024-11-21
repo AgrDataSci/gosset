@@ -1,5 +1,5 @@
 ---
-title: "Integrating farmer-led rankings and agro-climate data for variety selection"
+title: "Integrating farmer-generated data and agro-climatic data for crop variety selection"
 package: gosset
 author:
 - name: Kauê de Sousa
@@ -10,7 +10,7 @@ author:
   affiliation: Digital Inclusion, Bioversity International, Montpellier, France 
 output: html_document
 vignette: >
-  %\VignetteIndexEntry{Farmer-led rankings and agro-climate data}
+  %\VignetteIndexEntry{Case study 1: common bean on-farm testing}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown_notangle}
   %\VignetteDepends{ggplot2}
@@ -21,11 +21,9 @@ bibliography: ["vignette.bib"]
 csl: citationstyle.csl
 ---
 
-# Summary
+# Introduction
 
-The gosset package [@deSousa2023gosset] provides methods to implement workflows for analyzing experimental agriculture data, from data synthesis to model selection and visualization. The package is named after W.S. Gosset, aka ‘Student,’ a pioneer of modern statistics in small sample experimental design and analysis.
-
-In this example, we demonstrate a possible workflow to assess trait prioritization and crop performance using decentralized on-farm data generated with the tricot approach [@deSousa2024]. We use the `nicabean` dataset, which was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot approach, farmers tested three randomly assigned varieties of common bean on their farms as incomplete blocks of size three (from a set of 10 varieties). Farmers assessed which of the three varieties had the best and worst performance in eight traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, and taste). Additionally, farmers provided their overall appreciation of the varieties, i.e., which variety had the best and worst performance overall, considering all the traits.
+In this example, we demonstrate a possible workflow to assess crop variety performance using decentralized on-farm testing data generated with the tricot approach [@deSousa2024]. We use the `nicabean` dataset, which was generated with decentralized on-farm trials of common bean (*Phaseolus vulgaris* L.) varieties in Nicaragua over five seasons (between 2015 and 2016). Following the tricot approach, farmers tested three randomly assigned varieties of common bean on their farms as incomplete blocks of size three (from a set of 10 varieties). Farmers assessed which of the three varieties had the best and worst performance in eight traits (vigor, architecture, resistance to pests, resistance to diseases, tolerance to drought, yield, marketability, and taste). Additionally, farmers provided their overall appreciation of the varieties, i.e., which variety had the best and worst performance overall, considering all the traits.
 
 Here, we use the Plackett-Luce model, jointly proposed by Luce (1959) [@luce_individual_1959] and Plackett (1975) [@Plackett]. This model estimates the probability of one variety outperforming all others (worth) for a given trait, based on Luce's axiom [@luce_individual_1959]. The model is implemented in R by Turner et al. (2020) with the PlackettLuce package [@Turner2020].
 
