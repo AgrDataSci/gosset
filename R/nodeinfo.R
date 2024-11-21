@@ -5,20 +5,31 @@
 #'  to build the tree 
 #' 
 #' 
-#' @param x an object of class \code{party}
+#' @param x an object of class \code{party} or \code{PlackettLuce}
+#' @param log logical, if \code{TRUE} log-worth coefficients are 
+#'  displayed instead of worth
+#' @param ref optional, character or integer for the reference item when
+#'  \var{log} = \code{TRUE}
+#' @param ... additional arguments passed to methods. See details
+#' @details 
+#' multcomp = TRUE adds multi-comparison letters from multcompView
+#' ci.level = numeric for the confidence interval levels
 #' @return a vector with the node labels, 
-#'  a data.frame with node rules, a ggplot
+#'  a data.frame with node rules, a ggplot object
 #' @author Kauê de Sousa
 #' @examples 
 #' \donttest{
 #' library("PlackettLuce")
+#' library("ggplot2")
+#' 
 #' data("beans", package = "PlackettLuce")
+#' 
 #' G = rank_tricot(data = beans,
-#'                  items = c(1:3),
-#'                  input = c(4:5),
-#'                  group = TRUE,
-#'                  additional.rank = beans[c(6:8)])
-#'  
+#'                 items = c(1:3),
+#'                 input = c(4:5),
+#'                 group = TRUE,
+#'                 additional.rank = beans[c(6:8)])
+#'   
 #' pld = cbind(G, beans[,c("maxTN", "season", "lon")])
 #'
 #' tree = pltree(G ~ maxTN + season + lon, data = pld)
@@ -31,198 +42,26 @@
 #' 
 #' plot(tree)
 #' 
-#' plot(tree, log = TRUE)
+#' plot(tree, log = FALSE)
+#' 
+#' #################################
+#' 
+#' # Plot PlackettLuce 
+#' R = matrix(c(1, 2, 4, 3,
+#'              4, 1, 2, 3,
+#'              2, 4, 1, 3,
+#'              1, 2, 3, 0,
+#'              2, 1, 4, 3,
+#'              1, 4, 3, 2), nrow = 6, byrow = TRUE)
+#' colnames(R) = c("apple", "banana", "orange", "pear")
+#' R = as.rankings(R)
+#' 
+#' mod = PlackettLuce(R)
+#' 
+#' plot(mod)
+#' 
 #' }
-#' @importFrom stats model.frame reorder
-#' @importFrom partykit nodeids data_party node_party breaks_split partynode
-#'  kids_node id_node split_node varid_split index_split right_split
-#' @export
-node_labels = function(x) {
-  
-  rules = .list.rules.party(x)
-  rules = paste(rules, collapse = "  ")
-  
-  var = names(model.frame(x))
-  
-  labels = sapply(var, function(x) {
-    grepl(x, rules)
-  })
-  
-  names(labels[labels == TRUE])
-  
-}
-
-#' Get node rules 
-#' @rdname node_labels
-#' @export
-node_rules = function(x){
-  
-  node_ids = partykit::nodeids(x, terminal = TRUE)
-  
-  result = data.frame()
-  
-  for (i in seq_along(node_ids)) {
-    r = data.frame(node = node_ids[i],
-                    rules = .list.rules.party(x, node_ids[i]))
-    
-    result = rbind(result, r)
-    
-  }
-  
-  rule = result$rules
-  rule = gsub("%in%","@", rule)
-  rule = gsub("[(]|[)]| c","", rule)
-  rule = gsub("  "," ", rule)
-  rule = gsub('"NA",',"", rule)
-  rule = gsub(', "NA"',"", rule)
-  rule = gsub(",", "COMMA", rule)
-  rule = gsub("[.]", "DOT", rule)
-  rule = gsub("@", "EQUAL", rule)
-  rule = gsub("&", " AND ", rule)
-  rule = gsub("<=", " LOWEQUAL ", rule)
-  rule = gsub("=>", " HIGHEQUAL ", rule)
-  rule = gsub("<", " LOW ", rule)
-  rule = gsub(">", " HIGH ", rule)
-  
-  # remove all other special characters
-  rule = gsub("[[:punct:]]", "", rule)
-  
-  # reposition the key special characters
-  rule = gsub("  ", " ", rule)
-  rule = gsub("LOWEQUAL", "<=", rule)
-  rule = gsub("HIGHEQUAL", "=>", rule)
-  rule = gsub("LOW", "<", rule)
-  rule = gsub("HIGH", ">", rule)
-  rule = gsub("EQUAL", "= ", rule)
-  rule = gsub("AND", "&", rule)
-  rule = gsub("COMMA", ",", rule)
-  rule = gsub("DOT", ".", rule)
-  rule = gsub(", NA", "", rule)
-  rule = gsub("NA,", "", rule)
-  
-  result$rules = rule
-  
-  return(result)
-  
-}
-
-#' Get the top items out of a decision tree
-#' @param top an integer for the number of items to return
-#' @rdname node_labels
-#' @export 
-top_items = function(x, top = 5) {
-  
-  if (length(x) > 1) {
-    
-    coef_x = coef(x, log = FALSE)
-    
-    bestitems = apply(coef_x, 1 , function(y) {
-      names(rev(sort(y)))[1:top]
-    })
-    
-    bestitems = as.data.frame(bestitems)
-    
-    names(bestitems) = paste0("Node", 
-                               nodeids(x, terminal = TRUE))
-    
-    return(bestitems)
-    
-  }
-  
-  if (length(x) == 1){
-    
-    coef_x = coef(x, log = FALSE)
-    
-    bestitems = names(rev(sort(coef_x)))[1:top]
-    
-    return(bestitems)
-    
-  }
-  
-}
-
-#' Imported from partykit
-#' @param i node ids
-#' @noRd
-.list.rules.party = function (x, i = NULL, ...) 
-{
-  if (is.null(i)) 
-    i = partykit::nodeids(x, terminal = TRUE)
-  if (length(i) > 1) {
-    ret = sapply(i, .list.rules.party, x = x)
-    names(ret) = if (is.character(i)) 
-      i
-    else names(x)[i]
-    return(ret)
-  }
-  if (is.character(i) && !is.null(names(x))) 
-    i = which(names(x) %in% i)
-  stopifnot(length(i) == 1 & is.numeric(i))
-  stopifnot(i <= length(x) & i >= 1)
-  i = as.integer(i)
-  dat = partykit::data_party(x, i)
-  if (!is.null(x$fitted)) {
-    findx = which("(fitted)" == names(dat))[1]
-    fit = dat[, findx:ncol(dat), drop = FALSE]
-    dat = dat[, -(findx:ncol(dat)), drop = FALSE]
-    if (ncol(dat) == 0) 
-      dat = x$data
-  }
-  else {
-    fit = NULL
-    dat = x$data
-  }
-  rule = c()
-  recFun = function(node) {
-    if (partykit::id_node(node) == i) 
-      return(NULL)
-    kid = sapply(partykit::kids_node(node), partykit::id_node)
-    whichkid = max(which(kid <= i))
-    split = partykit::split_node(node)
-    ivar = partykit::varid_split(split)
-    svar = names(dat)[ivar]
-    index = partykit::index_split(split)
-    if (is.factor(dat[, svar])) {
-      if (is.null(index)) 
-        index = ((1:nlevels(dat[, svar])) > partykit::breaks_split(split)) + 
-          1
-      slevels = levels(dat[, svar])[index == whichkid]
-      srule = paste(svar, " %in% c(\"", paste(slevels, 
-                                               collapse = "\", \"", sep = ""), "\")", sep = "")
-    }
-    else {
-      if (is.null(index)) 
-        index = 1:length(kid)
-      breaks = cbind(c(-Inf, partykit::breaks_split(split)), 
-                      c(partykit::breaks_split(split), Inf))
-      sbreak = breaks[index == whichkid, ]
-      right = partykit::right_split(split)
-      srule = c()
-      if (is.finite(sbreak[1])) 
-        srule = c(srule, paste(svar, ifelse(right, ">", 
-                                             ">="), sbreak[1]))
-      if (is.finite(sbreak[2])) 
-        srule = c(srule, paste(svar, ifelse(right, "<=", 
-                                             "<"), sbreak[2]))
-      srule = paste(srule, collapse = " & ")
-    }
-    rule <<- c(rule, srule)
-    return(recFun(node[[whichkid]]))
-  }
-  node = recFun(partykit::node_party(x))
-  paste(rule, collapse = " & ")
-}
-
-
-#' Plot PlackettLuce tree
-#' @param log logical, if \code{TRUE} log-worth coefficients are 
-#'  displayed instead of worth
-#' @param ref optional, character for the reference item when
-#'  \var{log} = \code{TRUE}
-#' @param ci.level an integer for the confidence interval levels
-#' @param ... additional arguments passed to methods. See details
-#' @details 
-#' Argument multcomp = TRUE adds multi-comparison letters from multcompView
+#' 
 #' @importFrom stats update
 #' @importFrom PlackettLuce freq
 #' @importFrom partykit nodeids
@@ -238,9 +77,9 @@ top_items = function(x, top = 5) {
 #' @method plot pltree
 #' @export
 plot.pltree = function(x, 
-                        log = TRUE, 
-                        ref = NULL, 
-                        ci.level = 0.95, ...){
+                       log = TRUE, 
+                       ref = NULL,
+                       ...){
   
   
   if (length(x) == 1) {
@@ -265,7 +104,6 @@ plot.pltree = function(x,
   # make panels
   p = try(build_tree_nodes(nodes, 
                        log = log,
-                       ci.level = ci.level,
                        ref = ref,
                        node.ids = node_id,
                        n.obs = nobs, 
@@ -284,6 +122,20 @@ plot.pltree = function(x,
   
   return(p)
   
+}
+
+#' @import methods
+#' @rdname node_labels
+#' @method plot PlackettLuce
+#' @export
+plot.PlackettLuce = function(x,  
+                             ...){
+  
+  build_tree_nodes(list(x), ...) +
+    ggplot2::theme(strip.background = ggplot2::element_blank(),
+                   strip.text.x = ggplot2::element_blank())
+    
+    
 }
 
 #' Build tree
@@ -308,10 +160,10 @@ build_tree_branches = function(x, ...){
                                          digits = 1))),
       ggplot2::aes(label = ""),
       ggplot2::aes(label = id)),
-      line_gpar = list(list(size = 12),
-                       list(size = 10),
-                       list(size = 10),
-                       list(size = 10,
+      line_gpar = list(list(linewidth = 12),
+                       list(linewidth = 10),
+                       list(linewidth = 10),
+                       list(linewidth = 10,
                             col = "black",
                             fontface = "bold",
                             alignment = "center")
@@ -500,102 +352,201 @@ build_tree_nodes = function(x,
 }
 
 
-#' Plot log-worth
-#' @param x an object of class PlackettLuce
-#' @param ci.level the confidence interval level
-#' @param multcomp logical to add group letters 
-#' @param levels an optional vector with factor levels to plot
-#' @param levels optional, a vector with the order of labels in axis Y
+
+#' @importFrom stats model.frame reorder
+#' @importFrom partykit nodeids data_party node_party breaks_split partynode
+#'  kids_node id_node split_node varid_split index_split right_split
 #' @rdname node_labels
 #' @export
-plot_logworth = function(x, ci.level = 0.95, ref = NULL, 
-                         multcomp = FALSE, levels = NULL, ...) {
+node_labels = function(x) {
   
-  frame = data.frame()
+  rules = .list.rules.party(x)
+  rules = paste(rules, collapse = "  ")
   
-  if (is.null(ref)) {
-    ref = 1
-  }
+  var = names(model.frame(x))
   
-  for (i in seq_along(ref)) {
-    fi = qvcalc::qvcalc(x, ref = ref[i], ...)$qvframe
-    fi$ref = ref[i]
-    fi$items = rownames(fi)
-    frame = rbind(frame, fi)
-  }
+  labels = sapply(var, function(x) {
+    grepl(x, rules)
+  })
   
-  if (is.null(levels)) {
-    levels = union(ref, sort(unique(frame$items)))
-  }
-  
-  items = factor(frame$items, levels = levels)
-  
-  est = frame$estimate
-  
-  se = frame$quasiSE
-  
-  tops = est + stats::qnorm(1-(1 - ci.level) / 2) * se
-  
-  tails = est - stats::qnorm(1-(1 - ci.level) / 2) * se
-  
-  range = max(tops) - min(tails)
-  
-  pdat = data.frame(est, se, items, 
-                    ref = frame$ref, 
-                    tops, tails)
-  
-  if (isTRUE(multcomp)) {
-    lettersdat = multcompPL(mod = x, ...)
-    lettersdat = lettersdat[, c("items", "group")]
-    pdat = merge(pdat, lettersdat, by = "items")
-  } 
-  
-  if (!isTRUE(multcomp)) {
-    pdat$group = ""
-  }
-  
-  pdat$items = factor(pdat$items, levels = levels)
-  
-  p = ggplot2::ggplot(data = pdat,
-                      ggplot2::aes(y = items, 
-                 x = est,
-                 xmax = tops,
-                 xmin = tails, 
-                 label = group)) +
-    ggplot2::geom_vline(xintercept = 0, 
-               colour = "#E5E7E9",
-               linewidth = 0.8) +
-    ggplot2::geom_point() +
-    ggplot2::geom_errorbar(width = 0.1) +
-    ggplot2::geom_text(hjust = 1.2, vjust = 1.2) +
-    ggplot2::theme_bw() +
-    ggplot2::facet_wrap(~ ref, strip.position = "bottom") +
-    ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
-          strip.background.x = element_blank(),
-          axis.text.y = ggplot2::element_text(size = 10, color = "grey20"),
-          axis.text.x = ggplot2::element_text(size = 10, color = "grey20"),
-          text = ggplot2::element_text(color = "grey20"),
-          legend.position = "bottom",
-          legend.title = ggplot2::element_blank(),
-          strip.background.y = ggplot2::element_blank(),
-          strip.placement = "outside") +
-    ggplot2::labs(y = "", x = "Log-worth")
-  
-  return(p)
+  names(labels[labels == TRUE])
   
 }
 
+#' Get node rules 
+#' @rdname node_labels
+#' @importFrom partykit nodeids
+#' @export
+node_rules = function(x){
+  
+  node_ids = partykit::nodeids(x, terminal = TRUE)
+  
+  result = data.frame()
+  
+  for (i in seq_along(node_ids)) {
+    r = data.frame(node = node_ids[i],
+                   rules = .list.rules.party(x, node_ids[i]))
+    
+    result = rbind(result, r)
+    
+  }
+  
+  rule = result$rules
+  rule = gsub("%in%","@", rule)
+  rule = gsub("[(]|[)]| c","", rule)
+  rule = gsub("  "," ", rule)
+  rule = gsub('"NA",',"", rule)
+  rule = gsub(', "NA"',"", rule)
+  rule = gsub(",", "COMMA", rule)
+  rule = gsub("[.]", "DOT", rule)
+  rule = gsub("@", "EQUAL", rule)
+  rule = gsub("&", " AND ", rule)
+  rule = gsub("<=", " LOWEQUAL ", rule)
+  rule = gsub("=>", " HIGHEQUAL ", rule)
+  rule = gsub("<", " LOW ", rule)
+  rule = gsub(">", " HIGH ", rule)
+  
+  # remove all other special characters
+  rule = gsub("[[:punct:]]", "", rule)
+  
+  # reposition the key special characters
+  rule = gsub("  ", " ", rule)
+  rule = gsub("LOWEQUAL", "<=", rule)
+  rule = gsub("HIGHEQUAL", "=>", rule)
+  rule = gsub("LOW", "<", rule)
+  rule = gsub("HIGH", ">", rule)
+  rule = gsub("EQUAL", "= ", rule)
+  rule = gsub("AND", "&", rule)
+  rule = gsub("COMMA", ",", rule)
+  rule = gsub("DOT", ".", rule)
+  rule = gsub(", NA", "", rule)
+  rule = gsub("NA,", "", rule)
+  
+  result$rules = rule
+  
+  return(result)
+  
+}
+
+#' Get the top items out of a decision tree
+#' @param top an integer for the number of items to return
+#' @rdname node_labels
+#' @export 
+top_items = function(x, top = 5) {
+  
+  if (length(x) > 1) {
+    
+    coef_x = coef(x, log = FALSE)
+    
+    bestitems = apply(coef_x, 1 , function(y) {
+      names(rev(sort(y)))[1:top]
+    })
+    
+    bestitems = as.data.frame(bestitems)
+    
+    names(bestitems) = paste0("Node", 
+                              nodeids(x, terminal = TRUE))
+    
+    return(bestitems)
+    
+  }
+  
+  if (length(x) == 1){
+    
+    coef_x = coef(x, log = FALSE)
+    
+    bestitems = names(rev(sort(coef_x)))[1:top]
+    
+    return(bestitems)
+    
+  }
+  
+}
+
+#' Imported from partykit
+#' @param i node ids
+#' @noRd
+.list.rules.party = function (x, i = NULL, ...) 
+{
+  if (is.null(i)) 
+    i = partykit::nodeids(x, terminal = TRUE)
+  if (length(i) > 1) {
+    ret = sapply(i, .list.rules.party, x = x)
+    names(ret) = if (is.character(i)) 
+      i
+    else names(x)[i]
+    return(ret)
+  }
+  if (is.character(i) && !is.null(names(x))) 
+    i = which(names(x) %in% i)
+  stopifnot(length(i) == 1 & is.numeric(i))
+  stopifnot(i <= length(x) & i >= 1)
+  i = as.integer(i)
+  dat = partykit::data_party(x, i)
+  if (!is.null(x$fitted)) {
+    findx = which("(fitted)" == names(dat))[1]
+    fit = dat[, findx:ncol(dat), drop = FALSE]
+    dat = dat[, -(findx:ncol(dat)), drop = FALSE]
+    if (ncol(dat) == 0) 
+      dat = x$data
+  }
+  else {
+    fit = NULL
+    dat = x$data
+  }
+  rule = c()
+  recFun = function(node) {
+    if (partykit::id_node(node) == i) 
+      return(NULL)
+    kid = sapply(partykit::kids_node(node), partykit::id_node)
+    whichkid = max(which(kid <= i))
+    split = partykit::split_node(node)
+    ivar = partykit::varid_split(split)
+    svar = names(dat)[ivar]
+    index = partykit::index_split(split)
+    if (is.factor(dat[, svar])) {
+      if (is.null(index)) 
+        index = ((1:nlevels(dat[, svar])) > partykit::breaks_split(split)) + 
+          1
+      slevels = levels(dat[, svar])[index == whichkid]
+      srule = paste(svar, " %in% c(\"", paste(slevels, 
+                                              collapse = "\", \"", sep = ""), "\")", sep = "")
+    }
+    else {
+      if (is.null(index)) 
+        index = 1:length(kid)
+      breaks = cbind(c(-Inf, partykit::breaks_split(split)), 
+                     c(partykit::breaks_split(split), Inf))
+      sbreak = breaks[index == whichkid, ]
+      right = partykit::right_split(split)
+      srule = c()
+      if (is.finite(sbreak[1])) 
+        srule = c(srule, paste(svar, ifelse(right, ">", 
+                                            ">="), sbreak[1]))
+      if (is.finite(sbreak[2])) 
+        srule = c(srule, paste(svar, ifelse(right, "<=", 
+                                            "<"), sbreak[2]))
+      srule = paste(srule, collapse = " & ")
+    }
+    rule <<- c(rule, srule)
+    return(recFun(node[[whichkid]]))
+  }
+  node = recFun(partykit::node_party(x))
+  paste(rule, collapse = " & ")
+}
+
+
 #' @rdname multcompPL
 #' @noRd
-multcompPL = function(mod, 
-                      items = NULL, 
-                      threshold = 0.05, 
-                      adjust = "none", 
+multcompPL = function(mod,
+                      items = NULL,
+                      threshold = 0.05,
+                      adjust = "none",
                       ...){
-  
+
   #get estimates with quasi-SEs
   qv1 = qvcalc::qvcalc(mod, ...)$qvframe
-  
+
   #reduce frame to only selected items if not all comparisons are desired
   if (!is.null(items)) {
     qv1 = subset(qv1, rownames(qv1) %in% items)
@@ -604,11 +555,11 @@ multcompPL = function(mod,
       stop("Less than 2 items selected")
     }
   }
-  
+
   #set up matrices for all differences and pooled errors
   diffs = mat.or.vec(nrow(qv1),nrow(qv1))
   ses = mat.or.vec(nrow(qv1),nrow(qv1))
-  
+
   for(i in 1:nrow(qv1)){
     for(j in 1:nrow(qv1)){
       #get differences and pooled ses
@@ -616,45 +567,45 @@ multcompPL = function(mod,
       ses[i,j] = sqrt(qv1$quasiVar[i] + qv1$quasiVar[j])
     }
   }
-  
+
   #calculate z scores
   z = diffs/ses
   #TO DO: What DF to use to use here? Is it just the resid DF?
   p = 2 * (1 - stats::pt(abs(z), mod$df.residual))
-  
+
   #adjust p-value if you want to adjust. make sure to only take each p once for adjustment
   p[upper.tri(p)] = stats::p.adjust(p[upper.tri(p)], method = adjust)
-  
+
   #make sure lower triangular is mirror of upper
   p[lower.tri(p)] = t(p)[lower.tri(p)]
-  
+
   #set rownames
   rownames(p) = colnames(p) = rownames(qv1)
-  
+
   #re-order qv output to ensure letters are produced in a sensible order
   qv1$items = stats::reorder(factor(rownames(qv1)), qv1$estimate, mean)
   qv1 = qv1[order(qv1$estimate, decreasing = TRUE), ]
-  
+
   #get mean seperation letter groupings
-  args = list(formula = estimate ~ items, 
-               x = p, 
+  args = list(formula = estimate ~ items,
+               x = p,
                data = qv1,
                compare = "<",
                threshold =  threshold,
                Letters = letters,
                reversed = FALSE)
-  
+
   let = do.call("multcompLetters2", args)
-  
+
   qv1$group = let$Letters
-  
+
   qv1 = qv1[, union("items", names(qv1))]
-  
+
   row.names(qv1) = seq_along(qv1$group)
-  
+
   class(qv1) = union("multcompPL", class(qv1))
-  
+
   return(qv1)
-  
+
 }
 
