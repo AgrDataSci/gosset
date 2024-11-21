@@ -23,7 +23,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 # Summary
 
-Here, I present a workflow to analyze data from a consumer preference trial executed in Nigeria and Cameroon under the RTBFoods project (https://rtbfoods.cirad.fr). Consumer testing was carried out with 1,000 participants in 2022 in Cameroon and Nigeria using the tricot approach [@deSousa2024]. Diverse consumers in villages, towns, and cities evaluated the overall acceptability of gari-eba made from 13 cassava (Manihot esculenta Crantz) genotypes. Apart from the overall preference of the samples, the following traits were evaluated for eba based on triangulated insights obtained through earlier surveys and participatory work in the three areas: Nigeria (Osun and Benue States): color, smoothness, moldability, stretchability, and taste. Cameroon (Littoral zone): color, odor, taste, firmness, and stretchability.
+Here, I present a workflow to analyze data from a consumer preference trial executed in Nigeria and Cameroon by the International Institute of Tropical Agriculture (IITA) under the RTBFoods project (https://rtbfoods.cirad.fr). Consumer testing was carried out with 1,000 participants in 2022 in Cameroon and Nigeria using the tricot approach [@deSousa2024]. Diverse consumers in villages, towns, and cities evaluated the overall acceptability of gari-eba made from 13 cassava (*Manihot esculenta* Crantz) genotypes. Apart from the overall preference of the samples, the following traits were evaluated for eba based on triangulated insights obtained through earlier surveys and participatory work in the three areas: Nigeria (Osun and Benue States): color, smoothness, moldability, stretchability, and taste. Cameroon (Littoral zone): color, odor, taste, firmness, and stretchability.
 
 Traits in common are color, taste, and stretchability. The results of this study were published by Olaosebikan et al. (2023)[@Olaosebikan2023], and a deeper analysis for the Nigerian subset, linking the consumer data to laboratory instrumental metrics, was published by Alamu et al. (2023)[@EmmanuelAlamu2023]. The present vignette does not intend to replicate the results of these studies. Instead, it presents an alternative workflow to what was developed in the study. For the replication data on Olaosebikan et al. (2023), please visit https://github.com/AgrDataSci/rtbfoods-consumer-testing.
 
@@ -37,7 +37,6 @@ library("ClimMobTools")
 library("PlackettLuce")
 library("ggplot2")
 library("patchwork")
-library("multcompView")
 
 data("cassava", package = "gosset")
 
@@ -47,7 +46,7 @@ head(dat[, 1:11])
 
 ```
 
-The dataset contains information from two independent studies performed in Nigeria and Cameroon. This means the studies did not collect the same traits across the trials. Here, we select the columns with complete cases to perform the analysis. The remaining traits (tested in both studies) are color, stretchability, taste, and overall preference.
+Here, we select the columns with complete cases to perform the analysis. The remaining traits (tested in both studies) are color, stretchability, taste, and overall preference.
 
 ``` {r select, message = FALSE, eval = TRUE, echo = TRUE}
 keep = unlist(lapply(dat[1:ncol(dat)], function(x) sum(is.na(x))))
@@ -102,7 +101,7 @@ R = lapply(trait_list, function(x) {
 })
 ```
 
-To fit the model, we use the function `PlackettLuce()` from the package 'PlackettLuce' [@Turner2020], also using `lapply()`. This returns a list of models, one per trait. First, we focus on the overall preference. We use the function `plot()` to visualize the Plackett-Luce estimates as log-worth parameters using the argument `log = TRUE`. The argument `levels =` establishes the order of the varieties in the plot. We set "Akpu" as the reference.
+To fit the model, we use the function `PlackettLuce()` from the package 'PlackettLuce' [@Turner2020], also using `lapply()`. This returns a list of models, one per trait. First, we focus on the overall preference. We use the function `plot()` to visualize the Plackett-Luce estimates as *log-worth* parameters using the argument `log = TRUE`. The argument `levels =` establishes the order of the varieties in the plot. We set Akpu as the reference.
 
 
 ``` {r plfit, message = FALSE, eval = TRUE, echo = TRUE}
@@ -115,7 +114,7 @@ plot(mod[[ov]],
 
 ```
 
-The plot shows that all varieties outperform "Akpu" for overall preference. We use the function `reliability()` to identify the probability that each variety outperforms "Akpu." The function returns a data frame with the reliability estimates, where values above 0.5 indicates that the variety outperforms the reference. We plot these results using `ggplot()`.
+The plot shows that all varieties outperform Akpu for overall preference. We use the function `reliability()` to identify the probability that each variety outperforms the reference Akpu [@eskridge_1992]. The function returns a data frame with the reliability estimates, where values above 0.5 indicates that the variety outperforms the reference. We plot these results using `ggplot()`.
 
 ``` {r reliability, message = FALSE, eval = TRUE, echo = TRUE}
 rel = reliability(mod[[ov]], ref = "Akpu")
@@ -139,7 +138,7 @@ ggplot(data = rel,
 ```
 
 
-So far, we have focused solely on the overall preference. However, there are other traits to assess. The function `worth_plot()` can be used to visually analyze and compare variety performance across different traits. The values represented in a worth_map are *log-worth* estimates. The function can be used with `ggplot2` functions to improve the plot.
+The reliability estimates shows the TMS6 and Sape as the top-2 varieties for overall preference. So far, we have focused solely on the overall preference. However, there are other traits to assess. The function `worth_plot()` can be used to visually analyze and compare variety performance across different traits. The values represented in a worth map are *log-worth* estimates. The function can be used with `ggplot2` functions to improve the plot.
 
 ``` {r worth, message = FALSE, eval = TRUE, echo = TRUE}
 worth_map(mod, labels = traits) +
@@ -150,12 +149,12 @@ worth_map(mod, labels = traits) +
                        name = "")
 ```
 
-The plot shows the superiority of "TMS6," "TMEB2," and "Sape" across the traits. We will return to this analysis later, but for now, let us examine the data from the perspective of different groups to consider heterogeneity in the participants' evaluations, as proposed by van Etten et al. (2023) [@vanEtten2023].
+The worth map shows the superiority of TMS6, TMEB2, and Sape across the traits. We will return to this analysis later, but for now, let us examine the data from the perspective of different groups to consider heterogeneity in the participants' evaluations, as proposed by van Etten et al. (2023) [@vanEtten2023].
 
 
 # Participants' heterogeneity
 
-We will focus on two covariates independent to analyze the data: gender and country. The function `likelihood_ratio()` is used to test which of these covariates can provide distinguishable rankings. We then apply the likelihood-ratio test to identify the best covariate. 
+We will focus on two covariates to analyze the data: gender and country. The function `likelihood_ratio()` is used to test which of these covariates can provide distinguishable rankings within the groups. 
 
 ``` {r llr, message = FALSE, eval = TRUE, echo = TRUE}
 # by gender
@@ -182,7 +181,7 @@ llr2
 
 ```
 
-The likelihood-ratio test indicates that sub-setting the data by country provides distinguishable rankings. This test can also be used to validate more complex groupings, such as those generated by cluster analysis or farmers' typologies, which include a diverse set of variables (e.g., socio-economic and agroecological), as proposed by Voss et al. (2024) [@Voss2024]. For simplicity, we focus here only on the variable "country."
+The likelihood-ratio test indicates that sub-setting the data by country provides statistically different rankings. This test can also be used to validate more complex groupings, such as those generated by cluster analysis or farmers' typologies, which include a diverse set of variables (e.g., socio-economic and agroecological), as proposed by Voss et al. (2024) [@Voss2024]. For simplicity, we focus here only on the variable "country."
 
 Now, returning to the worth map analysis, we can visualize the performance of the varieties within the groups. We iterate over the groups by subsetting the data in a loop. Within the loop, we create the plots and store them in a list. Finally, we use the `patchwork` package to display the two worth maps.
 

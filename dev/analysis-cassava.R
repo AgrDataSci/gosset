@@ -72,24 +72,23 @@ ggplot(data = rel,
            width = 0.7,
            position = "dodge", 
            show.legend = FALSE) +
-  scale_fill_manual(values = "#b2df8a") +
+  scale_fill_manual(values = "#5aae61") +
   geom_vline(xintercept = 0.5,
-             colour = "#1f78b4",
+             colour = "grey40",
              linewidth = 1) +
-  theme_bw() +
-  theme(panel.grid.major = element_blank(),
-        strip.background =element_rect(fill="white"),
-        text = element_text(color = "grey20"),
-        strip.background.x = element_blank(),
-        strip.placement = "outside",
-        legend.position = "bottom",
-        strip.text = element_text(size = 12, color = "grey20"),
-        legend.text = element_text(size = 12, color = "grey20"),
-        axis.text = element_text(size = 12, color = "grey20"),
-        axis.title = element_text(size = 12, color = "grey20"),
-        legend.title = element_blank()) +
+  theme_classic() +
   labs(x = "Probability of outperforming",
        y = "")
+
+
+worth_bar(mod[[ov]])
+
+worth_map(mod, labels = traits) +
+  labs(x = "", y = "") +
+  scale_fill_distiller(palette = "BrBG", 
+                       direction = 1, 
+                       na.value = "white", 
+                       name = "")
 
 
 # Slice the data
@@ -143,7 +142,7 @@ for (i in seq_along(slice_lvs)) {
 }
 
 
-trait_plot[[1]] + trait_plot[[2]]
+trait_plot[[1]] + trait_plot[[2]] + plot_layout(ncol = 1)
 
 
 
@@ -186,18 +185,9 @@ ggplot(data = select,
   geom_vline(xintercept = mean(select$score),
              colour = "grey40",
              linewidth = 1) +
-  theme_bw() +
-  theme(panel.grid.major = element_blank(),
-        strip.background = element_rect(fill="white"),
-        text = element_text(color = "grey20"),
-        strip.background.x = element_blank(),
-        strip.placement = "outside",
-        legend.position = "bottom",
-        strip.text = element_text(size = 12, color = "grey20"),
-        legend.text = element_text(size = 12, color = "grey20"),
-        axis.text = element_text(size = 12, color = "grey20"),
-        axis.title = element_text(size = 12, color = "grey20"),
-        legend.title = element_blank()) +
+  theme_classic() +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom") +
   labs(x = "Selection score",
        y = "")
 

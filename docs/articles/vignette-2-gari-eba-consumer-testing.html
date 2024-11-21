@@ -55,7 +55,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/vignette-1-trait-prioritization-and-crop-performance.html">Trait prioritization and crop performance with decentralized on-farm trial data</a>
+      <a href="../articles/vignette-1-trait-prioritization-and-crop-performance.html">Integrating farmer-led rankings and agro-climate data for variety selection</a>
     </li>
     <li>
       <a href="../articles/vignette-2-gari-eba-consumer-testing.html">Consumer preference of gari-eba in Nigeria and Cameroon</a>
@@ -105,17 +105,18 @@ Hamar, Norway<br><small class="dont-index">Source: <a href="https://github.com/a
 <h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h2>
 <p>Here, I present a workflow to analyze data from a consumer preference
-trial executed in Nigeria and Cameroon under the RTBFoods project (<a href="https://rtbfoods.cirad.fr" class="external-link uri">https://rtbfoods.cirad.fr</a>). Consumer testing was carried
+trial executed in Nigeria and Cameroon by the International Institute of
+Tropical Agriculture (IITA) under the RTBFoods project (<a href="https://rtbfoods.cirad.fr" class="external-link uri">https://rtbfoods.cirad.fr</a>). Consumer testing was carried
 out with 1,000 participants in 2022 in Cameroon and Nigeria using the
 tricot approach <span class="citation">[1]</span>. Diverse consumers in
 villages, towns, and cities evaluated the overall acceptability of
-gari-eba made from 13 cassava (Manihot esculenta Crantz) genotypes.
-Apart from the overall preference of the samples, the following traits
-were evaluated for eba based on triangulated insights obtained through
-earlier surveys and participatory work in the three areas: Nigeria (Osun
-and Benue States): color, smoothness, moldability, stretchability, and
-taste. Cameroon (Littoral zone): color, odor, taste, firmness, and
-stretchability.</p>
+gari-eba made from 13 cassava (<em>Manihot esculenta</em> Crantz)
+genotypes. Apart from the overall preference of the samples, the
+following traits were evaluated for eba based on triangulated insights
+obtained through earlier surveys and participatory work in the three
+areas: Nigeria (Osun and Benue States): color, smoothness, moldability,
+stretchability, and taste. Cameroon (Littoral zone): color, odor, taste,
+firmness, and stretchability.</p>
 <p>Traits in common are color, taste, and stretchability. The results of
 this study were published by Olaosebikan et al. (2023)<span class="citation">[2]</span>, and a deeper analysis for the Nigerian
 subset, linking the consumer data to laboratory instrumental metrics,
@@ -139,7 +140,6 @@ and patchwork <span class="citation">[7]</span>.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://hturner.github.io/PlackettLuce/" class="external-link">"PlackettLuce"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://patchwork.data-imaginist.com" class="external-link">"patchwork"</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"multcompView"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"cassava"</span>, package <span class="op">=</span> <span class="st">"gosset"</span><span class="op">)</span></span>
 <span></span>
@@ -160,12 +160,9 @@ and patchwork <span class="citation">[7]</span>.</p>
 <span><span class="co">## 4 several times a week            &lt;NA&gt;          A          C</span></span>
 <span><span class="co">## 5 several times a week            &lt;NA&gt;          C          B</span></span>
 <span><span class="co">## 6 several times a week            &lt;NA&gt;          A          B</span></span></code></pre>
-<p>The dataset contains information from two independent studies
-performed in Nigeria and Cameroon. This means the studies did not
-collect the same traits across the trials. Here, we select the columns
-with complete cases to perform the analysis. The remaining traits
-(tested in both studies) are color, stretchability, taste, and overall
-preference.</p>
+<p>Here, we select the columns with complete cases to perform the
+analysis. The remaining traits (tested in both studies) are color,
+stretchability, taste, and overall preference.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">keep</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">dat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span><span class="op">]</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -236,9 +233,10 @@ from the package ‘PlackettLuce’ <span class="citation">[4]</span>, also
 using <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>. This returns a list of models, one per
 trait. First, we focus on the overall preference. We use the function
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> to visualize the Plackett-Luce estimates as
-log-worth parameters using the argument <code>log = TRUE</code>. The
-argument <code>levels =</code> establishes the order of the varieties in
-the plot. We set “Akpu” as the reference.</p>
+<em>log-worth</em> parameters using the argument
+<code>log = TRUE</code>. The argument <code>levels =</code> establishes
+the order of the varieties in the plot. We set Akpu as the
+reference.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">R</span>, <span class="va">PlackettLuce</span><span class="op">)</span></span>
 <span></span>
@@ -247,12 +245,12 @@ the plot. We set “Akpu” as the reference.</p>
 <span>     log <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>     levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="va">items</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette-2-gari-eba-consumer-testing_files/figure-html/plfit-1.png" width="700"></p>
-<p>The plot shows that all varieties outperform “Akpu” for overall
+<p>The plot shows that all varieties outperform Akpu for overall
 preference. We use the function <code><a href="../reference/reliability.html">reliability()</a></code> to identify
-the probability that each variety outperforms “Akpu.” The function
-returns a data frame with the reliability estimates, where values above
-0.5 indicates that the variety outperforms the reference. We plot these
-results using <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot()</a></code>.</p>
+the probability that each variety outperforms the reference Akpu <span class="citation">[8]</span>. The function returns a data frame with the
+reliability estimates, where values above 0.5 indicates that the variety
+outperforms the reference. We plot these results using
+<code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot()</a></code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rel</span> <span class="op">=</span> <span class="fu"><a href="../reference/reliability.html">reliability</a></span><span class="op">(</span><span class="va">mod</span><span class="op">[[</span><span class="va">ov</span><span class="op">]</span><span class="op">]</span>, ref <span class="op">=</span> <span class="st">"Akpu"</span><span class="op">)</span></span>
 <span></span>
@@ -272,12 +270,14 @@ results using <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Probability of outperforming"</span>,</span>
 <span>       y <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette-2-gari-eba-consumer-testing_files/figure-html/reliability-1.png" width="700"></p>
-<p>So far, we have focused solely on the overall preference. However,
-there are other traits to assess. The function <code>worth_plot()</code>
-can be used to visually analyze and compare variety performance across
-different traits. The values represented in a worth_map are
-<em>log-worth</em> estimates. The function can be used with
-<code>ggplot2</code> functions to improve the plot.</p>
+<p>The reliability estimates shows the TMS6 and Sape as the top-2
+varieties for overall preference. So far, we have focused solely on the
+overall preference. However, there are other traits to assess. The
+function <code>worth_plot()</code> can be used to visually analyze and
+compare variety performance across different traits. The values
+represented in a worth map are <em>log-worth</em> estimates. The
+function can be used with <code>ggplot2</code> functions to improve the
+plot.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/worth_map.html">worth_map</a></span><span class="op">(</span><span class="va">mod</span>, labels <span class="op">=</span> <span class="va">traits</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">""</span>, y <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">+</span></span>
@@ -286,20 +286,19 @@ different traits. The values represented in a worth_map are
 <span>                       na.value <span class="op">=</span> <span class="st">"white"</span>, </span>
 <span>                       name <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette-2-gari-eba-consumer-testing_files/figure-html/worth-1.png" width="700"></p>
-<p>The plot shows the superiority of “TMS6,” “TMEB2,” and “Sape” across
+<p>The worth map shows the superiority of TMS6, TMEB2, and Sape across
 the traits. We will return to this analysis later, but for now, let us
 examine the data from the perspective of different groups to consider
 heterogeneity in the participants’ evaluations, as proposed by van Etten
-et al. (2023) <span class="citation">[8]</span>.</p>
+et al. (2023) <span class="citation">[9]</span>.</p>
 </div>
 <div class="section level2">
 <h2 id="participants-heterogeneity">Participants’ heterogeneity<a class="anchor" aria-label="anchor" href="#participants-heterogeneity"></a>
 </h2>
-<p>We will focus on two covariates independent to analyze the data:
-gender and country. The function <code><a href="../reference/likelihood_ratio.html">likelihood_ratio()</a></code> is used
-to test which of these covariates can provide distinguishable rankings.
-We then apply the likelihood-ratio test to identify the best
-covariate.</p>
+<p>We will focus on two covariates to analyze the data: gender and
+country. The function <code><a href="../reference/likelihood_ratio.html">likelihood_ratio()</a></code> is used to test
+which of these covariates can provide distinguishable rankings within
+the groups.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># by gender</span></span>
 <span><span class="va">llr1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">R</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
@@ -335,11 +334,11 @@ covariate.</p>
 <span><span class="co">## 3:  26.9415  12.0000     0.0079    **          Taste</span></span>
 <span><span class="co">## 4:  38.2459  12.0000     0.0001   ***        Overall</span></span></code></pre>
 <p>The likelihood-ratio test indicates that sub-setting the data by
-country provides distinguishable rankings. This test can also be used to
-validate more complex groupings, such as those generated by cluster
-analysis or farmers’ typologies, which include a diverse set of
+country provides statistically different rankings. This test can also be
+used to validate more complex groupings, such as those generated by
+cluster analysis or farmers’ typologies, which include a diverse set of
 variables (e.g., socio-economic and agroecological), as proposed by Voss
-et al. (2024) <span class="citation">[9]</span>. For simplicity, we
+et al. (2024) <span class="citation">[10]</span>. For simplicity, we
 focus here only on the variable “country.”</p>
 <p>Now, returning to the worth map analysis, we can visualize the
 performance of the varieties within the groups. We iterate over the
@@ -582,8 +581,15 @@ Analysis</a></em>; Springer-Verlag New York, 2016; ISBN
 <div class="csl-right-inline">Pedersen, T.L. <a href="https://doi.org/10.32614/cran.package.patchwork" class="external-link"><span class="nocase">patchwork: The Composer of Plots</span></a>. <em>CRAN:
 Contributed Packages</em> 2019.</div>
 </div>
-<div id="ref-vanEtten2023" class="csl-entry">
+<div id="ref-eskridge_1992" class="csl-entry">
 <div class="csl-left-margin">8. </div>
+<div class="csl-right-inline">Eskridge, K.M.; Mumm, R.F. Choosing Plant
+Cultivars Based on the Probability of Outperforming a Check.
+<em>Theoretical and Applied Genetics</em> <strong>1992</strong>,
+<em>84</em>, 494–500, doi:<a href="https://doi.org/10.1007/BF00229512" class="external-link">10.1007/BF00229512</a>.</div>
+</div>
+<div id="ref-vanEtten2023" class="csl-entry">
+<div class="csl-left-margin">9. </div>
 <div class="csl-right-inline">van
 Etten, J.; de Sousa, K.; Cairns, J.E.; Dell’Acqua, M.; Fadda, C.;
 Guereña, D.; van Heerwaarden, J.; Assefa, T.; Manners, R.; Müller, A.;
@@ -593,7 +599,7 @@ National Academy of Sciences</em> <strong>2023</strong>, <em>120</em>,
 doi:<a href="https://doi.org/10.1073/pnas.2205771120" class="external-link">10.1073/pnas.2205771120</a>.</div>
 </div>
 <div id="ref-Voss2024" class="csl-entry">
-<div class="csl-left-margin">9. </div>
+<div class="csl-left-margin">10. </div>
 <div class="csl-right-inline">Voss, R.C.; de Sousa, K.; N’Danikou, S.;
 Shango, A.; Aglinglo, L.A.; Laporte, M.-A.; Legba, E.C.; Houdegbe, A.C.;
 Diarra, D. dit Y.; Dolo, A.; et al. Citizen Science Informs
