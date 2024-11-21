@@ -3,7 +3,7 @@ title: "Trait prioritization and crop performance with decentralized on-farm tri
 package: gosset
 author:
 - name: Kauê de Sousa
-  affiliation: Digital Inclusion, Bioversity International, Montpellier, France </br> Department of Agricultural Sciences, Inland Norway University, Hamar, Norway
+  affiliation: Digital Inclusion, Bioversity International, Montpellier, France </br> Department of Agricultural Sciences, University of Inland Norway, Hamar, Norway
 - name: David Brown
   affiliation: Laboratory of Geo-Information Science and Remote Sensing, Wageningen University & Research, Wageningen, The Netherlands </br> Digital Inclusion, Bioversity International, Turrialba, Costa Rica 
 - name: Jacob van Etten
@@ -108,7 +108,7 @@ mod = lapply(R, PlackettLuce)
 
 ```
 
-The `worth_map()` function can be used to visually assess and compare item performance based on different characteristics. The values represented in a worth_map are log-worth estimates. From the breeder or product developer perspective the function `worth_map()` offers a visualization tool to help in identifying item performance based on different characteristics and select crossing materials.
+The `worth_map()` function can be used to visually assess and compare variety performance based on different characteristics. The values represented in a worth_map are *log-worth* estimates. From the breeder or product developer perspective the function `worth_map()` offers a visualization tool to help in identifying variety performance based on different characteristics and select crossing materials.
 
 ```{r worthmap, message=FALSE, eval=TRUE, echo=TRUE, fig.cap="Trait performance (log-worth) of bean varieties in Niragua. Variety 'Amadeus' is set as reference (log-worth = 0). Green values indicate a superior performance of varieties for a given trait.  Brown values indicate a variety with weak performance for the given trait"}
 worth_map(mod[-baseline],

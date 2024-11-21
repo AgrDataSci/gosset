@@ -3,11 +3,9 @@ library("ClimMobTools")
 library("PlackettLuce")
 library("ggplot2")
 library("patchwork")
-library("multcompView")
+
 
 data("cassava", package = "gosset")
-
-#dat = cassava[cassava$country == "Nigeria", ]
 
 dat = cassava
 
@@ -21,25 +19,29 @@ dat = dat[, keep]
 
 names(dat)
 
-pack = c("option_a", "option_b", "option_c")
-
-items = sort(unique(unlist(dat[pack])))
-
-items
-
 trait_list = getTraitList(dat, c("_pos", "_neg"))
 
 traits = unlist(lapply(trait_list, function(x) x$trait_label))
 
 traits = gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2", traits, perl = TRUE)
 
+traits
+
+
+
+pack = c("option_a", "option_b", "option_c")
+
+items = sort(unique(unlist(dat[pack])))
+
+ref = "Akpu"
+
 ov = which(traits %in% "Overall")
+
+
 
 table(unlist(dat[pack]), rep(dat$gender, 3))
 
 table(unlist(dat[pack]), rep(dat$country, 3))
-
-country = sort(unique(dat$country))
 
 R = lapply(trait_list, function(x) {
   rank_tricot(dat, 
@@ -48,55 +50,13 @@ R = lapply(trait_list, function(x) {
               validate.rankings = TRUE)
 })
 
-lapply(R, function(x){
-  likelihood_ratio(x, split = dat$gender)
-})
+# Assess the full data
+mod = lapply(R, PlackettLuce)
 
-lapply(R, function(x){
-  likelihood_ratio(x, split = dat$country)
-})
-
-
-G = lapply(trait_list, function(x) {
-  rank_tricot(dat, 
-              items = pack, 
-              input = x$string,
-              validate.rankings = TRUE,
-              group = TRUE)
-})
-
-
-trait_plot = list()
-
-for (i in seq_along(country)) {
-  
-  mod_i = lapply(R, function(x) {
-    PlackettLuce(x[dat$country == country[i], ])
-  })
-  
-  trait_plot[[i]] = worth_map(mod_i, 
-            labels = traits) +
-    labs(x = "", 
-         y = "",
-         title = country[i]) +
-    scale_fill_distiller(palette = "BrBG", 
-                         direction = 1, 
-                         na.value = "white", 
-                         name = "")
-  
-    
-}
-
-
-trait_plot[[1]] + trait_plot[[2]]
-
-
-
-plot_logworth(mod[[ov]], 
-              ref = "Akpu",
-              levels = rev(items),
-              multcomp = T,
-              ci.level = 0.05)
+plot(mod[[ov]],
+     ref = "Akpu",
+     log = TRUE,
+     levels = rev(items))
 
 rel = reliability(mod[[ov]], ref = "Akpu")
 
@@ -105,9 +65,9 @@ rel
 rel$improvement = round((rel$reliability / 0.5 - 1), 2)
 
 ggplot(data = rel,
-         aes(x = reliability, 
-             y = item,
-             fill = "white")) +
+       aes(x = reliability, 
+           y = item,
+           fill = "white")) +
   geom_bar(stat = "identity",
            width = 0.7,
            position = "dodge", 
@@ -129,5 +89,115 @@ ggplot(data = rel,
         axis.title = element_text(size = 12, color = "grey20"),
         legend.title = element_blank()) +
   labs(x = "Probability of outperforming",
+       y = "")
+
+
+# Slice the data
+
+llr1 = lapply(R, function(x){
+  likelihood_ratio(x, split = dat$gender)
+})
+
+llr1 = do.call("rbind", llr1)
+
+llr1$trait = traits
+
+llr1
+
+# by country
+llr2 = lapply(R, function(x){
+  likelihood_ratio(x, split = dat$country)
+})
+
+llr2 = do.call("rbind", llr2)
+
+llr2$trait = traits
+
+llr2 
+
+
+slice = dat$country
+
+slice_lvs = unique(slice)
+
+
+trait_plot = list()
+
+for (i in seq_along(slice_lvs)) {
+  
+  mod_i = lapply(R, function(x) {
+    PlackettLuce(x[slice == slice_lvs[i], ])
+  })
+  
+  trait_plot[[i]] = worth_map(mod_i, 
+            labels = traits) +
+    labs(x = "", 
+         y = "",
+         title = slice_lvs[i]) +
+    scale_fill_distiller(palette = "BrBG", 
+                         direction = 1, 
+                         na.value = "white", 
+                         name = "")
+  
+    
+}
+
+
+trait_plot[[1]] + trait_plot[[2]]
+
+
+
+weights = c(0.20, 0.20, 0.30, 0.30)
+
+select = data.frame()
+
+for (i in seq_along(slice_lvs)) {
+  
+  mod_i = lapply(R, function(x) {
+    PlackettLuce(x[slice == slice_lvs[i], ])
+  })
+  
+  coeffs = lapply(mod_i, function(x) {coefficients(x, log = FALSE)})
+  
+  coeffs = do.call("rbind", coeffs)
+  
+  coeffs = apply(coeffs, 2, function(x) {x * weights})
+  
+  coeffs = colSums(coeffs)
+  
+  select_i = data.frame(item = names(coeffs),
+                        slice = slice_lvs[i],
+                        score = as.vector(coeffs))
+  
+  select = rbind(select, select_i)
+  
+  
+}
+
+
+ggplot(data = select,
+       aes(x = score, 
+           y = item,
+           fill = slice)) +
+  geom_bar(stat = "identity",
+           width = 0.7,
+           position = "dodge") +
+  scale_fill_manual(values = c("#d73027", "#4575b4")) +
+  geom_vline(xintercept = mean(select$score),
+             colour = "grey40",
+             linewidth = 1) +
+  theme_bw() +
+  theme(panel.grid.major = element_blank(),
+        strip.background = element_rect(fill="white"),
+        text = element_text(color = "grey20"),
+        strip.background.x = element_blank(),
+        strip.placement = "outside",
+        legend.position = "bottom",
+        strip.text = element_text(size = 12, color = "grey20"),
+        legend.text = element_text(size = 12, color = "grey20"),
+        axis.text = element_text(size = 12, color = "grey20"),
+        axis.title = element_text(size = 12, color = "grey20"),
+        legend.title = element_blank()) +
+  labs(x = "Selection score",
        y = "")
 

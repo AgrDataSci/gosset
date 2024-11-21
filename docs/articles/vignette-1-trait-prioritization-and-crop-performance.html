@@ -57,6 +57,9 @@
 <li>
       <a href="../articles/vignette-1-trait-prioritization-and-crop-performance.html">Trait prioritization and crop performance with decentralized on-farm trial data</a>
     </li>
+    <li>
+      <a href="../articles/vignette-2-gari-eba-consumer-testing.html">Consumer preference of gari-eba in Nigeria and Cameroon</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -89,7 +92,7 @@ decentralized on-farm trial data</h1>
 Sousa</h4>
             <address class="author_afil">
       Digital Inclusion, Bioversity International, Montpellier, France
- Department of Agricultural Sciences, Inland Norway University,
+ Department of Agricultural Sciences, University of Inland Norway,
 Hamar,
 Norway<br><h4 data-toc-skip class="author">David
 Brown</h4>
@@ -255,11 +258,11 @@ functions in the package gosset.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">R</span>, <span class="va">PlackettLuce</span><span class="op">)</span></span></code></pre></div>
 <p>The <code><a href="../reference/worth_map.html">worth_map()</a></code> function can be used to visually assess
-and compare item performance based on different characteristics. The
-values represented in a worth_map are log-worth estimates. From the
-breeder or product developer perspective the function
+and compare variety performance based on different characteristics. The
+values represented in a worth_map are <em>log-worth</em> estimates. From
+the breeder or product developer perspective the function
 <code><a href="../reference/worth_map.html">worth_map()</a></code> offers a visualization tool to help in
-identifying item performance based on different characteristics and
+identifying variety performance based on different characteristics and
 select crossing materials.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/worth_map.html">worth_map</a></span><span class="op">(</span><span class="va">mod</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span>,</span>
