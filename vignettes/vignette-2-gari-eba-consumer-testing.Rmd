@@ -145,7 +145,7 @@ ggplot(data = rel,
 ```
 
 
-The reliability estimates shows an improvement in overall preference of 32% for TMS6, 18% for Sape and 8% for TMEB1. 
+The reliability estimates show an improvement in overall preference of 32% for TMS6, 18% for Sape and 8% for TMEB1. 
 
 So far, we have focused solely on the overall preference. However, there are other traits to assess. The function `worth_plot()` can be used to visually analyze and compare variety performance across different traits. The values represented in a worth map are *log-worth* estimates. The function can be used with `ggplot2` functions to improve the plot.
 
