@@ -76,16 +76,17 @@ traits
 ```
 
 
-Here, we perform some data preparation by defining the column indices for the variables with the cassava sample names, the names of varieties tested in the study, and the position of "Overall" within the trait list.
+Here, we perform some data preparation by defining the column indices for the variables with the cassava sample names, the names of varieties tested in the study, and the position of "Overall" within the trait list. We set Obasanjo-2 as the check variety.
 
 ``` {r prep, message = FALSE, eval = TRUE, echo = TRUE}
 pack = c("option_a", "option_b", "option_c")
 
 items = sort(unique(unlist(dat[pack])))
 
-ref = "Akpu"
+check = "Obasanjo-2"
 
 ov = which(traits %in% "Overall")
+
 ```
 
 # Assess the full data
@@ -101,26 +102,32 @@ R = lapply(trait_list, function(x) {
 })
 ```
 
-To fit the model, we use the function `PlackettLuce()` from the package 'PlackettLuce' [@Turner2020], also using `lapply()`. This returns a list of models, one per trait. First, we focus on the overall preference. We use the function `plot()` to visualize the Plackett-Luce estimates as *log-worth* parameters using the argument `log = TRUE`. The argument `levels =` establishes the order of the varieties in the plot. We set Akpu as the reference.
+To fit the model, we use the function `PlackettLuce()` from the package 'PlackettLuce' [@Turner2020], also using `lapply()`. This returns a list of models, one per trait. First, we focus on the overall preference. We use the function `plot()` to visualize the Plackett-Luce estimates as *log-worth* parameters using the argument `log = TRUE`. The argument `levels =` establishes the order of the varieties in the plot. 
 
 
 ``` {r plfit, message = FALSE, eval = TRUE, echo = TRUE}
 mod = lapply(R, PlackettLuce)
 
 plot(mod[[ov]],
-     ref = ref,
+     ref = check,
      log = TRUE,
      levels = rev(items))
 
 ```
 
-The plot shows that all varieties outperform Akpu for overall preference. We use the function `reliability()` to identify the probability that each variety outperforms the reference Akpu [@eskridge_1992]. The function returns a data frame with the reliability estimates, where values above 0.5 indicates that the variety outperforms the reference. We plot these results using `ggplot()`.
+The plot shows that the varieties TMS6, Sape and TMEB1 outperform Obasanjo-2 for overall preference. We use the function `reliability()` to identify the improvement achieved by these varieties against reference Obasanjo-2 [@eskridge_1992]. The function returns a data frame with the reliability estimates, where values above 0.5 indicates that the variety outperforms the reference. We plot these results using `ggplot()`.
 
 ``` {r reliability, message = FALSE, eval = TRUE, echo = TRUE}
-rel = reliability(mod[[ov]], ref = "Akpu")
+rel = reliability(mod[[ov]], ref = check)
+
+rel$improvement = round((rel$reliability / 0.5 - 1), 2)
+
+rel = rel[order(rel$improvement), ]
+
+rel$item = factor(rel$item, levels = rel$item)
 
 ggplot(data = rel,
-       aes(x = reliability, 
+       aes(x = improvement, 
            y = item,
            fill = "white")) +
   geom_bar(stat = "identity",
@@ -128,7 +135,7 @@ ggplot(data = rel,
            position = "dodge", 
            show.legend = FALSE) +
   scale_fill_manual(values = "#5aae61") +
-  geom_vline(xintercept = 0.5,
+  geom_vline(xintercept = 0,
              colour = "grey40",
              linewidth = 1) +
   theme_classic() +
@@ -138,7 +145,9 @@ ggplot(data = rel,
 ```
 
 
-The reliability estimates shows the TMS6 and Sape as the top-2 varieties for overall preference. So far, we have focused solely on the overall preference. However, there are other traits to assess. The function `worth_plot()` can be used to visually analyze and compare variety performance across different traits. The values represented in a worth map are *log-worth* estimates. The function can be used with `ggplot2` functions to improve the plot.
+The reliability estimates shows an improvement in overall preference of 32% for TMS6, 18% for Sape and 8% for TMEB1. 
+
+So far, we have focused solely on the overall preference. However, there are other traits to assess. The function `worth_plot()` can be used to visually analyze and compare variety performance across different traits. The values represented in a worth map are *log-worth* estimates. The function can be used with `ggplot2` functions to improve the plot.
 
 ``` {r worth, message = FALSE, eval = TRUE, echo = TRUE}
 worth_map(mod, labels = traits) +
@@ -149,7 +158,7 @@ worth_map(mod, labels = traits) +
                        name = "")
 ```
 
-The worth map shows the superiority of TMS6, TMEB2, and Sape across the traits. We will return to this analysis later, but for now, let us examine the data from the perspective of different groups to consider heterogeneity in the participants' evaluations, as proposed by van Etten et al. (2023) [@vanEtten2023].
+The worth map confirms the superiority of TMS6, Sape and TMEB1 across the traits, but also presents Madame among the top varieties for color. We will return to this analysis later, but for now, let us examine the data from the perspective of different groups to consider heterogeneity in the participants' evaluations, as proposed by van Etten et al. (2023) [@vanEtten2023].
 
 
 # Participants' heterogeneity
@@ -183,7 +192,7 @@ llr2
 
 The likelihood-ratio test indicates that sub-setting the data by country provides statistically different rankings. This test can also be used to validate more complex groupings, such as those generated by cluster analysis or farmers' typologies, which include a diverse set of variables (e.g., socio-economic and agroecological), as proposed by Voss et al. (2024) [@Voss2024]. For simplicity, we focus here only on the variable "country."
 
-Now, returning to the worth map analysis, we can visualize the performance of the varieties within the groups. We iterate over the groups by subsetting the data in a loop. Within the loop, we create the plots and store them in a list. Finally, we use the `patchwork` package to display the two worth maps.
+Now, returning to the worth map analysis, we can visualize the performance of the varieties within the groups. We iterate over the groups by sub-setting the data in a loop. Within the loop, we create the plots and store them in a list. Finally, we use the `patchwork` package to display the two worth maps.
 
 ``` {r worth2, message = FALSE, eval = TRUE, echo = TRUE}
 
@@ -222,11 +231,11 @@ trait_plot[[1]] + trait_plot[[2]] + plot_layout(ncol = 1)
 
 ```
 
-The plots show the superiority of TMS6 and TMEB1 in Nigeria, as well as the superiority of Game Changer and Sape in Cameroon. This approach helps visually select the best variety overall for each group. Here, I propose a selection index approach to calculate weighted estimates and derive a selection score that represents the performance of the varieties across all traits.
+The segmented analysis reveals contrasting results compared to the previous analysis using the full dataset. It highlights the superiority of TMS6 and TMEB1 in Nigeria, and Game Changer and Sape in Cameroon. This approach provides a visual method to select the best variety overall for each group. To account for all traits in a data-driven manner when selecting varieties, I propose a selection index approach. This method calculates weighted estimates and derives a selection score that represents the overall performance of the varieties across all traits.
 
 Suppose we have three varieties with standardized probabilities for each trait:
 
-| Variety    | Yield (0.5) | Drought tolerance (0.3) | Resistance to pests (0.2) | Selection Index Score      |
+| Variety    | Yield (0.5) | Marketability (0.3) | Tolerance to drought (0.2) | Selection Index Score      |
 |------------|--------------------------|---------------------|-----------------------|----------------------------|
 | Variety 1  | 0.8                      | 0.6                 | 0.7                   | (0.8*0.5) + (0.6*0.3) + (0.7*0.2) = **0.71** |
 | Variety 2  | 0.7                      | 0.8                 | 0.5                   | (0.7*0.5) + (0.8*0.3) + (0.5*0.2) = **0.68** |
@@ -235,7 +244,7 @@ Suppose we have three varieties with standardized probabilities for each trait:
  
 Here, *Variety 1* would have the highest selection index score, making it a top choice based on this weighted approach.
 
-For this illustration, I arbitrarily set the weights for each trait as follows: color = 0.2, stretchability = 0.2, taste = 0.3, and overall = 0.3. We iterate over the groups in a loop, storing the model coefficients in a data frame for visualization with `ggplot`.
+For this example, I arbitrarily set the weights for each gari-eba trait as follows: color = 0.2, stretchability = 0.2, taste = 0.3, and overall = 0.3. We iterate over the groups in a loop, storing the model coefficients in a data frame for visualization with `ggplot`.
 
 ``` {r selection, message = FALSE, eval = TRUE, echo = TRUE}
 
@@ -290,7 +299,7 @@ ggplot(data = select,
 
 ```
 
-The selection score indicates that the superior varieties for Nigeria are TMS6, TMEB1, and TMS3, while for Cameroon, the varieties Game Changer, Sape, and Madame demonstrate superior performance.
+The selection score indicates that the superior varieties for Nigeria are TMS6, TMEB1, and TMS3, while for Cameroon, the varieties Game Changer, Sape, and Madame demonstrate superior performance. This approach contrasts with the previous analysis based solely on overall preference and the visualization provided by the worth map. By considering the heterogeneity of consumer preferences, it enables the identification of the best varieties for specific groups and market segments.
 
 # Conclusion
 

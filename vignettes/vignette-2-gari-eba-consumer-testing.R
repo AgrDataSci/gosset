@@ -46,6 +46,23 @@ ref = "Akpu"
 
 ov = which(traits %in% "Overall")
 
+table(unlist(dat[pack]), rep(dat$country, 3))
+
+table(unlist(dat[pack]), rep(dat$gender, 3))
+
+# rmv = data.frame(table(unlist(dat[pack]), rep(dat$country, 3)))
+# 
+# rmv = as.vector(rmv[rmv$Freq == 0, "Var1"])
+# 
+# dat[pack] = lapply(dat[pack], function(x){
+#   x[x %in% rmv] = NA
+#   x
+# })
+# 
+# keep = colSums(apply(dat[pack], 1, is.na)) < 2
+# 
+# dat = dat[keep, ]
+
 ## ----rank, message = FALSE, eval = TRUE, echo = TRUE--------------------------
 R = lapply(trait_list, function(x) {
   rank_tricot(dat, 
@@ -58,13 +75,13 @@ R = lapply(trait_list, function(x) {
 mod = lapply(R, PlackettLuce)
 
 plot(mod[[ov]],
-     ref = ref,
+     ref = 1,
      log = TRUE,
      levels = rev(items))
 
 
 ## ----reliability, message = FALSE, eval = TRUE, echo = TRUE-------------------
-rel = reliability(mod[[ov]], ref = "Akpu")
+rel = reliability(mod[[ov]], ref = "TMS1")
 
 ggplot(data = rel,
        aes(x = reliability, 

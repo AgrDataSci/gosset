@@ -203,13 +203,13 @@ dataset, the pattern for the best and worst rankings is
 <p>Here, we perform some data preparation by defining the column indices
 for the variables with the cassava sample names, the names of varieties
 tested in the study, and the position of “Overall” within the trait
-list.</p>
+list. We set Obasanjo-2 as the check variety.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pack</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"option_a"</span>, <span class="st">"option_b"</span>, <span class="st">"option_c"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">items</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">dat</span><span class="op">[</span><span class="va">pack</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">ref</span> <span class="op">=</span> <span class="st">"Akpu"</span></span>
+<span><span class="va">check</span> <span class="op">=</span> <span class="st">"Obasanjo-2"</span></span>
 <span></span>
 <span><span class="va">ov</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">traits</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"Overall"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -234,27 +234,33 @@ trait. First, we focus on the overall preference. We use the function
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> to visualize the Plackett-Luce estimates as
 <em>log-worth</em> parameters using the argument
 <code>log = TRUE</code>. The argument <code>levels =</code> establishes
-the order of the varieties in the plot. We set Akpu as the
-reference.</p>
+the order of the varieties in the plot.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">R</span>, <span class="va">PlackettLuce</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mod</span><span class="op">[[</span><span class="va">ov</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>     ref <span class="op">=</span> <span class="va">ref</span>,</span>
+<span>     ref <span class="op">=</span> <span class="va">check</span>,</span>
 <span>     log <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>     levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="va">items</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette-2-gari-eba-consumer-testing_files/figure-html/plfit-1.png" width="700"></p>
-<p>The plot shows that all varieties outperform Akpu for overall
-preference. We use the function <code><a href="../reference/reliability.html">reliability()</a></code> to identify
-the probability that each variety outperforms the reference Akpu <span class="citation">[8]</span>. The function returns a data frame with the
+<p>The plot shows that the varieties TMS6, Sape and TMEB1 outperform
+Obasanjo-2 for overall preference. We use the function
+<code><a href="../reference/reliability.html">reliability()</a></code> to identify the improvement achieved by these
+varieties against reference Obasanjo-2 <span class="citation">[8]</span>. The function returns a data frame with the
 reliability estimates, where values above 0.5 indicates that the variety
 outperforms the reference. We plot these results using
 <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot()</a></code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rel</span> <span class="op">=</span> <span class="fu"><a href="../reference/reliability.html">reliability</a></span><span class="op">(</span><span class="va">mod</span><span class="op">[[</span><span class="va">ov</span><span class="op">]</span><span class="op">]</span>, ref <span class="op">=</span> <span class="st">"Akpu"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">rel</span> <span class="op">=</span> <span class="fu"><a href="../reference/reliability.html">reliability</a></span><span class="op">(</span><span class="va">mod</span><span class="op">[[</span><span class="va">ov</span><span class="op">]</span><span class="op">]</span>, ref <span class="op">=</span> <span class="va">check</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rel</span><span class="op">$</span><span class="va">improvement</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">rel</span><span class="op">$</span><span class="va">reliability</span> <span class="op">/</span> <span class="fl">0.5</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rel</span> <span class="op">=</span> <span class="va">rel</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">rel</span><span class="op">$</span><span class="va">improvement</span><span class="op">)</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="va">rel</span><span class="op">$</span><span class="va">item</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">rel</span><span class="op">$</span><span class="va">item</span>, levels <span class="op">=</span> <span class="va">rel</span><span class="op">$</span><span class="va">item</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">rel</span>,</span>
-<span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">reliability</span>, </span>
+<span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">improvement</span>, </span>
 <span>           y <span class="op">=</span> <span class="va">item</span>,</span>
 <span>           fill <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span>,</span>
@@ -262,21 +268,21 @@ outperforms the reference. We plot these results using
 <span>           position <span class="op">=</span> <span class="st">"dodge"</span>, </span>
 <span>           show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="st">"#5aae61"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>             colour <span class="op">=</span> <span class="st">"grey40"</span>,</span>
 <span>             linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_classic</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Probability of outperforming"</span>,</span>
 <span>       y <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette-2-gari-eba-consumer-testing_files/figure-html/reliability-1.png" width="700"></p>
-<p>The reliability estimates shows the TMS6 and Sape as the top-2
-varieties for overall preference. So far, we have focused solely on the
-overall preference. However, there are other traits to assess. The
-function <code>worth_plot()</code> can be used to visually analyze and
-compare variety performance across different traits. The values
-represented in a worth map are <em>log-worth</em> estimates. The
-function can be used with <code>ggplot2</code> functions to improve the
-plot.</p>
+<p>The reliability estimates shows an improvement in overall preference
+of 32% for TMS6, 18% for Sape and 8% for TMEB1.</p>
+<p>So far, we have focused solely on the overall preference. However,
+there are other traits to assess. The function <code>worth_plot()</code>
+can be used to visually analyze and compare variety performance across
+different traits. The values represented in a worth map are
+<em>log-worth</em> estimates. The function can be used with
+<code>ggplot2</code> functions to improve the plot.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/worth_map.html">worth_map</a></span><span class="op">(</span><span class="va">mod</span>, labels <span class="op">=</span> <span class="va">traits</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">""</span>, y <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">+</span></span>
@@ -285,11 +291,12 @@ plot.</p>
 <span>                       na.value <span class="op">=</span> <span class="st">"white"</span>, </span>
 <span>                       name <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette-2-gari-eba-consumer-testing_files/figure-html/worth-1.png" width="700"></p>
-<p>The worth map shows the superiority of TMS6, TMEB2, and Sape across
-the traits. We will return to this analysis later, but for now, let us
-examine the data from the perspective of different groups to consider
-heterogeneity in the participants’ evaluations, as proposed by van Etten
-et al. (2023) <span class="citation">[9]</span>.</p>
+<p>The worth map confirms the superiority of TMS6, Sape and TMEB1 across
+the traits, but also presents Madame among the top varieties for color.
+We will return to this analysis later, but for now, let us examine the
+data from the perspective of different groups to consider heterogeneity
+in the participants’ evaluations, as proposed by van Etten et al. (2023)
+<span class="citation">[9]</span>.</p>
 </div>
 <div class="section level2">
 <h2 id="participants-heterogeneity">Participants’ heterogeneity<a class="anchor" aria-label="anchor" href="#participants-heterogeneity"></a>
@@ -341,7 +348,7 @@ et al. (2024) <span class="citation">[10]</span>. For simplicity, we
 focus here only on the variable “country.”</p>
 <p>Now, returning to the worth map analysis, we can visualize the
 performance of the varieties within the groups. We iterate over the
-groups by subsetting the data in a loop. Within the loop, we create the
+groups by sub-setting the data in a loop. Within the loop, we create the
 plots and store them in a list. Finally, we use the
 <code>patchwork</code> package to display the two worth maps.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
@@ -378,12 +385,15 @@ plots and store them in a list. Finally, we use the
 <span><span class="co"># plot the two maps using patchwork</span></span>
 <span><span class="va">trait_plot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="va">trait_plot</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette-2-gari-eba-consumer-testing_files/figure-html/worth2-1.png" width="700"></p>
-<p>The plots show the superiority of TMS6 and TMEB1 in Nigeria, as well
-as the superiority of Game Changer and Sape in Cameroon. This approach
-helps visually select the best variety overall for each group. Here, I
-propose a selection index approach to calculate weighted estimates and
-derive a selection score that represents the performance of the
-varieties across all traits.</p>
+<p>The segmented analysis reveals contrasting results compared to the
+previous analysis using the full dataset. It highlights the superiority
+of TMS6 and TMEB1 in Nigeria, and Game Changer and Sape in Cameroon.
+This approach provides a visual method to select the best variety
+overall for each group. To account for all traits in a data-driven
+manner when selecting varieties, I propose a selection index approach.
+This method calculates weighted estimates and derives a selection score
+that represents the overall performance of the varieties across all
+traits.</p>
 <p>Suppose we have three varieties with standardized probabilities for
 each trait:</p>
 <table class="table">
@@ -397,8 +407,8 @@ each trait:</p>
 <thead><tr class="header">
 <th>Variety</th>
 <th>Yield (0.5)</th>
-<th>Drought tolerance (0.3)</th>
-<th>Resistance to pests (0.2)</th>
+<th>Marketability (0.3)</th>
+<th>Tolerance to drought (0.2)</th>
 <th>Selection Index Score</th>
 </tr></thead>
 <tbody>
@@ -433,9 +443,9 @@ each trait:</p>
 </table>
 <p>Here, <em>Variety 1</em> would have the highest selection index
 score, making it a top choice based on this weighted approach.</p>
-<p>For this illustration, I arbitrarily set the weights for each trait
-as follows: color = 0.2, stretchability = 0.2, taste = 0.3, and overall
-= 0.3. We iterate over the groups in a loop, storing the model
+<p>For this example, I arbitrarily set the weights for each gari-eba
+trait as follows: color = 0.2, stretchability = 0.2, taste = 0.3, and
+overall = 0.3. We iterate over the groups in a loop, storing the model
 coefficients in a data frame for visualization with
 <code>ggplot</code>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
@@ -490,7 +500,12 @@ coefficients in a data frame for visualization with
 <p><img src="vignette-2-gari-eba-consumer-testing_files/figure-html/selection-1.png" width="700"></p>
 <p>The selection score indicates that the superior varieties for Nigeria
 are TMS6, TMEB1, and TMS3, while for Cameroon, the varieties Game
-Changer, Sape, and Madame demonstrate superior performance.</p>
+Changer, Sape, and Madame demonstrate superior performance. This
+approach contrasts with the previous analysis based solely on overall
+preference and the visualization provided by the worth map. By
+considering the heterogeneity of consumer preferences, it enables the
+identification of the best varieties for specific groups and market
+segments.</p>
 </div>
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
