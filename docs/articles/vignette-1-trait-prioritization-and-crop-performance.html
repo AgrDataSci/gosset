@@ -196,19 +196,19 @@ argument <code>ascending = TRUE</code>.</p>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="drivers-of-farmers-overall-appreciation">Drivers of farmers’ overall appreciation<a class="anchor" aria-label="anchor" href="#drivers-of-farmers-overall-appreciation"></a>
+<h2 id="correlation-between-overall-appreciation-and-the-other-traits">Correlation between ‘overall appreciation’ and the other traits<a class="anchor" aria-label="anchor" href="#correlation-between-overall-appreciation-and-the-other-traits"></a>
 </h2>
 <p>Using the function <code><a href="../reference/kendallTau.html">kendallTau()</a></code>, we can compute the
 Kendall tau
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math>)
 coefficient <span class="citation">[5]</span> to identify the
-correlation between farmers’ overall appreciation and the other traits
-in the trial. This approach can be used, for example, to assess the
-drivers of farmers’ choices or to prioritize traits for testing in the
-next stage of tricot trials (e.g., a simplified version of tricot with
-no more than four traits to assess). We use overall appreciation as the
-reference trait and compare the Kendall tau values with those of the
-other eight traits.</p>
+correlation between overall appreciation and the other traits in the
+trial. This approach can be used, for example, to assess the drivers of
+farmers’ choices or to prioritize traits for testing in the next stage
+of tricot trials (e.g., a simplified version of tricot with no more than
+four traits to assess). We use overall appreciation as the reference
+trait and compare the Kendall tau values with those of the other eight
+traits.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">baseline</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"OverallAppreciation"</span>, <span class="va">traits</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>

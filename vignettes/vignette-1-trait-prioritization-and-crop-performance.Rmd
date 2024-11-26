@@ -66,9 +66,9 @@ for (i in seq_along(traits)) {
 
 ```
 
-# Drivers of farmers' overall appreciation
+# Correlation between 'overall appreciation' and the other traits
 
-Using the function `kendallTau()`, we can compute the Kendall tau ($\tau$) coefficient [@kendall_1938] to identify the correlation between farmers' overall  appreciation and the other traits in the trial. This approach can be used, for example, to assess the drivers of farmers' choices or to prioritize traits for testing in the next stage of tricot trials (e.g., a simplified version of tricot with no more than four traits to assess). We use overall appreciation as the reference trait and compare the Kendall tau values with those of the other eight traits.
+Using the function `kendallTau()`, we can compute the Kendall tau ($\tau$) coefficient [@kendall_1938] to identify the correlation between overall  appreciation and the other traits in the trial. This approach can be used, for example, to assess the drivers of farmers' choices or to prioritize traits for testing in the next stage of tricot trials (e.g., a simplified version of tricot with no more than four traits to assess). We use overall appreciation as the reference trait and compare the Kendall tau values with those of the other eight traits.
 
 ```{r kendall1, message=FALSE, eval=TRUE, echo=TRUE}
 baseline = which(grepl("OverallAppreciation", traits))
