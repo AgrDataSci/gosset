@@ -25,7 +25,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 Here, I present a workflow to analyze data from a consumer preference trial executed in Nigeria and Cameroon by the International Institute of Tropical Agriculture (IITA) under the RTBFoods project (https://rtbfoods.cirad.fr). Consumer testing was carried out with 1,000 participants in 2022 in Cameroon and Nigeria using the tricot approach [@deSousa2024]. Diverse consumers in villages, towns, and cities evaluated the overall acceptability of gari-eba made from 13 cassava (*Manihot esculenta* Crantz) genotypes. Apart from the overall preference of the samples, the following traits were evaluated for eba based on triangulated insights obtained through earlier surveys and participatory work in the three areas: Nigeria (Osun and Benue States): color, smoothness, moldability, stretchability, and taste. Cameroon (Littoral zone): color, odor, taste, firmness, and stretchability.
 
-Traits in common are color, taste, and stretchability. The results of this study were published by Olaosebikan et al. (2023)[@Olaosebikan2023], and a deeper analysis for the Nigerian subset, linking the consumer data to laboratory instrumental metrics, was published by Alamu et al. (2023)[@EmmanuelAlamu2023]. The present vignette does not intend to replicate the results of these studies. Instead, it presents an alternative workflow to what was developed in the study. For the replication data on Olaosebikan et al. (2023), please visit https://github.com/AgrDataSci/rtbfoods-consumer-testing.
+Traits in common are color, taste, and stretchability. The results of this study were published by Olaosebikan et al. (2023)[@Olaosebikan2023], and a deeper analysis for the Nigerian subset, linking the consumer data to laboratory instrumental metrics, was published by Alamu et al. (2023)[@EmmanuelAlamu2023]. The present vignette does not intend to replicate the results of these studies. Instead, it presents an alternative workflow to what was developed in the study. For the replication data on Olaosebikan et al. (2023), please visit https://github.com/AgrDataSci/rtbfoods-consumer-testing. For the replication data on Alamu et al. (2023), please visit https://github.com/AgrDataSci/cassava-consumer-iita/.
 
 The `cassava` data is a data frame with 1,000 observations and 27 variables, which are described in the data documentation with `?cassava`. This vignette will require the packages PlackettLuce [@Turner2020], ClimMobTools [@ClimMobTools], ggplot2 [@ggplot2], and patchwork [@patchwork].
 
@@ -139,7 +139,7 @@ ggplot(data = rel,
              colour = "grey40",
              linewidth = 1) +
   theme_classic() +
-  labs(x = "Probability of outperforming",
+  labs(x = "Probability of outperforming the check",
        y = "")
 
 ```
@@ -244,11 +244,48 @@ Suppose we have three varieties with standardized probabilities for each trait:
  
 Here, *Variety 1* would have the highest selection index score, making it a top choice based on this weighted approach.
 
-For this example, I arbitrarily set the weights for each gari-eba trait as follows: color = 0.2, stretchability = 0.2, taste = 0.3, and overall = 0.3. We iterate over the groups in a loop, storing the model coefficients in a data frame for visualization with `ggplot`.
+For this example, we will use the Kendall’s Tau correlation coefficient [@Kendall_1939], estimated with the function `kendallTau()`. We began by calculating Kendall’s Tau correlation coefficients ($\tau$) for each trait against the overall preference. This non-parametric statistic measures the strength and direction of association between two ranked variables, making it robust to outliers and suitable for ordinal data. The goal is to identify how strongly each trait aligns with farmers' overall preference rankings. We also include the overall preference in the kendall tau estimation as this trait will also be part of the selection index. 
+
+``` {r kendall1, message = FALSE, eval = TRUE, echo = TRUE}
+
+kendall = lapply(R, function(x){
+  kendallTau(x, R[[ov]])
+})
+
+kendall = do.call("rbind", kendall)
+
+kendall$trait = traits
+
+kendall
+
+```
+
+Using the Kendall ($\tau$) estimates, we derive weights for each trait. These weights represent the contribution of each trait to the selection. To ensure comparability and sum-to-1 constraints, the weights are normalized. The overall preference score had the highest weight due to its perfect Kendall ($\tau$ = 1.0). While this aligns with intuition, it risks biasing the selection index by disproportionately favoring varieties that score well on "Overall" alone. To address this we apply a penalty specifically to the "Overall" weight to reduce its influence without discarding its importance. We used a logarithmic penalty for "Overall", as it reduces large values more significantly while maintaining relative differences. After penalizing "Overall" all weights are re-normalized to ensure the sum of weights = 1.
+
+
+``` {r kendall2, message = FALSE, eval = TRUE, echo = TRUE}
+
+kendall$weights = kendall$kendallTau / sum(kendall$kendallTau)
+
+# identify the "Overall" trait and apply the penalty
+kendall$weights[ov] = log(1 + kendall$weights[ov])
+
+# re-normalize weights to ensure they sum to 1
+kendall$weights = kendall$weights / sum(kendall$weights)
+
+kendall
+
+```
+
+
+
+After applying the penalty and re-normalizing, the influence of "Overall" was reduced, and its weight was redistributed proportionally to other traits. The adjusted weights are now ready for inclusion in the selection index to rank cassava varieties. The overarching goal is to have a global selection index that reflects the preferences of the entire population in the dataset. If the groups have distinct preferences or represent different environments, calculating weights separately for each group ensures that the index reflects their unique priorities. Here we assume that the relationships between traits and the "Overall" are consistent across groups.
+
+We iterate over the groups in a loop, storing the model coefficients in a data frame for visualization with `ggplot`. The selection index is computed as:
 
 ``` {r selection, message = FALSE, eval = TRUE, echo = TRUE}
 
-weights = c(0.20, 0.20, 0.30, 0.30)
+weights = kendall$weights
 
 select = data.frame()
 
@@ -279,7 +316,6 @@ for (i in seq_along(slice_lvs)) {
   
 }
 
-
 ggplot(data = select,
        aes(x = score, 
            y = item,
@@ -299,13 +335,13 @@ ggplot(data = select,
 
 ```
 
-The selection score indicates that the superior varieties for Nigeria are TMS6, TMEB1, and TMS3, while for Cameroon, the varieties Game Changer, Sape, and Madame demonstrate superior performance. This approach contrasts with the previous analysis based solely on overall preference and the visualization provided by the worth map. By considering the heterogeneity of consumer preferences, it enables the identification of the best varieties for specific groups and market segments.
+The selection score indicates that the superior varieties for Nigeria are TMS6, TMEB1, TMS3, and Obasanjo-2, while for Cameroon, the varieties Game Changer, Sape, and Madame exhibit superior performance, exceeding the average as indicated by the grey vertical line. This approach contrasts with the previous analysis based solely on overall preference and the visualization provided by the worth map. By accounting for the heterogeneity of consumer preferences, it facilitates the identification of the best varieties for specific groups and market segments.
 
 # Conclusion
 
 This vignette demonstrates a workflow for analyzing consumer preference trial data using the tricot approach. By integrating innovative visualization techniques, we explored the performance of cassava varieties across multiple traits and participant groups in Nigeria and Cameroon. The analysis highlights the utility of worth maps and selection scores in identifying superior varieties for specific contexts.
 
-In this study, we identified TMS6, TMEB1, and TMS3 as top-performing varieties in Nigeria, while Game Changer, Sape, and Madame stood out in Cameroon. The selection index approach further enabled the integration of weighted estimates for traits such as color, stretchability, taste, and overall preference, providing a holistic evaluation of variety performance. This flexible approach allows for customization of weights to align with different stakeholder priorities or objectives.
+In this study, we identified TMS6, TMEB1, TMS3, and Obasanjo-2 as top-performing varieties in Nigeria, while Game Changer, Sape, and Madame stood out in Cameroon. The selection index approach further enabled the integration of weighted estimates for traits such as color, stretchability, taste, and overall preference, providing a holistic evaluation of variety performance. This flexible approach allows for customization of weights to align with different stakeholder priorities or objectives.
 
 Additionally, the application of subgroup analysis, using country as a covariate, demonstrated the potential to uncover heterogeneity in preferences and tailor variety recommendations. This method could be extended to more complex groupings, such as those based on cluster analyses or farmer typologies incorporating socio-economic and agroecological variables.
 

@@ -19,7 +19,7 @@
 #' @param ... further arguments affecting the Kendall tau produced. See details 
 #' @return The Kendall correlation coefficient and the Effective N, which 
 #' is the equivalent N needed if all items were compared to all items. 
-#' Can be used for significance testing.
+#' Used for significance testing.
 #' @references 
 #' 
 #' Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. 
