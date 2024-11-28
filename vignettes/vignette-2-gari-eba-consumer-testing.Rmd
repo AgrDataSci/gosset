@@ -231,6 +231,8 @@ trait_plot[[1]] + trait_plot[[2]] + plot_layout(ncol = 1)
 
 ```
 
+# Selection index
+
 The segmented analysis reveals contrasting results compared to the previous analysis using the full dataset. It highlights the superiority of TMS6 and TMEB1 in Nigeria, and Game Changer and Sape in Cameroon. This approach provides a visual method to select the best variety overall for each group. To account for all traits in a data-driven manner when selecting varieties, I propose a selection index approach. This method calculates weighted estimates and derives a selection score that represents the overall performance of the varieties across all traits.
 
 Suppose we have three varieties with standardized probabilities for each trait:
@@ -276,8 +278,6 @@ kendall$weights = kendall$weights / sum(kendall$weights)
 kendall
 
 ```
-
-
 
 After applying the penalty and re-normalizing, the influence of "Overall" was reduced, and its weight was redistributed proportionally to other traits. The adjusted weights are now ready for inclusion in the selection index to rank cassava varieties. The overarching goal is to have a global selection index that reflects the preferences of the entire population in the dataset. If the groups have distinct preferences or represent different environments, calculating weights separately for each group ensures that the index reflects their unique priorities. Here we assume that the relationships between traits and the "Overall" are consistent across groups.
 
