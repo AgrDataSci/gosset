@@ -42,13 +42,10 @@ pack = c("option_a", "option_b", "option_c")
 
 items = sort(unique(unlist(dat[pack])))
 
-ref = "Akpu"
+check = "Obasanjo-2"
 
 ov = which(traits %in% "Overall")
 
-table(unlist(dat[pack]), rep(dat$country, 3))
-
-table(unlist(dat[pack]), rep(dat$gender, 3))
 
 ## ----rank, message = FALSE, eval = TRUE, echo = TRUE--------------------------
 R = lapply(trait_list, function(x) {
@@ -62,16 +59,22 @@ R = lapply(trait_list, function(x) {
 mod = lapply(R, PlackettLuce)
 
 plot(mod[[ov]],
-     ref = 1,
+     ref = check,
      log = TRUE,
      levels = rev(items))
 
 
 ## ----reliability, message = FALSE, eval = TRUE, echo = TRUE-------------------
-rel = reliability(mod[[ov]], ref = "TMS1")
+rel = reliability(mod[[ov]], ref = check)
+
+rel$improvement = round((rel$reliability / 0.5 - 1), 2)
+
+rel = rel[order(rel$improvement), ]
+
+rel$item = factor(rel$item, levels = rel$item)
 
 ggplot(data = rel,
-       aes(x = reliability, 
+       aes(x = improvement, 
            y = item,
            fill = "white")) +
   geom_bar(stat = "identity",
@@ -79,11 +82,11 @@ ggplot(data = rel,
            position = "dodge", 
            show.legend = FALSE) +
   scale_fill_manual(values = "#5aae61") +
-  geom_vline(xintercept = 0.5,
+  geom_vline(xintercept = 0,
              colour = "grey40",
              linewidth = 1) +
   theme_classic() +
-  labs(x = "Probability of outperforming",
+  labs(x = "Probability of outperforming the check",
        y = "")
 
 
@@ -155,9 +158,35 @@ for (i in seq_along(slice_lvs)) {
 trait_plot[[1]] + trait_plot[[2]] + plot_layout(ncol = 1)
 
 
+## ----kendall1, message = FALSE, eval = TRUE, echo = TRUE----------------------
+
+kendall = lapply(R, function(x){
+  kendallTau(x, R[[ov]])
+})
+
+kendall = do.call("rbind", kendall)
+
+kendall$trait = traits
+
+kendall
+
+
+## ----kendall2, message = FALSE, eval = TRUE, echo = TRUE----------------------
+
+kendall$weights = kendall$kendallTau / sum(kendall$kendallTau)
+
+# identify the "Overall" trait and apply the penalty
+kendall$weights[ov] = log(1 + kendall$weights[ov])
+
+# re-normalize weights to ensure they sum to 1
+kendall$weights = kendall$weights / sum(kendall$weights)
+
+kendall
+
+
 ## ----selection, message = FALSE, eval = TRUE, echo = TRUE---------------------
 
-weights = c(0.20, 0.20, 0.30, 0.30)
+weights = kendall$weights
 
 select = data.frame()
 
@@ -187,7 +216,6 @@ for (i in seq_along(slice_lvs)) {
   
   
 }
-
 
 ggplot(data = select,
        aes(x = score, 

@@ -37,7 +37,7 @@ kendallTau(x, y, null.rm = TRUE, average = TRUE, na.omit = FALSE, ...)
 \value{
 The Kendall correlation coefficient and the Effective N, which 
 is the equivalent N needed if all items were compared to all items. 
-Can be used for significance testing.
+Used for significance testing.
 }
 \description{
 Compute Kendall rank correlation coefficient between two objects. 

@@ -123,9 +123,9 @@ kendallTau.default = function(x, y, null.rm = TRUE, ...){
   }
   
   tau_cor = stats::cor(x, 
-                        y, 
-                        method = "kendall", 
-                        ...)
+                       y, 
+                       method = "kendall", 
+                       ...)
   
   n = length(x)
   
@@ -197,7 +197,7 @@ kendallTau.matrix = function(x, y, null.rm = TRUE, average = TRUE, na.omit = FAL
   # Extract the values from the matrix
   tau = kt[,1]
   N = kt[,2]
-
+  
   tau_average = sum(tau * N, na.rm = TRUE) / sum(N)
   
   # Effective N is the equivalent N needed if all were compared to all
@@ -272,4 +272,3 @@ kendallTau.paircomp = function(x, y, ...) {
   kendallTau(X, Y, ...)
   
 }
-

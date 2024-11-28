@@ -38,7 +38,8 @@ Imports:
     stats, 
     tidyr,
     utils,
-    patchwork
+    patchwork,
+    parallel
 Suggests:
     climatrends,
     ClimMobTools,

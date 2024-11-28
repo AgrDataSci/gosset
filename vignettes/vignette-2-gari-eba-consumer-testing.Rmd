@@ -23,13 +23,15 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 # Introduction
 
-Here, I present a workflow to analyze data from a consumer preference trial executed in Nigeria and Cameroon by the International Institute of Tropical Agriculture (IITA) under the RTBFoods project (https://rtbfoods.cirad.fr). Consumer testing was carried out with 1,000 participants in 2022 in Cameroon and Nigeria using the tricot approach [@deSousa2024]. Diverse consumers in villages, towns, and cities evaluated the overall acceptability of gari-eba made from 13 cassava (*Manihot esculenta* Crantz) genotypes. Apart from the overall preference of the samples, the following traits were evaluated for eba based on triangulated insights obtained through earlier surveys and participatory work in the three areas: Nigeria (Osun and Benue States): color, smoothness, moldability, stretchability, and taste. Cameroon (Littoral zone): color, odor, taste, firmness, and stretchability.
+This vignette demonstrates a workflow for analyzing consumer preference data from decentralized trials of cassava (*Manihot esculenta* Crantz) varieties in Nigeria and Cameroon. Using the tricot approach [@deSousa2024], 1,000 participants evaluated gari-eba made from 13 cassava genotypes in 2022. The trial was implemented by the International Institute of Tropical Agriculture (IITA) under the RTBFoods project (https://rtbfoods.cirad.fr). Participants assessed overall preference and traits such as color, stretchability, and taste, reflecting diverse consumer priorities.
 
-Traits in common are color, taste, and stretchability. The results of this study were published by Olaosebikan et al. (2023)[@Olaosebikan2023], and a deeper analysis for the Nigerian subset, linking the consumer data to laboratory instrumental metrics, was published by Alamu et al. (2023)[@EmmanuelAlamu2023]. The present vignette does not intend to replicate the results of these studies. Instead, it presents an alternative workflow to what was developed in the study. For the replication data on Olaosebikan et al. (2023), please visit https://github.com/AgrDataSci/rtbfoods-consumer-testing. For the replication data on Alamu et al. (2023), please visit https://github.com/AgrDataSci/cassava-consumer-iita/.
+Building on studies by Olaosebikan et al. (2023) [@Olaosebikan2023] and Alamu et al. (2023) [@EmmanuelAlamu2023], this vignette introduces an alternative workflow. It leverages statistical models, such as the Plackett-Luce model, to analyze overall preference, explore trait-specific performance, and account for consumer heterogeneity. By segmenting the data by groups like country, the analysis uncovers context-specific varietal performance and identifies the best varieties for specific groups.
 
-The `cassava` data is a data frame with 1,000 observations and 27 variables, which are described in the data documentation with `?cassava`. This vignette will require the packages PlackettLuce [@Turner2020], ClimMobTools [@ClimMobTools], ggplot2 [@ggplot2], and patchwork [@patchwork].
+Additionally, a weighted selection index is proposed to integrate multiple traits, enabling a data-driven approach to ranking varieties. This workflow emphasizes a consumer- and market-oriented approach, offering insights into plant breeding and selection strategies that align with local preferences and environmental contexts. *The selection index approach is under development and open for improvements, suggestions and comments*. 
 
 # Read the data and select traits
+
+The `cassava` data is a data frame with 1,000 observations and 27 variables, which are described in the data documentation with `?cassava`. This vignette will require the packages PlackettLuce [@Turner2020], ClimMobTools [@ClimMobTools], ggplot2 [@ggplot2], and patchwork [@patchwork].
 
 ``` {r starting, message = FALSE, eval = TRUE, echo = TRUE}
 library("gosset")
@@ -231,9 +233,11 @@ trait_plot[[1]] + trait_plot[[2]] + plot_layout(ncol = 1)
 
 ```
 
+The segmented analysis reveals contrasting results compared to the previous analysis using the full dataset. It highlights the superiority of TMS6 and TMEB1 in Nigeria, and Game Changer and Sape in Cameroon. This approach provides a visual method to select the best variety overall for each group.
+
 # Selection index
 
-The segmented analysis reveals contrasting results compared to the previous analysis using the full dataset. It highlights the superiority of TMS6 and TMEB1 in Nigeria, and Game Changer and Sape in Cameroon. This approach provides a visual method to select the best variety overall for each group. To account for all traits in a data-driven manner when selecting varieties, I propose a selection index approach. This method calculates weighted estimates and derives a selection score that represents the overall performance of the varieties across all traits.
+To account for all traits in a data-driven manner when selecting varieties, I propose a selection index approach. This method calculates weighted estimates and derives a selection score that represents the overall performance of the varieties across all traits.
 
 Suppose we have three varieties with standardized probabilities for each trait:
 
