@@ -11,7 +11,7 @@ worth_map(object, ...)
 
 \method{worth_map}{default}(object, ...)
 
-\method{worth_map}{list}(object, labels, ...)
+\method{worth_map}{list}(object, labels, labels.order = NULL, items.order = NULL, ...)
 
 worth_bar(object, ...)
 }
@@ -23,6 +23,10 @@ a list objects of class \code{PlackettLuce}}
 \item{...}{additional arguments passed to methods}
 
 \item{labels}{a vector with the name of models in \var{object}}
+
+\item{labels.order}{optional, a vector to determine the order of labels}
+
+\item{items.order}{optional, a vector to determine the order of items}
 }
 \description{
 Produces plots to highlight worth

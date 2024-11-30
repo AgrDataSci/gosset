@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.1</span>
       </span>
     </div>
 
@@ -103,37 +103,38 @@ Hamar, Norway<br><small class="dont-index">Source: <a href="https://github.com/a
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Here, I present a workflow to analyze data from a consumer preference
-trial executed in Nigeria and Cameroon by the International Institute of
-Tropical Agriculture (IITA) under the RTBFoods project (<a href="https://rtbfoods.cirad.fr" class="external-link uri">https://rtbfoods.cirad.fr</a>). Consumer testing was carried
-out with 1,000 participants in 2022 in Cameroon and Nigeria using the
-tricot approach <span class="citation">[1]</span>. Diverse consumers in
-villages, towns, and cities evaluated the overall acceptability of
-gari-eba made from 13 cassava (<em>Manihot esculenta</em> Crantz)
-genotypes. Apart from the overall preference of the samples, the
-following traits were evaluated for eba based on triangulated insights
-obtained through earlier surveys and participatory work in the three
-areas: Nigeria (Osun and Benue States): color, smoothness, moldability,
-stretchability, and taste. Cameroon (Littoral zone): color, odor, taste,
-firmness, and stretchability.</p>
-<p>Traits in common are color, taste, and stretchability. The results of
-this study were published by Olaosebikan et al. (2023)<span class="citation">[2]</span>, and a deeper analysis for the Nigerian
-subset, linking the consumer data to laboratory instrumental metrics,
-was published by Alamu et al. (2023)<span class="citation">[3]</span>.
-The present vignette does not intend to replicate the results of these
-studies. Instead, it presents an alternative workflow to what was
-developed in the study. For the replication data on Olaosebikan et
-al. (2023), please visit <a href="https://github.com/AgrDataSci/rtbfoods-consumer-testing" class="external-link uri">https://github.com/AgrDataSci/rtbfoods-consumer-testing</a>.
-For the replication data on Alamu et al. (2023), please visit <a href="https://github.com/AgrDataSci/cassava-consumer-iita/" class="external-link uri">https://github.com/AgrDataSci/cassava-consumer-iita/</a>.</p>
+<p>This vignette demonstrates a workflow for analyzing consumer
+preference data from decentralized trials of cassava (<em>Manihot
+esculenta</em> Crantz) varieties in Nigeria and Cameroon. Using the
+tricot approach <span class="citation">[1]</span>, 1,000 participants
+evaluated gari-eba made from 13 cassava genotypes in 2022. The trial was
+implemented by the International Institute of Tropical Agriculture
+(IITA) under the RTBFoods project (<a href="https://rtbfoods.cirad.fr" class="external-link uri">https://rtbfoods.cirad.fr</a>). Participants assessed
+overall preference and traits such as color, stretchability, and taste,
+reflecting diverse consumer priorities.</p>
+<p>Building on studies by Olaosebikan et al. (2023) <span class="citation">[2]</span> and Alamu et al. (2023) <span class="citation">[3]</span>, this vignette introduces an alternative
+workflow. It leverages statistical models, such as the Plackett-Luce
+model, to analyze overall preference, explore trait-specific
+performance, and account for consumer heterogeneity. By segmenting the
+data by groups like country, the analysis uncovers context-specific
+varietal performance and identifies the best varieties for specific
+groups.</p>
+<p>Additionally, a weighted selection index is proposed to integrate
+multiple traits, enabling a data-driven approach to ranking varieties.
+This workflow emphasizes a consumer- and market-oriented approach,
+offering insights into plant breeding and selection strategies that
+align with local preferences and environmental contexts. <em>The
+selection index approach is under development and open for improvements,
+suggestions and comments</em>.</p>
+</div>
+<div class="section level2">
+<h2 id="read-the-data-and-select-traits">Read the data and select traits<a class="anchor" aria-label="anchor" href="#read-the-data-and-select-traits"></a>
+</h2>
 <p>The <code>cassava</code> data is a data frame with 1,000 observations
 and 27 variables, which are described in the data documentation with
 <code><a href="../reference/cassava.html">?cassava</a></code>. This vignette will require the packages
 PlackettLuce <span class="citation">[4]</span>, ClimMobTools <span class="citation">[5]</span>, ggplot2 <span class="citation">[6]</span>,
 and patchwork <span class="citation">[7]</span>.</p>
-</div>
-<div class="section level2">
-<h2 id="read-the-data-and-select-traits">Read the data and select traits<a class="anchor" aria-label="anchor" href="#read-the-data-and-select-traits"></a>
-</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://agrdatasci.github.io/gosset/" class="external-link">"gosset"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://agrdatasci.github.io/ClimMobTools/" class="external-link">"ClimMobTools"</a></span><span class="op">)</span></span>
@@ -285,12 +286,9 @@ different traits. The values represented in a worth map are
 <em>log-worth</em> estimates. The function can be used with
 <code>ggplot2</code> functions to improve the plot.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/worth_map.html">worth_map</a></span><span class="op">(</span><span class="va">mod</span>, labels <span class="op">=</span> <span class="va">traits</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">""</span>, y <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_distiller</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"BrBG"</span>, </span>
-<span>                       direction <span class="op">=</span> <span class="fl">1</span>, </span>
-<span>                       na.value <span class="op">=</span> <span class="st">"white"</span>, </span>
-<span>                       name <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/worth_map.html">worth_map</a></span><span class="op">(</span><span class="va">mod</span>, </span>
+<span>          labels <span class="op">=</span> <span class="va">traits</span>, </span>
+<span>          labels.order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Overall"</span>, <span class="st">"Taste"</span>, <span class="st">"Stretchability"</span>, <span class="st">"Colour"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette-2-gari-eba-consumer-testing_files/figure-html/worth-1.png" width="700"></p>
 <p>The worth map confirms the superiority of TMS6, Sape and TMEB1 across
 the traits, but also presents Madame among the top varieties for color.
@@ -359,8 +357,10 @@ plots and store them in a list. Finally, we use the
 <span><span class="co"># and get the unique values</span></span>
 <span><span class="va">slice_lvs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">slice</span><span class="op">)</span></span>
 <span></span>
-<span></span>
 <span><span class="va">trait_plot</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># order of varieties from best to worst in the full dataset</span></span>
+<span><span class="va">items_lvls</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rank.html" class="external-link">rank</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">mod</span><span class="op">[[</span><span class="va">ov</span><span class="op">]</span><span class="op">]</span>, log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">*</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">slice_lvs</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  </span>
@@ -370,35 +370,29 @@ plots and store them in a list. Finally, we use the
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="co"># plot the worth map</span></span>
-<span>  <span class="va">trait_plot</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="../reference/worth_map.html">worth_map</a></span><span class="op">(</span><span class="va">mod_i</span>, </span>
-<span>            labels <span class="op">=</span> <span class="va">traits</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">""</span>, </span>
-<span>         y <span class="op">=</span> <span class="st">""</span>,</span>
-<span>         title <span class="op">=</span> <span class="va">slice_lvs</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_distiller</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"BrBG"</span>, </span>
-<span>                         direction <span class="op">=</span> <span class="fl">1</span>, </span>
-<span>                         na.value <span class="op">=</span> <span class="st">"white"</span>, </span>
-<span>                         name <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span>  <span class="va">trait_plot</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="../reference/worth_map.html">worth_map</a></span><span class="op">(</span><span class="va">mod_i</span>,</span>
+<span>                              labels <span class="op">=</span> <span class="va">traits</span>,</span>
+<span>                              labels.order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Overall"</span>, <span class="st">"Taste"</span>, <span class="st">"Stretchability"</span>, <span class="st">"Colour"</span><span class="op">)</span>,</span>
+<span>                              items.order <span class="op">=</span> <span class="va">items_lvls</span><span class="op">)</span></span>
 <span>  </span>
-<span>    </span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># plot the two maps using patchwork</span></span>
 <span><span class="va">trait_plot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="va">trait_plot</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette-2-gari-eba-consumer-testing_files/figure-html/worth2-1.png" width="700"></p>
-</div>
-<div class="section level2">
-<h2 id="selection-index">Selection index<a class="anchor" aria-label="anchor" href="#selection-index"></a>
-</h2>
 <p>The segmented analysis reveals contrasting results compared to the
 previous analysis using the full dataset. It highlights the superiority
 of TMS6 and TMEB1 in Nigeria, and Game Changer and Sape in Cameroon.
 This approach provides a visual method to select the best variety
-overall for each group. To account for all traits in a data-driven
-manner when selecting varieties, I propose a selection index approach.
-This method calculates weighted estimates and derives a selection score
-that represents the overall performance of the varieties across all
-traits.</p>
+overall for each group.</p>
+</div>
+<div class="section level2">
+<h2 id="selection-index">Selection index<a class="anchor" aria-label="anchor" href="#selection-index"></a>
+</h2>
+<p>To account for all traits in a data-driven manner when selecting
+varieties, I propose a selection index approach. This method calculates
+weighted estimates and derives a selection score that represents the
+overall performance of the varieties across all traits.</p>
 <p>Suppose we have three varieties with standardized probabilities for
 each trait:</p>
 <table class="table">

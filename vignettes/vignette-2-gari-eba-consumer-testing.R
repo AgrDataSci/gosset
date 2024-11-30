@@ -91,12 +91,9 @@ ggplot(data = rel,
 
 
 ## ----worth, message = FALSE, eval = TRUE, echo = TRUE-------------------------
-worth_map(mod, labels = traits) +
-  labs(x = "", y = "") +
-  scale_fill_distiller(palette = "BrBG", 
-                       direction = 1, 
-                       na.value = "white", 
-                       name = "")
+worth_map(mod, 
+          labels = traits, 
+          labels.order = c("Overall", "Taste", "Stretchability", "Colour"))
 
 ## ----llr, message = FALSE, eval = TRUE, echo = TRUE---------------------------
 # by gender
@@ -130,8 +127,10 @@ slice = dat$country
 # and get the unique values
 slice_lvs = unique(slice)
 
-
 trait_plot = list()
+
+# order of varieties from best to worst in the full dataset
+items_lvls = names(sort(rank(coef(mod[[ov]], log = FALSE) * -1)))
 
 for (i in seq_along(slice_lvs)) {
   
@@ -141,17 +140,11 @@ for (i in seq_along(slice_lvs)) {
   })
   
   # plot the worth map
-  trait_plot[[i]] = worth_map(mod_i, 
-            labels = traits) +
-    labs(x = "", 
-         y = "",
-         title = slice_lvs[i]) +
-    scale_fill_distiller(palette = "BrBG", 
-                         direction = 1, 
-                         na.value = "white", 
-                         name = "")
+  trait_plot[[i]] = worth_map(mod_i,
+                              labels = traits,
+                              labels.order = c("Overall", "Taste", "Stretchability", "Colour"),
+                              items.order = items_lvls)
   
-    
 }
 
 # plot the two maps using patchwork

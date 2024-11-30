@@ -8,6 +8,8 @@
 #'  an object of class \code{PlackettLuce} or
 #'  a list objects of class \code{PlackettLuce}
 #' @param labels a vector with the name of models in \var{object}
+#' @param labels.order optional, a vector to determine the order of labels
+#' @param items.order optional, a vector to determine the order of items
 #' @param ... additional arguments passed to methods
 #' @examples 
 #' library("psychotree")
@@ -106,12 +108,30 @@ worth_map.default = function(object, ...) {
 #' @method worth_map list
 #' @rdname worth_map
 #' @export
-worth_map.list = function(object, labels, ...) {
+worth_map.list = function(object, 
+                          labels, 
+                          labels.order = NULL, 
+                          items.order = NULL, ...) {
   
-  winprobs = .combine_coeffs(object, log = TRUE, vcov = FALSE, ...)
+  if (is.null(labels.order)) {
+    lvls = labels
+  } else {
+    lvls = labels.order
+  }
+  
+  winprobs = .combine_coeffs(object, log = TRUE, ...)
   
   # add name of features
   names(winprobs) = labels
+  
+  if (is.null(items.order)) {
+    order_items = order(exp(winprobs[,lvls[[1]]]))
+    order_items = rownames(winprobs)[order_items]
+  } else {
+    order_items = items.order
+  }
+  
+  
   
   winprobs = data.frame(items = rep(dimnames(winprobs)[[1]], 
                                     times = ncol(winprobs)),
@@ -119,7 +139,10 @@ worth_map.list = function(object, labels, ...) {
                                      each = nrow(winprobs)),
                         winprob = as.numeric(unlist(winprobs)))
   
-  winprobs$labels = factor(winprobs$labels, levels = labels)
+  winprobs$labels = factor(winprobs$labels, levels = rev(lvls))
+  
+  winprobs$items = factor(winprobs$items, 
+                          levels = rev(order_items))
   
   items = winprobs$items
   winprob = winprobs$winprob
@@ -142,16 +165,13 @@ worth_map.list = function(object, labels, ...) {
                                   direction = 1,
                                   na.value = "white",
                                   name = "") +
-    ggplot2::theme_bw() +
-    theme(axis.text = ggplot2::element_text(color = "grey20"),
-          strip.text.x = ggplot2::element_text(color = "grey20"),
-          axis.text.x = ggplot2::element_text(angle = 40, vjust = 1, hjust = 1),
-          axis.text.y = ggplot2::element_text(angle = angle, vjust = 1, hjust = 1),
-          panel.grid = ggplot2::element_blank())
-  ggplot2::labs(x = "", 
-                y = "",
-                fill = "")
-  
+    ggplot2::theme_minimal() +
+    ggplot2::theme(axis.text = ggplot2::element_text(color = "grey20"),
+                   strip.text.x = ggplot2::element_text(color = "grey20"),
+                   axis.text.x = ggplot2::element_text(angle = 40, vjust = 1, hjust = 1),
+                   axis.text.y = ggplot2::element_text(angle = angle, vjust = 1, hjust = 1),
+                   panel.grid = ggplot2::element_blank()) +
+    ggplot2::labs(x = "", y = "")
   
   
   return(p)
@@ -162,11 +182,14 @@ worth_map.list = function(object, labels, ...) {
 #'Combine coefficients from PlackettLuce models
 #' @param x a list with PlackettLuce models
 #' @param na.replace logical, to replace or keep NAs
-#' @param ... further arguments passed to methods
+#' @param ... additional arguments passed to methods
 #' @noRd
 .combine_coeffs = function(x, na.replace = TRUE, rescale = TRUE, ...) {
   
-  coeffs = lapply(x, function(y) {psychotools::itempar(y, ...)})
+  coeffs = lapply(x, function(y) {
+    #psychotools::itempar(y, ...)
+    stats::coefficients(y, ...)
+  })
   
   items = unique(unlist(lapply(coeffs, names)))
   

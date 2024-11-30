@@ -152,12 +152,9 @@ The reliability estimates show an improvement in overall preference of 32% for T
 So far, we have focused solely on the overall preference. However, there are other traits to assess. The function `worth_plot()` can be used to visually analyze and compare variety performance across different traits. The values represented in a worth map are *log-worth* estimates. The function can be used with `ggplot2` functions to improve the plot.
 
 ``` {r worth, message = FALSE, eval = TRUE, echo = TRUE}
-worth_map(mod, labels = traits) +
-  labs(x = "", y = "") +
-  scale_fill_distiller(palette = "BrBG", 
-                       direction = 1, 
-                       na.value = "white", 
-                       name = "")
+worth_map(mod, 
+          labels = traits, 
+          labels.order = c("Overall", "Taste", "Stretchability", "Colour"))
 ```
 
 The worth map confirms the superiority of TMS6, Sape and TMEB1 across the traits, but also presents Madame among the top varieties for color. We will return to this analysis later, but for now, let us examine the data from the perspective of different groups to consider heterogeneity in the participants' evaluations, as proposed by van Etten et al. (2023) [@vanEtten2023].
@@ -204,8 +201,10 @@ slice = dat$country
 # and get the unique values
 slice_lvs = unique(slice)
 
-
 trait_plot = list()
+
+# order of varieties from best to worst in the full dataset
+items_lvls = rev(names(sort(rank(coef(mod[[ov]], log = FALSE) * -1))))
 
 for (i in seq_along(slice_lvs)) {
   
@@ -215,17 +214,11 @@ for (i in seq_along(slice_lvs)) {
   })
   
   # plot the worth map
-  trait_plot[[i]] = worth_map(mod_i, 
-            labels = traits) +
-    labs(x = "", 
-         y = "",
-         title = slice_lvs[i]) +
-    scale_fill_distiller(palette = "BrBG", 
-                         direction = 1, 
-                         na.value = "white", 
-                         name = "")
+  trait_plot[[i]] = worth_map(mod_i,
+                              labels = traits,
+                              labels.order = c("Overall", "Taste", "Stretchability", "Colour"),
+                              items.order = items_lvls)
   
-    
 }
 
 # plot the two maps using patchwork
