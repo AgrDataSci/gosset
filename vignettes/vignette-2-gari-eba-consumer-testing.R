@@ -130,7 +130,7 @@ slice_lvs = unique(slice)
 trait_plot = list()
 
 # order of varieties from best to worst in the full dataset
-items_lvls = names(sort(rank(coef(mod[[ov]], log = FALSE) * -1)))
+items_lvls = rev(names(sort(rank(coef(mod[[ov]], log = FALSE) * -1))))
 
 for (i in seq_along(slice_lvs)) {
   

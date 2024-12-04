@@ -119,7 +119,7 @@ worth_map.list = function(object,
     lvls = labels.order
   }
   
-  winprobs = .combine_coeffs(object, log = TRUE, ...)
+  winprobs = .combine_coeffs(object, ...)
   
   # add name of features
   names(winprobs) = labels
@@ -130,8 +130,6 @@ worth_map.list = function(object,
   } else {
     order_items = items.order
   }
-  
-  
   
   winprobs = data.frame(items = rep(dimnames(winprobs)[[1]], 
                                     times = ncol(winprobs)),
@@ -173,7 +171,6 @@ worth_map.list = function(object,
                    panel.grid = ggplot2::element_blank()) +
     ggplot2::labs(x = "", y = "")
   
-  
   return(p)
   
   
@@ -184,11 +181,12 @@ worth_map.list = function(object,
 #' @param na.replace logical, to replace or keep NAs
 #' @param ... additional arguments passed to methods
 #' @noRd
-.combine_coeffs = function(x, na.replace = TRUE, rescale = TRUE, ...) {
+.combine_coeffs = function(x, na.replace = TRUE, rescale = TRUE, ref = NULL, ...) {
+  
+  if (!is.null(ref)) rescale = FALSE
   
   coeffs = lapply(x, function(y) {
-    #psychotools::itempar(y, ...)
-    stats::coefficients(y, ...)
+    stats::coefficients(y, ref = ref)
   })
   
   items = unique(unlist(lapply(coeffs, names)))
@@ -209,6 +207,7 @@ worth_map.list = function(object,
   }
   
   if (isTRUE(rescale)) {
+    
     rs = matrix(as.vector(scale(r)), 
                 nrow = nrow(r),
                 ncol = ncol(r))
@@ -218,7 +217,6 @@ worth_map.list = function(object,
     rownames(rs) = items
 
     r = rs
-    
   }
   
   return(r)
@@ -229,11 +227,11 @@ worth_map.list = function(object,
 #' @export
 worth_bar = function(object, ...){
   
-  palette = list(colors = c("#FFFF80", "#38E009","#1A93AB", "#0C1078"))
+  palette = list(colors = c("#99d8c9", "#41ae76","#006d2c", "#00441b"))
   
   palette = do.call("colorRampPalette", palette)
   
-  object = coef(object, log = FALSE)
+  object = stats::coefficients(object, log = FALSE)
   
   object = data.frame(group = names(object),
                       value = as.vector(object))

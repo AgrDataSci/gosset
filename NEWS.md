@@ -1,4 +1,4 @@
-gosset 1.4 (2024-11-23)
+gosset 1.4 (2024-12-04)
 =========================
 
 ### IMPROVEMENTS
@@ -6,8 +6,10 @@ gosset 1.4 (2024-11-23)
 * manage levels in `plot.pltree()`
 * adds S3 method to plot PlackettLuce objects using `plot.PlackettLuce()`
 * adds `cassava` to the datasets
-* adds cassava consumer testing data and new vignette
+* adds `cassava` consumer testing data and new vignette
 * improves readability of common bean vignette
+* coefficients from `worth_map()` are extracted using `stats::coefficients()` instead of `psychotools::itempar()`
+* update the bean vignette
 
 gosset 1.3 (2024-05-26)
 =========================
