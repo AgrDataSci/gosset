@@ -92,9 +92,42 @@ kendall[,2:4] = lapply(kendall[,2:4], function(x) round(x, 3))
 
 kendall[,5] = formatC(kendall[,5], format = "e")
 
+kendall = kendall[order(kendall$kendallTau), ]
+
 kendall
 
 ```
+
+We can visualize the distances and the distribution of the kendall correlation coefficients. For that we use the function `kendallTau_boostrap()` which resamples the data using a bootstrapping approach to draw an uniform distribution in the data. 
+
+``` {r kendall_boost, message = FALSE, eval = TRUE, echo = TRUE}
+
+# lapply the bootstrap function and draw 50 data points
+kendall = lapply(R[-baseline], function(x){
+  kendallTau_bootstrap(x, 
+                       R[[baseline]],
+                       nboot = 50,
+                       seed = 1206)
+})
+
+# put it in a data.frame
+kendall = data.frame(trait = rep(traits[-baseline], each = 50),
+                     kendallTau = unlist(kendall))
+
+# define levels of traits to sort them out from highest to lowest kendall tau
+lvls = unique(kendall$trait[order(kendall$kendallTau)])
+
+kendall$trait = factor(kendall$trait, levels = lvls)
+
+# plot the coefficients 
+ggplot(kendall, aes(y = trait, x = kendallTau)) +
+  geom_boxplot() +
+  labs(y = "", x = "Correlation with the 'Overall appreciation'") +
+  theme_minimal()
+
+```
+
+
 
 # Performance of varieties across traits
 
@@ -109,9 +142,9 @@ mod = lapply(R, PlackettLuce)
 The `worth_map()` function provides a visual tool to assess and compare variety performance across different traits. The values represented in a worth map are *log-worth* estimates. From a breeder or product developer perspective, the function `worth_map()` is a valuable tool for identifying variety performance across multiple traits and selecting crossing materials.
 
 ```{r worthmap, message=FALSE, eval=TRUE, echo=TRUE}
-worth_map(mod[-baseline],
-          labels = traits[-baseline],
-          ref = "Amadeus 77") +
+worth_map(mod,
+          labels = traits,
+          labels.order = rev(traits)) +
   labs(x = "Variety",
        y = "Trait")
 ```

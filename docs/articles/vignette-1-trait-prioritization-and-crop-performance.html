@@ -229,14 +229,42 @@ yield
 = 0.639) when assessing overall appreciation.</p>
 <pre><code><span><span class="co">##                   trait kendallTau N_effective Zvalue   Pr(&gt;|z|)</span></span>
 <span><span class="co">##                   &lt;chr&gt;      &lt;dbl&gt;       &lt;dbl&gt;  &lt;dbl&gt;      &lt;chr&gt;</span></span>
-<span><span class="co">## 1:                Vigor     0.4390     58.3120 4.8780 5.3630e-07</span></span>
 <span><span class="co">## 2:         Architecture     0.3930     58.3120 4.3720 6.1534e-06</span></span>
-<span><span class="co">## 3:    ResistanceToPests     0.4630     58.3120 5.1440 1.3446e-07</span></span>
-<span><span class="co">## 4: ResistanceToDiseases     0.4490     58.3120 4.9980 2.9022e-07</span></span>
 <span><span class="co">## 5:   ToleranceToDrought     0.4110     58.3120 4.5720 2.4187e-06</span></span>
-<span><span class="co">## 6:                Yield     0.7490     58.3120 8.3250 4.2193e-17</span></span>
+<span><span class="co">## 1:                Vigor     0.4390     58.3120 4.8780 5.3630e-07</span></span>
+<span><span class="co">## 4: ResistanceToDiseases     0.4490     58.3120 4.9980 2.9022e-07</span></span>
+<span><span class="co">## 3:    ResistanceToPests     0.4630     58.3120 5.1440 1.3446e-07</span></span>
 <span><span class="co">## 7:        Marketability     0.6390     58.3120 7.1000 6.2167e-13</span></span>
-<span><span class="co">## 8:                Taste     0.6530     58.3120 7.2600 1.9329e-13</span></span></code></pre>
+<span><span class="co">## 8:                Taste     0.6530     58.3120 7.2600 1.9329e-13</span></span>
+<span><span class="co">## 6:                Yield     0.7490     58.3120 8.3250 4.2193e-17</span></span></code></pre>
+<p>We can visualize the distances and the distribution of the kendall
+correlation coefficients. For that we use the function
+<code>kendallTau_boostrap()</code> which resamples the data using a
+bootstrapping approach to draw an uniform distribution in the data.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># lapply the bootstrap function and draw 50 data points</span></span>
+<span><span class="va">kendall</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">R</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/kendallTau.html">kendallTau_bootstrap</a></span><span class="op">(</span><span class="va">x</span>, </span>
+<span>                       <span class="va">R</span><span class="op">[[</span><span class="va">baseline</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>                       nboot <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>                       seed <span class="op">=</span> <span class="fl">1206</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># put it in a data.frame</span></span>
+<span><span class="va">kendall</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>trait <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">traits</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span>, each <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>,</span>
+<span>                     kendallTau <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">kendall</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># define levels of traits to sort them out from highest to lowest kendall tau</span></span>
+<span><span class="va">lvls</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">kendall</span><span class="op">$</span><span class="va">trait</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">kendall</span><span class="op">$</span><span class="va">kendallTau</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">kendall</span><span class="op">$</span><span class="va">trait</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">kendall</span><span class="op">$</span><span class="va">trait</span>, levels <span class="op">=</span> <span class="va">lvls</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># plot the coefficients </span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">kendall</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">trait</span>, x <span class="op">=</span> <span class="va">kendallTau</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">""</span>, x <span class="op">=</span> <span class="st">"Correlation with the 'Overall appreciation'"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="vignette-1-trait-prioritization-and-crop-performance_files/figure-html/kendall_boost-1.png" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="performance-of-varieties-across-traits">Performance of varieties across traits<a class="anchor" aria-label="anchor" href="#performance-of-varieties-across-traits"></a>
@@ -245,7 +273,7 @@ yield
 <code><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce()</a></code> from the package of the same name. This
 enables us to continue analyzing the trial data using other functions
 available in the gosset package.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">R</span>, <span class="va">PlackettLuce</span><span class="op">)</span></span></code></pre></div>
 <p>The <code><a href="../reference/worth_map.html">worth_map()</a></code> function provides a visual tool to
 assess and compare variety performance across different traits. The
@@ -253,10 +281,10 @@ values represented in a worth map are <em>log-worth</em> estimates. From
 a breeder or product developer perspective, the function
 <code><a href="../reference/worth_map.html">worth_map()</a></code> is a valuable tool for identifying variety
 performance across multiple traits and selecting crossing materials.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/worth_map.html">worth_map</a></span><span class="op">(</span><span class="va">mod</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span>,</span>
-<span>          labels <span class="op">=</span> <span class="va">traits</span><span class="op">[</span><span class="op">-</span><span class="va">baseline</span><span class="op">]</span>,</span>
-<span>          ref <span class="op">=</span> <span class="st">"Amadeus 77"</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/worth_map.html">worth_map</a></span><span class="op">(</span><span class="va">mod</span>,</span>
+<span>          labels <span class="op">=</span> <span class="va">traits</span>,</span>
+<span>          labels.order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="va">traits</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Variety"</span>,</span>
 <span>       y <span class="op">=</span> <span class="st">"Trait"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette-1-trait-prioritization-and-crop-performance_files/figure-html/worthmap-1.png" width="700"></p>
@@ -277,7 +305,7 @@ al. (2019) <span class="citation">[10]</span>, de Sousa et al. (2021)
 <p>The CHIRPS data is requested via the <code>chirps</code> package, and
 the returned data should be formatted as a matrix. Note that this
 process may take several minutes to complete.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dates</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">covar</span><span class="op">[</span>, <span class="st">"planting_date"</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>           <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">covar</span><span class="op">[</span>, <span class="st">"planting_date"</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">70</span><span class="op">)</span></span>
 <span></span>
@@ -288,7 +316,7 @@ process may take several minutes to complete.</p>
 <p>We compute the rainfall indices for the period from the planting date
 to the first 45 days of plant growth using the <code><a href="https://agrdatasci.github.io/climatrends/reference/rainfall.html" class="external-link">rainfall()</a></code>
 function from the climatrends package <span class="citation">[13]</span>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">newnames</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">chirps</span><span class="op">)</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">newnames</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"chirps-v2.0."</span>, <span class="st">""</span>, <span class="va">newnames</span><span class="op">)</span></span>
 <span><span class="va">newnames</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"[.]"</span>, <span class="st">"-"</span>, <span class="va">newnames</span><span class="op">)</span></span>
@@ -300,7 +328,7 @@ function from the climatrends package <span class="citation">[13]</span>.</p>
 ‘grouped_rankings’ object. This is done using the <code><a href="https://hturner.github.io/PlackettLuce/reference/group.html" class="external-link">group()</a></code>
 function from the PlackettLuce package. For this example, we retain only
 the rankings corresponding to yield.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">yield</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Yield"</span>, <span class="va">traits</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">G</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/group.html" class="external-link">group</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">yield</span><span class="op">]</span><span class="op">]</span>, index <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">yield</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
@@ -311,7 +339,7 @@ the rankings corresponding to yield.</p>
 <span><span class="co">##                      4                      5                      6 </span></span>
 <span><span class="co">## "BRT 103-182 &gt; IB ..." "BRT 103-182 &gt; IB ..." "BRT 103-182 &gt; AL ..."</span></span></code></pre>
 <p>Now we fit a Plackett-Luce tree with the climate covariates.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pldG</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">G</span>, <span class="va">rain</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tree</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/pltree.html" class="external-link">pltree</a></span><span class="op">(</span><span class="va">G</span> <span class="op">~</span> <span class="va">Rtotal</span>, data <span class="op">=</span> <span class="va">pldG</span>, alpha <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
@@ -345,21 +373,21 @@ the rankings corresponding to yield.</p>
 <code><a href="../reference/node_labels.html">top_items()</a></code> can be used to identify the splitting variables
 in the tree, the rules applied at each split, and the top-performing
 items in each node.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/node_labels.html">node_labels</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "Rtotal"</span></span></code></pre>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/node_labels.html">node_rules</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   node                      rules</span></span>
 <span><span class="co">## 1    2 Rtotal &lt;= 193.815301895142</span></span>
 <span><span class="co">## 2    3  Rtotal &gt; 193.815301895142</span></span></code></pre>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/node_labels.html">top_items</a></span><span class="op">(</span><span class="va">tree</span>, top <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##          Node2        Node3</span></span>
 <span><span class="co">## 1  BRT 103-182   ALS 0532-6</span></span>
 <span><span class="co">## 2 SX 14825-7-1 SX 14825-7-1</span></span>
 <span><span class="co">## 3   IBC 302-29   Amadeus 77</span></span></code></pre>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree</span>, ref <span class="op">=</span> <span class="st">"Amadeus 77"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette-1-trait-prioritization-and-crop-performance_files/figure-html/node_info2-1.png" width="700"></p>
 </div>
@@ -374,7 +402,7 @@ probability of outperforming a variety check (Amadeus 77). For
 simplicity, we present only the varieties with a reliability score
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>≥</mo><annotation encoding="application/x-tex">\geq</annotation></semantics></math>
 0.5.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/reliability.html">reliability</a></span><span class="op">(</span><span class="va">tree</span>, ref <span class="op">=</span> <span class="st">"Amadeus 77"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      node         item reliability reliabilitySE  worth</span></span>
 <span><span class="co">##     &lt;int&gt;        &lt;chr&gt;       &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;</span></span>
@@ -413,7 +441,7 @@ the method proposed by Bland and Altman (1986) <span class="citation">[16]</span
 different measures. Here, we compare overall appreciation and yield. If
 both measures completely agree, all the varieties should be centered at
 0 on the Y-axis.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Overall</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">baseline</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">Yield</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R</span><span class="op">[[</span><span class="va">yield</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>

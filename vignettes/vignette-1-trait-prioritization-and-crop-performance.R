@@ -49,7 +49,35 @@ kendall[,2:4] = lapply(kendall[,2:4], function(x) round(x, 3))
 
 kendall[,5] = formatC(kendall[,5], format = "e")
 
+kendall = kendall[order(kendall$kendallTau), ]
+
 kendall
+
+
+## ----kendall_boost, message = FALSE, eval = TRUE, echo = TRUE-----------------
+
+# lapply the bootstrap function and draw 50 data points
+kendall = lapply(R[-baseline], function(x){
+  kendallTau_bootstrap(x, 
+                       R[[baseline]],
+                       nboot = 50,
+                       seed = 1206)
+})
+
+# put it in a data.frame
+kendall = data.frame(trait = rep(traits[-baseline], each = 50),
+                     kendallTau = unlist(kendall))
+
+# define levels of traits to sort them out from highest to lowest kendall tau
+lvls = unique(kendall$trait[order(kendall$kendallTau)])
+
+kendall$trait = factor(kendall$trait, levels = lvls)
+
+# plot the coefficients 
+ggplot(kendall, aes(y = trait, x = kendallTau)) +
+  geom_boxplot() +
+  labs(y = "", x = "Correlation with the 'Overall appreciation'") +
+  theme_minimal()
 
 
 ## ----PLmodel, message=FALSE, eval=TRUE, echo=TRUE-----------------------------

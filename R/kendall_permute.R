@@ -4,7 +4,6 @@
 #' in Kendall's Tau correlation between two or more groups.
 #' 
 #' @author Kauê de Sousa
-#' @inheritParams kendallTau
 #' @param split a vector indicating the splitting rule for the test
 #' @param n.permutations an integer, the number of permutations to perform
 #' @return A data.frame containing:
@@ -16,7 +15,7 @@
 #' x = rnorm(100)
 #' y = rnorm(100)
 #' split = rep(c("Group1", "Group2", "Group3"), length.out = 100)
-#' kendall_permute(x, y, split)
+#' kendallTau_permute(x, y, split)
 #' 
 #' data("breadwheat", package = "gosset")
 #' 
@@ -30,13 +29,14 @@
 #'                 input = c("overall_best", "overall_worst"),
 #'                 validate.rankings = TRUE)
 #'                 
-#' kendall_permute(x, y, 
+#' kendallTau_permute(x, y, 
 #'                 split = rep(c("Group1", "Group2", "Group3"), length.out = nrow(breadwheat)), 
 #'                 n.permutations = 100)
 #'                 
 #' @importFrom parallel mclapply
+#' @rdname kendallTau
 #' @export
-kendall_permute = function(x, y, split, n.permutations = 500) {
+kendallTau_permute = function(x, y, split, n.permutations = 500) {
   # Ensure inputs are of equal length
   if (length(x) != length(y) || length(x) != length(split)) {
     stop("x, y, and split must have the same length.")

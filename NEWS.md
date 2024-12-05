@@ -3,13 +3,15 @@ gosset 1.4 (2024-12-04)
 
 ### IMPROVEMENTS
 
-* manage levels in `plot.pltree()`
+* manage factor levels in `plot.pltree()`
+* introduces the functions `kendallTau_permute()` and `kendallTau_bootstrap()`
 * adds S3 method to plot PlackettLuce objects using `plot.PlackettLuce()`
 * adds `cassava` to the datasets
 * adds `cassava` consumer testing data and new vignette
 * improves readability of common bean vignette
 * coefficients from `worth_map()` are extracted using `stats::coefficients()` instead of `psychotools::itempar()`
 * update the bean vignette
+
 
 gosset 1.3 (2024-05-26)
 =========================

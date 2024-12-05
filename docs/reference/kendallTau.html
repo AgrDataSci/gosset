@@ -6,7 +6,9 @@ hypothesis test for statistical dependence based on the tau coefficient.
 The 'kendallTau' function applies the &quot;kendall&quot; method from 'stats::cor'
 with some previous treatment in the data, such as converting floating numbers
 into ranks (from the higher being the first and negative being the last)
-and the possibility to remove zeros from incomplete ranks"><meta property="og:image" content="/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+and the possibility to remove zeros from incomplete ranks
+Perform a pairwise permutation test to assess statistical differences
+in Kendall's Tau correlation between two or more groups."><meta property="og:image" content="/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
@@ -64,7 +66,7 @@ and the possibility to remove zeros from incomplete ranks"><meta property="og:im
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Kendall rank correlation coefficient</h1>
-    <small class="dont-index">Source: <a href="https://github.com/agrdatasci/gosset/blob/HEAD/R/kendallTau.R" class="external-link"><code>R/kendallTau.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/agrdatasci/gosset/blob/HEAD/R/kendallTau.R" class="external-link"><code>R/kendallTau.R</code></a>, <a href="https://github.com/agrdatasci/gosset/blob/HEAD/R/kendall_permute.R" class="external-link"><code>R/kendall_permute.R</code></a></small>
     <div class="hidden name"><code>kendallTau.Rd</code></div>
     </div>
 
@@ -77,6 +79,8 @@ The 'kendallTau' function applies the "kendall" method from 'stats::cor'
 with some previous treatment in the data, such as converting floating numbers
 into ranks (from the higher being the first and negative being the last)
 and the possibility to remove zeros from incomplete ranks</p>
+<p>Perform a pairwise permutation test to assess statistical differences
+in Kendall's Tau correlation between two or more groups.</p>
     </div>
 
     <div id="ref-usage">
@@ -95,7 +99,11 @@ and the possibility to remove zeros from incomplete ranks</p>
 <span><span class="fu">kendallTau</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'paircomp'</span></span>
-<span><span class="fu">kendallTau</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">kendallTau</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">kendallTau_bootstrap</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, nboot <span class="op">=</span> <span class="fl">100</span>, seed <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">kendallTau_permute</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">split</span>, n.permutations <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -119,11 +127,29 @@ and the possibility to remove zeros from incomplete ranks</p>
 
 
 <dt id="arg-na-omit">na.omit<a class="anchor" aria-label="anchor" href="#arg-na-omit"></a></dt>
-<dd><p>logical, if <code>TRUE</code> ignores entries with kendall = NA when computing the average</p></dd>
+<dd><p>logical, if <code>TRUE</code> ignores entries with kendall = NA
+when computing the average</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>further arguments affecting the Kendall tau produced. See details</p></dd>
+
+
+<dt id="arg-nboot">nboot<a class="anchor" aria-label="anchor" href="#arg-nboot"></a></dt>
+<dd><p>integer, the size of the bootstrap sample</p></dd>
+
+
+<dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
+<dd><p>integer, the seed for random number generation. If NULL (the default),
+gosset will set the seed randomly</p></dd>
+
+
+<dt id="arg-split">split<a class="anchor" aria-label="anchor" href="#arg-split"></a></dt>
+<dd><p>a vector indicating the splitting rule for the test</p></dd>
+
+
+<dt id="arg-n-permutations">n.permutations<a class="anchor" aria-label="anchor" href="#arg-n-permutations"></a></dt>
+<dd><p>an integer, the number of permutations to perform</p></dd>
 
 </dl></div>
     <div id="value">
@@ -131,7 +157,14 @@ and the possibility to remove zeros from incomplete ranks</p>
     <p>The Kendall correlation coefficient and the Effective N, which
 is the equivalent N needed if all items were compared to all items.
 Used for significance testing.</p>
-    </div>
+<p>A data.frame containing:</p>
+<dl><dt>observed_diff</dt>
+<dd><p>observed absolute differences in Kendall's tau for all group pairs.</p></dd>
+
+<dt>p_values</dt>
+<dd><p>p-values from the permutation test for all group pairs.</p></dd>
+
+</dl></div>
     <div id="references">
     <h2>References</h2>
     <p>Kendall M. G. (1938). Biometrika, 30(1–2), 81–93.
@@ -140,6 +173,7 @@ Used for significance testing.</p>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p><code><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></code></p>
+<p><code>kendallTau</code></p>
 <p>Other goodness-of-fit functions:
 <code><a href="kendallW.html">kendallW</a>()</code>,
 <code><a href="pseudoR2.html">pseudoR2</a>()</code></p></div>
@@ -147,6 +181,7 @@ Used for significance testing.</p>
     <div id="author">
     <h2>Author</h2>
     <p>Kauê de Sousa and Jacob van Etten</p>
+<p>Kauê de Sousa</p>
     </div>
 
     <div id="ref-examples">
@@ -201,7 +236,31 @@ Used for significance testing.</p>
 <span><span class="fu">kendallTau</span><span class="op">(</span><span class="va">R</span>, <span class="va">R2</span>, average <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">kendallTau</span><span class="op">(</span><span class="va">R</span>, <span class="va">R2</span>, average <span class="op">=</span> <span class="cn">TRUE</span>, na.omit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span></code></pre></div>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive()</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">split</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group1"</span>, <span class="st">"Group2"</span>, <span class="st">"Group3"</span><span class="op">)</span>, length.out <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="fu">kendallTau_permute</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">split</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"breadwheat"</span>, package <span class="op">=</span> <span class="st">"gosset"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="rank_tricot.html">rank_tricot</a></span><span class="op">(</span><span class="va">breadwheat</span>, </span>
+<span>                items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"variety_"</span>, <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>                input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"yield_best"</span>, <span class="st">"yield_worst"</span><span class="op">)</span>,</span>
+<span>                validate.rankings <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">y</span> <span class="op">=</span> <span class="fu"><a href="rank_tricot.html">rank_tricot</a></span><span class="op">(</span><span class="va">breadwheat</span>, </span>
+<span>                items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"variety_"</span>, <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>                input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"overall_best"</span>, <span class="st">"overall_worst"</span><span class="op">)</span>,</span>
+<span>                validate.rankings <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>                </span>
+<span><span class="fu">kendallTau_permute</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, </span>
+<span>                split <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group1"</span>, <span class="st">"Group2"</span>, <span class="st">"Group3"</span><span class="op">)</span>, length.out <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">breadwheat</span><span class="op">)</span><span class="op">)</span>, </span>
+<span>                n.permutations <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span>                </span>
+<span><span class="op">}</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

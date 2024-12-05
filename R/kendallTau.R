@@ -13,9 +13,13 @@
 #' @family goodness-of-fit functions
 #' @param x a numeric vector, matrix or data frame
 #' @param y a vector, matrix or data frame with compatible dimensions to \code{x}
+#' @param nboot integer, the size of the bootstrap sample
 #' @param null.rm logical, to remove zeros from \code{x} and \code{y} 
 #' @param average logical, if \code{FALSE} returns the kendall and N-effective for each entry
-#' @param na.omit logical, if \code{TRUE} ignores entries with kendall = NA when computing the average
+#' @param na.omit logical, if \code{TRUE} ignores entries with kendall = NA 
+#'  when computing the average
+#' @param seed integer, the seed for random number generation. If NULL (the default),
+#'  gosset will set the seed randomly
 #' @param ... further arguments affecting the Kendall tau produced. See details 
 #' @return The Kendall correlation coefficient and the Effective N, which 
 #' is the equivalent N needed if all items were compared to all items. 
@@ -272,3 +276,34 @@ kendallTau.paircomp = function(x, y, ...) {
   kendallTau(X, Y, ...)
   
 }
+
+#' @rdname kendallTau
+#' @export
+kendallTau_bootstrap = function(x, y, nboot = 100, seed = NULL, ...) {
+  
+  if(is.null(seed)) {
+    seed = as.integer(runif(1, 1, 100000))
+  }
+  
+  k = 4
+  n = nrow(x)
+  set.seed(seed)
+  folds = sample(rep(1:k, times = ceiling(n / k), length.out = n))
+  
+  result = data.frame()
+  
+  # run over folds
+  for (i in seq_len(k)) {
+    
+    kt = kendallTau(x[folds != i, ], y[folds != i, ], ...)
+    
+    result = rbind(result, kt)
+    
+  }
+  
+  set.seed(seed)
+  result = bayes_boot(result$kendallTau, mean, n1 = nboot, ...)
+  
+}
+
+
