@@ -98,7 +98,7 @@ kendall
 
 ```
 
-We can visualize the distances and the distribution of the kendall correlation coefficients. For that we use the function `kendallTau_boostrap()` which resamples the data using a bootstrapping approach to draw an uniform distribution in the data. 
+We can visualize the distances and the distribution of the kendall correlation coefficients. For that we use the function ` kendallTau_bootstrap()` which resamples the data using a bootstrapping approach to draw an uniform distribution in the data. 
 
 ``` {r kendall_boost, message = FALSE, eval = TRUE, echo = TRUE}
 
