@@ -86,9 +86,9 @@ mod = lapply(R, PlackettLuce)
 
 
 ## ----worthmap, message=FALSE, eval=TRUE, echo=TRUE----------------------------
-worth_map(mod[-baseline],
-          labels = traits[-baseline],
-          ref = "Amadeus 77") +
+worth_map(mod,
+          labels = traits,
+          labels.order = rev(traits)) +
   labs(x = "Variety",
        y = "Trait")
 

@@ -33,7 +33,7 @@
 #'                 split = rep(c("Group1", "Group2", "Group3"), length.out = nrow(breadwheat)), 
 #'                 n.permutations = 100)
 #'                 
-#' @importFrom parallel mclapply
+#' @importFrom parallel mclapply detectCores
 #' @rdname kendallTau
 #' @export
 kendallTau_permute = function(x, y, split, n.permutations = 500) {
@@ -90,7 +90,9 @@ kendallTau_permute = function(x, y, split, n.permutations = 500) {
   }
   
   # Parallelize permutation computation
-  results_list = parallel::mclapply(group_pairs, compute_permuted_diff, mc.cores = detectCores() - 1)
+  results_list = parallel::mclapply(group_pairs, 
+                                    compute_permuted_diff, 
+                                    mc.cores = parallel::detectCores() - 1)
   
   # Combine results into a data frame
   results = do.call(rbind, lapply(seq_along(group_pairs), function(i) {
