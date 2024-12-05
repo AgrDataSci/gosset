@@ -138,3 +138,28 @@ node_rules(tree)
 
 top_items(tree, top = 3)
 
+## ----node_info2, message=FALSE, eval=TRUE,echo=TRUE---------------------------
+plot(tree, ref = "Amadeus 77")
+
+## ----rel1, message=FALSE, eval=FALSE, echo=TRUE-------------------------------
+#  reliability(tree, ref = "Amadeus 77")
+
+## ----rel2, message=FALSE, eval=TRUE, echo=FALSE-------------------------------
+
+rel = reliability(tree, ref = "Amadeus 77")
+
+rel = rel[rel$reliability >= 0.5, ]
+
+rel = rel[c(1:5)]
+
+rel
+
+
+## ----compare, message=FALSE, echo=TRUE, eval=TRUE, out.width="50%"------------
+Overall = PlackettLuce(R[[baseline]])
+Yield = PlackettLuce(R[[yield]])
+
+compare(Overall, Yield) +
+  labs(x = "Average log(worth)",
+       y = "Difference (Overall appreciation - Yield)")
+
