@@ -79,4 +79,5 @@ plot(dapres, which.graph ="conditional",fit.function = "r2") + theme_minimal()
 
 dom = averageContribution(dapres,fit.functions = "r2")
 
+dom$r2 / sum(dom$r2)
 
