@@ -1,3 +1,16 @@
+gosset 1.5 (2025-09-01)
+=========================
+
+## New features
+
+* Added `preference_index()` to compute a model-based preference index
+  from Plackett–Luce worth parameters. The function reports, for each item:
+  - expected top probability (%),
+  - expected bottom probability (%),
+  - net winning probability (%), and
+  - normalized worth.
+
+
 gosset 1.4 (2024-12-04)
 =========================
 

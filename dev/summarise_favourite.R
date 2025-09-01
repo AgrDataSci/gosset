@@ -41,11 +41,11 @@
 #' @export
 summarise_favourite <- function(object, ...){
   
-  if (.is_grouped_rankings(object)) {
+  if (gosset:::.is_grouped_rankings(object)) {
     dataR <- object[1:length(object), , as.grouped_rankings = FALSE]
   }
   
-  if (.is_rankings(object)) {
+  if (gosset:::.is_rankings(object)) {
     dataR <- object[1:length(object), , as.rankings = FALSE]
   }
   
