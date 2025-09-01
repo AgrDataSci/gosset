@@ -34,9 +34,9 @@
 #' \describe{
 #'   \item{item}{Item identifier (name).}
 #'   \item{n}{Number of appearances of the item across sets.}
-#'   \item{top_probs}{Expected top probability (\%).}
-#'   \item{bottom_probs}{Expected bottom probability (\%).}
-#'   \item{net_winning_probs}{Net winning probability (\%).}
+#'   \item{top}{Expected top probability (\%).}
+#'   \item{bottom}{Expected bottom probability (\%).}
+#'   \item{net_winning}{Net winning probability (\%).}
 #'   \item{worth}{Normalized worth parameter.}
 #' }
 #'
@@ -144,19 +144,19 @@ preference_index = function(object) {
   # aggregate
   agg = aggregate(cbind(P_top, P_bottom) ~ item, data = df, FUN = mean)
   
-  N = as.data.frame(table(df$item)); names(N) = c("item", "N")
+  n = as.data.frame(table(df$item)); names(n) = c("item", "n")
   
-  out = merge(N, agg, by = "item", sort = FALSE)
+  out = merge(n, agg, by = "item", sort = FALSE)
   
   
-  out$top_probs = 100 * out$P_top
-  out$bottom_probs = 100 * out$P_bottom
-  out$net_winning_probs = out$top_probs - out$bottom_probs
+  out$top = 100 * out$P_top
+  out$bottom = 100 * out$P_bottom
+  out$net_winning = out$top - out$bottom
   out$worth = as.numeric(worth[out$item])
   out$P_top = out$P_bottom = NULL
   
   # order by net winning probs (descending, like a leaderboard)
-  out = out[order(-out$net_winning_probs), ]
+  out = out[order(-out$net_winning), ]
   
   rownames(out) = NULL
   
