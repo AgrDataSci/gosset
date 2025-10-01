@@ -44,12 +44,23 @@
 #' 
 #' @importFrom tidyr gather spread
 #' @importFrom PlackettLuce as.rankings group
+#' @importFrom lifecycle deprecate_soft 
 #' @export
 rank_numeric = function(data, items, input, 
                         id = NULL, 
                         group = FALSE, 
                         ascending = FALSE, 
                         ...) {
+  
+  lifecycle::deprecate_soft(
+    when = "1.5.1",         
+    what  = "gosset::rank_numeric()",
+    with  = "gosset::rank_tricot2()",
+    details = paste(
+      "rank_numeric() is deprecated for tricot data.",
+      "Use rank_tricot2(), which optmizes tricot block/item order and sparse inputs."
+    )
+  )
   
   
   if (class(data)[1] != "data.frame") {

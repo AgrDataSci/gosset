@@ -60,6 +60,7 @@ doi:10.3102/1076998609359791
 Other rank functions: 
 \code{\link{rank_numeric}()},
 \code{\link{rank_tricot}()},
+\code{\link{rank_tricot2}()},
 \code{\link{set_binomialfreq}()}
 }
 \author{

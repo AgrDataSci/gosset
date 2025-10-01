@@ -48,7 +48,7 @@ dat
 
 ```
 
-To begin the analysis, we transform the ordinal rankings into Plackett-Luce rankings (a sparse matrix) using the `rank_numeric()` function. We iterate over the traits and add the rankings to a list called R. Since the varieties are ranked in ascending order (1 being the highest and 3 the lowest), we use the argument `ascending = TRUE`.
+To begin the analysis, we transform the ordinal rankings into Plackett-Luce rankings (a sparse matrix) using the function `rank_tricot2()` specifically designed to handle ranked tricot data. We iterate over the traits and add the rankings to a list called R. 
 
 ```{r rankings, message = FALSE, eval = TRUE, echo = TRUE}
 R = vector(mode = "list", length = length(traits))
@@ -57,11 +57,10 @@ for (i in seq_along(traits)) {
 
   dat_i = subset(dat, dat$trait == traits[i])
 
-  R[[i]] = rank_numeric(data = dat_i,
-                         items = "item",
-                         input = "rank",
-                         id = "id",
-                         ascending = TRUE)
+  R[[i]] = rank_tricot2(data = dat_i,
+                        items = "item",
+                        input = "rank",
+                        id = "id")
 }
 
 ```

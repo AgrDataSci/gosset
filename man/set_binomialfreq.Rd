@@ -55,6 +55,7 @@ Journal of Statistical Software, 48(9), 1–21.
 Other rank functions: 
 \code{\link{rank_numeric}()},
 \code{\link{rank_tricot}()},
+\code{\link{rank_tricot2}()},
 \code{\link{set_paircomp}()}
 }
 \author{

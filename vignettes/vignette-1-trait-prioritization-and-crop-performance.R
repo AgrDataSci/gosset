@@ -23,11 +23,10 @@ for (i in seq_along(traits)) {
 
   dat_i = subset(dat, dat$trait == traits[i])
 
-  R[[i]] = rank_numeric(data = dat_i,
-                         items = "item",
-                         input = "rank",
-                         id = "id",
-                         ascending = TRUE)
+  R[[i]] = rank_tricot2(data = dat_i,
+                        items = "item",
+                        input = "rank",
+                        id = "id")
 }
 
 

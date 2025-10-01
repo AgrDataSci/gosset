@@ -26,10 +26,12 @@
 <url><loc>/reference/nicabean.html</loc></url>
 <url><loc>/reference/node_labels.html</loc></url>
 <url><loc>/reference/pairwise_probs.html</loc></url>
+<url><loc>/reference/preference_index.html</loc></url>
 <url><loc>/reference/pseudoR2.html</loc></url>
 <url><loc>/reference/pseudo_rank.html</loc></url>
 <url><loc>/reference/rank_numeric.html</loc></url>
 <url><loc>/reference/rank_tricot.html</loc></url>
+<url><loc>/reference/rank_tricot2.html</loc></url>
 <url><loc>/reference/regret.html</loc></url>
 <url><loc>/reference/reliability.html</loc></url>
 <url><loc>/reference/resample.html</loc></url>

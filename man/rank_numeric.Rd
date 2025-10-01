@@ -75,6 +75,7 @@ R = rank_numeric(df,
 
 Other rank functions: 
 \code{\link{rank_tricot}()},
+\code{\link{rank_tricot2}()},
 \code{\link{set_binomialfreq}()},
 \code{\link{set_paircomp}()}
 }

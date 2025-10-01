@@ -105,6 +105,7 @@ van Etten J., et al. (2016). Experimental Agriculture, 55(S1), 275–296.
 
 Other rank functions: 
 \code{\link{rank_numeric}()},
+\code{\link{rank_tricot2}()},
 \code{\link{set_binomialfreq}()},
 \code{\link{set_paircomp}()}
 }
