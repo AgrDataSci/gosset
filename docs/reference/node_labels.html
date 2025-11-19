@@ -126,50 +126,65 @@ ci.level = numeric for the confidence interval levels</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://hturner.github.io/PlackettLuce/" class="external-link">"PlackettLuce"</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"beans"</span>, package <span class="op">=</span> <span class="st">"PlackettLuce"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">G</span> <span class="op">=</span> <span class="fu"><a href="rank_tricot.html">rank_tricot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">beans</span>,</span>
-<span>                items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span>
-<span>                input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>,</span>
-<span>                group <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                additional.rank <span class="op">=</span> <span class="va">beans</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
-<span>  </span>
-<span><span class="va">pld</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">G</span>, <span class="va">beans</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"maxTN"</span>, <span class="st">"season"</span>, <span class="st">"lon"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">tree</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/pltree.html" class="external-link">pltree</a></span><span class="op">(</span><span class="va">G</span> <span class="op">~</span> <span class="va">maxTN</span> <span class="op">+</span> <span class="va">season</span> <span class="op">+</span> <span class="va">lon</span>, data <span class="op">=</span> <span class="va">pld</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">node_labels</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">node_rules</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">top_items</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree</span>, log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#################################</span></span>
-<span></span>
-<span><span class="co"># Plot PlackettLuce </span></span>
-<span><span class="va">R</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">3</span>,</span>
-<span>             <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>,</span>
-<span>             <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">3</span>,</span>
-<span>             <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span>,</span>
-<span>             <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">3</span>,</span>
-<span>             <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">6</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span>, <span class="st">"pear"</span><span class="op">)</span></span>
-<span><span class="va">R</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/rankings.html" class="external-link">as.rankings</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">mod</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># }</span></span>
-<span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://hturner.github.io/PlackettLuce/" class="external-link">"PlackettLuce"</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"beans"</span>, package <span class="op">=</span> <span class="st">"PlackettLuce"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">G</span> <span class="op">=</span> <span class="fu"><a href="rank_tricot.html">rank_tricot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">beans</span>,</span></span>
+<span class="r-in"><span>                items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                group <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>                additional.rank <span class="op">=</span> <span class="va">beans</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span><span class="va">pld</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">G</span>, <span class="va">beans</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"maxTN"</span>, <span class="st">"season"</span>, <span class="st">"lon"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tree</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/pltree.html" class="external-link">pltree</a></span><span class="op">(</span><span class="va">G</span> <span class="op">~</span> <span class="va">maxTN</span> <span class="op">+</span> <span class="va">season</span> <span class="op">+</span> <span class="va">lon</span>, data <span class="op">=</span> <span class="va">pld</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">node_labels</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "maxTN"  "season"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">node_rules</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   node                                           rules</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    3        maxTN &lt;= 18.7175 &amp; season = Ap 15, Pr 16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    4 maxTN &lt;= 18.7175 &amp; season = Po 15, Po 16, Ap 16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    5                                 maxTN &gt; 18.7175</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">top_items</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Node3           Node4           Node5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           Local     INTA Sequia     INTA Sequia</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     INTA Sequia           Local INTA Centro Sur</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       INTA Rojo      SJC 730-79     BRT 103-182</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    INTA Ferroso  INTA Matagalpa     PM2 Don Rey</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 INTA Centro Sur INTA Centro Sur           Local</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="node_labels-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree</span>, log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="node_labels-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#################################</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Plot PlackettLuce </span></span></span>
+<span class="r-in"><span><span class="va">R</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>             <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>             <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>             <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>             <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>             <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">6</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span>, <span class="st">"pear"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">R</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/rankings.html" class="external-link">as.rankings</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">mod</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="node_labels-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

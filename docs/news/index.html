@@ -61,15 +61,33 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.5" id="gosset-15-2025-09-01">gosset 1.5 (2025-09-01)<a class="anchor" aria-label="anchor" href="#gosset-15-2025-09-01"></a></h2>
-<div class="section level3">
-<h3 id="new-features-1-5">New features<a class="anchor" aria-label="anchor" href="#new-features-1-5"></a></h3>
-<ul><li>Added <code><a href="../reference/preference_index.html">preference_index()</a></code> to compute a model-based preference index from Plackett–Luce worth parameters. The function reports, for each item:
+<h2 class="page-header" data-toc-text="1.5.1" id="gosset-151-2025-11-19">gosset 1.5.1 (2025-11-19)<a class="anchor" aria-label="anchor" href="#gosset-151-2025-11-19"></a></h2>
+<div class="section level4">
+<h4 id="new-features-1-5-1">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-5-1"></a></h4>
+<ul><li>Added <code><a href="../reference/preference_index.html">preference_index()</a></code> to compute a model-based preference index<br>
+from Plackett–Luce worth parameters.<br>
+The function reports, for each item:
 <ul><li>expected top probability (%),</li>
 <li>expected bottom probability (%),</li>
 <li>net winning probability (%), and</li>
 <li>normalized worth.</li>
 </ul></li>
+<li>Added <code><a href="../reference/rank_tricot2.html">rank_tricot2()</a></code> — a redesigned ranking parser for <em>tricot</em> data.<br>
+The function:
+<ul><li>handles ties and missing values more robustly,<br></li>
+<li>enforces stricter validation of A–B–C syntax,<br></li>
+<li>provides clearer error messages, and<br></li>
+<li>returns rankings in a format consistent with Plackett–Luce models.</li>
+</ul></li>
+</ul></div>
+<div class="section level4">
+<h4 id="improvements-1-5-1">IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#improvements-1-5-1"></a></h4>
+<ul><li>Updated internal utilities in <code><a href="../reference/rank_numeric.html">rank_numeric()</a></code> to interface with <code><a href="../reference/rank_tricot2.html">rank_tricot2()</a></code> for improved performance and error handling.</li>
+<li>Minor internal cleanup (no user-visible behavioural changes).</li>
+</ul></div>
+<div class="section level4">
+<h4 id="bug-fixes-1-5-1">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-5-1"></a></h4>
+<ul><li>None reported for this release.</li>
 </ul></div>
 </div>
     <div class="section level2">

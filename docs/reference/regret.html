@@ -157,54 +157,74 @@ The Economic Journal, 125(583), 493–532.
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
-<span><span class="co"># Case 1 ####</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://hturner.github.io/PlackettLuce/" class="external-link">"PlackettLuce"</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"breadwheat"</span>, package <span class="op">=</span> <span class="st">"gosset"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># convert the tricot rankings from breadwheat data</span></span>
-<span><span class="co"># into a object of class 'grouped_rankings'</span></span>
-<span></span>
-<span><span class="va">G</span> <span class="op">=</span> <span class="fu"><a href="rank_tricot.html">rank_tricot</a></span><span class="op">(</span><span class="va">breadwheat</span>,</span>
-<span>                 items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"variety_a"</span>,<span class="st">"variety_b"</span>,<span class="st">"variety_c"</span><span class="op">)</span>,</span>
-<span>                 input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"overall_best"</span>,<span class="st">"overall_worst"</span><span class="op">)</span>,</span>
-<span>                 group <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span><span class="co"># combine grouped rankings with temperature indices</span></span>
-<span><span class="va">mydata</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">G</span>, <span class="va">breadwheat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lon"</span>,<span class="st">"lat"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># fit a pltree model using geographic data</span></span>
-<span><span class="va">mod</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/pltree.html" class="external-link">pltree</a></span><span class="op">(</span><span class="va">G</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mydata</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">regret</span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Case 2 ####</span></span>
-<span><span class="co"># list of PlackettLuce models</span></span>
-<span><span class="va">R</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span>,</span>
-<span>              <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>,</span>
-<span>              <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">4</span>,</span>
-<span>              <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span>,</span>
-<span>              <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">0</span>,</span>
-<span>              <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">6</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span>, <span class="st">"pear"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">mod1</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">R2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">0</span>, <span class="fl">3</span>,</span>
-<span>               <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">3</span>,</span>
-<span>               <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">3</span>,</span>
-<span>               <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">0</span>, <span class="fl">3</span>,</span>
-<span>               <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">3</span>,</span>
-<span>               <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">6</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">R2</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span>, <span class="st">"pear"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">mod2</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R2</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">mod</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mod1</span>, <span class="va">mod2</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">regret</span><span class="op">(</span><span class="va">mod</span>, n1 <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
-<span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Case 1 ####</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://hturner.github.io/PlackettLuce/" class="external-link">"PlackettLuce"</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"breadwheat"</span>, package <span class="op">=</span> <span class="st">"gosset"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># convert the tricot rankings from breadwheat data</span></span></span>
+<span class="r-in"><span><span class="co"># into a object of class 'grouped_rankings'</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">G</span> <span class="op">=</span> <span class="fu"><a href="rank_tricot.html">rank_tricot</a></span><span class="op">(</span><span class="va">breadwheat</span>,</span></span>
+<span class="r-in"><span>                 items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"variety_a"</span>,<span class="st">"variety_b"</span>,<span class="st">"variety_c"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"overall_best"</span>,<span class="st">"overall_worst"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 group <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># combine grouped rankings with temperature indices</span></span></span>
+<span class="r-in"><span><span class="va">mydata</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">G</span>, <span class="va">breadwheat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lon"</span>,<span class="st">"lat"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># fit a pltree model using geographic data</span></span></span>
+<span class="r-in"><span><span class="va">mod</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/pltree.html" class="external-link">pltree</a></span><span class="op">(</span><span class="va">G</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mydata</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">regret</span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         items  worth worst_regret regret worthSE regretSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;chr&gt;  &lt;dbl&gt;        &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      K9107 0.3623       0.0000 0.0000  0.0027   0.0050</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      CSW18 0.1920       0.0392 0.0187  0.0187   0.0078</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:     PBW343 0.1552       0.0544 0.0295  0.0186   0.0091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:      DBW17 0.0638       0.0610 0.0563  0.0065   0.0013</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:  DPW621-50 0.0406       0.0681 0.0656  0.0077   0.0023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---                                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:    PBW502 0.0145       0.0713 0.0765  0.0084   0.0028</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:    HI1563 0.0142       0.0714 0.0766  0.0004   0.0028</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:    HD2824 0.0125       0.0710 0.0773  0.0079   0.0024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:     WR544 0.0113       0.0726 0.0779  0.0069   0.0015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:     K0307 0.0100       0.0730 0.0785  0.0568   0.0252</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Case 2 ####</span></span></span>
+<span class="r-in"><span><span class="co"># list of PlackettLuce models</span></span></span>
+<span class="r-in"><span><span class="va">R</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>              <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>              <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">4</span>,</span></span>
+<span class="r-in"><span>              <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>              <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>              <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">6</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span>, <span class="st">"pear"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">mod1</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">R2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">0</span>, <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">0</span>, <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>               <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">6</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">R2</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span>, <span class="st">"pear"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">mod2</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">R2</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">mod</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mod1</span>, <span class="va">mod2</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">regret</span><span class="op">(</span><span class="va">mod</span>, n1 <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     items  worth worst_regret regret worthSE regretSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;chr&gt;  &lt;dbl&gt;        &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: banana 0.4754       0.0807 0.0128  0.0910   0.0062</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  apple 0.3866       0.2104 0.0874  0.1099   0.0422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:   pear 0.0781       0.3478 0.4323  0.0114   0.0218</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: orange 0.0599       0.3611 0.4675  0.0114   0.0227</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -59,8 +59,9 @@
 #'
 #' preference_index(R)
 #'
-#' @export
-
+#'@importFrom stats aggregate
+#'@importFrom stats coef
+#'@export
 preference_index = function(object) {
   
   # convert to rankings if needed
@@ -142,7 +143,7 @@ preference_index = function(object) {
   df = do.call(rbind, lapply(recs, as.data.frame))
   
   # aggregate
-  agg = aggregate(cbind(P_top, P_bottom) ~ item, data = df, FUN = mean)
+  agg = stats::aggregate(cbind(P_top, P_bottom) ~ item, data = df, FUN = mean)
   
   n = as.data.frame(table(df$item)); names(n) = c("item", "n")
   

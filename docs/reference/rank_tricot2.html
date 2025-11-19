@@ -115,22 +115,24 @@ containing the values in <code>data</code> to be ranked</p></dd>
     </div>
     <div id="author">
     <h2>Author</h2>
-    <p>Kauê de Sousa and Jacob van Etten, with ideas from Heather Turner</p>
+    <p>Kauê de Sousa</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://agrdatasci.github.io/gosset/" class="external-link">"gosset"</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">R</span> <span class="op">=</span> <span class="va">nicabean</span><span class="op">$</span><span class="va">trial</span></span>
-<span></span>
-<span><span class="va">R</span> <span class="op">=</span> <span class="va">R</span><span class="op">[</span><span class="va">R</span><span class="op">$</span><span class="va">trait</span> <span class="op">==</span> <span class="st">"Vigor"</span>, <span class="op">]</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">R</span> <span class="op">=</span> <span class="fu">rank_tricot2</span><span class="op">(</span><span class="va">R</span>, id <span class="op">=</span> <span class="st">"id"</span>, items <span class="op">=</span> <span class="st">"item"</span>, input <span class="op">=</span> <span class="st">"rank"</span><span class="op">)</span></span>
-<span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://agrdatasci.github.io/gosset/" class="external-link">"gosset"</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">R</span> <span class="op">=</span> <span class="va">nicabean</span><span class="op">$</span><span class="va">trial</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">R</span> <span class="op">=</span> <span class="va">R</span><span class="op">[</span><span class="va">R</span><span class="op">$</span><span class="va">trait</span> <span class="op">==</span> <span class="st">"Vigor"</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "id"    "item"  "trait" "rank" </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">R</span> <span class="op">=</span> <span class="fu">rank_tricot2</span><span class="op">(</span><span class="va">R</span>, id <span class="op">=</span> <span class="st">"id"</span>, items <span class="op">=</span> <span class="st">"item"</span>, input <span class="op">=</span> <span class="st">"rank"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
