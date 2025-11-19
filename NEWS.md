@@ -1,14 +1,31 @@
-gosset 1.5 (2025-09-01)
+gosset 1.5.1 (2025-11-19)
 =========================
 
-## New features
+### NEW FEATURES
 
-* Added `preference_index()` to compute a model-based preference index
-  from Plackett–Luce worth parameters. The function reports, for each item:
+* Added `preference_index()` to compute a model-based preference index  
+  from Plackett–Luce worth parameters.  
+  The function reports, for each item:
   - expected top probability (%),
   - expected bottom probability (%),
   - net winning probability (%), and
   - normalized worth.
+
+* Added `rank_tricot2()` — a redesigned ranking parser for *tricot* data.  
+  The function:
+  - handles ties and missing values more robustly,  
+  - enforces stricter validation of A–B–C syntax,  
+  - provides clearer error messages, and  
+  - returns rankings in a format consistent with Plackett–Luce models.
+
+### IMPROVEMENTS
+
+* Updated internal utilities in `rank_numeric()` to interface with `rank_tricot2()` for improved performance and error handling.
+* Minor internal cleanup (no user-visible behavioural changes).
+
+### BUG FIXES
+
+* None reported for this release.
 
 
 gosset 1.4 (2024-12-04)

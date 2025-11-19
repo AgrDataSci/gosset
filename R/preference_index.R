@@ -47,15 +47,15 @@
 #' @examples
 #' library(PlackettLuce)
 #'
-#' R <- matrix(c(1, 2, 0, 0,
-#'               4, 1, 2, 3,
-#'               2, 1, 3, 0,
-#'               1, 2, 3, 0,
-#'               2, 1, 3, 0,
-#'               1, 0, 3, 2),
-#'             nrow = 6, byrow = TRUE)
-#' colnames(R) <- c("apple", "banana", "orange", "pear")
-#' R <- as.rankings(R)
+#' R = matrix(c(1, 2, 0, 0,
+#'              4, 1, 2, 3,
+#'              2, 1, 3, 0,
+#'              1, 2, 3, 0,
+#'              2, 1, 3, 0,
+#'              1, 0, 3, 2),
+#'            nrow = 6, byrow = TRUE)
+#' colnames(R) = c("apple", "banana", "orange", "pear")
+#' R = as.rankings(R)
 #'
 #' preference_index(R)
 #'

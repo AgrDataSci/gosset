@@ -52,6 +52,6 @@ Other rank functions:
 \code{\link{set_paircomp}()}
 }
 \author{
-Kauê de Sousa and Jacob van Etten, with ideas from Heather Turner
+Kauê de Sousa
 }
 \concept{rank functions}

@@ -2,7 +2,7 @@
 #'
 #' Create an object of class "rankings" from tricot ranking data. 
 #'
-#' @author Kauê de Sousa and Jacob van Etten, with ideas from Heather Turner
+#' @author Kauê de Sousa
 #' @family rank functions
 #' @param id an index of \code{data} indicating the id column
 #' @inheritParams rank_tricot
@@ -59,8 +59,6 @@ rank_tricot2 = function(data,
   if (any(dupes, na.rm = TRUE)) {
     d = x[dupes, c(id_col, item_col, value_col)]
     warning(sprintf("Found %d duplicate (id, item) pairs. Last value wins.", nrow(d)))
-    # If you prefer to fail hard:
-    # stop("Duplicate (id, item) pairs detected.")
   }
   
   # build matrix (zeros = unranked)
