@@ -38,3 +38,12 @@ jobs:
         with:
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
+      - name: Show check errors as annotations
+        if: failure()
+        shell: bash
+        run: |
+          for f in check/*.Rcheck/00check.log check/*.Rcheck/tests/testthat.Rout.fail; do
+            [ -f "$f" ] || continue
+            msg=$(tail -c 6000 "$f" | sed 's/%/%25/g' | sed ':a;N;$!ba;s/\n/%0A/g')
+            echo "::error title=$(basename "$f")::${msg}"
+          done
