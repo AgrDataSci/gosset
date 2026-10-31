@@ -39,11 +39,18 @@ rank_tricot2 = function(data,
   if (!is.logical(strict) || length(strict) != 1L || is.na(strict)) {
     stop('strict must be TRUE or FALSE')
   }
-  for (col in list(id, items, input)) {
-    if (length(col) != 1L || !(col %in% names(data))) {
-      stop('id, items and input must each identify an existing column by name')
+  resolve_column = function(col) {
+    if (length(col) != 1L || is.na(col)) stop('Column selectors must be scalar and non-missing')
+    if (is.numeric(col)) {
+      if (col < 1 || col > ncol(data) || col != floor(col)) stop('Column index out of range')
+      return(names(data)[col])
     }
+    if (!is.character(col) || !(col %in% names(data))) stop('Unknown column name')
+    col
   }
+  id = resolve_column(id)
+  items = resolve_column(items)
+  input = resolve_column(input)
   if (nrow(data) == 0L) stop('data must contain at least one row')
 
   # columns
