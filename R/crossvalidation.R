@@ -13,10 +13,15 @@
 #' @param data a data frame (or object coercible by as.data.frame to a data frame)
 #' containing the variables in the model
 #' @param k an integer for the number of bins in the cross-validation
-#' @param folds an optional vector or list of vectors specifying the \var{k}-folds 
-#' in the cross-validation
-#' @param seed integer, the seed for random number generation. If \code{NULL} (the default), 
-#' \pkg{gosset} will set the seed randomly
+#' @param folds an optional vector or list specifying the \var{k}-folds in
+#' the cross-validation. A vector gives, for each row of \code{data}, the
+#' fold (1 to \var{k}) in which that row is held out for testing. A list
+#' gives, for each fold, the row positions of \code{data} used for
+#' training, as returned by \code{caret::createFolds(..., returnTrain = TRUE)}.
+#' Rows dropped for missing values are removed from the folds
+#' @param seed integer, the seed used to create the folds. If \code{NULL}
+#' (the default), folds are drawn from the current random number stream.
+#' When a seed is given, the caller's random number state is restored on exit
 #' @param ... additional arguments passed the methods of the chosen model
 #' @param object a model object
 #' @param newdata a data.frame with test data
@@ -92,39 +97,71 @@ crossvalidation = function(formula,
   # get dots for extra arguments
   dots = list(...)
   
-  # create folds if needed, check length if given
+  n_input = nrow(data)
+  
+  # create the model frame first, so that rows dropped for missing
+  # values are known before folds are created or aligned
+  environment(formula) = parent.frame()
+  
+  data = stats::model.frame(formula, data)
+  
+  # positions of the input rows kept in the model frame
+  dropped = as.integer(attr(data, "na.action"))
+  keep = setdiff(seq_len(n_input), dropped)
   n = nrow(data)
+  
   if (is.list(folds)) k = length(folds)
   if (length(k) != 1L || is.na(k) || !is.numeric(k) ||
       k != floor(k) || k < 2L || k > n) {
-    stop('k must be an integer between 2 and the number of observations')
+    stop('k must be an integer between 2 and the number of complete observations')
   }
   
   # assign folds
   if (is.null(folds)) {
     
-    # check if a seed is provided
     if (is.null(seed)) {
-      seed = as.integer(stats::runif(1, 0, 1000000))
+      # no seed: draw from the current random stream, as any R function would
+      folds = sample(rep(1:k, times = ceiling(n / k), length.out = n))
+    } else {
+      # seed given: reproducible folds, without changing the caller's
+      # random number stream
+      if (exists(".Random.seed", envir = globalenv(), inherits = FALSE)) {
+        old_seed = get(".Random.seed", envir = globalenv(), inherits = FALSE)
+        on.exit(assign(".Random.seed", old_seed, envir = globalenv()), add = TRUE)
+      } else {
+        on.exit(if (exists(".Random.seed", envir = globalenv(), inherits = FALSE)) {
+          rm(".Random.seed", envir = globalenv())
+        }, add = TRUE)
+      }
+      set.seed(seed)
+      folds = sample(rep(1:k, times = ceiling(n / k), length.out = n))
     }
     
-    set.seed(seed)
+  } else if (!is.list(folds)) {
     
-    folds = sample(rep(1:k, times = ceiling(n / k), length.out = n))
-    
-  }
-  
-  if (!is.list(folds)) {
-    if (length(folds) != n || anyNA(folds) ||
+    # folds supplied as a vector refer to the rows of the input data
+    if (length(folds) != n_input || anyNA(folds) ||
         !setequal(unique(folds), seq_len(k))) {
-      stop('folds must assign every observation to one of the k non-empty folds')
+      stop('folds must assign every row of data to one of the k folds, numbered 1 to k')
     }
+    folds = folds[keep]
+    
+  } else {
+    
+    # folds supplied as a list hold row positions of the input data;
+    # map them to the rows kept in the model frame
+    bad = vapply(folds, function(f) {
+      !is.numeric(f) || anyNA(f) || any(f < 1 | f > n_input | f != floor(f))
+    }, logical(1))
+    if (any(bad)) {
+      stop('each element of folds must hold row positions of data')
+    }
+    folds = lapply(folds, function(f) {
+      f = match(f, keep)
+      f[!is.na(f)]
+    })
+    
   }
-
-  # create a model frame 
-  environment(formula) = parent.frame()
-  
-  data = stats::model.frame(formula, data)
   
   Y = stats::model.response(data)
   
@@ -162,12 +199,12 @@ crossvalidation = function(formula,
     }
   }
   
-  #folds as list - caret style
+  # folds as list - caret style: each element holds the rows used for
+  # TRAINING in that fold (as returned by caret::createFolds with
+  # returnTrain = TRUE); the remaining rows form the test set
   if (is.list(folds)) {
     
     k = length(folds)
-    mean.method = "equal"
-    message("\n mean.method set to 'equal' as folds is a list \n")
     
     train = list()
     for (i in 1:k) {
@@ -185,11 +222,19 @@ crossvalidation = function(formula,
     stop('All cross-validation training and test folds must be non-empty')
   }
 
+  # resolve the model function from its package, so that the fit does not
+  # depend on the package being attached by the user
+  pkg = switch(model, gnm = "gnm", pltree = "PlackettLuce", bttree = "psychotree")
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    stop("package '", pkg, "' is required for this model; please install it")
+  }
+  model_fun = getExportedValue(pkg, model)
+  
   # fit the models
   mod = lapply(train, function(X) {
     args = list(formula = formula, data = X)
     args = c(args, dots)
-    try(do.call(model, args))
+    try(do.call(model_fun, args))
     
   })
   
@@ -215,7 +260,7 @@ crossvalidation = function(formula,
   
   nms = dimnames(estimators)[[1]]
   
-  estimators = matrix(unlist(estimators), nrow = k, ncol = 7, byrow = TRUE)
+  estimators = matrix(unlist(estimators), nrow = k, ncol = length(nms), byrow = TRUE)
   
   dimnames(estimators)[[2]] = nms
   
@@ -224,10 +269,10 @@ crossvalidation = function(formula,
   # if model is pltree take the kendall correlation
   if (model == "pltree") {
     
-    # get the original rankings from each bin in test
+    # observed rankings in each held-out test set
     R_pl = all.vars(formula)[[1]]
     
-    R_pl = lapply(train, function(x) {
+    R_pl = lapply(test, function(x) {
       
       x = x[, R_pl]
       
@@ -235,9 +280,11 @@ crossvalidation = function(formula,
       
     })
     
-    preds = lapply(mod, function(x) {
-      predict(x)
-    })
+    # predictions for the held-out test set from the model fitted on the
+    # training set, so that Kendall's tau is an out-of-sample measure
+    preds = mapply(function(X, Y) {
+      predict(X, newdata = Y)
+    }, X = mod, Y = test, SIMPLIFY = FALSE)
     
     # when additional rankings are added to place the local item 
     # we should rescale the matrix in predictions
@@ -269,12 +316,9 @@ crossvalidation = function(formula,
   # number of predicted cases using Z-test weight mean
   N = dim(data)[1]
   
-  # take the number of folds
-  max_folds = max(folds)
-  
-  # make a table of folds and take
-  # how many observations each fold has
-  foldsize = table(folds)
+  # number of observations in each test set; this works for folds
+  # given as a vector or as a list
+  foldsize = vapply(test, nrow, integer(1))
   
   # take the weight of each fold
   # first, the squared root of foldsize (observations per fold)

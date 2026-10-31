@@ -31,11 +31,16 @@ containing the variables in the model}
 
 \item{k}{an integer for the number of bins in the cross-validation}
 
-\item{folds}{an optional vector or list of vectors specifying the \var{k}-folds 
-in the cross-validation}
+\item{folds}{an optional vector or list specifying the \var{k}-folds in
+the cross-validation. A vector gives, for each row of \code{data}, the
+fold (1 to \var{k}) in which that row is held out for testing. A list
+gives, for each fold, the row positions of \code{data} used for
+training, as returned by \code{caret::createFolds(..., returnTrain = TRUE)}.
+Rows dropped for missing values are removed from the folds}
 
-\item{seed}{integer, the seed for random number generation. If \code{NULL} (the default), 
-\pkg{gosset} will set the seed randomly}
+\item{seed}{integer, the seed used to create the folds. If \code{NULL}
+(the default), folds are drawn from the current random number stream.
+When a seed is given, the caller's random number state is restored on exit}
 
 \item{...}{additional arguments passed the methods of the chosen model}
 
