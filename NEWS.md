@@ -43,6 +43,14 @@ comparing with analyses run on earlier versions.
   with `lower.tail = FALSE`.
 * `likelihood_ratio()` computes the p-value with `lower.tail = FALSE`.
 
+* `kendallTau_bootstrap()` resamples participants with replacement and
+  returns the pair-weighted average tau of each resample. Earlier versions
+  computed tau on only four subsets of the data and bootstrapped those four
+  values, which gave a poor estimate of the variability of tau. The
+  function also reset the random number stream; with `seed` it now leaves
+  the caller's stream unchanged, and without `seed` it uses the current
+  stream. Arguments and output format are unchanged.
+
 ### BUG FIXES
 
 * `crossvalidation()` keeps folds aligned with the data when rows are

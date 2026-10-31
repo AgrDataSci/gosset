@@ -18,8 +18,8 @@
 #' @param average logical, if \code{FALSE} returns the kendall and N-effective for each entry
 #' @param na.omit logical, if \code{TRUE} ignores entries with kendall = NA 
 #'  when computing the average
-#' @param seed integer, the seed for random number generation. If NULL (the default),
-#'  gosset will set the seed randomly
+#' @param seed integer, the seed for random number generation. If NULL
+#'  (the default), the current random number stream is used
 #' @param alternative the alternative hypothesis, one of \code{"two.sided"}
 #'  (the default), \code{"greater"} (positive association) or
 #'  \code{"less"} (negative association). The p-value is returned in the
@@ -88,6 +88,10 @@
 #' kendallTau(R, R2, average = TRUE)
 #' 
 #' kendallTau(R, R2, average = TRUE, na.omit = TRUE)
+#' 
+#' # Variability of the average tau across participants
+#' boot = kendallTau_bootstrap(R, preds, nboot = 200, seed = 1)
+#' quantile(boot, c(0.025, 0.5, 0.975))
 #' 
 #' @seealso \code{\link[stats]{cor}}
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
@@ -299,31 +303,52 @@ kendallTau.paircomp = function(x, y, ...) {
 }
 
 #' @rdname kendallTau
+#' @details
+#' \code{kendallTau_bootstrap()} resamples the rows (participants) with
+#' replacement \code{nboot} times and returns the pair-weighted average tau
+#' of each resample. The spread of these values estimates the sampling
+#' variability of the average tau, for example to draw boxplots by trait.
+#' Rows with fewer than two ranked items, or with tau = NA, are dropped
+#' first. When \code{seed} is given, the resamples are reproducible and the
+#' caller's random number stream is left unchanged.
 #' @export
 kendallTau_bootstrap = function(x, y, nboot = 100, seed = NULL, ...) {
   
-  if(is.null(seed)) {
-    seed = as.integer(runif(1, 1, 100000))
+  kt = kendallTau(x, y, average = FALSE, ...)
+  
+  tau = kt[, 1]
+  n_items = kt[, 2]
+  
+  ok = !is.na(tau) & !is.na(n_items) & n_items >= 2
+  tau = tau[ok]
+  # each row is weighted by its number of pairs, as in kendallTau()
+  N = n_items[ok] * (n_items[ok] - 1) / 2
+  
+  m = length(tau)
+  
+  if (m < 2) {
+    stop("kendallTau_bootstrap() needs at least two rankings ",
+         "with two or more items each")
   }
   
-  k = 4
-  n = nrow(x)
-  set.seed(seed)
-  folds = sample(rep(1:k, times = ceiling(n / k), length.out = n))
-  
-  result = data.frame()
-  
-  # run over folds
-  for (i in seq_len(k)) {
-    
-    kt = kendallTau(x[folds != i, ], y[folds != i, ], ...)
-    
-    result = rbind(result, kt)
-    
+  if (!is.null(seed)) {
+    # reproducible resamples, without changing the caller's
+    # random number stream
+    if (exists(".Random.seed", envir = globalenv(), inherits = FALSE)) {
+      old_seed = get(".Random.seed", envir = globalenv(), inherits = FALSE)
+      on.exit(assign(".Random.seed", old_seed, envir = globalenv()), add = TRUE)
+    } else {
+      on.exit(if (exists(".Random.seed", envir = globalenv(), inherits = FALSE)) {
+        rm(".Random.seed", envir = globalenv())
+      }, add = TRUE)
+    }
+    set.seed(seed)
   }
   
-  set.seed(seed)
-  result = bayes_boot(result$kendallTau, mean, n1 = nboot, ...)
+  vapply(seq_len(nboot), function(b) {
+    i = sample.int(m, m, replace = TRUE)
+    sum(tau[i] * N[i]) / sum(N[i])
+  }, numeric(1))
   
 }
 

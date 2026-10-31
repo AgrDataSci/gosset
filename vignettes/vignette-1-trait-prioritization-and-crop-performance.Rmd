@@ -102,7 +102,7 @@ kendall
 
 ```
 
-We can visualize the distances and the distribution of the kendall correlation coefficients. For that we use the function ` kendallTau_bootstrap()` which recomputes $\tau$ on subsets of participants and applies a Bayesian bootstrap to show the variability of $\tau$ for each trait. 
+We can visualize the distances and the distribution of the kendall correlation coefficients. For that we use the function ` kendallTau_bootstrap()` which resamples the participants with replacement and recomputes the average $\tau$, showing its variability for each trait. 
 
 ``` {r kendall_boost, message = FALSE, eval = TRUE, echo = TRUE}
 
