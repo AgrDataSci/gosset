@@ -10,7 +10,7 @@
 #'\strong{Useful links:}
 #' \itemize{
 #' \item{gosset paper: 
-#'  \doi{10.2139/ssrn.4236267}}
+#'  \doi{10.1016/j.softx.2023.101402}}
 #' \item{Development repository: 
 #'  \url{https://github.com/AgrDataSci/gosset}}
 #' \item{Static documentation: 
