@@ -24,6 +24,19 @@ gosset (development version)
   `strict = FALSE`, an opt-in check for missing, duplicated, tied and
   non-consecutive ranks.
 
+* `regret()` assigns each regret to the right item when nodes are not in
+  sorted order (for example terminal node 10 before node 3), which affected
+  trees with node ids of 10 or more, and reports `worthSE` and `regretSE`
+  for the right items.
+* `kendallTau()` on matrices weights each row by its number of pairs and
+  computes the effective N from the total number of pairs. Results for
+  complete triads are unchanged; rows with two, four or more items were
+  weighted wrongly before.
+* `anova()` for PlackettLuce models no longer rounds the log-likelihood
+  difference before computing the statistic, and computes the p-value
+  with `lower.tail = FALSE`.
+* `rank_tricot()` warns when the same item appears twice in a row.
+
 ### TESTS
 
 * Added unit tests in `tests/testthat` for these functions, run by

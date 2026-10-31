@@ -198,11 +198,15 @@ kendallTau.matrix = function(x, y, null.rm = TRUE, average = TRUE, na.omit = FAL
     kt = kt[!is.na(kt[,1]), ]
   } 
   
-  # Extract the values from the matrix
+  # Extract the values from the matrix. Column 2 holds the effective
+  # number of items in each row; convert it back to the number of pairs
+  # compared, so that rows are weighted by their pairs and the overall
+  # effective N is computed from the total number of pairs
   tau = kt[,1]
-  N = kt[,2]
+  n_items = kt[,2]
+  N = n_items * (n_items - 1) / 2
   
-  tau_average = sum(tau * N, na.rm = TRUE) / sum(N)
+  tau_average = sum(tau * N, na.rm = TRUE) / sum(N[!is.na(tau)])
   
   # Effective N is the equivalent N needed if all were compared to all
   # N_comparisons = ((N_effective - 1) * N_effective) / 2

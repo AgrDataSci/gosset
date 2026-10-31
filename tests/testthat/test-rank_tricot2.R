@@ -58,3 +58,9 @@ test_that("bad arguments are rejected", {
   expect_error(rank_tricot2(tricot, 1, 9, 3))
   expect_error(rank_tricot2(tricot[FALSE, ], "id", "item", "rank"))
 })
+
+test_that("rank_tricot warns when an item appears twice in a row", {
+  d = data.frame(item_A = c("x", "x"), item_B = c("y", "x"), item_C = c("z", "z"),
+                 best = c("A", "A"), worst = c("C", "C"))
+  expect_warning(rank_tricot(d, items = 1:3, input = 4:5), "more than once")
+})
