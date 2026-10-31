@@ -33,7 +33,8 @@
 #' @return A \code{gosset_df} (data.frame subclass) with columns:
 #' \describe{
 #'   \item{item}{Item identifier (name).}
-#'   \item{n}{Number of appearances of the item across sets.}
+#'   \item{n}{Number of sets with two or more ranked items in which the
+#'   item appears.}
 #'   \item{top}{Expected top probability (\%).}
 #'   \item{bottom}{Expected bottom probability (\%).}
 #'   \item{net_winning}{Net winning probability (\%).}
@@ -122,17 +123,26 @@ preference_index = function(object) {
   idx = 1
   for (r in seq_len(nr)) {
     items = present_list[[r]]
+    # a set with a single item is not a comparison
+    if (length(items) < 2L) next
     for (it in items) {
       others = setdiff(items, it)
-      recs[[idx]] = list(item = it,
-                         others = others,
-                         P_top = p_top(it, others),
-                         P_bottom = p_bottom(it, others))
+      # one row per (set, item). Storing 'others' as a column made
+      # as.data.frame() recycle each record once per other item, which
+      # inflated n and weighted larger sets more heavily in the means
+      recs[[idx]] = data.frame(item = it,
+                               P_top = p_top(it, others),
+                               P_bottom = p_bottom(it, others),
+                               stringsAsFactors = FALSE)
       idx = idx + 1
     }
   }
   
-  df = do.call(rbind, lapply(recs, as.data.frame))
+  if (length(recs) == 0L) {
+    stop("object must contain at least one set with two or more ranked items")
+  }
+  
+  df = do.call(rbind, recs)
   
   # aggregate
   agg = stats::aggregate(cbind(P_top, P_bottom) ~ item, data = df, FUN = mean)
