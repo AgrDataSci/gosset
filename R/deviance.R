@@ -10,8 +10,8 @@ anova.PlackettLuce = function(object, ...) {
   LLs = c(model$null.loglik, model$loglik)
   dfs = c(model$df.null, model$df.residual)
   df_diff = (-1) * diff(dfs)
-  df_LL = round((-1) * diff(LLs), 3)
-  p = 1 - stats::pchisq(-2 * df_LL, df_diff)
+  df_LL = (-1) * diff(LLs)
+  p = stats::pchisq(-2 * df_LL, df_diff, lower.tail = FALSE)
   stars = .stars_pval(p)[1]
   stat = -2 * df_LL
   
