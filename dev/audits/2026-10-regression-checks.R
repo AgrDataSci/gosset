@@ -47,6 +47,27 @@ stopifnot(nrow(p) == 3L, all(is.finite(p$top)),
           all(is.finite(p$bottom)), all(p$top >= 0 & p$top <= 100),
           all(p$bottom >= 0 & p$bottom <= 100))
 
+# Independently compute the three-item bottom probability using the
+# two possible orders of the other items. This is a known algebraic
+# reference for the memoized implementation, not the same algorithm.
+fit = PlackettLuce::PlackettLuce(r)
+worth = stats::coef(fit, log = FALSE)
+worth = worth / sum(worth)
+for (item in names(worth)) {
+  other = setdiff(names(worth), item)
+  wi = worth[[item]]
+  wa = worth[[other[1]]]
+  wb = worth[[other[2]]]
+  expected_top = wi / (wi + wa + wb)
+  expected_bottom = (wa / (wi + wa + wb)) * (wb / (wi + wb)) +
+    (wb / (wi + wa + wb)) * (wa / (wi + wa))
+  actual = p[p$item == item, , drop = FALSE]
+  stopifnot(nrow(actual) == 1L)
+  stopifnot(isTRUE(all.equal(actual$top / 100, expected_top, tolerance = 1e-8)))
+  stopifnot(isTRUE(all.equal(actual$bottom / 100, expected_bottom,
+                             tolerance = 1e-8)))
+}
+
 # Exact probabilities for three items under equal worths:
 # each top and bottom probability is 1/3. The symmetric input above
 # is not guaranteed to yield equal estimated worths for all three
