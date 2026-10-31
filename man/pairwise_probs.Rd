@@ -18,7 +18,7 @@ probs (prob - 0.5), otherwise true values are returned}
 a matrix with pairwise probabilities
 }
 \description{
-Implements the Luce's Choice Axiom to calculate pairwise probabilities 
+Implements Luce's Choice Axiom to calculate pairwise probabilities 
 in a set of choice probabilities. The Luce's Choice Axiom states
 that the probability of selecting one item over another from a pool of
 many items is not affected by the presence or absence of other items

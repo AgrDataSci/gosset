@@ -203,7 +203,7 @@ rank_numeric = function(data, items, input,
 }
 
 #' Compute an ascending rank
-#' @param object a data.frame internaly formatted by rank_numeric
+#' @param object a data.frame internally formatted by rank_numeric
 #' @return the object with rankings in the ascending order, 
 #' meaning that lower is better
 #' @examples 

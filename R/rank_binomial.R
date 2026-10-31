@@ -1,7 +1,7 @@
 #' Binomial frequency rankings from pairwise contests
 #'
 #' Binary comparisons from a ranking object. Ties are not 
-#' taken into account, then they are added as NA's.
+#' taken into account and are set to NA.
 #'
 #' @author Kauê de Sousa
 #' @family rank functions

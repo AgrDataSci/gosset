@@ -3,7 +3,7 @@
 #' Combine R objects when number and names of columns do not match 
 #' 
 #' @family utility functions
-#' @param x a R object, typically a data.frame, matrix or list
+#' @param x an R object, typically a data.frame, matrix or list
 #' @param y a matrix, a data.frame (or any other object that can
 #' be coerced to data.frame)
 #' @param ... additional arguments passed to methods

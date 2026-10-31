@@ -30,7 +30,7 @@ a list objects of class \code{PlackettLuce}}
 }
 \description{
 Produces plots to highlight worth
- coefficients of items in a party tree of 
+ coefficients of items in a party tree or 
  a list of PlackettLuce models
 }
 \examples{

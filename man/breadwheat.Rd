@@ -13,7 +13,7 @@ A data frame with 493 records and 19 variables:
     \item{\code{district}}{The administrative region where the experiment was stablished.}
     \item{\code{village}}{The village within the administrative region where the 
      experiment was stablished.}
-    \item{\code{participant_name}}{The participant name (ommited for protection and privacy).}
+    \item{\code{participant_name}}{The participant name (omitted for protection and privacy).}
     \item{\code{age}}{The participant age.}
     \item{\code{gender}}{The participant gender M = Male; F = Female.}
     \item{\code{planting_date}}{The date which the experiment started.}
@@ -31,9 +31,9 @@ A data frame with 493 records and 19 variables:
     "B" or "C").}
     \item{\code{yield_worst}}{The variety ranked as worst for yield ("A",
     "B" or "C").}
-    \item{\code{overall_best}}{The variety ranked as best for overall perfomance ("A",
+    \item{\code{overall_best}}{The variety ranked as best for overall performance ("A",
     "B" or "C").}
-    \item{\code{overall_worst}}{The variety ranked as worst for overall perfomance ("A",
+    \item{\code{overall_worst}}{The variety ranked as worst for overall performance ("A",
     "B" or "C").}
 }
 }
@@ -52,7 +52,7 @@ breadwheat
 \description{
 Data from decentralized on-farm trials of bread wheat 
 (\emph{Triticum aestivum} L.) varieties in Vaishali, India over the 
-2014's Rabi season. Farmers were asked to test three varieties 
+2014 Rabi season. Farmers were asked to test three varieties 
 of bread wheat randomly assigned as incomplete blocks of 
 three varieties (out of 16 varieties) and assess which one had
 the best and worst performance considering 

@@ -13,7 +13,7 @@ rowbind(x, ...)
 \method{rowbind}{list}(x, ...)
 }
 \arguments{
-\item{x}{a R object, typically a data.frame, matrix or list}
+\item{x}{an R object, typically a data.frame, matrix or list}
 
 \item{...}{additional arguments passed to methods}
 

@@ -3,7 +3,7 @@
 #' 
 #' Applies a k-fold approach to re-sample 
 #' estimates from PlackettLuce model. The function will 
-#' subset the data into 'k' number folds and re-calculate
+#' subset the data into 'k' folds and re-calculate
 #' the model estimates. Optionally, a Bayesian bootstrapping 
 #' technique can be used to increase output size and normalize 
 #' the distribution of estimates 

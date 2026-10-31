@@ -20,7 +20,7 @@ pseudoR2(object, ...)
 
 \item{...}{additional arguments affecting the R-squared produced}
 
-\item{newdata}{a data.set with testing data}
+\item{newdata}{a data.frame with testing data}
 }
 \value{
 A data frame containing the pseudo R-squared coefficients:

@@ -42,7 +42,7 @@ Rows dropped for missing values are removed from the folds}
 (the default), folds are drawn from the current random number stream.
 When a seed is given, the caller's random number state is restored on exit}
 
-\item{...}{additional arguments passed the methods of the chosen model}
+\item{...}{additional arguments passed to the methods of the chosen model}
 
 \item{object}{a model object}
 

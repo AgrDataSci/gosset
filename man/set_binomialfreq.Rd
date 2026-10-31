@@ -26,7 +26,7 @@ A data.frame with binary rank of pairwise contests:
 }
 \description{
 Binary comparisons from a ranking object. Ties are not 
-taken into account, then they are added as NA's.
+taken into account and are set to NA.
 }
 \examples{
 library("PlackettLuce")

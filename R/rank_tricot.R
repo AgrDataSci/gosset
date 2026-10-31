@@ -1,7 +1,7 @@
 #' Build Plackett-Luce rankings from tricot dataset 
 #'
 #' Create an object of class "rankings" from tricot data. Tricot stands 
-#' for "triadic comparison of technology options". Is an approach to carry out 
+#' for "triadic comparison of technology options". It is an approach to carry out 
 #' large decentralized agronomic field experiments as incomplete blocks. 
 #' Each incomplete block contains a set of three randomised technologies 
 #' out of a larger set.
@@ -51,7 +51,7 @@
 #' # Using validate.rankings = TRUE, the rankings
 #' # are only considered for those entries without 
 #' # NAs, Ties and with any of the letters A, B, C
-#' # this do not affect the lenght of the final ranking 
+#' # this does not affect the length of the final ranking 
 #' R2 = rank_tricot(beans,
 #'                  items = c(1:3),
 #'                  input = c(4:5),
@@ -223,7 +223,7 @@ rank_tricot = function(data,
 #' Validate rankings
 #' 
 #' This check ranking consistency making sure that 
-#' no NAs or ties are mantained in the final PlackettLuce ranking
+#' no NAs or ties are maintained in the final PlackettLuce ranking
 #' 
 #' @param x data.frame with two columns indicating the tricot rankings
 #' @noRd
