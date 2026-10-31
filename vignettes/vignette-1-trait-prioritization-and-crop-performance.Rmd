@@ -81,7 +81,12 @@ kendall = do.call("rbind", kendall)
 kendall$trait = traits[-baseline]
 ```
 
-The Kendall correlation indicates that farmers prioritized the traits yield ($\tau$ = 0.749), taste ($\tau$ = 0.653), and marketability ($\tau$ = 0.639) when assessing overall appreciation.
+```{r kendall-top, include=FALSE}
+top = kendall[order(-kendall$kendallTau), ][1:3, ]
+top_txt = paste0(top$trait, " ($\\tau$ = ", round(top$kendallTau, 3), ")")
+```
+
+The Kendall correlation indicates that farmers prioritized the traits `r top_txt[1]`, `r top_txt[2]`, and `r top_txt[3]` when assessing overall appreciation. The p-values test, for each trait, whether the average $\tau$ across participants differs from zero, treating each participant's ranking as an independent observation.
 
 
 ```{r kendall2, message=FALSE, eval=TRUE, echo=FALSE}
@@ -97,7 +102,7 @@ kendall
 
 ```
 
-We can visualize the distances and the distribution of the kendall correlation coefficients. For that we use the function ` kendallTau_bootstrap()` which resamples the data using a bootstrapping approach to draw an uniform distribution in the data. 
+We can visualize the distances and the distribution of the kendall correlation coefficients. For that we use the function ` kendallTau_bootstrap()` which recomputes $\tau$ on subsets of participants and applies a Bayesian bootstrap to show the variability of $\tau$ for each trait. 
 
 ``` {r kendall_boost, message = FALSE, eval = TRUE, echo = TRUE}
 

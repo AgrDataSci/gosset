@@ -12,6 +12,10 @@
 
 The **gosset** package provides methods to implement workflows to analyse experimental agriculture data, from data synthesis to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.
 
+## What's new in 1.6.0
+
+Version 1.6.0 corrects statistical errors found in a review of the package, and some results change. `kendallTau()` p-values are now two-sided and treat each participant as an independent ranking, `crossvalidation()` reports out-of-sample Kendall's tau, and `preference_index()` and `regret()` count and weight observations correctly. See [NEWS](NEWS.md) before comparing with analyses run on earlier versions.
+
 ## Installation
 
 The stable version is available through CRAN.
