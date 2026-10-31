@@ -1,7 +1,7 @@
 Package: gosset
 Type: Package
 Title: Tools for Data Analysis in Experimental Agriculture
-Version: 1.5.1
+Version: 1.6.0
 Authors@R: c(person("Kauê", "de Sousa", 
         email = "desousa.kaue@gmail.com", role = c("aut", "cre"),
         comment = c(ORCID = "0000-0002-7571-7845")),
@@ -16,8 +16,13 @@ Authors@R: c(person("Kauê", "de Sousa",
 URL: https://agrdatasci.github.io/gosset/
 BugReports: https://github.com/agrdatasci/gosset/issues
 Description: Methods to analyse experimental agriculture data, 
-    from data synthesis to model selection and visualisation. 
-    The package is named after W.S. Gosset aka ‘Student’, a pioneer 
+    from data synthesis to model selection and visualisation, with a focus 
+    on ranking data from decentralised on-farm trials with the 'tricot' 
+    approach (van Etten et al. 2019 <doi:10.1017/S0014479716000739>). 
+    Includes tools to build rankings, fit and cross-validate Plackett-Luce 
+    models and trees, compare traits with Kendall's tau, and summarise 
+    results as worth, regret and preference indices. 
+    The package is named after W.S. Gosset aka 'Student', a pioneer 
     of modern statistics in small sample experimental design and analysis.
 License: MIT + file LICENSE
 Encoding: UTF-8
