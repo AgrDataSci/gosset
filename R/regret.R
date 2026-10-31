@@ -112,7 +112,7 @@ regret.default = function(object, ..., values, items, group,
   if (isTRUE(bootstrap)) {
     
     # now the bayes bootstrapping
-    coeffs = split(coeffs, paste0(coeffs$node, coeffs$items))
+    coeffs = split(coeffs, list(coeffs$node, coeffs$items), drop = TRUE)
     
     coeffs = lapply(coeffs, function(x){
       
@@ -127,9 +127,12 @@ regret.default = function(object, ..., values, items, group,
   }
   
   # regret is difference with the best variety in each node
-  coeffs$regret = unlist(tapply(coeffs$estimate, coeffs$node, function(x) {
+  # ave() keeps the row order of coeffs; unlist(tapply()) returned the
+  # values in node order, which did not match the rows when nodes were
+  # not sorted (for example node 10 before node 3 after bootstrapping)
+  coeffs$regret = stats::ave(coeffs$estimate, coeffs$node, FUN = function(x) {
     max(x) - x
-  }))
+  })
   
   # worst regret is the highest regret across the nodes
   wr = tapply(coeffs$regret, coeffs$items, max)
@@ -160,8 +163,8 @@ regret.default = function(object, ..., values, items, group,
                  worth = worth[items], 
                  worst_regret = wr[items], 
                  regret = regret[items],
-                 worthSE = se_worth,
-                 regretSE = se_regret)
+                 worthSE = se_worth[items],
+                 regretSE = se_regret[items])
   
   w = w[order(w$regret), ]
   
