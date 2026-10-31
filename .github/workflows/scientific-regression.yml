@@ -1,0 +1,27 @@
+name: gosset scientific regression checks
+
+on:
+  pull_request:
+    paths:
+      - 'R/**'
+      - 'dev/audits/**'
+      - '.github/workflows/scientific-regression.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          dependencies: '"all"'
+      - name: Install current checkout
+        run: R CMD INSTALL .
+      - name: Run ranking known-answer probes
+        run: Rscript dev/audits/2026-10-ranking-probes.R
+      - name: Run regression checks
+        run: Rscript dev/audits/2026-10-regression-checks.R

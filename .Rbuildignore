@@ -15,4 +15,5 @@
 ^workflow\.svg$
 ^codemeta\.json$
 ^LICENSE\.md$
+^\.github$
 ^AGENTS\.md$

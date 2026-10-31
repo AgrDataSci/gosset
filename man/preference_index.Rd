@@ -15,7 +15,8 @@ a matrix that can be coerced to rankings with
 A \code{gosset_df} (data.frame subclass) with columns:
 \describe{
   \item{item}{Item identifier (name).}
-  \item{n}{Number of appearances of the item across sets.}
+  \item{n}{Number of sets with two or more ranked items in which the
+  item appears.}
   \item{top}{Expected top probability (\%).}
   \item{bottom}{Expected bottom probability (\%).}
   \item{net_winning}{Net winning probability (\%).}
