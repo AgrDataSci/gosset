@@ -6,7 +6,7 @@
 #' @family rank functions
 #' @param id an index of \code{data} indicating the id column
 #' @inheritParams rank_tricot
-#' @param ... additional arguments passed to methods. See details
+#' @param strict logical. If TRUE, reject missing or duplicate id/item/rank\n#'   records and require positive integer ranks with no ties within an id.\n#'   Defaults to FALSE to preserve legacy warning-and-skip behavior.\n#' @param ... additional arguments passed to methods. See details
 #' @return a PlackettLuce "rankings" object, which is a matrix of dense rankings 
 #' @seealso \code{\link[PlackettLuce]{rankings}}, \code{\link{nicabean}}
 #' @references 
@@ -32,8 +32,20 @@ rank_tricot2 = function(data,
                         id,
                         items, 
                         input, 
+                        strict = FALSE,
                         ...) {
   
+  if (!is.data.frame(data)) stop('data must be a data.frame')
+  if (!is.logical(strict) || length(strict) != 1L || is.na(strict)) {
+    stop('strict must be TRUE or FALSE')
+  }
+  for (col in list(id, items, input)) {
+    if (length(col) != 1L || !(col %in% names(data))) {
+      stop('id, items and input must each identify an existing column by name')
+    }
+  }
+  if (nrow(data) == 0L) stop('data must contain at least one row')
+
   # columns
   x = data
   id_col     = id
@@ -51,16 +63,33 @@ rank_tricot2 = function(data,
   # basic sanity checks (optional but helpful)
   bad_rows = which(is.na(i) | is.na(j) | is.na(x[[value_col]]))
   if (length(bad_rows)) {
-    warning(sprintf("Skipping %d rows with NA in id/item/value.", length(bad_rows)))
+    msg = sprintf("Found %d rows with NA in id/item/value.", length(bad_rows))
+    if (strict) stop(msg)
+    warning(paste(msg, "Skipping these rows."))
   }
   
   # detect duplicates of the same (id, item)
   dupes = duplicated(cbind(i, j)) | duplicated(cbind(i, j), fromLast = TRUE)
   if (any(dupes, na.rm = TRUE)) {
     d = x[dupes, c(id_col, item_col, value_col)]
-    warning(sprintf("Found %d duplicate (id, item) pairs. Last value wins.", nrow(d)))
+    msg = sprintf("Found %d duplicate (id, item) pairs.", nrow(d))
+    if (strict) stop(msg)
+    warning(paste(msg, "Last value wins."))
   }
   
+  if (strict) {
+    values = suppressWarnings(as.numeric(as.character(x[[value_col]])))
+    valid = is.finite(values) & values > 0 & values == floor(values)
+    if (!all(valid)) stop('Ranks must be finite positive integers in strict mode')
+    groups = split(values, x[[id_col]])
+    if (any(vapply(groups, function(z) anyDuplicated(z) > 0L, logical(1)))) {
+      stop('Tied ranks within an id are not permitted in strict mode')
+    }
+    if (any(vapply(groups, function(z) !setequal(z, seq_along(z)), logical(1)))) {
+      stop('Each id must have consecutive ranks from 1 to its number of items')
+    }
+  }
+
   # build matrix (zeros = unranked)
   m = matrix(0,
              nrow = length(ids),
@@ -69,7 +98,7 @@ rank_tricot2 = function(data,
   
   # write values; last occurrence wins automatically
   idx = which(!is.na(i) & !is.na(j) & !is.na(x[[value_col]]))
-  m[cbind(i[idx], j[idx])] = as.numeric(x[[value_col]][idx])
+  m[cbind(i[idx], j[idx])] = as.numeric(as.character(x[[value_col]][idx]))
   
   # convert to rankings
   r = PlackettLuce::as.rankings(m)
