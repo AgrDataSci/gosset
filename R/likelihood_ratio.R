@@ -27,20 +27,26 @@
 #' @export
 likelihood_ratio = function(x, split, ...) {
   
+  if (length(split) != nrow(x) || anyNA(split)) {
+    stop('split must have one non-missing value per ranking observation')
+  }
+  if (length(unique(split)) < 2L) {
+    stop('split must define at least two non-empty groups')
+  }
+
   # fit model with all data
-  PL_all = PlackettLuce::PlackettLuce(x)
+  PL_all = PlackettLuce::PlackettLuce(x, ...)
   
   # iterate over splits, estimate worth, and store models in list
-  PL_model_list = c()
   DF_resid_sum = 0 
   LL_sum = 0 
   
   # split the data 
   x_split = split(x, split)
 
-  for(i in 1:length(x_split)){
+  for (i in seq_along(x_split)) {
     #fit the model
-    PL_model_lev  =  PlackettLuce::PlackettLuce(x_split[[i]])
+    PL_model_lev  =  PlackettLuce::PlackettLuce(x_split[[i]], ...)
     LL_sum = LL_sum + PL_model_lev$loglik
     DF_resid_sum = DF_resid_sum + PL_model_lev$df.residual
   }
@@ -48,8 +54,11 @@ likelihood_ratio = function(x, split, ...) {
   DF_delta = PL_all$df.residual - DF_resid_sum
   Deviance = -2 * (PL_all$loglik - LL_sum)
   
+  if (!is.finite(Deviance) || !is.finite(DF_delta) || DF_delta <= 0) {
+    stop('Likelihood-ratio comparison has invalid deviance or degrees of freedom')
+  }
   # Chisq P value
-  p_val_chisq  =  1 - stats::pchisq(Deviance, DF_delta)
+  p_val_chisq = stats::pchisq(Deviance, DF_delta, lower.tail = FALSE)
   
   stars = .stars_pval(p_val_chisq)[1]
   
