@@ -94,6 +94,7 @@ crossvalidation = function(formula,
   
   # create folds if needed, check length if given
   n = nrow(data)
+  if (is.list(folds)) k = length(folds)
   if (length(k) != 1L || is.na(k) || !is.numeric(k) ||
       k != floor(k) || k < 2L || k > n) {
     stop('k must be an integer between 2 and the number of observations')
@@ -218,15 +219,8 @@ crossvalidation = function(formula,
   
   dimnames(estimators)[[2]] = nms
   
-  # and the predictions
-  preds =  mapply(function(X, Y) {
-    try(predict(X, newdata = Y), silent = TRUE)
-  }, X = mod, Y = test[])
-  
-  if (any(vapply(as.list(preds), inherits, logical(1), what = 'try-error'))) {
-    stop('Prediction failed for one or more cross-validation folds')
-  }
-
+  # Predictions for pltree are handled below. Other model families
+  # do not currently use predictions in the returned summary.
   # if model is pltree take the kendall correlation
   if (model == "pltree") {
     
