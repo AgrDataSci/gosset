@@ -79,44 +79,36 @@ preference_index = function(object) {
   # normalize (optional but convenient)
   worth = worth / sum(worth)  
   
-  # simple permutations (no extra packages)
-  perms = function(x) {
-    n = length(x)
-    if (n <= 1) return(list(x))
-    out = list()
-    k = 1
-    for (i in seq_len(n)) {
-      for (p in perms(x[-i])) {
-        out[[k]] = c(x[i], p); k = k + 1
-      }
-    }
-    out
-  }
+  # Exact probability of being last, using subset dynamic programming.
+  # The original implementation enumerated all (m-1)! permutations.
+  # This recursion caches each remaining subset and has at most 2^(m-1)
+  # states. It preserves the exact Plackett-Luce estimand.
   p_top = function(i, others) {
     wi = worth[[i]]
     wi / (wi + sum(worth[others]))
   }
-  # general PL probability that i is last among {i} ∪ others
   p_bottom = function(i, others) {
-    m = length(others)
-    if (m == 1) return(1 - p_top(i, others))   # 2 items total
-    total = 0
-    for (ord in perms(others)) {
-      # sequentially choose top among "others" at each stage; i survives to the end
-      denom = worth[[i]] + sum(worth[ord])
-      prod_term = 1
-      remaining = ord
-      for (t in seq_len(m)) {
-        jt = remaining[1]
-        prod_term = prod_term * (worth[[jt]] / denom)
-        denom = denom - worth[[jt]]
-        remaining = remaining[-1]
+    if (length(others) == 0L) return(1)
+    wi = worth[[i]]
+    w = unname(worth[others])
+    memo = new.env(parent = emptyenv(), hash = TRUE)
+    last_probability = function(remaining) {
+      if (length(remaining) == 0L) return(1)
+      key = paste(remaining, collapse = ",")
+      if (exists(key, envir = memo, inherits = FALSE)) {
+        return(get(key, envir = memo, inherits = FALSE))
       }
-      total = total + prod_term
+      denom = wi + sum(w[remaining])
+      value = sum(vapply(seq_along(remaining), function(j) {
+        selected = remaining[j]
+        w[selected] / denom * last_probability(remaining[-j])
+      }, numeric(1)))
+      assign(key, value, envir = memo)
+      value
     }
-    total
+    last_probability(seq_along(others))
   }
-  
+
   # build appearances (who appears with whom in each row) ---
   nr = nrow(R)
   present_list = lapply(seq_len(nr), function(r) {
