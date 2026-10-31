@@ -102,8 +102,8 @@ kendallTau = function(x, y, null.rm = TRUE, average = TRUE, na.omit = FALSE, ...
 
 #' @rdname kendallTau
 #' @export
-kendallTau.default = function(x, y, null.rm = TRUE,
-                             alternative = c("two.sided", "greater", "less"), ...){
+kendallTau.default = function(x, y, null.rm = TRUE, ...,
+                             alternative = c("two.sided", "greater", "less")){
   
   alternative = match.arg(alternative)
   
@@ -184,8 +184,8 @@ kendallTau.default = function(x, y, null.rm = TRUE,
 #' @rdname kendallTau
 #' @method kendallTau matrix
 #' @export
-kendallTau.matrix = function(x, y, null.rm = TRUE, average = TRUE, na.omit = FALSE,
-                            alternative = c("two.sided", "greater", "less"), ...){
+kendallTau.matrix = function(x, y, null.rm = TRUE, average = TRUE, na.omit = FALSE, ...,
+                            alternative = c("two.sided", "greater", "less")){
   
   alternative = match.arg(alternative)
   

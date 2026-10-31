@@ -17,8 +17,8 @@ kendallTau(x, y, null.rm = TRUE, average = TRUE, na.omit = FALSE, ...)
   x,
   y,
   null.rm = TRUE,
-  alternative = c("two.sided", "greater", "less"),
-  ...
+  ...,
+  alternative = c("two.sided", "greater", "less")
 )
 
 \method{kendallTau}{matrix}(
@@ -27,8 +27,8 @@ kendallTau(x, y, null.rm = TRUE, average = TRUE, na.omit = FALSE, ...)
   null.rm = TRUE,
   average = TRUE,
   na.omit = FALSE,
-  alternative = c("two.sided", "greater", "less"),
-  ...
+  ...,
+  alternative = c("two.sided", "greater", "less")
 )
 
 \method{kendallTau}{rankings}(x, y, ...)
