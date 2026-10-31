@@ -7,7 +7,7 @@
 #' The 'kendallTau' function applies the "kendall" method from 'stats::cor' 
 #' with some previous treatment in the data, such as converting floating numbers
 #' into ranks (from the higher being the first and negative being the last) 
-#' and the possibility to remove zeros from incomplete ranks
+#' and the possibility to remove zeros from incomplete ranks.
 #' 
 #' @author Kauê de Sousa and Jacob van Etten
 #' @family goodness-of-fit functions

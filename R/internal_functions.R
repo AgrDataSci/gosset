@@ -367,7 +367,7 @@
 }
 
 #' Nearest neighbour
-#' Check the nearest point using the Eucledian method
+#' Check the nearest point using the Euclidean method
 #' @param xy1 a numeric vector indicating one single coordinate lonlat
 #' @param xy2 a data.frame with coordinates lonlat
 #' @return the index in nrow 'xy2' for the nearest point to 'xy1'
@@ -444,9 +444,9 @@
 
 
 
-#' Color pallete
+#' Color palette
 #' @param x a integer
-#' @return the color pallete
+#' @return the color palette
 #' @noRd
 .col_pallet = function(x, ...) {
   

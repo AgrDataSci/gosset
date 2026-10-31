@@ -1,7 +1,7 @@
 #' Plot worth parameters
 #' 
 #' Produces plots to highlight worth
-#'  coefficients of items in a party tree of 
+#'  coefficients of items in a party tree or 
 #'  a list of PlackettLuce models 
 #' 
 #' @param object an object of class \code{party} or 

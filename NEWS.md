@@ -69,6 +69,11 @@ comparing with analyses run on earlier versions.
 
 ### TESTS AND DOCUMENTATION
 
+* Corrected typos and unclear wording in the help pages (for example
+  `btpermute()` named a non-existent argument `n.iteractions`, and the
+  arguments of the default method of `kendallW()` were described as
+  `pltree` objects).
+
 * Unit tests in `tests/testthat` cover these functions and run under
   `R CMD check`, including a simulation of the null distribution of
   `kendallTau()`.

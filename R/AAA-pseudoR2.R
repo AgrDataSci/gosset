@@ -9,7 +9,7 @@
 #' @author Kauê de Sousa and Jacob van Etten
 #' @family goodness-of-fit functions
 #' @param object a model object of class glm, gnm, lm, pltree or bttree
-#' @param newdata a data.set with testing data
+#' @param newdata a data.frame with testing data
 #' @param ... additional arguments affecting the R-squared produced
 #' @return A data frame containing the pseudo R-squared coefficients:
 #' \item{logLik}{log-likelihood}

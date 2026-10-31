@@ -36,7 +36,7 @@ selected variables, seeds (random numbers) used for permutations and deviances
 Method of forward variable selection based on deviance for Bradley-Terry
  models using pairwise ranking data. The selection procedure consists of two steps, 
  first, permuting the variables from the original \code{predictors} with 
- \code{n.iteractions}, then performing a forward selection to retain the
+ \code{n.iterations}, then performing a forward selection to retain the
  \code{predictors} with highest contribution to the model, see details.
 }
 \details{

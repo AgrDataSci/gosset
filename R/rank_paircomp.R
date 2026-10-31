@@ -1,7 +1,7 @@
 #' Pairwise comparison rankings
 #'
 #' Pairwise comparisons from a PlackettLuce ranking object. 
-#'  Ties are not taken into account, then coerced to NA's.
+#'  Ties are not taken into account and are set to NA.
 #'
 #' @author Kauê de Sousa and Jacob van Etten
 #' @family rank functions

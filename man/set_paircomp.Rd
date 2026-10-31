@@ -16,7 +16,7 @@ an object of class "paircomp" which is a matrix
 }
 \description{
 Pairwise comparisons from a PlackettLuce ranking object. 
- Ties are not taken into account, then coerced to NA's.
+ Ties are not taken into account and are set to NA.
 }
 \examples{
  

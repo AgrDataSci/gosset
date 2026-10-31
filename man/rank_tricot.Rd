@@ -38,7 +38,7 @@ a PlackettLuce "rankings" object, which is a matrix of dense rankings
 }
 \description{
 Create an object of class "rankings" from tricot data. Tricot stands 
-for "triadic comparison of technology options". Is an approach to carry out 
+for "triadic comparison of technology options". It is an approach to carry out 
 large decentralized agronomic field experiments as incomplete blocks. 
 Each incomplete block contains a set of three randomised technologies 
 out of a larger set.
@@ -68,7 +68,7 @@ R1 = rank_tricot(beans,
 # Using validate.rankings = TRUE, the rankings
 # are only considered for those entries without 
 # NAs, Ties and with any of the letters A, B, C
-# this do not affect the lenght of the final ranking 
+# this does not affect the length of the final ranking 
 R2 = rank_tricot(beans,
                  items = c(1:3),
                  input = c(4:5),

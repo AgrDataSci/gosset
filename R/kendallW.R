@@ -3,15 +3,16 @@
 #' Compute Kendall's W, also known as coefficient of concordance among observed rankings
 #' and those predicted by the Plackett-Luce model.
 #' 
-#' It is as wrapper of the function DescTools::KendallW, adapted to compute the Kendall's W
+#' It is a wrapper of the function DescTools::KendallW, adapted to compute the Kendall's W
 #' on the observed and predicted rankings.
 #'  
-#' Kendall's W values range between 0 (no agreement) to 1 (full agreement)
+#' Kendall's W values range from 0 (no agreement) to 1 (full agreement)
 #' 
 #' @author David Brown and Jacob van Etten
 #' @family goodness-of-fit functions
-#' @param x an object of class \code{pltree}
-#' @param y an object of class \code{pltree}
+#' @param x an object of class \code{pltree}, or a matrix of predicted
+#'  rankings for the default method
+#' @param y a matrix of observed rankings, for the default method
 #' @param newdata data for predictions
 #' @param ... additional arguments passed to methods
 #' @return Kendall's W (coefficient of concordance) 

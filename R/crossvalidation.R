@@ -24,7 +24,7 @@
 #' @param seed integer, the seed used to create the folds. If \code{NULL}
 #' (the default), folds are drawn from the current random number stream.
 #' When a seed is given, the caller's random number state is restored on exit
-#' @param ... additional arguments passed the methods of the chosen model
+#' @param ... additional arguments passed to the methods of the chosen model
 #' @param object a model object
 #' @param newdata a data.frame with test data
 #' @return an object of class \code{gosset_cv} with the cross-validation 
