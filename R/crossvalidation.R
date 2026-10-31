@@ -3,7 +3,9 @@
 #' Methods for measuring the performance of a predictive model on sets of 
 #' test data in Bradley-Terry model from \pkg{psychotree}, Generalized Linear and 
 #' Generalized Nonlinear models from \pkg{gnm}, and Plackett-Luce model from 
-#' \pkg{PlackettLuce}
+#' \pkg{PlackettLuce}. The package that provides the model (\pkg{gnm},
+#' \pkg{PlackettLuce} or \pkg{psychotree}) must be attached with
+#' \code{library()} before calling \code{crossvalidation()}.
 #'
 #' @author Kauê de Sousa, Jacob van Etten and David Brown
 #' @family model selection functions
@@ -227,6 +229,13 @@ crossvalidation = function(formula,
   pkg = switch(model, gnm = "gnm", pltree = "PlackettLuce", bttree = "psychotree")
   if (!requireNamespace(pkg, quietly = TRUE)) {
     stop("package '", pkg, "' is required for this model; please install it")
+  }
+  # the package must also be attached: pltree() evaluates plfit() in the
+  # caller's environment, and the null models in pseudoR2() are refitted
+  # with update(), which calls the model function by name
+  if (!paste0("package:", pkg) %in% search()) {
+    stop("crossvalidation() needs package '", pkg, "' to be attached. ",
+         "Run library(", pkg, ") first")
   }
   model_fun = getExportedValue(pkg, model)
   

@@ -1,5 +1,6 @@
 test_that("folds stay aligned with rows when missing values are dropped", {
   skip_if_not_installed("gnm")
+  suppressPackageStartupMessages(library(gnm))
   d = airquality
   complete = stats::complete.cases(d[, c("Temp", "Wind", "Solar.R")])
   folds = rep(1:3, length.out = nrow(d))
@@ -12,6 +13,7 @@ test_that("folds stay aligned with rows when missing values are dropped", {
 
 test_that("a seed gives reproducible folds without changing the caller's stream", {
   skip_if_not_installed("gnm")
+  suppressPackageStartupMessages(library(gnm))
   d = airquality[stats::complete.cases(airquality), ]
   set.seed(42)
   before = .Random.seed
@@ -25,6 +27,7 @@ test_that("a seed gives reproducible folds without changing the caller's stream"
 
 test_that("folds given as a list of training rows are supported", {
   skip_if_not_installed("gnm")
+  suppressPackageStartupMessages(library(gnm))
   d = airquality[stats::complete.cases(airquality), ]
   n = nrow(d)
   idx = rep(1:3, length.out = n)
@@ -43,6 +46,7 @@ test_that("invalid k and folds are rejected", {
 
 test_that("Kendall's tau is computed on held-out data for Plackett-Luce trees", {
   skip_on_cran()
+  suppressPackageStartupMessages(library(PlackettLuce))
   data("beans", package = "PlackettLuce")
   G = rank_tricot(data = beans, items = c(1:3), input = c(4:5),
                   additional.rank = beans[c(6:8)], group = TRUE)

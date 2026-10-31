@@ -63,7 +63,9 @@ goodness-of-fit estimates, which are:
 Methods for measuring the performance of a predictive model on sets of 
 test data in Bradley-Terry model from \pkg{psychotree}, Generalized Linear and 
 Generalized Nonlinear models from \pkg{gnm}, and Plackett-Luce model from 
-\pkg{PlackettLuce}
+\pkg{PlackettLuce}. The package that provides the model (\pkg{gnm},
+\pkg{PlackettLuce} or \pkg{psychotree}) must be attached with
+\code{library()} before calling \code{crossvalidation()}.
 }
 \examples{
 \donttest{
