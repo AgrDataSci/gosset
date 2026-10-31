@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.0</span>
       </span>
     </div>
 
@@ -466,10 +466,10 @@ of the selection index.</p>
 <span><span class="va">kendall</span></span></code></pre></div>
 <pre><code><span><span class="co">##    kendallTau N_effective  Zvalue Pr(&gt;|z|)          trait</span></span>
 <span><span class="co">##         &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;          &lt;chr&gt;</span></span>
-<span><span class="co">## 1:     0.4260     77.9355  5.5164   0.0000         Colour</span></span>
-<span><span class="co">## 2:     0.3255     77.8579  4.2138   0.0000 Stretchability</span></span>
-<span><span class="co">## 3:     0.6180     77.9613  8.0050   0.0000          Taste</span></span>
-<span><span class="co">## 4:     1.0000     77.9613 12.9531   0.0000        Overall</span></span></code></pre>
+<span><span class="co">## 1:     0.4261     77.9225 21.0995   0.0000         Colour</span></span>
+<span><span class="co">## 2:     0.3260     77.8062 16.1173   0.0000 Stretchability</span></span>
+<span><span class="co">## 3:     0.6180     77.9613 30.6178   0.0000          Taste</span></span>
+<span><span class="co">## 4:     1.0000     77.9613 49.5434   0.0000        Overall</span></span></code></pre>
 <p>Using the Kendall
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math>)
 estimates, we derive weights for each trait. These weights represent the
@@ -497,10 +497,10 @@ sum of weights = 1.</p>
 <span><span class="va">kendall</span></span></code></pre></div>
 <pre><code><span><span class="co">##    kendallTau N_effective  Zvalue Pr(&gt;|z|)          trait weights</span></span>
 <span><span class="co">##         &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;          &lt;chr&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">## 1:     0.4260     77.9355  5.5164   0.0000         Colour  0.1933</span></span>
-<span><span class="co">## 2:     0.3255     77.8579  4.2138   0.0000 Stretchability  0.1477</span></span>
-<span><span class="co">## 3:     0.6180     77.9613  8.0050   0.0000          Taste  0.2804</span></span>
-<span><span class="co">## 4:     1.0000     77.9613 12.9531   0.0000        Overall  0.3786</span></span></code></pre>
+<span><span class="co">## 1:     0.4261     77.9225 21.0995   0.0000         Colour  0.1933</span></span>
+<span><span class="co">## 2:     0.3260     77.8062 16.1173   0.0000 Stretchability  0.1479</span></span>
+<span><span class="co">## 3:     0.6180     77.9613 30.6178   0.0000          Taste  0.2804</span></span>
+<span><span class="co">## 4:     1.0000     77.9613 49.5434   0.0000        Overall  0.3785</span></span></code></pre>
 <p>After applying the penalty and re-normalizing, the influence of
 “Overall” was reduced, and its weight was redistributed proportionally
 to other traits. The adjusted weights are now ready for inclusion in the

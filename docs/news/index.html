@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.0</span>
       </span>
     </div>
 
@@ -61,7 +61,39 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.5.1" id="gosset-151-2025-11-19">gosset 1.5.1 (2025-11-19)<a class="anchor" aria-label="anchor" href="#gosset-151-2025-11-19"></a></h2>
+<h2 class="page-header" data-toc-text="1.6.0" id="gosset-160-2026-10-31">gosset 1.6.0 (2026-10-31)<a class="anchor" aria-label="anchor" href="#gosset-160-2026-10-31"></a></h2>
+<p>This release corrects statistical errors found in a review of the package. Some results change. Check the items under CHANGES IN RESULTS before comparing with analyses run on earlier versions.</p>
+<div class="section level4">
+<h4 id="changes-in-results-1-6-0">CHANGES IN RESULTS<a class="anchor" aria-label="anchor" href="#changes-in-results-1-6-0"></a></h4>
+<ul><li><p><code><a href="../reference/kendallTau.html">kendallTau()</a></code> on matrices tests the average tau with each row (participant) as an independent ranking, and weights rows by their number of pairs. Earlier versions pooled all pairs into one ranking of <code>N_effective</code> items, which understated precision. With 2,000 random triads the z-values had a standard deviation of about 0.2 instead of 1, so real associations were often reported as not significant. Expect larger z-values and smaller p-values in trials with many participants. Average tau is unchanged for complete triads. <code>N_effective</code> is still reported, for reference only.</p></li>
+<li><p><code><a href="../reference/kendallTau.html">kendallTau()</a></code> gains <code>alternative = c("two.sided", "greater", "less")</code>. The default is now two-sided. Earlier versions reported a one-sided p-value for a positive association. The column name <code>Pr(&gt;|z|)</code> is unchanged. <code>null.rm</code> is now passed from the matrix method to each row.</p></li>
+<li><p><code><a href="../reference/crossvalidation.html">crossvalidation()</a></code> reports Kendall’s tau for Plackett-Luce trees on the held-out test set. Earlier versions compared predictions with the training rankings, an in-sample measure. Values will be lower and honest.</p></li>
+<li><p><code><a href="../reference/preference_index.html">preference_index()</a></code> counts each item once per set. Earlier versions inflated <code>n</code> by the number of other items in each set and gave larger sets more weight in the averages. Sets with a single ranked item are skipped. The bottom probability is computed exactly by recursion over subsets.</p></li>
+<li><p><code><a href="../reference/regret.html">regret()</a></code> assigns each regret to the right item when nodes are not in sorted order (for example terminal node 10 before node 3). This affected trees with node ids of 10 or more, including <code>worthSE</code> and <code>regretSE</code>.</p></li>
+<li><p><code><a href="../reference/regret.html">regret()</a></code> weights nodes by their share of observations for <code>pltree</code> objects, and models by their number of rankings for lists of <code>PlackettLuce</code> models, so a small node no longer counts as much as a large one. Worst regret, a worst case, is not weighted. The new <code>node.weights</code> argument sets weights; equal weights reproduce the previous results.</p></li>
+<li><p><code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova()</a></code> for Plackett-Luce models no longer rounds the log-likelihood difference before computing the statistic, and computes the p-value with <code>lower.tail = FALSE</code>.</p></li>
+<li><p><code><a href="../reference/likelihood_ratio.html">likelihood_ratio()</a></code> computes the p-value with <code>lower.tail = FALSE</code>.</p></li>
+<li><p><code><a href="../reference/kendallTau.html">kendallTau_bootstrap()</a></code> resamples participants with replacement and returns the pair-weighted average tau of each resample. Earlier versions computed tau on only four subsets of the data and bootstrapped those four values, which gave a poor estimate of the variability of tau. The function also reset the random number stream; with <code>seed</code> it now leaves the caller’s stream unchanged, and without <code>seed</code> it uses the current stream. Arguments and output format are unchanged.</p></li>
+</ul></div>
+<div class="section level4">
+<h4 id="bug-fixes-1-6-0">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-6-0"></a></h4>
+<ul><li>
+<code><a href="../reference/crossvalidation.html">crossvalidation()</a></code> keeps folds aligned with the data when rows are dropped for missing values, accepts folds given as a list of training rows, stops with an error when a model or a score cannot be computed (instead of returning zeros), and no longer changes the caller’s random number stream when <code>seed</code> is given. The package of the model (for example ‘PlackettLuce’ or ‘gnm’) must be attached, and the function says so when it is not.</li>
+<li>
+<code><a href="../reference/likelihood_ratio.html">likelihood_ratio()</a></code> checks the <code>split</code> vector, accepts grouped rankings as in its documented example and passes <code>...</code> to <code><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce()</a></code>.</li>
+<li>
+<code><a href="../reference/rank_tricot2.html">rank_tricot2()</a></code> reads factor ranks by their values and gains <code>strict = FALSE</code>, an opt-in check for missing, duplicated, tied and non-consecutive ranks.</li>
+<li>
+<code><a href="../reference/rank_tricot.html">rank_tricot()</a></code> warns when the same item appears twice in a row.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="tests-and-documentation-1-6-0">TESTS AND DOCUMENTATION<a class="anchor" aria-label="anchor" href="#tests-and-documentation-1-6-0"></a></h4>
+<ul><li>Unit tests in <code>tests/testthat</code> cover these functions and run under <code>R CMD check</code>, including a simulation of the null distribution of <code><a href="../reference/kendallTau.html">kendallTau()</a></code>.</li>
+<li>Added an R CMD check workflow for Linux, macOS and Windows, and <code>AGENTS.md</code>, a guide for AI agents working on the package.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.5.1" id="gosset-151-2025-11-19">gosset 1.5.1 (2025-11-19)<small>2025-11-19</small><a class="anchor" aria-label="anchor" href="#gosset-151-2025-11-19"></a></h2>
 <div class="section level4">
 <h4 id="new-features-1-5-1">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-5-1"></a></h4>
 <ul><li>Added <code><a href="../reference/preference_index.html">preference_index()</a></code> to compute a model-based preference index<br>

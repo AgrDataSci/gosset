@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Tools for Data Analysis in Experimental Agriculture">
-<meta property="og:description" content="Methods to analyse experimental agriculture data, from data synthesis to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.">
+<meta property="og:description" content="Methods to analyse experimental agriculture data, from data synthesis to model selection and visualisation, with a focus on ranking data from decentralised on-farm trials with the tricot approach (van Etten et al. 2019 &lt;doi:10.1017/S0014479716000739&gt;). Includes tools to build rankings, fit and cross-validate Plackett-Luce models and trees, compare traits with Kendalls tau, and summarise results as worth, regret and preference indices. The package is named after W.S. Gosset aka Student', a pioneer of modern statistics in small sample experimental design and analysis.">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.0</span>
       </span>
     </div>
 
@@ -97,6 +97,11 @@
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p>The <strong>gosset</strong> package provides methods to implement workflows to analyse experimental agriculture data, from data synthesis to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.</p>
+</div>
+<div class="section level2">
+<h2 id="whats-new-in-160">What’s new in 1.6.0<a class="anchor" aria-label="anchor" href="#whats-new-in-160"></a>
+</h2>
+<p>Version 1.6.0 corrects statistical errors found in a review of the package, and some results change. <code><a href="reference/kendallTau.html">kendallTau()</a></code> p-values are now two-sided and treat each participant as an independent ranking, <code><a href="reference/crossvalidation.html">crossvalidation()</a></code> reports out-of-sample Kendall’s tau, and <code><a href="reference/preference_index.html">preference_index()</a></code> and <code><a href="reference/regret.html">regret()</a></code> count and weight observations correctly. See <a href="NEWS.html">NEWS</a> before comparing with analyses run on earlier versions.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
