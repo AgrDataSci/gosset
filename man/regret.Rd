@@ -9,7 +9,16 @@
 \usage{
 regret(object, ..., bootstrap = TRUE, normalize = TRUE)
 
-\method{regret}{default}(object, ..., values, items, group, bootstrap = TRUE, normalize = TRUE)
+\method{regret}{default}(
+  object,
+  ...,
+  values,
+  items,
+  group,
+  node.weights = NULL,
+  bootstrap = TRUE,
+  normalize = TRUE
+)
 
 \method{regret}{pltree}(object, bootstrap = TRUE, normalize = TRUE, ...)
 
@@ -30,6 +39,12 @@ list with \code{PlackettLuce} models}
 \item{items}{an index in  \var{object} for the different items}
 
 \item{group}{an index in \var{object} for the different scenarios}
+
+\item{node.weights}{optional named numeric vector with one weight per
+scenario in \var{group}, used for worth, regret and their standard
+errors. For \code{pltree} objects the weights are the share of
+observations in each terminal node, and for lists of models the share
+of rankings in each model. Worst regret is not weighted}
 }
 \value{
 A data frame with regret estimates

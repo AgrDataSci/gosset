@@ -28,6 +28,12 @@ gosset (development version)
   sorted order (for example terminal node 10 before node 3), which affected
   trees with node ids of 10 or more, and reports `worthSE` and `regretSE`
   for the right items.
+* `regret()` weights nodes by their share of observations for `pltree`
+  objects, and models by their number of rankings for lists of
+  `PlackettLuce` models, so a small node no longer counts as much as a
+  large one. Worst regret, a worst case, is not weighted. Weights can be
+  set with the new `node.weights` argument; equal weights reproduce the
+  previous results.
 * `kendallTau()` on matrices weights each row by its number of pairs and
   computes the effective N from the total number of pairs. Results for
   complete triads are unchanged; rows with two, four or more items were

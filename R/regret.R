@@ -13,6 +13,11 @@
 #' @param group an index in \var{object} for the different scenarios 
 #' @param items an index in  \var{object} for the different items
 #' @param values an index in \var{object} with the values to compute regret
+#' @param node.weights optional named numeric vector with one weight per
+#'  scenario in \var{group}, used for worth, regret and their standard
+#'  errors. For \code{pltree} objects the weights are the share of
+#'  observations in each terminal node, and for lists of models the share
+#'  of rankings in each model. Worst regret is not weighted
 #' @param ... further arguments passed to methods
 #' 
 #' @details
@@ -101,6 +106,7 @@ regret = function(object, ..., bootstrap = TRUE, normalize = TRUE) {
 #' @rdname regret
 #' @export
 regret.default = function(object, ..., values, items, group,
+                          node.weights = NULL,
                           bootstrap = TRUE, normalize = TRUE){
   
   coeffs = object[, c(items, values, group)]
@@ -134,30 +140,51 @@ regret.default = function(object, ..., values, items, group,
     max(x) - x
   })
   
-  # worst regret is the highest regret across the nodes
-  wr = tapply(coeffs$regret, coeffs$items, max)
+  # weight of each node (scenario). Equal weights reproduce the
+  # unweighted results exactly
+  if (is.null(node.weights)) {
+    coeffs$w = 1
+  } else {
+    node.weights = unlist(node.weights)
+    if (is.null(names(node.weights)) ||
+        !all(as.character(unique(coeffs$node)) %in% names(node.weights))) {
+      stop("node.weights must be named by node and cover every node in object")
+    }
+    if (any(!is.finite(node.weights)) || any(node.weights < 0) ||
+        sum(node.weights) == 0) {
+      stop("node.weights must be finite, non-negative and not all zero")
+    }
+    coeffs$w = as.numeric(node.weights[as.character(coeffs$node)])
+  }
   
-  # max regret is the sum of the squared values of all items regret
-  regret = unlist(tapply(coeffs$regret, coeffs$items, function(x) {
-    sum(x^2)
-  }))
+  # weighted mean, and standard error of the weighted mean; with equal
+  # weights these equal mean(x) and sd(x) / sqrt(n)
+  wmean = function(x, w) sum(w * x) / sum(w)
+  wse = function(x, w) {
+    n = length(x)
+    if (n < 2) return(NA_real_)
+    w = w / sum(w)
+    m = sum(w * x)
+    sqrt(n / (n - 1) * sum(w^2 * (x - m)^2))
+  }
   
-  # compute standard error for regret
-  se_regret = unlist(tapply(coeffs$regret, coeffs$items, function(x) {
-    x2 = x^2
-    n = length(x2) # sample size
-    s = sd(x2) # sample standard deviation
-    s / sqrt(n)
-  }))
+  by_item = split(coeffs, coeffs$items)
   
-  worth = tapply(coeffs$estimate, coeffs$items, mean)
+  # worst regret is the highest regret across the nodes (a worst case,
+  # so it is not weighted)
+  wr = vapply(by_item, function(d) max(d$regret), numeric(1))
   
-  # compute standard error for worth
-  se_worth = unlist(tapply(coeffs$estimate, coeffs$items, function(x) {
-    n = length(x) # sample size
-    s = sd(x) # sample standard deviation
-    s / sqrt(n)
-  }))
+  # squared regret summed across nodes, weighted by node; with equal
+  # weights this is sum(regret^2)
+  regret = vapply(by_item, function(d) {
+    nrow(d) * wmean(d$regret^2, d$w)
+  }, numeric(1))
+  
+  se_regret = vapply(by_item, function(d) wse(d$regret^2, d$w), numeric(1))
+  
+  worth = vapply(by_item, function(d) wmean(d$estimate, d$w), numeric(1))
+  
+  se_worth = vapply(by_item, function(d) wse(d$estimate, d$w), numeric(1))
   
   w = data.frame(items = items, 
                  worth = worth[items], 
@@ -260,6 +287,7 @@ regret.pltree = function(object, bootstrap = TRUE, normalize = TRUE, ...) {
          values = "estimate",
          items = "items",
          group = "node",
+         node.weights = stats::setNames(probs, nodes),
          bootstrap = bootstrap,
          normalize = normalize, 
          ...)
@@ -339,10 +367,14 @@ regret.list = function(object, bootstrap = TRUE, normalize = TRUE, ...) {
     
   }
   
+  # weight each model by its number of rankings
+  nobs = vapply(object, function(y) as.numeric(nrow(y$rankings)), numeric(1))
+  
   regret(object = coeffs,
          values = "estimate",
          items = "items",
          group = "node",
+         node.weights = stats::setNames(nobs / sum(nobs), seq_along(object)),
          bootstrap = bootstrap,
          normalize = normalize)
 }
