@@ -82,7 +82,8 @@ and those predicted by the Plackett-Luce model.</p>
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>an object of class <code>pltree</code></p></dd>
+<dd><p>an object of class <code>pltree</code>, or a matrix of predicted
+rankings for the default method</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -90,7 +91,7 @@ and those predicted by the Plackett-Luce model.</p>
 
 
 <dt id="arg-y">y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
-<dd><p>an object of class <code>pltree</code></p></dd>
+<dd><p>a matrix of observed rankings, for the default method</p></dd>
 
 
 <dt id="arg-newdata">newdata<a class="anchor" aria-label="anchor" href="#arg-newdata"></a></dt>
@@ -103,9 +104,9 @@ and those predicted by the Plackett-Luce model.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>It is as wrapper of the function DescTools::KendallW, adapted to compute the Kendall's W
+    <p>It is a wrapper of the function DescTools::KendallW, adapted to compute the Kendall's W
 on the observed and predicted rankings.</p>
-<p>Kendall's W values range between 0 (no agreement) to 1 (full agreement)</p>
+<p>Kendall's W values range from 0 (no agreement) to 1 (full agreement)</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
