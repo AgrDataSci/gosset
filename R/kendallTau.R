@@ -20,10 +20,18 @@
 #'  when computing the average
 #' @param seed integer, the seed for random number generation. If NULL (the default),
 #'  gosset will set the seed randomly
+#' @param alternative the alternative hypothesis, one of \code{"two.sided"}
+#'  (the default), \code{"greater"} (positive association) or
+#'  \code{"less"} (negative association). The p-value is returned in the
+#'  column \code{Pr(>|z|)} whatever the alternative
 #' @param ... further arguments affecting the Kendall tau produced. See details 
-#' @return The Kendall correlation coefficient and the Effective N, which 
-#' is the equivalent N needed if all items were compared to all items. 
-#' Used for significance testing.
+#' @return The Kendall correlation coefficient, the Effective N (the
+#' equivalent N if all items were compared to all items), the z value and
+#' its p-value. For matrices, each row is treated as an independent
+#' ranking: the average tau weights rows by their number of pairs, and the
+#' z value uses the null variance of that weighted average. The null
+#' variance assumes no ties; use \code{\link{kendallTau_permute}} for an
+#' exact test with small or tied data.
 #' @references 
 #' 
 #' Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. 
@@ -94,7 +102,10 @@ kendallTau = function(x, y, null.rm = TRUE, average = TRUE, na.omit = FALSE, ...
 
 #' @rdname kendallTau
 #' @export
-kendallTau.default = function(x, y, null.rm = TRUE, ...){
+kendallTau.default = function(x, y, null.rm = TRUE,
+                             alternative = c("two.sided", "greater", "less"), ...){
+  
+  alternative = match.arg(alternative)
   
   
   keep = !is.na(x) & !is.na(y)
@@ -149,11 +160,10 @@ kendallTau.default = function(x, y, null.rm = TRUE, ...){
   
   n = N_effective
   
-  # calculate z-value using n effective
-  z = (3 * tau_cor * sqrt(n * (n - 1))) / sqrt(2 * (2 * n + 5))
+  # z-value from the null variance of tau for one ranking of n items
+  z = tau_cor / sqrt(.kendall_null_var(n))
   
-  # then p-value
-  p = stats::pnorm(z, lower.tail = FALSE)
+  p = .kendall_pvalue(z, alternative)
   
   kt = c(kt, z, p)
   
@@ -174,7 +184,10 @@ kendallTau.default = function(x, y, null.rm = TRUE, ...){
 #' @rdname kendallTau
 #' @method kendallTau matrix
 #' @export
-kendallTau.matrix = function(x, y, null.rm = TRUE, average = TRUE, na.omit = FALSE, ...){
+kendallTau.matrix = function(x, y, null.rm = TRUE, average = TRUE, na.omit = FALSE,
+                            alternative = c("two.sided", "greater", "less"), ...){
+  
+  alternative = match.arg(alternative)
   
   nc = ncol(x)
   
@@ -183,7 +196,7 @@ kendallTau.matrix = function(x, y, null.rm = TRUE, average = TRUE, na.omit = FAL
     X = K[1:nc]
     Y = K[(nc + 1):(nc * 2)]
     
-    kendallTau(X, Y, ...)
+    kendallTau(X, Y, null.rm = null.rm, alternative = alternative, ...)
     
   })
   
@@ -210,16 +223,20 @@ kendallTau.matrix = function(x, y, null.rm = TRUE, average = TRUE, na.omit = FAL
   
   # Effective N is the equivalent N needed if all were compared to all
   # N_comparisons = ((N_effective - 1) * N_effective) / 2
-  # This is used for significance testing later
-  N_effective = 0.5 + sqrt(0.25 + 2 * sum(N)) 
+  # It is reported for reference only
+  ok = !is.na(tau) & n_items >= 2
+  N_effective = 0.5 + sqrt(0.25 + 2 * sum(N[ok])) 
   
-  n = N_effective
+  # Each row (participant) is an independent comparison. The variance of
+  # the pair-weighted mean tau under the null hypothesis is the weighted
+  # sum of the null variances of the rows. Treating all pairs as one
+  # ranking of N_effective items understated the precision, and the
+  # p-values were far too conservative for large tricot trials
+  w = N[ok] / sum(N[ok])
+  var_average = sum(w^2 * .kendall_null_var(n_items[ok]))
+  z = tau_average / sqrt(var_average)
   
-  # calculate z-value using n effective
-  z = (3 * tau_average * sqrt(n * (n - 1))) / sqrt(2 * (2 * n + 5))
-  
-  # then p-value
-  p = stats::pnorm(z, lower.tail = FALSE)
+  p = .kendall_pvalue(z, alternative)
   
   kt = c(tau_average, N_effective, z, p)
   
@@ -311,3 +328,17 @@ kendallTau_bootstrap = function(x, y, nboot = 100, seed = NULL, ...) {
 }
 
 
+#' Null variance of Kendall's tau for one ranking of n items without ties
+#' @noRd
+.kendall_null_var = function(n) {
+  2 * (2 * n + 5) / (9 * n * (n - 1))
+}
+
+#' P-value from a z statistic
+#' @noRd
+.kendall_pvalue = function(z, alternative = "two.sided") {
+  switch(alternative,
+         two.sided = 2 * stats::pnorm(-abs(z)),
+         greater = stats::pnorm(z, lower.tail = FALSE),
+         less = stats::pnorm(z))
+}

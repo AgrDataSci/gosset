@@ -28,6 +28,17 @@ gosset (development version)
   sorted order (for example terminal node 10 before node 3), which affected
   trees with node ids of 10 or more, and reports `worthSE` and `regretSE`
   for the right items.
+* `kendallTau()` on matrices treats each row (participant) as an
+  independent ranking when testing the average tau. Earlier versions
+  pooled all pairs into one ranking of N_effective items, which
+  understated precision: with 2,000 random triads the z-values had a
+  standard deviation of about 0.2 instead of 1, so real associations were
+  often reported as not significant. Expect larger z-values and smaller
+  p-values for trials with many participants.
+* `kendallTau()` gains `alternative = c("two.sided", "greater", "less")`.
+  The default is now two-sided (earlier versions reported a one-sided
+  p-value for a positive association). The column name `Pr(>|z|)` is
+  unchanged. `null.rm` is now passed from the matrix method to each row.
 * `regret()` weights nodes by their share of observations for `pltree`
   objects, and models by their number of rankings for lists of
   `PlackettLuce` models, so a small node no longer counts as much as a

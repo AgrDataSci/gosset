@@ -13,9 +13,23 @@
 \usage{
 kendallTau(x, y, null.rm = TRUE, average = TRUE, na.omit = FALSE, ...)
 
-\method{kendallTau}{default}(x, y, null.rm = TRUE, ...)
+\method{kendallTau}{default}(
+  x,
+  y,
+  null.rm = TRUE,
+  alternative = c("two.sided", "greater", "less"),
+  ...
+)
 
-\method{kendallTau}{matrix}(x, y, null.rm = TRUE, average = TRUE, na.omit = FALSE, ...)
+\method{kendallTau}{matrix}(
+  x,
+  y,
+  null.rm = TRUE,
+  average = TRUE,
+  na.omit = FALSE,
+  alternative = c("two.sided", "greater", "less"),
+  ...
+)
 
 \method{kendallTau}{rankings}(x, y, ...)
 
@@ -39,6 +53,11 @@ kendallTau_permute(x, y, split, n.permutations = 500)
 \item{na.omit}{logical, if \code{TRUE} ignores entries with kendall = NA 
 when computing the average}
 
+\item{alternative}{the alternative hypothesis, one of \code{"two.sided"}
+(the default), \code{"greater"} (positive association) or
+\code{"less"} (negative association). The p-value is returned in the
+column \code{Pr(>|z|)} whatever the alternative}
+
 \item{...}{further arguments affecting the Kendall tau produced. See details}
 
 \item{nboot}{integer, the size of the bootstrap sample}
@@ -51,9 +70,13 @@ gosset will set the seed randomly}
 \item{n.permutations}{an integer, the number of permutations to perform}
 }
 \value{
-The Kendall correlation coefficient and the Effective N, which 
-is the equivalent N needed if all items were compared to all items. 
-Used for significance testing.
+The Kendall correlation coefficient, the Effective N (the
+equivalent N if all items were compared to all items), the z value and
+its p-value. For matrices, each row is treated as an independent
+ranking: the average tau weights rows by their number of pairs, and the
+z value uses the null variance of that weighted average. The null
+variance assumes no ties; use \code{\link{kendallTau_permute}} for an
+exact test with small or tied data.
 
 A data.frame containing:
 \item{observed_diff}{observed absolute differences in Kendall's tau for all group pairs.}
