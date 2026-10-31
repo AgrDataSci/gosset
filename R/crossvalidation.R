@@ -94,6 +94,10 @@ crossvalidation = function(formula,
   
   # create folds if needed, check length if given
   n = nrow(data)
+  if (length(k) != 1L || is.na(k) || !is.numeric(k) ||
+      k != floor(k) || k < 2L || k > n) {
+    stop('k must be an integer between 2 and the number of observations')
+  }
   
   # assign folds
   if (is.null(folds)) {
@@ -109,6 +113,13 @@ crossvalidation = function(formula,
     
   }
   
+  if (!is.list(folds)) {
+    if (length(folds) != n || anyNA(folds) ||
+        !setequal(unique(folds), seq_len(k))) {
+      stop('folds must assign every observation to one of the k non-empty folds')
+    }
+  }
+
   # create a model frame 
   environment(formula) = parent.frame()
   
@@ -168,6 +179,11 @@ crossvalidation = function(formula,
     }
   }
   
+  if (any(vapply(train, nrow, integer(1)) == 0L) ||
+      any(vapply(test, nrow, integer(1)) == 0L)) {
+    stop('All cross-validation training and test folds must be non-empty')
+  }
+
   # fit the models
   mod = lapply(train, function(X) {
     args = list(formula = formula, data = X)
@@ -176,6 +192,11 @@ crossvalidation = function(formula,
     
   })
   
+  failed = vapply(mod, inherits, logical(1), what = 'try-error')
+  if (any(failed)) {
+    stop('Model fitting failed in fold(s): ', paste(which(failed), collapse = ', '))
+  }
+
   # get goodness-of-fit estimates from models
   # take models from training data to compute deviance, pseudo R-squared
   # and the predictions of the test part of the data
@@ -187,8 +208,8 @@ crossvalidation = function(formula,
                deviance = d, p)
   }, X = mod, Y = test[]), silent = FALSE)
   
-  if ("try-error" %in% class(estimators)) {
-    estimators = matrix(0, nrow = k, ncol = 7, byrow = TRUE)
+  if (inherits(estimators, 'try-error')) {
+    stop('Cross-validation estimator calculation failed; no scores returned')
   }
   
   nms = dimnames(estimators)[[1]]
@@ -200,8 +221,12 @@ crossvalidation = function(formula,
   # and the predictions
   preds =  mapply(function(X, Y) {
     try(predict(X, newdata = Y), silent = TRUE)
-  }, X = model, Y = test[])
+  }, X = mod, Y = test[])
   
+  if (any(vapply(as.list(preds), inherits, logical(1), what = 'try-error'))) {
+    stop('Prediction failed for one or more cross-validation folds')
+  }
+
   # if model is pltree take the kendall correlation
   if (model == "pltree") {
     
