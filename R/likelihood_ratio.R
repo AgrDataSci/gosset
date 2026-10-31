@@ -27,7 +27,9 @@
 #' @export
 likelihood_ratio = function(x, split, ...) {
   
-  if (length(split) != nrow(x) || anyNA(split)) {
+  # NROW() covers both rankings (a matrix) and grouped_rankings (a vector
+  # of group indices, for which nrow() is NULL)
+  if (length(split) != NROW(x) || anyNA(split)) {
     stop('split must have one non-missing value per ranking observation')
   }
   if (length(unique(split)) < 2L) {
