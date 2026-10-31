@@ -62,8 +62,8 @@ column \code{Pr(>|z|)} whatever the alternative}
 
 \item{nboot}{integer, the size of the bootstrap sample}
 
-\item{seed}{integer, the seed for random number generation. If NULL (the default),
-gosset will set the seed randomly}
+\item{seed}{integer, the seed for random number generation. If NULL
+(the default), the current random number stream is used}
 
 \item{split}{a vector indicating the splitting rule for the test}
 
@@ -94,6 +94,15 @@ and the possibility to remove zeros from incomplete ranks
 
 Perform a pairwise permutation test to assess statistical differences 
 in Kendall's Tau correlation between two or more groups.
+}
+\details{
+\code{kendallTau_bootstrap()} resamples the rows (participants) with
+replacement \code{nboot} times and returns the pair-weighted average tau
+of each resample. The spread of these values estimates the sampling
+variability of the average tau, for example to draw boxplots by trait.
+Rows with fewer than two ranked items, or with tau = NA, are dropped
+first. When \code{seed} is given, the resamples are reproducible and the
+caller's random number stream is left unchanged.
 }
 \examples{
 
@@ -146,6 +155,10 @@ kendallTau(R, R2, average = FALSE)
 kendallTau(R, R2, average = TRUE)
 
 kendallTau(R, R2, average = TRUE, na.omit = TRUE)
+
+# Variability of the average tau across participants
+boot = kendallTau_bootstrap(R, preds, nboot = 200, seed = 1)
+quantile(boot, c(0.025, 0.5, 0.975))
 
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 set.seed(42)

@@ -67,3 +67,41 @@ test_that("z is calibrated under no association in many random triads", {
   expect_lt(stats::sd(z), 1.15)
   expect_lt(mean(abs(z) > 1.96), 0.10)
 })
+
+test_that("kendallTau_bootstrap resamples participants", {
+  set.seed(21)
+  n = 500
+  x = t(replicate(n, sample(1:3)))
+  y = t(replicate(n, sample(1:3)))
+  
+  b = kendallTau_bootstrap(x, y, nboot = 400, seed = 3)
+  expect_length(b, 400)
+  expect_true(all(b >= -1 & b <= 1))
+  
+  # centred on the average tau
+  kt = kendallTau(x, y)
+  expect_lt(abs(mean(b) - kt$kendallTau), 0.01)
+  
+  # spread close to the null standard error of the average tau
+  # (variance of tau for one triad is 2 * 11 / (9 * 6))
+  se = sqrt(2 * 11 / (9 * 3 * 2) / n)
+  expect_gt(sd(b) / se, 0.8)
+  expect_lt(sd(b) / se, 1.2)
+})
+
+test_that("kendallTau_bootstrap is reproducible and keeps the caller's RNG", {
+  x = t(replicate(50, sample(1:3)))
+  y = t(replicate(50, sample(1:3)))
+  set.seed(5)
+  before = runif(1)
+  set.seed(5)
+  b1 = kendallTau_bootstrap(x, y, nboot = 20, seed = 9)
+  after = runif(1)
+  expect_equal(before, after)
+  expect_equal(b1, kendallTau_bootstrap(x, y, nboot = 20, seed = 9))
+})
+
+test_that("kendallTau_bootstrap needs at least two rankings", {
+  expect_error(kendallTau_bootstrap(matrix(1:3, 1), matrix(3:1, 1)),
+               "at least two")
+})

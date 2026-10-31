@@ -1,63 +1,79 @@
-gosset (development version)
+gosset 1.6.0 (2026-10-31)
 =========================
 
-### BUG FIXES
+This release corrects statistical errors found in a review of the package.
+Some results change. Check the items under CHANGES IN RESULTS before
+comparing with analyses run on earlier versions.
 
-* `crossvalidation()` now reports Kendall's tau for Plackett-Luce trees on the
-  held-out test set. Earlier versions compared each model's predictions with
-  its own training rankings, so the reported tau was an in-sample measure and
-  will be lower, and more honest, from this version on.
-* `crossvalidation()` keeps folds aligned with the data when rows are dropped
-  for missing values, accepts folds given as a list of training rows without
-  failing, stops with an error when a model or a score cannot be computed
-  (instead of returning zeros), fits models without requiring the user to
-  attach their package, and no longer changes the caller's random number
-  stream when `seed` is given.
-* `likelihood_ratio()` checks the `split` vector, accepts grouped rankings
-  as in its documented example, passes `...` to `PlackettLuce()` and computes
-  the p-value with `lower.tail = FALSE`.
-* `preference_index()` counts each item once per set. Earlier versions
-  inflated `n` by the number of other items in each set and gave larger sets
-  more weight in the averages. Sets with a single ranked item are skipped.
-  The bottom probability is computed exactly by recursion over subsets.
-* `rank_tricot2()` reads factor ranks by their values and gains
-  `strict = FALSE`, an opt-in check for missing, duplicated, tied and
-  non-consecutive ranks.
+### CHANGES IN RESULTS
 
-* `regret()` assigns each regret to the right item when nodes are not in
-  sorted order (for example terminal node 10 before node 3), which affected
-  trees with node ids of 10 or more, and reports `worthSE` and `regretSE`
-  for the right items.
-* `kendallTau()` on matrices treats each row (participant) as an
-  independent ranking when testing the average tau. Earlier versions
-  pooled all pairs into one ranking of N_effective items, which
-  understated precision: with 2,000 random triads the z-values had a
-  standard deviation of about 0.2 instead of 1, so real associations were
-  often reported as not significant. Expect larger z-values and smaller
-  p-values for trials with many participants.
+* `kendallTau()` on matrices tests the average tau with each row
+  (participant) as an independent ranking, and weights rows by their
+  number of pairs. Earlier versions pooled all pairs into one ranking of
+  `N_effective` items, which understated precision. With 2,000 random
+  triads the z-values had a standard deviation of about 0.2 instead of 1,
+  so real associations were often reported as not significant. Expect
+  larger z-values and smaller p-values in trials with many participants.
+  Average tau is unchanged for complete triads. `N_effective` is still
+  reported, for reference only.
 * `kendallTau()` gains `alternative = c("two.sided", "greater", "less")`.
-  The default is now two-sided (earlier versions reported a one-sided
-  p-value for a positive association). The column name `Pr(>|z|)` is
+  The default is now two-sided. Earlier versions reported a one-sided
+  p-value for a positive association. The column name `Pr(>|z|)` is
   unchanged. `null.rm` is now passed from the matrix method to each row.
+* `crossvalidation()` reports Kendall's tau for Plackett-Luce trees on the
+  held-out test set. Earlier versions compared predictions with the
+  training rankings, an in-sample measure. Values will be lower and
+  honest.
+* `preference_index()` counts each item once per set. Earlier versions
+  inflated `n` by the number of other items in each set and gave larger
+  sets more weight in the averages. Sets with a single ranked item are
+  skipped. The bottom probability is computed exactly by recursion over
+  subsets.
+* `regret()` assigns each regret to the right item when nodes are not in
+  sorted order (for example terminal node 10 before node 3). This affected
+  trees with node ids of 10 or more, including `worthSE` and `regretSE`.
 * `regret()` weights nodes by their share of observations for `pltree`
   objects, and models by their number of rankings for lists of
   `PlackettLuce` models, so a small node no longer counts as much as a
-  large one. Worst regret, a worst case, is not weighted. Weights can be
-  set with the new `node.weights` argument; equal weights reproduce the
+  large one. Worst regret, a worst case, is not weighted. The new
+  `node.weights` argument sets weights; equal weights reproduce the
   previous results.
-* `kendallTau()` on matrices weights each row by its number of pairs and
-  computes the effective N from the total number of pairs. Results for
-  complete triads are unchanged; rows with two, four or more items were
-  weighted wrongly before.
-* `anova()` for PlackettLuce models no longer rounds the log-likelihood
+* `anova()` for Plackett-Luce models no longer rounds the log-likelihood
   difference before computing the statistic, and computes the p-value
   with `lower.tail = FALSE`.
+* `likelihood_ratio()` computes the p-value with `lower.tail = FALSE`.
+
+* `kendallTau_bootstrap()` resamples participants with replacement and
+  returns the pair-weighted average tau of each resample. Earlier versions
+  computed tau on only four subsets of the data and bootstrapped those four
+  values, which gave a poor estimate of the variability of tau. The
+  function also reset the random number stream; with `seed` it now leaves
+  the caller's stream unchanged, and without `seed` it uses the current
+  stream. Arguments and output format are unchanged.
+
+### BUG FIXES
+
+* `crossvalidation()` keeps folds aligned with the data when rows are
+  dropped for missing values, accepts folds given as a list of training
+  rows, stops with an error when a model or a score cannot be computed
+  (instead of returning zeros), and no longer changes the caller's random
+  number stream when `seed` is given. The package of the model (for
+  example 'PlackettLuce' or 'gnm') must be attached, and the function
+  says so when it is not.
+* `likelihood_ratio()` checks the `split` vector, accepts grouped rankings
+  as in its documented example and passes `...` to `PlackettLuce()`.
+* `rank_tricot2()` reads factor ranks by their values and gains
+  `strict = FALSE`, an opt-in check for missing, duplicated, tied and
+  non-consecutive ranks.
 * `rank_tricot()` warns when the same item appears twice in a row.
 
-### TESTS
+### TESTS AND DOCUMENTATION
 
-* Added unit tests in `tests/testthat` for these functions, run by
-  `R CMD check`.
+* Unit tests in `tests/testthat` cover these functions and run under
+  `R CMD check`, including a simulation of the null distribution of
+  `kendallTau()`.
+* Added an R CMD check workflow for Linux, macOS and Windows, and
+  `AGENTS.md`, a guide for AI agents working on the package.
 
 gosset 1.5.1 (2025-11-19)
 =========================

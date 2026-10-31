@@ -7,7 +7,7 @@
   "codeRepository": "https://agrdatasci.github.io/gosset/",
   "issueTracker": "https://github.com/agrdatasci/gosset/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
