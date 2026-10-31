@@ -4,7 +4,7 @@
 \alias{rank_tricot2}
 \title{Build Plackett-Luce rankings from tricot ranking dataset}
 \usage{
-rank_tricot2(data, id, items, input, ...)
+rank_tricot2(data, id, items, input, strict = FALSE, ...)
 }
 \arguments{
 \item{data}{a data.frame with columns specified by items and input values}
@@ -16,6 +16,11 @@ containing the item names in \code{data}}
 
 \item{input}{a character or numerical vector for indexing the column(s) 
 containing the values in \code{data} to be ranked}
+
+\item{strict}{logical. If \code{TRUE}, reject missing or duplicate
+id/item/rank records and require positive integer ranks with no ties
+within an id. Defaults to \code{FALSE} to preserve the legacy
+warning-and-skip behaviour}
 
 \item{...}{additional arguments passed to methods. See details}
 }

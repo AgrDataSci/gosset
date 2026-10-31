@@ -6,7 +6,11 @@
 #' @family rank functions
 #' @param id an index of \code{data} indicating the id column
 #' @inheritParams rank_tricot
-#' @param strict logical. If TRUE, reject missing or duplicate id/item/rank\n#'   records and require positive integer ranks with no ties within an id.\n#'   Defaults to FALSE to preserve legacy warning-and-skip behavior.\n#' @param ... additional arguments passed to methods. See details
+#' @param strict logical. If \code{TRUE}, reject missing or duplicate
+#'   id/item/rank records and require positive integer ranks with no ties
+#'   within an id. Defaults to \code{FALSE} to preserve the legacy
+#'   warning-and-skip behaviour
+#' @param ... additional arguments passed to methods. See details
 #' @return a PlackettLuce "rankings" object, which is a matrix of dense rankings 
 #' @seealso \code{\link[PlackettLuce]{rankings}}, \code{\link{nicabean}}
 #' @references 
