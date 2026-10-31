@@ -48,7 +48,9 @@ Suggests:
     gnm,
     knitr,
     psychotree,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0)
 Language: en-GB
 RoxygenNote: 7.3.2
+Config/testthat/edition: 3
 VignetteBuilder: knitr

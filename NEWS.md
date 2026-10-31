@@ -1,3 +1,34 @@
+gosset (development version)
+=========================
+
+### BUG FIXES
+
+* `crossvalidation()` now reports Kendall's tau for Plackett-Luce trees on the
+  held-out test set. Earlier versions compared each model's predictions with
+  its own training rankings, so the reported tau was an in-sample measure and
+  will be lower, and more honest, from this version on.
+* `crossvalidation()` keeps folds aligned with the data when rows are dropped
+  for missing values, accepts folds given as a list of training rows without
+  failing, stops with an error when a model or a score cannot be computed
+  (instead of returning zeros), fits models without requiring the user to
+  attach their package, and no longer changes the caller's random number
+  stream when `seed` is given.
+* `likelihood_ratio()` checks the `split` vector, accepts grouped rankings
+  as in its documented example, passes `...` to `PlackettLuce()` and computes
+  the p-value with `lower.tail = FALSE`.
+* `preference_index()` counts each item once per set. Earlier versions
+  inflated `n` by the number of other items in each set and gave larger sets
+  more weight in the averages. Sets with a single ranked item are skipped.
+  The bottom probability is computed exactly by recursion over subsets.
+* `rank_tricot2()` reads factor ranks by their values and gains
+  `strict = FALSE`, an opt-in check for missing, duplicated, tied and
+  non-consecutive ranks.
+
+### TESTS
+
+* Added unit tests in `tests/testthat` for these functions, run by
+  `R CMD check`.
+
 gosset 1.5.1 (2025-11-19)
 =========================
 
