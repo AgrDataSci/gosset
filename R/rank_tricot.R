@@ -122,6 +122,14 @@ rank_tricot = function(data,
     items[is.na(items)] = "pseudoitem"
   }
   
+  # the same item tested twice in one row cannot be ranked
+  dup_items = apply(as.matrix(items), 1, function(z) anyDuplicated(z[z != "pseudoitem"]) > 0)
+  if (any(dup_items)) {
+    warning("The same item appears more than once in rows ",
+            paste(which(dup_items), collapse = ", "),
+            ". Only one ranking is kept for that item in these rows\n")
+  }
+  
   # validate rankings, and set to 0 if required
   keep = .validate_rankings(input)
   
