@@ -1,9 +1,12 @@
 <!-- badges: start -->
 [![CRAN](https://www.r-pkg.org/badges/version/gosset)](https://cran.r-project.org/package=gosset)
-[![cran checks](https://badges.cranchecks.info/worst/gosset.svg)](https://cran.r-project.org/web/checks/check_results_gosset.html)
-[![Downloads](https://cranlogs.r-pkg.org/badges/gosset)](https://cran.r-project.org/package=gosset) 
+[![CRAN checks](https://badges.cranchecks.info/worst/gosset.svg)](https://cran.r-project.org/web/checks/check_results_gosset.html)
+[![Downloads](https://cranlogs.r-pkg.org/badges/gosset)](https://cran.r-project.org/package=gosset)
 [![DOI](https://zenodo.org/badge/173807877.svg)](https://zenodo.org/badge/latestdoi/173807877)
-[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![R-CMD-check](https://github.com/AgrDataSci/gosset/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AgrDataSci/gosset/actions/workflows/R-CMD-check.yaml)
+[![ProjStatus](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/AgrDataSci/gosset/blob/master/LICENSE.md)
 <!-- badges: end -->
 
 # *gosset*: Tools for Data Analysis in Experimental Agriculture <img align="right" src="man/figures/logo.png">
