@@ -1,3 +1,18 @@
+gosset (development version)
+=========================
+
+### CHANGES IN RESULTS
+
+* `likelihood_ratio()` computes the degrees of freedom as the sum of the
+  ranks of the group models minus the rank of the global model. Earlier
+  versions used the difference in residual degrees of freedom. 
+  PlackettLuce counts residual df from the possible selections in each 
+  choice set, which depend on the largest tie order in the data. When 
+  groups differed in tie structure, the residual df were not additive and
+  the test could get thousands of spurious degrees of freedom and a 
+  p-value near 1. Results are unchanged when all groups share the same 
+  tie structure. Reported by Sergio Castro Pacheco (CIRAD).
+
 gosset 1.6.0 (2026-10-31)
 =========================
 
