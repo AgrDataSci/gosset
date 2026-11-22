@@ -37,3 +37,8 @@ vignettes/*.tex
 *.pdf
 *.doc
 *.docx
+
+# local test output
+tree_test.png
+*.Rcheck/
+gosset_*.tar.gz
