@@ -42,9 +42,7 @@
 #'                   id = 1,
 #'                   group = TRUE)
 #' 
-#' @importFrom tidyr gather spread
 #' @importFrom PlackettLuce as.rankings group
-#' @importFrom lifecycle deprecate_soft 
 #' @export
 rank_numeric = function(data, items, input, 
                         id = NULL, 
@@ -52,15 +50,10 @@ rank_numeric = function(data, items, input,
                         ascending = FALSE, 
                         ...) {
   
-  lifecycle::deprecate_soft(
-    when = "1.5.1",         
-    what  = "gosset::rank_numeric()",
-    with  = "gosset::rank_tricot2()",
-    details = paste(
-      "rank_numeric() is deprecated for tricot data.",
-      "Use rank_tricot2(), which optmizes tricot block/item order and sparse inputs."
-    )
-  )
+  .deprecate_once("rank_numeric",
+                  paste("rank_numeric() was deprecated in gosset 1.5.1",
+                        "for tricot data. Use rank_tricot2(), which handles",
+                        "tricot block and item order and sparse inputs."))
   
   
   if (class(data)[1] != "data.frame") {
@@ -114,25 +107,15 @@ rank_numeric = function(data, items, input,
       r[is.na(r)] = 0
     }
     
-    # combine items with rankings
-    r = cbind(id, items, r)
+    # put rankings into a long format, one row per id and item
+    id = if (is.data.frame(id)) id[[1]] else id
+    item = unlist(lapply(items, as.character), use.names = FALSE)
+    rank = as.numeric(unlist(r, use.names = FALSE))
     
-    # put rankings into a long format 
-    r = tidyr::gather(r, 
-                      key = "variable",
-                      value = "value",
-                      names(r)[2:ncol(r)])
-    
-    # this vector checks which rows are the ranks and which 
-    # are the item name
-    pr = grepl("PosItem", r[[2]])
-    
-    # create separate vectors and then merge it
-    id = r[pr,"id"]
-    item = r[!pr,"value"]
-    rank = as.numeric(r[pr,"value"])
-    
-    r = data.frame(id, item, rank, stringsAsFactors = FALSE)
+    r = data.frame(id = rep(id, times = nrank), 
+                   item = item, 
+                   rank = rank, 
+                   stringsAsFactors = FALSE)
     
     names(r) = c("id","item","rank")
     
@@ -170,20 +153,9 @@ rank_numeric = function(data, items, input,
     
   }
   
-  # reshape data into wide format
-  r = tidyr::spread(r, item, rank)
-  
-  # replace possible NA's with zeros (0) as required for PlackettLuce
-  r[is.na(r)] = 0
-  
-  # arrange observations by ids
-  r = r[order(r$id), ]
-  
-  # drop id
-  r = r[ ,-match("id", names(r))]
-  
-  # dataframe into matrix
-  r = as.matrix(r)
+  # reshape data into a wide matrix, one row per id (sorted) and one
+  # column per item (sorted), with 0 for items not ranked
+  r = .long_to_wide_rank(r)
   
   
   # make a PlackettLuce rankings

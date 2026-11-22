@@ -410,14 +410,15 @@ build_tree_nodes = function(x,
                                y = items,
                                label = group)) +
     ggplot2::geom_vline(xintercept = xinter, 
-                        colour = "#E5E7E9", size = 0.8) +
+                        colour = "#E5E7E9", linewidth = 0.8) +
     ggplot2::geom_text(ggplot2::aes(label = group),
                        hjust = 0.5, vjust = -1) +
     ggplot2::geom_point(pch = 21, size = 2, 
                         fill = "black",colour = "black") +
-    ggplot2::geom_errorbarh(ggplot2::aes(xmin = bmin,
-                                         xmax = bmax),
-                            colour="black", height = 0.1) +
+    ggplot2::geom_errorbar(ggplot2::aes(xmin = bmin,
+                                        xmax = bmax),
+                           orientation = "y",
+                           colour = "black", width = 0.1) +
     ggplot2::scale_x_continuous(limits = c(xmin, xmax),
                                 breaks = xbreaks,
                                 labels = xlabs) +
@@ -437,9 +438,9 @@ build_tree_nodes = function(x,
                    plot.background = ggplot2::element_blank(),
                    panel.grid.major = ggplot2::element_blank(),
                    panel.grid.minor = ggplot2::element_blank(),
-                   panel.border = ggplot2::element_rect(colour = "black", size = 1),
-                   axis.ticks = ggplot2::element_line(colour = "black", size = 0.5),
-                   axis.ticks.length = grid::unit(0.3, "cm"))
+                   panel.border = ggplot2::element_rect(colour = "black", linewidth = 1),
+                   axis.ticks = ggplot2::element_line(colour = "black", linewidth = 0.5),
+                   axis.ticks.length = ggplot2::unit(0.3, "cm"))
   
   
 }

@@ -39,3 +39,8 @@ test_that("plot() on a pltree returns a combined plot", {
   expect_s3_class(p, "patchwork")
   expect_no_error(print(p))
 })
+
+test_that("node panels draw without ggplot2 deprecation warnings", {
+  p = plot(tree)
+  expect_no_warning(print(p))
+})

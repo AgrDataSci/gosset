@@ -31,21 +31,18 @@ Depends:
     R (>= 3.5.0), 
     methods
 Imports: 
-    BradleyTerry2,
-    DescTools,
-    ggplot2,
-    ggrepel,
-    lifecycle,
+    ggplot2 (>= 3.4.0),
     partykit,
     PlackettLuce,
     psychotools, 
     qvcalc,
     stats, 
-    tidyr,
     utils,
     patchwork,
     parallel
 Suggests:
+    BradleyTerry2,
+    ggrepel,
     climatrends,
     ClimMobTools,
     chirps,

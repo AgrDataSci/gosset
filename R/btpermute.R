@@ -62,7 +62,6 @@
 #' 
 #' mod
 #' 
-#' @importFrom BradleyTerry2 BTm
 #' @importFrom stats deviance formula
 #' @export
 btpermute <- function(contests = NULL,
@@ -70,6 +69,12 @@ btpermute <- function(contests = NULL,
                       n.iterations = 15, 
                       seed = NULL, 
                       ...){
+  
+  if (!requireNamespace("BradleyTerry2", quietly = TRUE)) {
+    stop("btpermute() requires the package 'BradleyTerry2'. ",
+         "Install it with install.packages(\"BradleyTerry2\")", 
+         call. = FALSE)
+  }
   
   # define/set a seed to ensure reproducibility 
   if (is.null(seed)) {

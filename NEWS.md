@@ -1,7 +1,24 @@
 gosset (development version)
 =========================
 
+### DEPENDENCIES
+
+* Fewer dependencies. DescTools, tidyr and lifecycle are no longer used.
+  `kendallW()` computes W in base R, `rank_numeric()` reshapes data in 
+  base R, and the soft deprecation of `rank_numeric()` is a base R 
+  warning given once per session.
+* BradleyTerry2 and ggrepel move to Suggests. `btpermute()` asks for 
+  BradleyTerry2 when it is missing. `compare()` uses ggrepel for the 
+  labels when it is installed and `geom_text()` otherwise.
+* ggplot2 (>= 3.4.0) is required, for `linewidth`.
+
 ### BUG FIXES
+
+* `plot()` on `PlackettLuce` and `pltree` objects no longer gives 
+  ggplot2 deprecation warnings. `geom_errorbarh()` is replaced by 
+  `geom_errorbar(orientation = "y")` and `size` by `linewidth` for lines.
+* `grid::unit()` was used without grid being declared, and is now 
+  `ggplot2::unit()`.
 
 * `plot()` on a `pltree` object failed with "`mapping` must be created by 
   `aes()`" under current ggplot2 releases. The error came from ggparty, 
@@ -13,6 +30,14 @@ gosset (development version)
   labels look slightly different from the ggparty version.
 
 ### CHANGES IN RESULTS
+
+* `kendallW()` now uses only the items each participant ranked. Observed
+  rankings mark unranked items with 0, and earlier versions kept those 
+  zeros as tied ranks against the predicted ranks of all items. With 
+  tricot data, where each participant ranks three of many items, this 
+  distorted W. Expect different values for trees fitted on tricot data.
+  Rows with fewer than two ranked items are skipped. Results on complete
+  rankings are unchanged.
 
 * `likelihood_ratio()` computes the degrees of freedom as the sum of the
   ranks of the group models minus the rank of the global model. Earlier

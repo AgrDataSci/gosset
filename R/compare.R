@@ -25,7 +25,6 @@
 #' @importFrom methods addNextMethod asMethodDefinition assignClassDef
 #' @importFrom ggplot2 geom_hline geom_point
 #' @importFrom stats coefficients sd
-#' @importFrom ggrepel geom_text_repel
 #' @export
 compare = function(x, y, ...){
   
@@ -58,6 +57,13 @@ compare.default = function(x, y, labels = NULL, ...){
   aver = comp$aver
   item = comp$item
   
+  # use ggrepel for the labels when it is installed
+  if (requireNamespace("ggrepel", quietly = TRUE)) {
+    text_layer = ggrepel::geom_text_repel()
+  } else {
+    text_layer = ggplot2::geom_text(vjust = -0.8)
+  }
+  
   diff_plot = 
     ggplot2::ggplot(comp,
                     ggplot2::aes(x = aver, y = diff, label = item)) +
@@ -66,7 +72,7 @@ compare.default = function(x, y, labels = NULL, ...){
     ggplot2::geom_hline(yintercept = mean(comp$diff), col = "red") +
     ggplot2::geom_point() +
     ggplot2::theme_bw() +
-    ggrepel::geom_text_repel() +
+    text_layer +
     ggplot2::theme(panel.grid = ggplot2::element_blank(),
                    text = ggplot2::element_text(size = 15),
                    axis.text = ggplot2::element_text(size = 13, color = "grey20", face = 2),
