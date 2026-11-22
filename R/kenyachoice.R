@@ -1,4 +1,4 @@
-#' Kenyan farmers’ preferences for agricultural and livelihood practices
+#' Kenyan farmers' preferences for agricultural and livelihood practices
 #' 
 #' Data from a preference experiment in Makueni County, Kenya. Twenty-six 
 #'  smallholder farmers ordered 9 different livelihood improvement practices
@@ -25,6 +25,6 @@
 #'  }
 #' @source 
 #' Steinke, J., et. al. (2019). 
-#' Computers and Electronics in Agriculture, 162, 991–1000.
+#' Computers and Electronics in Agriculture, 162, 991-1000.
 #' \doi{https://doi.org/10.1016/j.compag.2019.05.026}
 "kenyachoice"

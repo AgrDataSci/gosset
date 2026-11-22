@@ -19,7 +19,7 @@
 #' \item{win2}{number of times player2 wins against player1}
 #' @references 
 #' Turner H. & Firth D. (2012). 
-#' Journal of Statistical Software, 48(9), 1–21. 
+#' Journal of Statistical Software, 48(9), 1-21. 
 #' \doi{https://doi.org/10.18637/jss.v048.i09}
 #' 
 #' @examples 

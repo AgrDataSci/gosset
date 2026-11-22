@@ -13,7 +13,7 @@
 #' @return the reliability based on the worth parameters
 #' @author Kauê de Sousa, David Brown, Jacob van Etten
 #' @references 
-#'  Eskridge and Mumm (1992). Theoret. Appl. Genetics 84, 494–500 \doi{10.1007/BF00229512}.
+#'  Eskridge and Mumm (1992). Theoret. Appl. Genetics 84, 494-500 \doi{10.1007/BF00229512}.
 #' @examples
 #' # Case 1. vector example
 #' 

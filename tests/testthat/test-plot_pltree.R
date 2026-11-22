@@ -1,3 +1,7 @@
+# pltree() finds the internal plfit() by name, so PlackettLuce must be
+# attached. Do not rely on another test file attaching it first.
+suppressPackageStartupMessages(library("PlackettLuce"))
+
 data("beans", package = "PlackettLuce")
 
 G = rank_tricot(data = beans,
