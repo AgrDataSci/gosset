@@ -21,8 +21,8 @@ gosset is an R package for analysing data from experimental agriculture, mainly 
 | Explain differences in rankings by covariates (climate, gender, location) | `PlackettLuce::pltree()` | Then `node_labels()`, `node_rules()`, `top_items()` and `plot()` to describe the tree. |
 | Compare models out of sample | `crossvalidation()` | Returns AIC, deviance, pseudo R-squared and, for trees, Kendall's tau per fold. |
 | Test whether rankings differ between groups | `likelihood_ratio()` | Asymptotic chi-square test. Treat p-values from small or sparse groups with caution. |
-| Select covariates | `btpermute()`, `akaike_weights()` | |
-| Agreement between rankings or traits | `kendallTau()`, `kendallTau_bootstrap()`, `kendallTau_permute()`, `kendallW()`, `compare()` | |
+| Select covariates | `btpermute()`, `akaike_weights()` | `btpermute()` needs the suggested package BradleyTerry2. |
+| Agreement between rankings or traits | `kendallTau()`, `kendallTau_bootstrap()`, `kendallTau_permute()`, `kendallW()`, `compare()` | Since 2.0.0, `kendallW()` uses only the items each participant ranked. |
 | Summarise item performance for reports | `preference_index()`, `pairwise_probs()`, `reliability()` | `reliability()` compares each item with a check. |
 | Risk across environments | `regret()` | Worst regret, a conservative criterion for choosing varieties. |
 | Plot worth | `worth_map()`, `worth_bar()` | |
@@ -41,7 +41,7 @@ Example data: `nicabean` (long format bean trial), `breadwheat`, `cassava`, `ken
 
 ## Changing the package
 
-- Use `=` for assignment, not `<-`. Use base R where possible.
+- Use `=` for assignment, not `<-`. Use base R where possible. Do not add a package to Imports for one or two calls. Use base R, or put the package in Suggests and check it with `requireNamespace()`.
 - Document with roxygen and run `devtools::document()`. Never edit files in `man/` by hand.
 - Every fix needs a test in `tests/testthat/` that fails before the fix and passes after it. Run `devtools::test()` and `devtools::check()`, and report what was actually run. Never claim a change works without running it.
 - Keep changes backwards compatible, or record the break in `NEWS.md` with the reason. Changes that alter results (estimates, p-values, counts) always go in `NEWS.md`.
