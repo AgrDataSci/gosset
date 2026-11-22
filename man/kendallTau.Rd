@@ -186,7 +186,7 @@ kendallTau_permute(x, y,
 \dontshow{\}) # examplesIf}
 }
 \references{
-Kendall M. G. (1938). Biometrika, 30(1–2), 81–93. 
+Kendall M. G. (1938). Biometrika, 30(1-2), 81-93. 
 \doi{https://doi.org/10.1093/biomet/30.1-2.81}
 }
 \seealso{

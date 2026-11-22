@@ -79,7 +79,7 @@ reliability(tree, ref = "Local")
 }
 }
 \references{
-Eskridge and Mumm (1992). Theoret. Appl. Genetics 84, 494–500 \doi{10.1007/BF00229512}.
+Eskridge and Mumm (1992). Theoret. Appl. Genetics 84, 494-500 \doi{10.1007/BF00229512}.
 }
 \author{
 Kauê de Sousa, David Brown, Jacob van Etten

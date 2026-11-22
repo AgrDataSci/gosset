@@ -97,7 +97,7 @@ head(G)
 
 }
 \references{
-van Etten J., et al. (2016). Experimental Agriculture, 55(S1), 275–296.
+van Etten J., et al. (2016). Experimental Agriculture, 55(S1), 275-296.
 \doi{https://doi.org/10.1017/S0014479716000739}
 }
 \seealso{

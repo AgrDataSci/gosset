@@ -56,7 +56,7 @@ The selection procedure consists of two steps. In the first step, \code{btpermut
  using argument \code{seed}. Across the n \code{n.iterations}, the function 
  identifies the predictor that appeared most often as the most deviance-reducing 
  one. When this is a real variable, it is constantly added to the model and 
- the forward selection procedure moves on – again creating new permutations, 
+ the forward selection procedure moves on - again creating new permutations, 
  adding real and fake variables individually, and examining model deviance. 
  Variable selection stops when a permuted variable is found to be most 
  frequently the most deviance-reducing \code{predictors} across \code{n.iterations}. 

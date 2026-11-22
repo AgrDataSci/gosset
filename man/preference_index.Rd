@@ -25,7 +25,7 @@ A \code{gosset_df} (data.frame subclass) with columns:
 }
 \description{
 Computes a preference index for each item in a ranking 
-using Plackett–Luce worth parameters. For each item, the function
+using Plackett-Luce worth parameters. For each item, the function
 estimates the probability of being ranked at the top or bottom
 of the sets in which it appears, and calculates a net winning
 probability as the difference between top and bottom probabilities.
@@ -33,7 +33,7 @@ probability as the difference between top and bottom probabilities.
 \details{
 The preference index provides a model-based summary of performance
 across all ranking sets. Probabilities are derived from the fitted
-Plackett–Luce worth parameters, normalized to sum to one.
+Plackett-Luce worth parameters, normalized to sum to one.
 
 For each item:
 \itemize{
@@ -44,7 +44,7 @@ For each item:
   \item \code{net_winning_probs} is the difference
   \code{top_probs - bottom_probs}, a relative preference score.
   \item \code{worth} is the normalized worth parameter from the
-  Plackett–Luce model.
+  Plackett-Luce model.
 }
 
 The output is ordered by descending net winning probability,

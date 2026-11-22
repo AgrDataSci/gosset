@@ -122,7 +122,7 @@ The Economic Journal, 92(368), 805.
 \doi{https://doi.org/10.2307/2232669}
 
 Bleichrodt H. & Wakker P. P. (2015). 
-The Economic Journal, 125(583), 493–532. 
+The Economic Journal, 125(583), 493-532. 
 \doi{https://doi.org/10.1111/ecoj.12200}
 }
 \author{

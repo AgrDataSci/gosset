@@ -50,7 +50,7 @@ PC = set_paircomp(R)
 }
 \references{
 Strobl C., Wickelmaier F. & Zeileis A. (2011). 
-Journal of Educational and Behavioral Statistics, 36(2), 135–153.
+Journal of Educational and Behavioral Statistics, 36(2), 135-153.
 doi:10.3102/1076998609359791
 }
 \seealso{

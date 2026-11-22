@@ -3,7 +3,7 @@
 \docType{data}
 \name{kenyachoice}
 \alias{kenyachoice}
-\title{Kenyan farmers’ preferences for agricultural and livelihood practices}
+\title{Kenyan farmers' preferences for agricultural and livelihood practices}
 \format{
 A list with two dataframes. \code{kenyachoice[["contests"]]} contains 
  the pairwise rankings from farmers choices. \code{kenyachoice[["predictors"]]}
@@ -23,7 +23,7 @@ A list with two dataframes. \code{kenyachoice[["contests"]]} contains
 }
 \source{
 Steinke, J., et. al. (2019). 
-Computers and Electronics in Agriculture, 162, 991–1000.
+Computers and Electronics in Agriculture, 162, 991-1000.
 \doi{https://doi.org/10.1016/j.compag.2019.05.026}
 }
 \usage{

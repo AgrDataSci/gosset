@@ -50,7 +50,7 @@ names(models[which.max(aw$akaike_weights)])
 }
 \references{
 Wagenmakers E. J. & Farrell S. (2004). 
-Psychonomic Bulletin and Review, 11(1), 192–196. 
+Psychonomic Bulletin and Review, 11(1), 192-196. 
 \doi{https://doi.org/10.3758/BF03206482}
 }
 \author{
