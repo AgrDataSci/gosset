@@ -21,17 +21,22 @@ authors:
   given-names: Kauê
   email: desousa.kaue@gmail.com
   orcid: https://orcid.org/0000-0002-7571-7845
+  affiliation: "Bioversity International; University of Inland Norway"
 - family-names: van Etten
   given-names: Jacob
   orcid: https://orcid.org/0000-0001-7554-2558
+  affiliation: "Bioversity International"
 - family-names: Brown
   given-names: David
+  affiliation: "Cornell University"
   orcid: https://orcid.org/0000-0003-2859-1618
 - family-names: Steinke
   given-names: Jonathan
+  affiliation: "Bioversity International"
   orcid: https://orcid.org/0000-0001-5742-702X
 - family-names: van Heerwaarden
   given-names: Joost
+  affiliation: "Wageningen University and Research"
   orcid: https://orcid.org/0000-0002-4959-3914
 preferred-citation:
   type: article
