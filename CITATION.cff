@@ -1,0 +1,71 @@
+# --------------------------------------------
+# CITATION file created with {cffr} R package
+# See also: https://docs.ropensci.org/cffr/
+# --------------------------------------------
+
+cff-version: 1.2.0
+message: 'To cite package "gosset" in publications use:'
+type: software
+license: MIT
+title: 'gosset: Tools for Data Analysis in Experimental Agriculture'
+version: 2.0.0
+abstract: Methods to analyse experimental agriculture data, from data synthesis to
+  model selection and visualisation, with a focus on ranking data from decentralised
+  on-farm trials with the 'tricot' approach (van Etten et al. 2019 <doi:10.1017/S0014479716000739>).
+  Includes tools to build rankings, fit and cross-validate Plackett-Luce models and
+  trees, compare traits with Kendall's tau, and summarise results as worth, regret
+  and preference indices. The package is named after W.S. Gosset aka 'Student', a
+  pioneer of modern statistics in small sample experimental design and analysis.
+authors:
+- family-names: de Sousa
+  given-names: Kauê
+  email: desousa.kaue@gmail.com
+  orcid: https://orcid.org/0000-0002-7571-7845
+- family-names: van Etten
+  given-names: Jacob
+  orcid: https://orcid.org/0000-0001-7554-2558
+- family-names: Brown
+  given-names: David
+  orcid: https://orcid.org/0000-0003-2859-1618
+- family-names: Steinke
+  given-names: Jonathan
+  orcid: https://orcid.org/0000-0001-5742-702X
+- family-names: van Heerwaarden
+  given-names: Joost
+  orcid: https://orcid.org/0000-0002-4959-3914
+preferred-citation:
+  type: article
+  title: 'gosset: An R Package for Analysis and Synthesis of Ranking Data in Agricultural
+    Experimentation'
+  authors:
+  - family-names: de Sousa
+    given-names: Kauê
+  - family-names: van Etten
+    given-names: Jacob
+  - family-names: Brown
+    given-names: David
+  - family-names: Steinke
+    given-names: Jonathan
+  doi: 10.1016/j.softx.2023.101402
+  url: https://doi.org/10.1016/j.softx.2023.101402
+  year: '2023'
+  publisher:
+    name: Elsevier BV
+  journal: SoftwareX
+  volume: '22'
+  start: '101402'
+repository: https://CRAN.R-project.org/package=gosset
+repository-code: https://github.com/AgrDataSci/gosset
+url: https://agrdatasci.github.io/gosset/
+contact:
+- family-names: de Sousa
+  given-names: Kauê
+  email: desousa.kaue@gmail.com
+  orcid: https://orcid.org/0000-0002-7571-7845
+keywords:
+- agriculture
+- citizen-science
+- crowdsourcing
+- plackett-luce
+- ranking-data
+- tricot

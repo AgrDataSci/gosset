@@ -107,7 +107,7 @@ The full reference is at <https://agrdatasci.github.io/gosset/>. If you work wit
 
 ## Citation
 
-Get citation information in R with `citation(package = "gosset")`.
+Get citation information in R with `citation(package = "gosset")`, or use **Cite this repository** on the GitHub page, which reads [CITATION.cff](CITATION.cff).
 
 > de Sousa K, Brown D, Steinke J, van Etten J (2023). gosset: An R package for analysis and synthesis of ranking data in agricultural experimentation. *SoftwareX* 22:101402. <https://doi.org/10.1016/j.softx.2023.101402>
 
