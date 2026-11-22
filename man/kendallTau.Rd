@@ -53,12 +53,12 @@ kendallTau_permute(x, y, split, n.permutations = 500)
 \item{na.omit}{logical, if \code{TRUE} ignores entries with kendall = NA 
 when computing the average}
 
+\item{...}{further arguments affecting the Kendall tau produced. See details}
+
 \item{alternative}{the alternative hypothesis, one of \code{"two.sided"}
 (the default), \code{"greater"} (positive association) or
 \code{"less"} (negative association). The p-value is returned in the
 column \code{Pr(>|z|)} whatever the alternative}
-
-\item{...}{further arguments affecting the Kendall tau produced. See details}
 
 \item{nboot}{integer, the size of the bootstrap sample}
 

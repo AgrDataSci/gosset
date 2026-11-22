@@ -41,6 +41,10 @@ kendall = do.call("rbind", kendall)
 
 kendall$trait = traits[-baseline]
 
+## ----kendall-top, include=FALSE-----------------------------------------------
+top = kendall[order(-kendall$kendallTau), ][1:3, ]
+top_txt = paste0(top$trait, " ($\\tau$ = ", round(top$kendallTau, 3), ")")
+
 ## ----kendall2, message=FALSE, eval=TRUE, echo=FALSE---------------------------
 
 kendall = kendall[,c(5, 1:4)]
@@ -92,13 +96,13 @@ worth_map(mod,
        y = "Trait")
 
 ## ----chirps, message=FALSE, eval=FALSE, echo=TRUE-----------------------------
-#  dates = c(min(covar[, "planting_date"]),
-#             max(covar[, "planting_date"]) + 70)
-#  
-#  chirps = get_chirps(covar[, c("longitude","latitude")],
-#                       dates = as.character(dates),
-#                       as.matrix = TRUE,
-#                       server = "ClimateSERV")
+# dates = c(min(covar[, "planting_date"]),
+#            max(covar[, "planting_date"]) + 70)
+# 
+# chirps = get_chirps(covar[, c("longitude","latitude")],
+#                      dates = as.character(dates),
+#                      as.matrix = TRUE,
+#                      server = "ClimateSERV")
 
 ## ----chirps2, message=FALSE, eval=TRUE, echo=FALSE----------------------------
 
@@ -141,7 +145,7 @@ top_items(tree, top = 3)
 plot(tree, ref = "Amadeus 77")
 
 ## ----rel1, message=FALSE, eval=FALSE, echo=TRUE-------------------------------
-#  reliability(tree, ref = "Amadeus 77")
+# reliability(tree, ref = "Amadeus 77")
 
 ## ----rel2, message=FALSE, eval=TRUE, echo=FALSE-------------------------------
 

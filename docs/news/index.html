@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
       </span>
     </div>
 
@@ -61,7 +61,44 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.6.0" id="gosset-160-2026-10-31">gosset 1.6.0 (2026-10-31)<a class="anchor" aria-label="anchor" href="#gosset-160-2026-10-31"></a></h2>
+<h2 class="page-header" data-toc-text="2.0.0" id="gosset-200-2026-11-23">gosset 2.0.0 (2026-11-23)<a class="anchor" aria-label="anchor" href="#gosset-200-2026-11-23"></a></h2>
+<p>This is the first CRAN release since 1.5.1. It includes every change in 1.6.0, which was released on GitHub only, so read both sections when upgrading from CRAN. The major version reflects three things. Several functions return different results after a statistical review, the package drops five dependencies, and tree plots are drawn without ggparty. Function names and arguments are unchanged, and code written for 1.5.1 runs without edits.</p>
+<div class="section level4">
+<h4 id="changes-in-results-2-0-0">CHANGES IN RESULTS<a class="anchor" aria-label="anchor" href="#changes-in-results-2-0-0"></a></h4>
+<ul><li>
+<code><a href="../reference/kendallW.html">kendallW()</a></code> now uses only the items each participant ranked. Observed rankings mark unranked items with 0, and earlier versions kept those zeros as tied ranks against the predicted ranks of all items. With tricot data, where each participant ranks three of many items, this distorted W. Expect different values for trees fitted on tricot data. Rows with fewer than two ranked items are skipped. Results on complete rankings are unchanged.</li>
+<li>
+<code><a href="../reference/likelihood_ratio.html">likelihood_ratio()</a></code> computes the degrees of freedom as the sum of the ranks of the group models minus the rank of the global model. Earlier versions used the difference in residual degrees of freedom. PlackettLuce counts residual df from the possible selections in each choice set, which depend on the largest tie order in the data. When groups differed in tie structure, the residual df were not additive and the test could get thousands of spurious degrees of freedom and a p-value near 1. Results are unchanged when all groups share the same tie structure. Reported by Sergio Castro Pacheco (CIRAD).</li>
+</ul></div>
+<div class="section level4">
+<h4 id="bug-fixes-2-0-0">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-0"></a></h4>
+<ul><li>
+<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> on a <code>pltree</code> object failed with “<code>mapping</code> must be created by <code><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes()</a></code>” under current ggplot2 releases, which caused the CRAN check errors for 1.5.1. The error came from ggparty, which rebuilds <code><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes()</a></code> objects in a way ggplot2 now rejects and which fails its own CRAN checks for the same reason. The tree branches are now drawn with ggplot2 and partykit. The internal <code>build_tree_branches()</code> keeps its signature and still returns a ggplot object, so ClimMob-analysis is unaffected. Edge and node labels look slightly different.</li>
+<li>
+<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> on <code>PlackettLuce</code> and <code>pltree</code> objects no longer gives ggplot2 deprecation warnings. <code><a href="https://ggplot2.tidyverse.org/reference/geom_errorbarh.html" class="external-link">geom_errorbarh()</a></code> is replaced by <code>geom_errorbar(orientation = "y")</code> and <code>size</code> by <code>linewidth</code> for lines.</li>
+<li>
+<code><a href="../reference/btpermute.html">btpermute()</a></code> failed with “subscript out of bounds” when <code>n.iterations</code> was smaller than the number of predictors, because the model formulas were built per iteration instead of per predictor.</li>
+<li>
+<code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">grid::unit()</a></code> was used without grid being declared, and is now <code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">ggplot2::unit()</a></code>.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="dependencies-2-0-0">DEPENDENCIES<a class="anchor" aria-label="anchor" href="#dependencies-2-0-0"></a></h4>
+<ul><li>gosset imports 9 packages instead of 14.</li>
+<li>ggparty is no longer used (see BUG FIXES).</li>
+<li>DescTools, tidyr and lifecycle are no longer used. <code><a href="../reference/kendallW.html">kendallW()</a></code> computes W in base R, <code><a href="../reference/rank_numeric.html">rank_numeric()</a></code> reshapes data in base R, and the soft deprecation of <code><a href="../reference/rank_numeric.html">rank_numeric()</a></code> is a base R warning given once per session.</li>
+<li>BradleyTerry2 and ggrepel move to Suggests. <code><a href="../reference/btpermute.html">btpermute()</a></code> asks for BradleyTerry2 when it is missing. <code><a href="../reference/compare.html">compare()</a></code> uses ggrepel for the labels when it is installed and <code><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text()</a></code> otherwise.</li>
+<li>ggplot2 (&gt;= 3.4.0) is required, for <code>linewidth</code>.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="tests-and-documentation-2-0-0">TESTS AND DOCUMENTATION<a class="anchor" aria-label="anchor" href="#tests-and-documentation-2-0-0"></a></h4>
+<ul><li>New unit tests for tree plots, <code><a href="../reference/kendallW.html">kendallW()</a></code>, <code><a href="../reference/rank_numeric.html">rank_numeric()</a></code>, <code><a href="../reference/compare.html">compare()</a></code> and <code><a href="../reference/btpermute.html">btpermute()</a></code>. The suite has 120 tests and runs without warnings.</li>
+<li>
+<code><a href="../reference/kendallW.html">kendallW()</a></code> has an example and documents how unranked items are handled.</li>
+<li>README rewritten with a quick start, a guide to the main functions and a summary of this release.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.6.0" id="gosset-160-2026-10-31-github-only">gosset 1.6.0 (2026-10-31, GitHub only)<a class="anchor" aria-label="anchor" href="#gosset-160-2026-10-31-github-only"></a></h2>
 <p>This release corrects statistical errors found in a review of the package. Some results change. Check the items under CHANGES IN RESULTS before comparing with analyses run on earlier versions.</p>
 <div class="section level4">
 <h4 id="changes-in-results-1-6-0">CHANGES IN RESULTS<a class="anchor" aria-label="anchor" href="#changes-in-results-1-6-0"></a></h4>
