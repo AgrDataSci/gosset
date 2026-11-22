@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
       </span>
     </div>
 
@@ -102,12 +102,13 @@
 <td>
 <code><a href="reference/btpermute.html">btpermute()</a></code>, <code><a href="reference/akaike_weights.html">akaike_weights()</a></code>
 </td>
-<td></td>
+<td>
+<code><a href="reference/btpermute.html">btpermute()</a></code> needs the suggested package BradleyTerry2.</td>
 </tr><tr class="even"><td>Agreement between rankings or traits</td>
 <td>
 <code><a href="reference/kendallTau.html">kendallTau()</a></code>, <code><a href="reference/kendallTau.html">kendallTau_bootstrap()</a></code>, <code><a href="reference/kendallTau.html">kendallTau_permute()</a></code>, <code><a href="reference/kendallW.html">kendallW()</a></code>, <code><a href="reference/compare.html">compare()</a></code>
 </td>
-<td></td>
+<td>Since 2.0.0, <code><a href="reference/kendallW.html">kendallW()</a></code> uses only the items each participant ranked.</td>
 </tr><tr class="odd"><td>Summarise item performance for reports</td>
 <td>
 <code><a href="reference/preference_index.html">preference_index()</a></code>, <code><a href="reference/pairwise_probs.html">pairwise_probs()</a></code>, <code><a href="reference/reliability.html">reliability()</a></code>
@@ -144,7 +145,7 @@
 </ul></div>
 <div class="section level2">
 <h2 id="changing-the-package">Changing the package<a class="anchor" aria-label="anchor" href="#changing-the-package"></a></h2>
-<ul><li>Use <code>=</code> for assignment, not <code>&lt;-</code>. Use base R where possible.</li>
+<ul><li>Use <code>=</code> for assignment, not <code>&lt;-</code>. Use base R where possible. Do not add a package to Imports for one or two calls. Use base R, or put the package in Suggests and check it with <code><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace()</a></code>.</li>
 <li>Document with roxygen and run <code><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">devtools::document()</a></code>. Never edit files in <code>man/</code> by hand.</li>
 <li>Every fix needs a test in <code>tests/testthat/</code> that fails before the fix and passes after it. Run <code><a href="https://devtools.r-lib.org/reference/test.html" class="external-link">devtools::test()</a></code> and <code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code>, and report what was actually run. Never claim a change works without running it.</li>
 <li>Keep changes backwards compatible, or record the break in <code>NEWS.md</code> with the reason. Changes that alter results (estimates, p-values, counts) always go in <code>NEWS.md</code>.</li>

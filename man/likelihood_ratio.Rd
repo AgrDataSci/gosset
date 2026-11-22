@@ -18,9 +18,21 @@ likelihood_ratio(x, split, ...)
 
 \item{split}{a vector indicating the splitting rule for the test}
 }
+\value{
+A data.frame with the deviance, the degrees of freedom
+ (\code{DF_delta}) and the p-value of the chi-square test
+}
 \description{
 Assesses the goodness of fit of competing
  statistical models
+}
+\details{
+The test compares a Plackett-Luce model fitted to all data with
+ separate models fitted within each group defined by \code{split}.
+ The degrees of freedom are the sum of the ranks (number of estimated
+ parameters) of the group models minus the rank of the global model.
+ When a group has no ties, its tie parameter is fixed at zero, at the
+ boundary of the parameter space, and the chi-square p-value is approximate.
 }
 \examples{
 library("PlackettLuce")

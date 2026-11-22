@@ -18,7 +18,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
       </span>
     </div>
 
@@ -94,6 +94,20 @@
 <dd><p>a vector indicating the splitting rule for the test</p></dd>
 
 </dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    <p>A data.frame with the deviance, the degrees of freedom
+ (<code>DF_delta</code>) and the p-value of the chi-square test</p>
+    </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>The test compares a Plackett-Luce model fitted to all data with
+ separate models fitted within each group defined by <code>split</code>.
+ The degrees of freedom are the sum of the ranks (number of estimated
+ parameters) of the group models minus the rank of the global model.
+ When a group has no ties, its tie parameter is fixed at zero, at the
+ boundary of the parameter space, and the chi-square p-value is approximate.</p>
+    </div>
     <div id="author">
     <h2>Author</h2>
     <p>Joost van Heerwaarden and Kauê de Sousa</p>
@@ -101,19 +115,101 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://hturner.github.io/PlackettLuce/" class="external-link">"PlackettLuce"</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="st">"beans"</span>, package <span class="op">=</span> <span class="st">"PlackettLuce"</span><span class="op">)</span></span>
-<span><span class="va">G</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/group.html" class="external-link">group</a></span><span class="op">(</span><span class="va">R</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">beans</span><span class="op">)</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">G</span>, <span class="va">beans</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">split</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">maxTN</span> <span class="op">&lt;</span> <span class="fl">18.7175</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">likelihood_ratio</span><span class="op">(</span><span class="va">G</span>, <span class="va">split</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">mod</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">G</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span>
-<span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://hturner.github.io/PlackettLuce/" class="external-link">"PlackettLuce"</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="st">"beans"</span>, package <span class="op">=</span> <span class="st">"PlackettLuce"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; # Consider the best and worst rankings. These give the variety the</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; # farmer thought was best or worst, coded as A, B or C for the</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; # first, second or third variety assigned to the farmer</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; # respectively.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; data(beans)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; head(beans[c("best", "worst")], 2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   best worst</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    C     A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    B     A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; # Fill in the missing item</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; beans$middle &lt;- complete(beans[c("best", "worst")],</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans+                          items = c("A", "B", "C"))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; head(beans[c("best", "middle", "worst")], 2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   best middle worst</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    C      B     A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    B      C     A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; # This gives an ordering of the three varieties the farmer was</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; # given. The names of these varieties are stored in separate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; # columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; varieties &lt;- beans[c("variety_a", "variety_b", "variety_c")]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; head(varieties, 2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     variety_a       variety_b   variety_c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 BRT 103-182      SJC 730-79 PM2 Don Rey</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   INTA Rojo INTA Centro Sur INTA Sequia</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; # Use these names to decode the orderings of order 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; order3 &lt;- decode(beans[c("best", "middle", "worst")],</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans+                  items = beans[c("variety_a", "variety_b", "variety_c")],</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans+                  code = c("A", "B", "C"))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; # Now consider the paired comparisons agains the local variety</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; head(beans[c("var_a", "var_b", "var_c")], 2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   var_a  var_b  var_c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Worse  Worse Better</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Worse Better Better</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; # Convert these results to a vector and get the corresponding trial variety</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; outcome &lt;- unlist(beans[c("var_a", "var_b", "var_c")])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; trial_variety &lt;- unlist(beans[c("variety_a", "variety_b", "variety_c")])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; # Create a data frame of the implied orderings of order 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; order2 &lt;- data.frame(Winner = ifelse(outcome == "Worse",</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans+                                      "Local", trial_variety),</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans+                      Loser = ifelse(outcome == "Worse",</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans+                                     trial_variety, "Local"),</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans+                      stringsAsFactors = FALSE, row.names = NULL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; head(order2, 2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Winner       Loser</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  Local BRT 103-182</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  Local   INTA Rojo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; # Finally combine the rankings of order 2 and order 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; R &lt;- rbind(as.rankings(order3, input = "orderings"),</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans+            as.rankings(order2, input = "orderings"))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; head(R)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "PM2 Don Rey &gt; SJC 730-79 &gt; BRT 103-182"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "INTA Centro Sur &gt; INTA Sequia &gt; INTA ..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "INTA Ferroso &gt; INTA Matagalpa &gt; BRT  ..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "INTA Rojo &gt; INTA Centro Sur &gt; ALS 0532-6"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "PM2 Don Rey &gt; INTA Sequia &gt; SJC 730-79"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6] "ALS 0532-6 &gt; INTA Matagalpa &gt; INTA Rojo" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beans&gt; tail(R)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "INTA Sequia &gt; Local"    "INTA Sequia &gt; Local"    "BRT 103-182 &gt; Local"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "Local &gt; INTA Matagalpa" "Local &gt; INTA Rojo"      "Local &gt; SJC 730-79"    </span>
+<span class="r-in"><span><span class="va">G</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/group.html" class="external-link">group</a></span><span class="op">(</span><span class="va">R</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">beans</span><span class="op">)</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">G</span>, <span class="va">beans</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">split</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">maxTN</span> <span class="op">&lt;</span> <span class="fl">18.7175</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">likelihood_ratio</span><span class="op">(</span><span class="va">G</span>, <span class="va">split</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    deviance DF_delta Pr(&gt;Chisq)      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  42.5998  10.0000     0.0000   ***</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">mod</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/PlackettLuce.html" class="external-link">PlackettLuce</a></span><span class="op">(</span><span class="va">G</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              logLik        DF Statistic Pr(&gt;Chisq)      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  NULL -3259.5513 5052.0000        NA         NA      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: Model -3192.5834 5042.0000  133.9358     0.0000   ***</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

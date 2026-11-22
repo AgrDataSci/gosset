@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">gosset</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
       </span>
     </div>
 
@@ -96,12 +96,22 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The <strong>gosset</strong> package provides methods to implement workflows to analyse experimental agriculture data, from data synthesis to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.</p>
+<p><strong>gosset</strong> analyses data from experimental agriculture, from data synthesis to model selection and visualisation. Its focus is ranking data from decentralised on-farm trials that use the tricot approach (triadic comparison of technology options), where each farmer ranks a small set of varieties or practices.</p>
+<p>gosset turns raw trial data into rankings for the Plackett-Luce model of the <a href="https://CRAN.R-project.org/package=PlackettLuce" class="external-link">PlackettLuce</a> package. It then helps you select, validate and present those models, and summarise item performance for variety release and reports. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.</p>
 </div>
 <div class="section level2">
-<h2 id="whats-new-in-160">What’s new in 1.6.0<a class="anchor" aria-label="anchor" href="#whats-new-in-160"></a>
+<h2 id="whats-new-in-200">What’s new in 2.0.0<a class="anchor" aria-label="anchor" href="#whats-new-in-200"></a>
 </h2>
-<p>Version 1.6.0 corrects statistical errors found in a review of the package, and some results change. <code><a href="reference/kendallTau.html">kendallTau()</a></code> p-values are now two-sided and treat each participant as an independent ranking, <code><a href="reference/crossvalidation.html">crossvalidation()</a></code> reports out-of-sample Kendall’s tau, and <code><a href="reference/preference_index.html">preference_index()</a></code> and <code><a href="reference/regret.html">regret()</a></code> count and weight observations correctly. See <a href="NEWS.html">NEWS</a> before comparing with analyses run on earlier versions.</p>
+<p>Version 2.0.0 is the first CRAN release since 1.5.1, and it includes the statistical review released on GitHub as 1.6.0. Function names and arguments are unchanged, but some results change.</p>
+<ul>
+<li>
+<strong>Corrected results.</strong> <code><a href="reference/kendallTau.html">kendallTau()</a></code>, <code><a href="reference/crossvalidation.html">crossvalidation()</a></code>, <code><a href="reference/preference_index.html">preference_index()</a></code>, <code><a href="reference/regret.html">regret()</a></code>, <code><a href="reference/likelihood_ratio.html">likelihood_ratio()</a></code> and <code><a href="reference/kendallW.html">kendallW()</a></code> now return correct values. <code><a href="reference/kendallTau.html">kendallTau()</a></code> p-values are two-sided by default, and <code><a href="reference/kendallW.html">kendallW()</a></code> ignores items a participant did not rank.</li>
+<li>
+<strong>Tree plots fixed.</strong> <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> on a Plackett-Luce tree works again under current ggplot2, without ggparty and without warnings.</li>
+<li>
+<strong>Lighter install.</strong> gosset imports 9 packages instead of 14. ggparty, DescTools, tidyr and lifecycle are gone, and BradleyTerry2 and ggrepel are optional.</li>
+</ul>
+<p>Read <a href="NEWS.html">NEWS</a> before comparing with analyses run on earlier versions.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -109,29 +119,140 @@
 <p>The stable version is available through CRAN.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"gosset"</span><span class="op">)</span></span></code></pre></div>
-<p>The development version can be installed via</p>
+<p>The development version can be installed from GitHub.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"agrdatasci/gosset"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"AgrDataSci/gosset"</span><span class="op">)</span></span></code></pre></div>
+<p>Two functions use optional packages. <code><a href="reference/btpermute.html">btpermute()</a></code> needs BradleyTerry2, and <code><a href="reference/compare.html">compare()</a></code> places labels with ggrepel when it is installed.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BradleyTerry2"</span>, <span class="st">"ggrepel"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
+<h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<p>The functionality of <strong>gosset</strong> is illustrated in the package’s vignettes</p>
+<p>This example ranks common bean varieties from a tricot trial in Nicaragua, fits a Plackett-Luce tree with climate covariates and plots it.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://agrdatasci.github.io/gosset/" class="external-link">"gosset"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://hturner.github.io/PlackettLuce/" class="external-link">"PlackettLuce"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"beans"</span>, package <span class="op">=</span> <span class="st">"PlackettLuce"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># rankings from the best and worst choices, plus the comparison</span></span>
+<span><span class="co"># with the local variety</span></span>
+<span><span class="va">G</span> <span class="op">=</span> <span class="fu"><a href="reference/rank_tricot.html">rank_tricot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">beans</span>,</span>
+<span>                items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span>
+<span>                input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>,</span>
+<span>                group <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                additional.rank <span class="op">=</span> <span class="va">beans</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">G</span>, <span class="va">beans</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"maxTN"</span>, <span class="st">"season"</span>, <span class="st">"lon"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plackett-Luce tree, rankings split by covariates</span></span>
+<span><span class="va">tree</span> <span class="op">=</span> <span class="fu"><a href="https://hturner.github.io/PlackettLuce/reference/pltree.html" class="external-link">pltree</a></span><span class="op">(</span><span class="va">G</span> <span class="op">~</span> <span class="va">maxTN</span> <span class="op">+</span> <span class="va">season</span> <span class="op">+</span> <span class="va">lon</span>, data <span class="op">=</span> <span class="va">dat</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/node_labels.html">node_rules</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/node_labels.html">top_items</a></span><span class="op">(</span><span class="va">tree</span>, top <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="main-functions">Main functions<a class="anchor" aria-label="anchor" href="#main-functions"></a>
+</h2>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th>Task</th>
+<th>Function</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Rankings from tricot data in wide format (ClimMob)</td>
+<td><code><a href="reference/rank_tricot.html">rank_tricot()</a></code></td>
+</tr>
+<tr class="even">
+<td>Rankings from data in long format</td>
+<td><code><a href="reference/rank_tricot2.html">rank_tricot2()</a></code></td>
+</tr>
+<tr class="odd">
+<td>Fill unranked items so a model can run</td>
+<td><code><a href="reference/pseudo_rank.html">pseudo_rank()</a></code></td>
+</tr>
+<tr class="even">
+<td>Describe a Plackett-Luce tree</td>
+<td>
+<code><a href="reference/node_labels.html">node_labels()</a></code>, <code><a href="reference/node_labels.html">node_rules()</a></code>, <code><a href="reference/node_labels.html">top_items()</a></code>, <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>
+</td>
+</tr>
+<tr class="odd">
+<td>Compare models out of sample</td>
+<td><code><a href="reference/crossvalidation.html">crossvalidation()</a></code></td>
+</tr>
+<tr class="even">
+<td>Test whether rankings differ between groups</td>
+<td><code><a href="reference/likelihood_ratio.html">likelihood_ratio()</a></code></td>
+</tr>
+<tr class="odd">
+<td>Select covariates</td>
+<td>
+<code><a href="reference/btpermute.html">btpermute()</a></code>, <code><a href="reference/akaike_weights.html">akaike_weights()</a></code>
+</td>
+</tr>
+<tr class="even">
+<td>Agreement between rankings or traits</td>
+<td>
+<code><a href="reference/kendallTau.html">kendallTau()</a></code>, <code><a href="reference/kendallW.html">kendallW()</a></code>, <code><a href="reference/compare.html">compare()</a></code>
+</td>
+</tr>
+<tr class="odd">
+<td>Item performance for reports</td>
+<td>
+<code><a href="reference/preference_index.html">preference_index()</a></code>, <code><a href="reference/pairwise_probs.html">pairwise_probs()</a></code>, <code><a href="reference/reliability.html">reliability()</a></code>, <code><a href="reference/regret.html">regret()</a></code>
+</td>
+</tr>
+<tr class="even">
+<td>Plot worth</td>
+<td>
+<code><a href="reference/worth_map.html">worth_map()</a></code>, <code><a href="reference/worth_map.html">worth_bar()</a></code>
+</td>
+</tr>
+<tr class="odd">
+<td>Model fit</td>
+<td><code><a href="reference/pseudoR2.html">pseudoR2()</a></code></td>
+</tr>
+</tbody>
+</table>
+<p>Models come from PlackettLuce. gosset prepares the data and summarises the fits.</p>
+</div>
+<div class="section level2">
+<h2 id="learn-more">Learn more<a class="anchor" aria-label="anchor" href="#learn-more"></a>
+</h2>
+<p>The vignettes show complete analyses.</p>
 <ul>
-<li><p><a href="https://agrdatasci.github.io/gosset/articles/vignette-1-trait-prioritization-and-crop-performance.html" class="external-link">Case study 1: common bean on-farm testing</a></p></li>
-<li><p><a href="https://agrdatasci.github.io/gosset/articles/vignette-2-gari-eba-consumer-testing.html" class="external-link">Case study 2: consumer evaluation cassava</a></p></li>
+<li><a href="https://agrdatasci.github.io/gosset/articles/vignette-1-trait-prioritization-and-crop-performance.html" class="external-link">Case study 1: common bean on-farm testing</a></li>
+<li><a href="https://agrdatasci.github.io/gosset/articles/vignette-2-gari-eba-consumer-testing.html" class="external-link">Case study 2: consumer evaluation of cassava</a></li>
 </ul>
+<p>The full reference is at <a href="https://agrdatasci.github.io/gosset/" class="external-link uri">https://agrdatasci.github.io/gosset/</a>. If you work with an AI assistant, point it to <a href="AGENTS.html">AGENTS.md</a>, a short guide to choosing functions and avoiding common pitfalls.</p>
+</div>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
+<p>Get citation information in R with <code>citation(package = "gosset")</code>.</p>
+<blockquote>
+<p>de Sousa K, Brown D, Steinke J, van Etten J (2023). gosset: An R package for analysis and synthesis of ranking data in agricultural experimentation. <em>SoftwareX</em> 22:101402. <a href="https://doi.org/10.1016/j.softx.2023.101402" class="external-link uri">https://doi.org/10.1016/j.softx.2023.101402</a></p>
+</blockquote>
 </div>
 <div class="section level2">
 <h2 id="meta">Meta<a class="anchor" aria-label="anchor" href="#meta"></a>
 </h2>
 <ul>
 <li>Please <a href="https://github.com/AgrDataSci/gosset/issues" class="external-link">report any issues or bugs</a>.</li>
-<li>License: MIT</li>
-<li>Get citation information for <em>gosset</em> in R by typing <code>citation(package = "gosset")</code>.</li>
-<li>You are welcome to contribute to the <em>gosset</em> project. Please read our <a href="CONTRIBUTING.html">contribution guide lines</a>.</li>
-<li>Please note that the <em>gosset</em> project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By participating in the <em>gosset</em> project you agree to abide by its terms.</li>
+<li>License: MIT.</li>
+<li>You are welcome to contribute to <em>gosset</em>. Please read the <a href="CONTRIBUTING.html">contribution guidelines</a>.</li>
+<li>The <em>gosset</em> project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By participating in it you agree to abide by its terms.</li>
 </ul>
 </div>
 </div>
@@ -186,10 +307,13 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://cran.r-project.org/package=gosset" class="external-link"><img src="https://www.r-pkg.org/badges/version/gosset" alt="CRAN"></a></li>
-<li><a href="https://cran.r-project.org/web/checks/check_results_gosset.html" class="external-link"><img src="https://badges.cranchecks.info/worst/gosset.svg" alt="cran checks"></a></li>
+<li><a href="https://cran.r-project.org/web/checks/check_results_gosset.html" class="external-link"><img src="https://badges.cranchecks.info/worst/gosset.svg" alt="CRAN checks"></a></li>
 <li><a href="https://cran.r-project.org/package=gosset" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/gosset" alt="Downloads"></a></li>
 <li><a href="https://zenodo.org/badge/latestdoi/173807877" class="external-link"><img src="https://zenodo.org/badge/173807877.svg" alt="DOI"></a></li>
-<li><a href="https://www.tidyverse.org/lifecycle/#maturing" class="external-link"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="lifecycle"></a></li>
+<li><a href="https://github.com/AgrDataSci/gosset/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/AgrDataSci/gosset/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://www.repostatus.org/#active" class="external-link"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="ProjStatus"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle"></a></li>
+<li><a href="https://github.com/AgrDataSci/gosset/blob/master/LICENSE.md" class="external-link"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a></li>
 </ul>
 </div>
 

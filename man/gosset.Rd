@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Methods to analyse experimental agriculture data, from data synthesis to model selection and visualisation. The package is named after W.S. Gosset aka ‘Student’, a pioneer of modern statistics in small sample experimental design and analysis.
+Methods to analyse experimental agriculture data, from data synthesis to model selection and visualisation, with a focus on ranking data from decentralised on-farm trials with the 'tricot' approach (van Etten et al. 2019 \doi{10.1017/S0014479716000739}). Includes tools to build rankings, fit and cross-validate Plackett-Luce models and trees, compare traits with Kendall's tau, and summarise results as worth, regret and preference indices. The package is named after W.S. Gosset aka 'Student', a pioneer of modern statistics in small sample experimental design and analysis.
 }
 \seealso{
 \strong{Useful links:}
