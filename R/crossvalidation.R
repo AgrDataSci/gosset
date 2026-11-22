@@ -42,11 +42,11 @@
 #' @references 
 #' 
 #' Elder J. F. (2003). Journal of Computational and Graphical Statistics, 
-#' 12(4), 853–864. \doi{https://doi.org/10.1198/1061860032733}
+#' 12(4), 853-864. \doi{https://doi.org/10.1198/1061860032733}
 #' 
 #' James G., et al. (2013). \doi{https://doi.org/10.1007/978-1-4614-7138-7}
 #' 
-#' Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368–1373. 
+#' Whitlock M. C. (2005). Journal of Evolutionary Biology, 18(5), 1368-1373. 
 #' \doi{https://doi.org/10.1111/j.1420-9101.2005.00917.x}
 #' 
 #' @examples 
