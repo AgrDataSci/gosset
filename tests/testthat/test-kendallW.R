@@ -32,16 +32,14 @@ test_that("rows with fewer than two ranked items are skipped", {
   expect_true(is.na(kendallW(pred[1, , drop = FALSE], obs[1, , drop = FALSE])))
 })
 
-test_that("results match DescTools on complete rankings", {
-  skip_if_not_installed("DescTools")
+test_that("two raters without ties give W = (1 + Spearman rho) / 2", {
   set.seed(1)
   pred = t(replicate(20, sample(1:5)))
-  obs = t(replicate(20, sample(c(1, 1, 2, 3, 4))))
-  old = mean(vapply(seq_len(nrow(pred)), function(i) {
-    DescTools::KendallW(data.frame(pred = pred[i, ], obs = obs[i, ]),
-                        correct = TRUE)
-  }, numeric(1)))
-  expect_equal(kendallW(pred, obs), old)
+  obs = t(replicate(20, sample(1:5)))
+  rho = vapply(seq_len(nrow(pred)), function(i) {
+    stats::cor(pred[i, ], obs[i, ], method = "spearman")
+  }, numeric(1))
+  expect_equal(kendallW(pred, obs), mean((1 + rho) / 2))
 })
 
 test_that("x and y must have the same dimensions", {

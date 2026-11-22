@@ -17,6 +17,9 @@ gosset (development version)
 * `plot()` on `PlackettLuce` and `pltree` objects no longer gives 
   ggplot2 deprecation warnings. `geom_errorbarh()` is replaced by 
   `geom_errorbar(orientation = "y")` and `size` by `linewidth` for lines.
+* `btpermute()` failed with "subscript out of bounds" when 
+  `n.iterations` was smaller than the number of predictors, because the
+  model formulas were built per iteration instead of per predictor.
 * `grid::unit()` was used without grid being declared, and is now 
   `ggplot2::unit()`.
 

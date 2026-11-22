@@ -147,16 +147,15 @@ btpermute <- function(contests = NULL,
   
   # List of formula "extensions" to be added to the
   # BTm models as variables are sequentially added.
-  nperm <- n.iterations + 1
-  
+  # one formula per predictor (Var) and per permuted predictor (PV)
   BTmformula <- as.list(paste0("~ .. + ", 
-                               sprintf("Var%1d", seq_len(nperm)), 
+                               sprintf("Var%1d", seq_len(nvar)), 
                                "[ObsID] * items[..]"))
   BTmformula <- lapply(BTmformula, stats::as.formula)
   
   # permutations formulas
   BTmformulaPV <- as.list(paste0("~ .. + ", 
-                                 sprintf("PV%1d", seq_len(nperm)), 
+                                 sprintf("PV%1d", seq_len(nvar)), 
                                  "[ObsID] * items[..]"))
   BTmformulaPV <- lapply(BTmformulaPV, stats::as.formula)
   
