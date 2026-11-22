@@ -1,0 +1,69 @@
+# Regenerates CITATION.cff with {cffr} when DESCRIPTION or inst/CITATION
+# change on master, so authors, version and licence stay in sync.
+# On pull requests it only validates, without committing.
+# Run it by hand from the Actions tab with "Run workflow".
+on:
+  push:
+    branches: [master]
+    paths:
+      - DESCRIPTION
+      - inst/CITATION
+      - .github/workflows/update-citation-cff.yaml
+  pull_request:
+    paths:
+      - CITATION.cff
+      - DESCRIPTION
+      - inst/CITATION
+      - .github/workflows/update-citation-cff.yaml
+  workflow_dispatch:
+
+name: Update CITATION.cff
+
+permissions:
+  contents: write
+
+jobs:
+  update-citation-cff:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: |
+            any::cffr
+            any::V8
+
+      - name: Validate the committed CITATION.cff
+        run: cffr::cff_validate("CITATION.cff")
+        shell: Rscript {0}
+
+      - name: Update and validate CITATION.cff
+        run: |
+          cff = cffr::cff_create(
+            keys = list(
+              keywords = c("agriculture", "citizen-science", "crowdsourcing",
+                           "plackett-luce", "ranking-data", "tricot")
+            )
+          )
+          cffr::cff_write(cff)
+          cffr::cff_validate("CITATION.cff")
+        shell: Rscript {0}
+
+      - name: Show differences with the generated file
+        run: git diff --stat
+
+      - name: Commit results
+        if: github.event_name != 'pull_request'
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CITATION.cff
+          git commit -m "Update CITATION.cff" || echo "Nothing to commit"
+          git push origin || echo "Nothing to push"
