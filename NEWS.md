@@ -1,6 +1,17 @@
 gosset (development version)
 =========================
 
+### BUG FIXES
+
+* `plot()` on a `pltree` object failed with "`mapping` must be created by 
+  `aes()`" under current ggplot2 releases. The error came from ggparty, 
+  which re-classes `aes()` objects in a way ggplot2 now rejects, and which
+  fails its own CRAN checks for the same reason. The tree branches are now
+  drawn with ggplot2 directly and ggparty is no longer a dependency. The 
+  internal `build_tree_branches()` keeps its signature and still returns a
+  ggplot object, so ClimMob-analysis is unaffected. Edge labels and node 
+  labels look slightly different from the ggparty version.
+
 ### CHANGES IN RESULTS
 
 * `likelihood_ratio()` computes the degrees of freedom as the sum of the

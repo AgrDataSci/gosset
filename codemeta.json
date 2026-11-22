@@ -198,18 +198,6 @@
     },
     "6": {
       "@type": "SoftwareApplication",
-      "identifier": "ggparty",
-      "name": "ggparty",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=ggparty"
-    },
-    "7": {
-      "@type": "SoftwareApplication",
       "identifier": "ggrepel",
       "name": "ggrepel",
       "provider": {
@@ -220,7 +208,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=ggrepel"
     },
-    "8": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "lifecycle",
       "name": "lifecycle",
@@ -232,7 +220,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=lifecycle"
     },
-    "9": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "partykit",
       "name": "partykit",
@@ -244,7 +232,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=partykit"
     },
-    "10": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "PlackettLuce",
       "name": "PlackettLuce",
@@ -256,7 +244,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=PlackettLuce"
     },
-    "11": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "psychotools",
       "name": "psychotools",
@@ -268,7 +256,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=psychotools"
     },
-    "12": {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "qvcalc",
       "name": "qvcalc",
@@ -280,12 +268,12 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=qvcalc"
     },
-    "13": {
+    "12": {
       "@type": "SoftwareApplication",
       "identifier": "stats",
       "name": "stats"
     },
-    "14": {
+    "13": {
       "@type": "SoftwareApplication",
       "identifier": "tidyr",
       "name": "tidyr",
@@ -297,12 +285,12 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tidyr"
     },
-    "15": {
+    "14": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
-    "16": {
+    "15": {
       "@type": "SoftwareApplication",
       "identifier": "patchwork",
       "name": "patchwork",
@@ -314,7 +302,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=patchwork"
     },
-    "17": {
+    "16": {
       "@type": "SoftwareApplication",
       "identifier": "parallel",
       "name": "parallel"
@@ -357,7 +345,10 @@
         "@type": "PublicationIssue",
         "datePublished": "2023",
         "isPartOf": {
-          "@type": ["PublicationVolume", "Periodical"],
+          "@type": [
+            "PublicationVolume",
+            "Periodical"
+          ],
           "name": "{SoftwareX}"
         }
       }

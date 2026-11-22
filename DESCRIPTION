@@ -34,7 +34,6 @@ Imports:
     BradleyTerry2,
     DescTools,
     ggplot2,
-    ggparty,
     ggrepel,
     lifecycle,
     partykit,
