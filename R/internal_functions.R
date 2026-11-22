@@ -476,3 +476,60 @@
 }
 
 
+
+
+#' Long rankings into a wide matrix
+#' 
+#' @param r a data.frame with the columns id, item and rank
+#' @return a matrix with one row per id, sorted, and one column per 
+#'  item, sorted, with 0 for items not ranked
+#' @noRd
+.long_to_wide_rank = function(r) {
+  
+  r = r[!is.na(r$item), c("id", "item", "rank")]
+  
+  if (any(duplicated(r[, c("id", "item")]))) {
+    stop("each id must have only one value per item")
+  }
+  
+  ids = sort(unique(r$id))
+  
+  if (is.factor(r$item)) {
+    its = levels(droplevels(r$item))
+  } else {
+    its = sort(unique(r$item))
+  }
+  
+  m = matrix(0, 
+             nrow = length(ids), 
+             ncol = length(its),
+             dimnames = list(NULL, as.character(its)))
+  
+  m[cbind(match(r$id, ids), match(r$item, its))] = r$rank
+  
+  m[is.na(m)] = 0
+  
+  m
+  
+}
+
+# package environment to keep track of warnings given in a session
+.gosset_env = new.env(parent = emptyenv())
+
+#' Warn once per session that a function is deprecated
+#' @param what a character, the name of the function
+#' @param msg a character, the message
+#' @noRd
+.deprecate_once = function(what, msg) {
+  
+  key = paste0("deprecated_", what)
+  
+  if (isTRUE(.gosset_env[[key]])) return(invisible(NULL))
+  
+  assign(key, TRUE, envir = .gosset_env)
+  
+  warning(msg, call. = FALSE)
+  
+  invisible(NULL)
+  
+}

@@ -1,8 +1,23 @@
-gosset (development version)
+gosset 2.0.0 (2026-11-23)
 =========================
+
+This is the first CRAN release since 1.5.1. It includes every change in 
+1.6.0, which was released on GitHub only, so read both sections when 
+upgrading from CRAN. The major version reflects three things. Several 
+functions return different results after a statistical review, the 
+package drops five dependencies, and tree plots are drawn without 
+ggparty. Function names and arguments are unchanged, and code written 
+for 1.5.1 runs without edits.
 
 ### CHANGES IN RESULTS
 
+* `kendallW()` now uses only the items each participant ranked. Observed
+  rankings mark unranked items with 0, and earlier versions kept those 
+  zeros as tied ranks against the predicted ranks of all items. With 
+  tricot data, where each participant ranks three of many items, this 
+  distorted W. Expect different values for trees fitted on tricot data.
+  Rows with fewer than two ranked items are skipped. Results on complete
+  rankings are unchanged.
 * `likelihood_ratio()` computes the degrees of freedom as the sum of the
   ranks of the group models minus the rank of the global model. Earlier
   versions used the difference in residual degrees of freedom. 
@@ -13,7 +28,49 @@ gosset (development version)
   p-value near 1. Results are unchanged when all groups share the same 
   tie structure. Reported by Sergio Castro Pacheco (CIRAD).
 
-gosset 1.6.0 (2026-10-31)
+### BUG FIXES
+
+* `plot()` on a `pltree` object failed with "`mapping` must be created by 
+  `aes()`" under current ggplot2 releases, which caused the CRAN check 
+  errors for 1.5.1. The error came from ggparty, which rebuilds `aes()` 
+  objects in a way ggplot2 now rejects and which fails its own CRAN 
+  checks for the same reason. The tree branches are now drawn with 
+  ggplot2 and partykit. The internal `build_tree_branches()` keeps its 
+  signature and still returns a ggplot object, so ClimMob-analysis is 
+  unaffected. Edge and node labels look slightly different.
+* `plot()` on `PlackettLuce` and `pltree` objects no longer gives 
+  ggplot2 deprecation warnings. `geom_errorbarh()` is replaced by 
+  `geom_errorbar(orientation = "y")` and `size` by `linewidth` for lines.
+* `btpermute()` failed with "subscript out of bounds" when 
+  `n.iterations` was smaller than the number of predictors, because the
+  model formulas were built per iteration instead of per predictor.
+* `grid::unit()` was used without grid being declared, and is now 
+  `ggplot2::unit()`.
+
+### DEPENDENCIES
+
+* gosset imports 9 packages instead of 14.
+* ggparty is no longer used (see BUG FIXES).
+* DescTools, tidyr and lifecycle are no longer used. `kendallW()` 
+  computes W in base R, `rank_numeric()` reshapes data in base R, and the
+  soft deprecation of `rank_numeric()` is a base R warning given once per
+  session.
+* BradleyTerry2 and ggrepel move to Suggests. `btpermute()` asks for 
+  BradleyTerry2 when it is missing. `compare()` uses ggrepel for the 
+  labels when it is installed and `geom_text()` otherwise.
+* ggplot2 (>= 3.4.0) is required, for `linewidth`.
+
+### TESTS AND DOCUMENTATION
+
+* New unit tests for tree plots, `kendallW()`, `rank_numeric()`, 
+  `compare()` and `btpermute()`. The suite has 120 tests and runs 
+  without warnings.
+* `kendallW()` has an example and documents how unranked items are 
+  handled.
+* README rewritten with a quick start, a guide to the main functions and
+  a summary of this release.
+
+gosset 1.6.0 (2026-10-31, GitHub only)
 =========================
 
 This release corrects statistical errors found in a review of the package.

@@ -7,7 +7,7 @@
   "codeRepository": "https://agrdatasci.github.io/gosset/",
   "issueTracker": "https://github.com/agrdatasci/gosset/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "1.6.0",
+  "version": "2.0.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -63,6 +63,30 @@
     }
   ],
   "softwareSuggestions": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "ggrepel",
+      "name": "ggrepel",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggrepel"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "BradleyTerry2",
+      "name": "BradleyTerry2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=BradleyTerry2"
+    },
     {
       "@type": "SoftwareApplication",
       "identifier": "climatrends",
@@ -162,30 +186,6 @@
     },
     "3": {
       "@type": "SoftwareApplication",
-      "identifier": "BradleyTerry2",
-      "name": "BradleyTerry2",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=BradleyTerry2"
-    },
-    "4": {
-      "@type": "SoftwareApplication",
-      "identifier": "DescTools",
-      "name": "DescTools",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=DescTools"
-    },
-    "5": {
-      "@type": "SoftwareApplication",
       "identifier": "ggplot2",
       "name": "ggplot2",
       "provider": {
@@ -194,45 +194,10 @@
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=ggplot2"
+      "sameAs": "https://CRAN.R-project.org/package=ggplot2",
+      "version": ">= 3.4.0"
     },
-    "6": {
-      "@type": "SoftwareApplication",
-      "identifier": "ggparty",
-      "name": "ggparty",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=ggparty"
-    },
-    "7": {
-      "@type": "SoftwareApplication",
-      "identifier": "ggrepel",
-      "name": "ggrepel",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=ggrepel"
-    },
-    "8": {
-      "@type": "SoftwareApplication",
-      "identifier": "lifecycle",
-      "name": "lifecycle",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=lifecycle"
-    },
-    "9": {
+    "4": {
       "@type": "SoftwareApplication",
       "identifier": "partykit",
       "name": "partykit",
@@ -244,7 +209,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=partykit"
     },
-    "10": {
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "PlackettLuce",
       "name": "PlackettLuce",
@@ -256,7 +221,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=PlackettLuce"
     },
-    "11": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "psychotools",
       "name": "psychotools",
@@ -268,7 +233,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=psychotools"
     },
-    "12": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "qvcalc",
       "name": "qvcalc",
@@ -280,29 +245,17 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=qvcalc"
     },
-    "13": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "stats",
       "name": "stats"
     },
-    "14": {
-      "@type": "SoftwareApplication",
-      "identifier": "tidyr",
-      "name": "tidyr",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=tidyr"
-    },
-    "15": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
-    "16": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "patchwork",
       "name": "patchwork",
@@ -314,7 +267,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=patchwork"
     },
-    "17": {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "parallel",
       "name": "parallel"
@@ -357,7 +310,10 @@
         "@type": "PublicationIssue",
         "datePublished": "2023",
         "isPartOf": {
-          "@type": ["PublicationVolume", "Periodical"],
+          "@type": [
+            "PublicationVolume",
+            "Periodical"
+          ],
           "name": "{SoftwareX}"
         }
       }

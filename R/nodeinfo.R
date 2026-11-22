@@ -70,7 +70,6 @@
 #' @importFrom stats coef
 #' @importFrom ggplot2 ggplot aes geom_vline geom_point geom_errorbar scale_x_continuous 
 #' theme_bw labs theme element_text element_blank element_rect element_line facet_grid
-#' @importFrom ggparty ggparty geom_edge geom_edge_label geom_node_label
 #' @import patchwork
 #' @import methods
 #' @rdname node_labels
@@ -140,36 +139,130 @@ plot.PlackettLuce = function(x,
 
 #' Build tree
 #' This function builds the party tree
+#' 
+#' Draws the branches of a party tree with ggplot2 only. Terminal nodes 
+#' are spaced evenly between 0 and 1 so the branches align with the 
+#' panels from build_tree_nodes(). Inner nodes show the splitting 
+#' variable, the p-value of the split and the node id. Edges show the 
+#' split rule.
 #' @param x a party object
+#' @param ... not used
+#' @return a ggplot object
 #' @noRd
 build_tree_branches = function(x, ...){
   
-  splitvar = 0L
-  p.value = 0L
-  id = 0L
+  data = x$data
   
-  ggparty::ggparty(x, terminal_space = 0) +
-    ggparty::geom_edge() +
-    ggparty::geom_edge_label() +
-    ggplot2::theme(legend.position = "none") +
-    ggparty::geom_node_label(line_list = list(
-      ggplot2::aes(label = splitvar),
-      ggplot2::aes(label = paste("p =",
-                                 formatC(p.value,
-                                         format = "e",
-                                         digits = 1))),
-      ggplot2::aes(label = ""),
-      ggplot2::aes(label = id)),
-      line_gpar = list(list(linewidth = 12),
-                       list(linewidth = 10),
-                       list(linewidth = 10),
-                       list(linewidth = 10,
-                            col = "black",
-                            fontface = "bold",
-                            alignment = "center")
-      ),
-      ids = "inner") +
-    ggplot2::coord_cartesian(ylim = c(0.1, 1.1))
+  # walk the tree once and collect node positions and edge labels
+  nodes = data.frame(id = integer(0L), 
+                     level = integer(0L), 
+                     terminal = logical(0L),
+                     x = numeric(0L),
+                     splitvar = character(0L),
+                     p.value = numeric(0L),
+                     stringsAsFactors = FALSE)
+  
+  edges = data.frame(from = integer(0L), 
+                     to = integer(0L), 
+                     label = character(0L),
+                     stringsAsFactors = FALSE)
+  
+  n_terminal = length(partykit::nodeids(x, terminal = TRUE))
+  
+  counter = 0L
+  
+  walk = function(node, level) {
+    
+    id = partykit::id_node(node)
+    
+    if (partykit::is.terminal(node)) {
+      counter <<- counter + 1L
+      nodes <<- rbind(nodes, 
+                      data.frame(id = id,
+                                 level = level,
+                                 terminal = TRUE,
+                                 x = (counter - 0.5) / n_terminal,
+                                 splitvar = NA_character_,
+                                 p.value = NA_real_,
+                                 stringsAsFactors = FALSE))
+      return(invisible(NULL))
+    }
+    
+    kids = partykit::kids_node(node)
+    
+    split = partykit::character_split(partykit::split_node(node), 
+                                      data = data)
+    
+    for (k in seq_along(kids)) {
+      edges <<- rbind(edges,
+                      data.frame(from = id,
+                                 to = partykit::id_node(kids[[k]]),
+                                 label = split$levels[k],
+                                 stringsAsFactors = FALSE))
+      walk(kids[[k]], level + 1L)
+    }
+    
+    kid_ids = vapply(kids, partykit::id_node, integer(1L))
+    
+    pval = partykit::info_node(node)$p.value
+    pval = if (length(pval) == 0L) NA_real_ else min(as.numeric(pval))
+    
+    nodes <<- rbind(nodes,
+                    data.frame(id = id,
+                               level = level,
+                               terminal = FALSE,
+                               x = mean(nodes$x[nodes$id %in% kid_ids]),
+                               splitvar = split$name,
+                               p.value = pval,
+                               stringsAsFactors = FALSE))
+    
+    invisible(NULL)
+    
+  }
+  
+  walk(partykit::node_party(x), 0L)
+  
+  # inner nodes are spaced by level from 1 (root) downwards
+  # terminal nodes sit at 0, the bottom of the panel
+  depth = max(nodes$level[!nodes$terminal]) + 1L
+  nodes$y = ifelse(nodes$terminal, 0, 1 - nodes$level / depth)
+  
+  edges$x = nodes$x[match(edges$from, nodes$id)]
+  edges$y = nodes$y[match(edges$from, nodes$id)]
+  edges$xend = nodes$x[match(edges$to, nodes$id)]
+  edges$yend = nodes$y[match(edges$to, nodes$id)]
+  edges$xmid = (edges$x + edges$xend) / 2
+  edges$ymid = (edges$y + edges$yend) / 2
+  
+  inner = nodes[!nodes$terminal, ]
+  inner$label = paste0(inner$splitvar, "\n",
+                       "p = ", formatC(inner$p.value, format = "e", digits = 1),
+                       "\n",
+                       inner$id)
+  
+  y = 0L
+  xend = 0L
+  yend = 0L
+  xmid = 0L
+  ymid = 0L
+  label = 0L
+  
+  ggplot2::ggplot() +
+    ggplot2::geom_segment(data = edges,
+                          ggplot2::aes(x = x, y = y, 
+                                       xend = xend, yend = yend),
+                          colour = "grey30") +
+    ggplot2::geom_label(data = edges,
+                        ggplot2::aes(x = xmid, y = ymid, label = label),
+                        size = 3) +
+    ggplot2::geom_label(data = inner,
+                        ggplot2::aes(x = x, y = y, label = label),
+                        size = 3.5,
+                        lineheight = 0.9) +
+    ggplot2::scale_x_continuous(limits = c(0, 1), expand = c(0, 0)) +
+    ggplot2::coord_cartesian(ylim = c(0.1, 1.1), clip = "off") +
+    ggplot2::theme_void() +
+    ggplot2::theme(legend.position = "none")
   
 }
 
@@ -317,14 +410,15 @@ build_tree_nodes = function(x,
                                y = items,
                                label = group)) +
     ggplot2::geom_vline(xintercept = xinter, 
-                        colour = "#E5E7E9", size = 0.8) +
+                        colour = "#E5E7E9", linewidth = 0.8) +
     ggplot2::geom_text(ggplot2::aes(label = group),
                        hjust = 0.5, vjust = -1) +
     ggplot2::geom_point(pch = 21, size = 2, 
                         fill = "black",colour = "black") +
-    ggplot2::geom_errorbarh(ggplot2::aes(xmin = bmin,
-                                         xmax = bmax),
-                            colour="black", height = 0.1) +
+    ggplot2::geom_errorbar(ggplot2::aes(xmin = bmin,
+                                        xmax = bmax),
+                           orientation = "y",
+                           colour = "black", width = 0.1) +
     ggplot2::scale_x_continuous(limits = c(xmin, xmax),
                                 breaks = xbreaks,
                                 labels = xlabs) +
@@ -344,9 +438,9 @@ build_tree_nodes = function(x,
                    plot.background = ggplot2::element_blank(),
                    panel.grid.major = ggplot2::element_blank(),
                    panel.grid.minor = ggplot2::element_blank(),
-                   panel.border = ggplot2::element_rect(colour = "black", size = 1),
-                   axis.ticks = ggplot2::element_line(colour = "black", size = 0.5),
-                   axis.ticks.length = grid::unit(0.3, "cm"))
+                   panel.border = ggplot2::element_rect(colour = "black", linewidth = 1),
+                   axis.ticks = ggplot2::element_line(colour = "black", linewidth = 0.5),
+                   axis.ticks.length = ggplot2::unit(0.3, "cm"))
   
   
 }
